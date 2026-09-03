@@ -1,0 +1,1032 @@
+{
+  "past_10yr_exam_trends": {
+    "title": "Past 10 Years: National & State Exam Participation & Cutoff Escalation (2016-2025)",
+    "metrics": [
+      {
+        "year": "2016",
+        "applicants": "11.8 Lakhs",
+        "avg_cutoff_pct": "78%",
+        "online_adoption": "30%"
+      },
+      {
+        "year": "2018",
+        "applicants": "13.2 Lakhs",
+        "avg_cutoff_pct": "82%",
+        "online_adoption": "55%"
+      },
+      {
+        "year": "2020",
+        "applicants": "15.4 Lakhs",
+        "avg_cutoff_pct": "85%",
+        "online_adoption": "85%"
+      },
+      {
+        "year": "2022",
+        "applicants": "18.6 Lakhs",
+        "avg_cutoff_pct": "89%",
+        "online_adoption": "98%"
+      },
+      {
+        "year": "2024",
+        "applicants": "22.4 Lakhs",
+        "avg_cutoff_pct": "92%",
+        "online_adoption": "100%"
+      },
+      {
+        "year": "2025",
+        "applicants": "24.8 Lakhs",
+        "avg_cutoff_pct": "94%",
+        "online_adoption": "100%"
+      }
+    ],
+    "key_takeaway": "Shift to computerized testing (CBT) and normalized percentile scoring has increased applicant competition by over 110%."
+  },
+  "future_3yr_exam_outlook": {
+    "title": "Future 2-3 Years: Adaptive AI Assessments & Integrated Stream Projections (2026-2028)",
+    "projections": [
+      {
+        "field": "Engineering & Technology (JEE / TNEA)",
+        "projected_growth": "+18%",
+        "exam_format": "Computer Adaptive Test + Multi-Session Normalization"
+      },
+      {
+        "field": "Medical & Dental (NEET UG)",
+        "projected_growth": "+22%",
+        "exam_format": "Single National Rank with Next-Gen OMR Biometric Verification"
+      },
+      {
+        "field": "Postgraduate Management (CAT / TANCET)",
+        "projected_growth": "+25%",
+        "exam_format": "AI Proctoring + Analytical Writing Assessments"
+      },
+      {
+        "field": "Central Universities (CUET UG)",
+        "projected_growth": "+35%",
+        "exam_format": "Universal Unified Entrance for all Central/State Universities"
+      }
+    ]
+  },
+  "exams": [
+    {
+      "name": "Test Advanced Engineering Entrance Prep",
+      "conducted_by": "National Testing Agency",
+      "field": "Engineering",
+      "total_marks": "300",
+      "purpose": "Preparation roadmap and mock question bank for premiere engineering colleges.",
+      "status": "approved",
+      "id": 1
+    },
+    {
+      "name": "Test Advanced Engineering Entrance Prep",
+      "conducted_by": "National Testing Agency",
+      "field": "Engineering",
+      "total_marks": "300",
+      "purpose": "Preparation roadmap and mock question bank for premiere engineering colleges.",
+      "status": "approved",
+      "id": 1
+    },
+    {
+      "name": "Test Advanced Engineering Entrance Prep",
+      "conducted_by": "National Testing Agency",
+      "field": "Engineering",
+      "total_marks": "300",
+      "purpose": "Preparation roadmap and mock question bank for premiere engineering colleges.",
+      "status": "approved",
+      "id": 1
+    },
+    {
+      "exam_name": "JEE Main",
+      "syllabus": "Physics, Chemistry, Math",
+      "preparation_tips": "Solve previous 10 years papers",
+      "id": 35
+    },
+    {
+      "id": "EXM-001",
+      "name": "TNEA (Tamil Nadu Engineering Admissions)",
+      "conducting_body": "Directorate of Technical Education (DoTE), Tamil Nadu",
+      "target_field": "Engineering (B.E / B.Tech)",
+      "state_coverage": "Tamil Nadu",
+      "district_coverage": "Coimbatore, Chennai, Madurai, Tiruchirappalli, Salem",
+      "target_colleges": "PSG Tech, Adithya Institute of Technology, CIT, GCT, KCT, SKCET, Anna University",
+      "total_marks": "200 (Maths: 100, Physics: 50, Chemistry: 50)",
+      "cutoff_range": "199.5 (Top Tier) to 140.0 (Merit Eligible)",
+      "purpose": "State-wide Single Window Counselling for admission into over 450 engineering colleges in Tamil Nadu.",
+      "fee_savings": "Government quota tuition is ₹50,000 - ₹85,000/yr vs Management quota of ₹1.5L - ₹3.0L/yr (Save up to ₹8.0 Lakhs across 4 years).",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Board Exam Mastery (PCM)",
+          "focus": "Class 12 State Board / CBSE Physics, Chemistry, Maths derivation clarity and numerical speed drills.",
+          "resources": [
+            "TN State Board Textbooks",
+            "Class 12 Previous 10-Yr Question Bank",
+            "Samacheer Kalvi Solutions"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Cutoff Calculation & Normalization",
+          "focus": "Calculate Cutoff = Maths + (Physics / 2) + (Chemistry / 2). Practice timing and accuracy.",
+          "resources": [
+            "TNEA Cutoff Predictor App",
+            "Previous Year College Wise Cutoff PDF",
+            "DoTE Rank Trends"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Single Window Choice Filling Strategy",
+          "focus": "Order college choices meticulously by preferred branch, NIRF rank, and placement history.",
+          "resources": [
+            "TNEA Official Choice Filling Portal",
+            "CampNova College Comparison Tool",
+            "Anna University Counselling Guide"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-002",
+      "name": "JEE Main (Joint Entrance Examination - Main)",
+      "conducting_body": "National Testing Agency (NTA)",
+      "target_field": "Engineering & Architecture (B.Tech / B.Arch)",
+      "state_coverage": "All India, Tamil Nadu, Karnataka, Maharashtra, Delhi",
+      "district_coverage": "National, Chennai, Tiruchirappalli, Coimbatore, Bengaluru",
+      "target_colleges": "NIT Trichy, NIT Surathkal, IIITs, CFTIs & Top Deemed Universities",
+      "total_marks": "300 (Physics: 100, Chemistry: 100, Maths: 100)",
+      "cutoff_range": "90.5+ %ile for General qualifying to JEE Adv; 99.0+ %ile for Top NITs",
+      "purpose": "National level gateway examination for premier National Institutes of Technology and eligibility for JEE Advanced.",
+      "fee_savings": "NIT subsidized fees save ₹10-15 Lakhs compared to private direct management admissions.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "NCERT Line-by-Line Foundation",
+          "focus": "Complete NCERT Chemistry, HC Verma Physics, and RD Sharma / Cengage Mathematics.",
+          "resources": [
+            "NCERT Exemplar",
+            "HC Verma Concepts of Physics",
+            "Cengage JEE Main Series"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Chapter-Wise PYQs & Speed Drills",
+          "focus": "Solve last 5 years online shift papers (2020-2025) with a 3-hour timer.",
+          "resources": [
+            "Disha 144 Shift PYQ Book",
+            "Marks App by MathonGo",
+            "NTA Abhyas Mock App"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Full-Length CBT Simulations",
+          "focus": "Simulate real computer testing environment, error analysis, and speed optimization.",
+          "resources": [
+            "Allen / Resonance All-India Test Series",
+            "MathonGo Test Series",
+            "GeeksforGeeks Practice"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-003",
+      "name": "JEE Advanced",
+      "conducting_body": "Rotational Indian Institute of Technology (IITs)",
+      "target_field": "Premier Engineering & Pure Sciences",
+      "state_coverage": "All India, Tamil Nadu, Maharashtra, Delhi, Karnataka",
+      "district_coverage": "Chennai, Mumbai, Delhi, Bengaluru, Kanpur",
+      "target_colleges": "IIT Madras, IIT Bombay, IIT Delhi, IIT Kanpur, IISc Bengaluru",
+      "total_marks": "360 (Paper 1: 180, Paper 2: 180)",
+      "cutoff_range": "Rank 1 to 15,000 for IIT seat allocation",
+      "purpose": "Apex technical exam in India for admission into the prestigious 23 Indian Institutes of Technology.",
+      "fee_savings": "Top global education with 100% fee waivers for lower-income students.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Multi-Concept Problem Solving",
+          "focus": "Solve problems combining thermodynamics with mechanics, or coordinate geometry with calculus.",
+          "resources": [
+            "Irodov Physics Problems",
+            "Peter Atkins Physical Chemistry",
+            "MS Chouhan Organic",
+            "A Das Gupta Maths"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Matrix Match, Integer & Multi-Correct Drill",
+          "focus": "Master negative marking control on partial marking questions.",
+          "resources": [
+            "Previous 20 Years JEE Adv Archive",
+            "IIT JEE Past Papers (1978-2025)"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Full 6-Hour Exam Simulation",
+          "focus": "Take Paper 1 (9 AM-12 PM) and Paper 2 (2:30 PM-5:30 PM) on same day to build stamina.",
+          "resources": [
+            "FIITJEE AITS",
+            "Narayana / Sri Chaitanya Super-60 Test Series"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-004",
+      "name": "NEET UG (National Eligibility cum Entrance Test)",
+      "conducting_body": "National Testing Agency (NTA)",
+      "target_field": "Medical & Dental (MBBS / BDS / AYUSH)",
+      "state_coverage": "All India, Tamil Nadu, Karnataka, Kerala, Delhi",
+      "district_coverage": "Coimbatore, Chennai, Vellore, Madurai, Bengaluru",
+      "target_colleges": "AIIMS Delhi, CMC Vellore, PSG Medical Coimbatore, Madras Medical College",
+      "total_marks": "720 (Biology: 360, Physics: 180, Chemistry: 180)",
+      "cutoff_range": "650+ for Govt Medical College MBBS; 600+ for State Quota",
+      "purpose": "Single uniform entrance examination for all medical college seats across India.",
+      "fee_savings": "Govt MBBS costs ₹15,000/yr vs Private Management/Deemed MBBS of ₹20-25 Lakhs/yr (Save ₹1 Crore+).",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "NCERT Biology Mastery (360/360 Target)",
+          "focus": "Memorize every diagram, table, scientist note, and summary in 11th & 12th NCERT Biology.",
+          "resources": [
+            "NCERT Biology Vol 1 & 2",
+            "Dr. Ali Objective Biology",
+            "MTG NCERT at your Fingertips"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "High-Yield Physics & Chemistry Formulas",
+          "focus": "Daily 50 numerical calculations in modern physics, mechanics, electrostatics, and organic reactions.",
+          "resources": [
+            "DC Pandey NEET Physics",
+            "OP Tandon Chemistry",
+            "NEET Champion 10-Yr PYQs"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "OMR Bubble Speed & Accuracy Practice",
+          "focus": "Solve 200 questions in 200 minutes with physical OMR bubble marking.",
+          "resources": [
+            "Aakash / Allen NEET Mock Test Series",
+            "NEET Prep Online OMR Simulator"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-005",
+      "name": "TANCET (Tamil Nadu Common Entrance Test)",
+      "conducting_body": "Anna University, Chennai",
+      "target_field": "Postgraduate (MBA / MCA)",
+      "state_coverage": "Tamil Nadu",
+      "district_coverage": "Coimbatore, Chennai, Madurai, Tiruchirappalli, Salem",
+      "target_colleges": "DoMS Anna University, PSG Tech, Adithya Institute of Management, CIT Coimbatore",
+      "total_marks": "100 Marks (Quantitative, Data Sufficiency, English, Reasoning)",
+      "cutoff_range": "95+ %ile for Tier 1 Colleges; 80+ %ile for Reputed Institutes",
+      "purpose": "State level entrance test for MBA and MCA admissions in Tamil Nadu colleges.",
+      "fee_savings": "Govt quota MBA fees ₹35,000/yr vs Direct Management fee ₹1.5L/yr.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Data Sufficiency & Business Analysis",
+          "focus": "Practice Tamil Nadu specific data sufficiency questions and business scenario analysis.",
+          "resources": [
+            "Arun Sharma Quantitative Aptitude",
+            "TANCET MBA Guide by Sura / Sakthi",
+            "IndiaBIX Data Sufficiency"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "English Verbal & Reading Comprehension",
+          "focus": "Error spotting, passage comprehension, and vocabulary builders.",
+          "resources": [
+            "Word Power Made Easy",
+            "TANCET Previous 10-Year Question Papers"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Timed Mock Tests & Counselling Strategy",
+          "focus": "Take Anna University pattern 2-hour offline/online mock tests.",
+          "resources": [
+            "Anna University TANCET Portal",
+            "CampNova Postgrad Preparation Hub"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-006",
+      "name": "CAT (Common Admission Test)",
+      "conducting_body": "Indian Institutes of Management (IIMs)",
+      "target_field": "Postgraduate Management (MBA / PGDM)",
+      "state_coverage": "All India, Tamil Nadu, Karnataka, Maharashtra, Delhi",
+      "district_coverage": "Ahmedabad, Bengaluru, Kolkata, Kozhikode, Mumbai",
+      "target_colleges": "IIM Ahmedabad, IIM Bangalore, IIM Calcutta, IIM Kozhikode, IIM Trichy",
+      "total_marks": "198 (VARC: 66, DILR: 60, QA: 66)",
+      "cutoff_range": "99.5+ %ile for Top 3 IIMs; 95+ %ile for New IIMs",
+      "purpose": "Premier national management aptitude test for IIMs and leading B-schools across India.",
+      "fee_savings": "Graduates secure ₹30-35 LPA average packages providing exceptional ROI.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "VARC & Reading Rigor",
+          "focus": "Read daily articles from Aeon Essays, The Economist, and solve 4 RC passages daily.",
+          "resources": [
+            "Aeon Essays",
+            "Arun Sharma VARC",
+            "The Hindu Editorials"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "DILR Puzzle Solving & Set Selection",
+          "focus": "Solve complex matrix arrangements, games & tournaments, and Venn diagram sets.",
+          "resources": [
+            "Anastasis Academy DILR",
+            "CAT PYQs (2017-2025)"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Sectional Time Strategy (40 Mins / Section)",
+          "focus": "Target 10-12 accurate questions per section to achieve 99+ percentile.",
+          "resources": [
+            "TIME AIMCAT",
+            "IMS SimCAT",
+            "Career Launcher CL Test Series"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-007",
+      "name": "GATE (Graduate Aptitude Test in Engineering - CS & IT)",
+      "conducting_body": "IISc Bengaluru & IITs",
+      "target_field": "Postgraduate Engineering & PSU Jobs (M.Tech / MS / PSU)",
+      "state_coverage": "All India, Tamil Nadu, Karnataka, Delhi, Maharashtra",
+      "district_coverage": "Bengaluru, Chennai, Delhi, Mumbai, Hyderabad",
+      "target_colleges": "IISc Bengaluru, IIT Madras, IIT Delhi, IOCL, ONGC, NTPC, ISRO",
+      "total_marks": "100 (General Aptitude: 15, Engineering Maths: 13, Subject Core: 72)",
+      "cutoff_range": "Score 750+ / 1000 for Top IITs; 650+ for NITs & PSUs",
+      "purpose": "Qualifying test for Master's programs, PhD fellowships (₹37,000/mo stipend), and direct PSU recruitment.",
+      "fee_savings": "Full M.Tech tuition covered + ₹12,400 monthly government stipend.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Core Computer Science Concepts",
+          "focus": "Operating Systems, DBMS, Theory of Computation, Compiler Design, Computer Networks.",
+          "resources": [
+            "Galvin OS",
+            "Korth DBMS",
+            "Ullman TOC",
+            "Tanenbaum Networks",
+            "GeeksforGeeks GATE"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Engineering Maths & Discrete Structures",
+          "focus": "Graph Theory, Combinatorics, Linear Algebra, Probability, Calculus.",
+          "resources": [
+            "Kenneth Rosen Discrete Math",
+            "GATE Overflow Previous Year Questions (1990-2025)"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Virtual Calculator & 3-Hour Simulation",
+          "focus": "Practice using TCS iON virtual screen calculator and error-free NAT questions.",
+          "resources": [
+            "Made Easy Test Series",
+            "ACE Academy Test Series",
+            "GATE Overflow Mocks"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-008",
+      "name": "AEEE (Amrita Entrance Examination - Engineering)",
+      "conducting_body": "Amrita Vishwa Vidyapeetham",
+      "target_field": "Engineering (B.Tech)",
+      "state_coverage": "Tamil Nadu, Kerala, Karnataka, Andhra Pradesh",
+      "district_coverage": "Coimbatore, Kollam, Bengaluru, Chennai, Amaravati",
+      "target_colleges": "Amrita Vishwa Vidyapeetham (Coimbatore, Amritapuri, Bengaluru, Chennai)",
+      "total_marks": "300 (Physics: 30, Chemistry: 25, Maths: 40, English: 5 Questions)",
+      "cutoff_range": "Rank 1 to 5,000 for Coimbatore campus Computer Science",
+      "purpose": "Institutional entrance test for merit admissions and up to 90% scholarship waivers at Amrita campuses.",
+      "fee_savings": "Top AEEE rankers save ₹1.5 Lakh/yr through Chancellor Scholarships.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Class 11 & 12 Syllabus Alignment",
+          "focus": "Physics, Chemistry and Maths topics mapped closely to NCERT and JEE Main patterns.",
+          "resources": [
+            "Amrita AEEE Official Handbook",
+            "NCERT Exemplar Questions"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Online Proctored CBT Practice",
+          "focus": "Speed drills for 100 questions in 150 minutes with +3/-1 negative marking.",
+          "resources": [
+            "Amrita Online Mock Portal",
+            "CampNova AEEE Study Modules"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Campus Merit Seat Counseling",
+          "focus": "Apply for both AEEE rank and JEE Main score to maximize admission chances.",
+          "resources": [
+            "Amrita Admissions Portal (aoap.amrita.edu)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-009",
+      "name": "KEE (Karunya Entrance Examination)",
+      "conducting_body": "Karunya Institute of Technology and Sciences",
+      "target_field": "Engineering & Agriculture (B.Tech)",
+      "state_coverage": "Tamil Nadu, Kerala, Karnataka, All India",
+      "district_coverage": "Coimbatore, Palakkad, Kochi, Chennai, Bengaluru",
+      "target_colleges": "Karunya Deemed University, Coimbatore",
+      "total_marks": "100 (Maths: 35, Physics: 25, Chemistry: 25, General Aptitude: 15)",
+      "cutoff_range": "Merit rank based scholarship bands",
+      "purpose": "Direct entrance examination and Young Innovators scholarship scheme for Karunya.",
+      "fee_savings": "Scholarships up to ₹1,20,000/yr for top performers.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Core Science Fundamentals",
+          "focus": "Basic principles in electronics, mechanics, biological systems, and chemistry.",
+          "resources": [
+            "12th CBSE/State Board textbooks",
+            "Karunya Sample Papers"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Online Aptitude & Reasoning",
+          "focus": "Practice standard mental ability and numerical logic.",
+          "resources": [
+            "IndiaBIX Logical Reasoning",
+            "PrepInsta Aptitude"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Scholarship Interview & Confirmation",
+          "focus": "Complete document submission for merit fee concession.",
+          "resources": [
+            "Karunya KEE Portal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-010",
+      "name": "CUET UG (Common University Entrance Test)",
+      "conducting_body": "National Testing Agency (NTA)",
+      "target_field": "Arts, Commerce & Sciences (UG)",
+      "state_coverage": "All India, Tamil Nadu, Delhi, Uttar Pradesh, Maharashtra",
+      "district_coverage": "Delhi, Thiruvarur, Chennai, Varanasi, Mumbai",
+      "target_colleges": "Delhi University (St. Stephen's, SRCC), Central University of TN, BHU, JNU",
+      "total_marks": "200 per Subject Domain",
+      "cutoff_range": "750+ / 800 for Top Delhi University North Campus Colleges",
+      "purpose": "Unified entrance test for admission into all Central and participating State Universities in India.",
+      "fee_savings": "Central Universities charge nominal fees (₹10,000-₹25,000/yr) with exceptional academic faculty.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "NCERT Domain Subject Precision",
+          "focus": "Thorough revision of Class 12 NCERT syllabus for chosen domain subjects (Economics, Accounts, Math, CS).",
+          "resources": [
+            "NCERT Class 12 Textbooks",
+            "Oswaal CUET Question Banks"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "General Test & Language Proficiency",
+          "focus": "English comprehension, general awareness, current affairs, and basic numerical reasoning.",
+          "resources": [
+            "Manorama Yearbook",
+            "Wren & Martin English Grammar",
+            "Daily Newspaper Reading"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "NTA Mock Test Simulations",
+          "focus": "Take official NTA CBT mock tests on chosen subject combinations.",
+          "resources": [
+            "NTA CUET Mock Portal",
+            "CUET.samarth.ac.in"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-011",
+      "name": "BITSAT (BITS Admission Test)",
+      "conducting_body": "Birla Institute of Technology and Science, Pilani",
+      "target_field": "Engineering (B.E / B.Tech)",
+      "state_coverage": "All India, Rajasthan, Goa, Telangana",
+      "district_coverage": "Pilani, Goa, Hyderabad, National",
+      "target_colleges": "BITS Pilani, BITS Goa, BITS Hyderabad",
+      "total_marks": "390 (Physics: 90, Chemistry: 90, Maths: 120, English & LR: 90)",
+      "cutoff_range": "320+ for CS at Pilani; 280+ for Goa & Hyderabad",
+      "purpose": "Computerized entrance test for premier non-government engineering education in India.",
+      "fee_savings": "Top rankers qualify for Merit-cum-Need scholarships covering up to 80% tuition fees.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Speed Drills & Mental Math",
+          "focus": "Focus on answering 130 questions in 180 minutes with high accuracy.",
+          "resources": [
+            "Arihant BITSAT Prep Guide",
+            "Disha BITSAT Explorer"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "English Proficiency & Logical Reasoning",
+          "focus": "Target 30/30 questions in reasoning puzzles and verbal grammar.",
+          "resources": [
+            "Word Power Made Easy",
+            "RS Aggarwal Logical Reasoning"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Bonus Questions Strategy (12 Bonus Qs)",
+          "focus": "Practice completing the standard 130 questions in 150 minutes to unlock bonus questions.",
+          "resources": [
+            "MathonGo BITSAT Test Series",
+            "Allen Online BITSAT CBT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-012",
+      "name": "VITEEE (VIT Engineering Entrance Examination)",
+      "conducting_body": "Vellore Institute of Technology",
+      "target_field": "Engineering (B.Tech)",
+      "state_coverage": "Tamil Nadu, Andhra Pradesh, Madhya Pradesh, All India",
+      "district_coverage": "Vellore, Chennai, Amaravati, Bhopal",
+      "target_colleges": "VIT Vellore, VIT Chennai, VIT-AP, VIT Bhopal",
+      "total_marks": "125 (Maths/Bio: 40, Physics: 35, Chemistry: 35, English: 5, Aptitude: 10)",
+      "cutoff_range": "Rank 1 to 7,500 for Category 1 CSE at Vellore Campus",
+      "purpose": "Annual entrance test for admission into VIT group campuses across India.",
+      "fee_savings": "Category 1 tuition fee is ₹1.98 Lakh/yr vs Category 5 fee of ₹4.95 Lakh/yr (Save up to ₹12 Lakhs).",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Class 11 & 12 NCERT Formula Recall",
+          "focus": "Physics formulas, Inorganic Chemistry facts, and Calculus shortcuts.",
+          "resources": [
+            "NCERT Textbooks",
+            "VITEEE 15-Yr Solved Papers"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Zero Negative Marking Maximization",
+          "focus": "Develop educated elimination methods for all 125 questions since there is no negative marking.",
+          "resources": [
+            "Arihant VITEEE Solved Papers",
+            "CampNova VIT Prep Modules"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Category 1 Seat Counseling Planning",
+          "focus": "Target top 10,000 rank for lower fee category bracket.",
+          "resources": [
+            "VIT Admissions Portal (vit.ac.in)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-013",
+      "name": "SRMJEEE (SRM Joint Engineering Entrance Examination)",
+      "conducting_body": "SRM Institute of Science and Technology",
+      "target_field": "Engineering (B.Tech)",
+      "state_coverage": "Tamil Nadu, Delhi NCR, Andhra Pradesh, All India",
+      "district_coverage": "Chengalpattu, Chennai, Ghaziabad, Amaravati",
+      "target_colleges": "SRM Kattankulathur, SRM Ramapuram, SRM Vadapalani, SRM NCR",
+      "total_marks": "125 (Maths: 40, Physics: 35, Chemistry: 35, English: 5, Aptitude: 10)",
+      "cutoff_range": "Rank 1 to 2,000 for Founder's Scholarship (100% Waiver)",
+      "purpose": "Online proctored remote examination for SRM campuses.",
+      "fee_savings": "Top 100 rankers receive 100% tuition and hostel fee waivers.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Remote Proctoring Familiarization",
+          "focus": "Test camera, microphone, and secure browser compatibility for home testing.",
+          "resources": [
+            "SRM Sample Mock Environment",
+            "Class 12 Physics & Maths"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Aptitude & General English Quick Wins",
+          "focus": "High scoring sections: 15 marks in Aptitude and English with zero error rate.",
+          "resources": [
+            "IndiaBIX Verbal & Aptitude",
+            "SRM Previous Question Modules"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Choice Allocation & Branch Selection",
+          "focus": "Select preferred campus (Kattankulathur) during Phase 1 counseling.",
+          "resources": [
+            "SRM Admissions Portal (srmist.edu.in)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-014",
+      "name": "MET (Manipal Entrance Test)",
+      "conducting_body": "Manipal Academy of Higher Education (MAHE)",
+      "target_field": "Engineering & Technology (B.Tech)",
+      "state_coverage": "Karnataka, Rajasthan, Karnataka, All India",
+      "district_coverage": "Udupi, Manipal, Bengaluru, Jaipur",
+      "target_colleges": "MIT Manipal, Manipal University Jaipur, MIT Bengaluru",
+      "total_marks": "240 (Maths: 20, Physics: 15, Chemistry: 15, English: 10 + Numerical NAT)",
+      "cutoff_range": "Rank 1 to 1,200 for MIT Manipal Computer Science & Engineering",
+      "purpose": "Online computer-based test for premier Manipal engineering institutes.",
+      "fee_savings": "Freeship and Scholar scholarships provide 100% fee waivers for top 100 rankers.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "NAT (Numerical Answer Type) Precision",
+          "focus": "Practice integer numerical questions in physics and mathematics without MCQ options.",
+          "resources": [
+            "NCERT Exemplar",
+            "Manipal MET Prep Book"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "English Vocabulary & Reading Comprehension",
+          "focus": "Sentence correction, contextual vocabulary, and short paragraph summaries.",
+          "resources": [
+            "Wren & Martin",
+            "Manipal Sample Tests"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Slot Booking & Counseling Strategy",
+          "focus": "Book preferred test city and session date early to secure optimal timing.",
+          "resources": [
+            "MAHE Manipal Portal (manipal.edu)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-015",
+      "name": "COMEDK UGET",
+      "conducting_body": "Consortium of Medical, Engineering and Dental Colleges of Karnataka",
+      "target_field": "Engineering (B.E / B.Tech)",
+      "state_coverage": "Karnataka, All India",
+      "district_coverage": "Bengaluru, Mysuru, Mangaluru, Belagavi",
+      "target_colleges": "RV College of Engineering, BMS College of Engineering, Ramaiah Institute of Technology",
+      "total_marks": "180 (Physics: 60, Chemistry: 60, Maths: 60)",
+      "cutoff_range": "Rank 1 to 800 for RVCE Computer Science; Rank 1 to 2,500 for BMSCE",
+      "purpose": "Single centralized entrance exam for 190+ private engineering colleges in Karnataka.",
+      "fee_savings": "Govt-regulated COMEDK fee of ₹2.6L/yr vs Direct Management Quota of ₹15-25 Lakhs one-time donation.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "No Negative Marking Speed Strategy",
+          "focus": "Attempt all 180 questions in 180 minutes (1 minute per question rule).",
+          "resources": [
+            "MTG COMEDK Chapterwise Solutions",
+            "Previous 12-Year Question Bank"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Karnataka PUC & CBSE Syllabus Parity",
+          "focus": "Review state board specific mechanics, organic named reactions, and coordinate geometry.",
+          "resources": [
+            "Karnataka PU Board Textbooks",
+            "Disha COMEDK 14 Mocks"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Centralized Online Choice Counseling",
+          "focus": "Prioritize Top 5 Bengaluru colleges for peak product MNC placement access.",
+          "resources": [
+            "COMEDK Official Portal (comedk.org)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-016",
+      "name": "CEETA-PG (Common Engineering Entrance Test and Admission)",
+      "conducting_body": "Anna University, Chennai",
+      "target_field": "Postgraduate Engineering (M.E / M.Tech / M.Arch)",
+      "state_coverage": "Tamil Nadu",
+      "district_coverage": "Coimbatore, Chennai, Madurai, Tiruchirappalli, Salem",
+      "target_colleges": "College of Engineering Guindy (CEG), PSG College of Technology, CIT Coimbatore, MIT Anna University",
+      "total_marks": "100 (Engineering Mathematics: 20, Basic Engineering: 35, Core Specialization: 45)",
+      "cutoff_range": "90+ Normalized Mark for CEG & PSG Tech M.E programs",
+      "purpose": "State entrance examination for state quota Master of Engineering admissions across Tamil Nadu.",
+      "fee_savings": "Complete subsidized tuition of ₹30,000/yr with state postgrad student scholarship.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Part 1 & Part 2 Common Engineering Rigor",
+          "focus": "Engineering Mathematics, Applied Mechanics, Electrical Circuits, and Materials Science.",
+          "resources": [
+            "B.S. Grewal Higher Engineering Mathematics",
+            "Anna University Basic Engineering Series"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Part 3 Branch Specialization Drills",
+          "focus": "Targeted revision for CSE, ECE, Mechanical, or Civil core undergraduate subjects.",
+          "resources": [
+            "GATE PYQs for CSE/ECE",
+            "CEETA-PG Previous Year Papers by Sakthi"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Single Window TANCA Seat Allotment",
+          "focus": "Participate in online counseling for University Departments and Autonomous institutes.",
+          "resources": [
+            "Anna University CEETA Portal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-017",
+      "name": "XAT (Xavier Aptitude Test)",
+      "conducting_body": "XLRI Jamshedpur on behalf of XAMI",
+      "target_field": "Postgraduate Management (MBA / PGDM)",
+      "state_coverage": "All India, Jharkhand, Maharashtra, Delhi, Tamil Nadu",
+      "district_coverage": "Jamshedpur, Delhi NCR, Mumbai, Chennai, Bengaluru",
+      "target_colleges": "XLRI Jamshedpur, XLRI Delhi NCR, XIM University, SPJIMR Mumbai, GIM Goa",
+      "total_marks": "105 Questions (Decision Making: 22, Verbal: 26, QA & DI: 28, GK: 25 + Essay)",
+      "cutoff_range": "95+ %ile for XLRI Business Management; 93+ %ile for Human Resource Management",
+      "purpose": "Premier national management entrance exam evaluating analytical decision making and business acumen.",
+      "fee_savings": "Top placement packages with average salary exceeding ₹32 LPA at XLRI.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Decision Making (DM) Mastery",
+          "focus": "Solve complex ethical dilemmas, management caselets, and stakeholder conflict scenarios.",
+          "resources": [
+            "Arun Sharma Decision Making Guide",
+            "XAT Previous 15-Yr Decision Making Papers"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Verbal Ability & Critical Reasoning",
+          "focus": "Master philosophical RC passages, poem interpretation, and sentence completion.",
+          "resources": [
+            "Aeon Essays",
+            "The Economist",
+            "CR Bible by PowerScore"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Essay Writing & General Awareness",
+          "focus": "Prepare structured essays on socio-economic themes and current macro trends.",
+          "resources": [
+            "XLRI Official XAT Portal (xatonline.in)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-018",
+      "name": "MAT / CMAT (Management & Common Management Admission Test)",
+      "conducting_body": "AIMA & National Testing Agency (NTA)",
+      "target_field": "Postgraduate Management (MBA / PGDM / MMS)",
+      "state_coverage": "All India, Tamil Nadu, Maharashtra, Karnataka, Delhi",
+      "district_coverage": "Coimbatore, Chennai, Mumbai, Pune, Bengaluru",
+      "target_colleges": "JBIMS Mumbai, SIMSREE, Adithya Institute of Management, PSG Institute of Management, Christ University",
+      "total_marks": "400 (CMAT: 100 Qs across QA, LR, Language, GK, Innovation & Entrepreneurship)",
+      "cutoff_range": "99.5+ %ile for JBIMS & SIMSREE; 85+ %ile for Tier 2 B-Schools",
+      "purpose": "National level gateway recognized by over 1,000 AICTE approved institutions across India.",
+      "fee_savings": "State quota MBA fee caps save up to ₹6.0 Lakhs in total tuition expenses.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Innovation & Entrepreneurship Section",
+          "focus": "Startup terminology, government schemes (Startup India, MSME), and business models.",
+          "resources": [
+            "CMAT Innovation Guide",
+            "Economic Survey Highlights"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Logical Reasoning & Quantitative Basics",
+          "focus": "Arithmetic, algebra, series, coding-decoding, and family tree diagrams.",
+          "resources": [
+            "RS Aggarwal Quantitative Aptitude",
+            "CMAT 10-Yr Solved Papers"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "3-Hour Time Management Practice",
+          "focus": "Take 10 full-length mocks focusing on 80+ accurate questions.",
+          "resources": [
+            "NTA CMAT Portal",
+            "AIMA MAT Online Portal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-019",
+      "name": "NATA (National Aptitude Test in Architecture)",
+      "conducting_body": "Council of Architecture (CoA)",
+      "target_field": "Architecture & Spatial Design (B.Arch)",
+      "state_coverage": "All India, Tamil Nadu, Gujarat, Maharashtra, Delhi",
+      "district_coverage": "Coimbatore, Chennai, Ahmedabad, Mumbai, New Delhi",
+      "target_colleges": "SPA Delhi, CEPT Ahmedabad, SAP Anna University Chennai, PSG Care Coimbatore",
+      "total_marks": "200 (Drawing & Visual Composition: 80, Aesthetic Sensitivity & Aptitude: 120)",
+      "cutoff_range": "140+ / 200 for Top Architecture Schools in India",
+      "purpose": "Mandatory national qualification for admission into all 5-year Bachelor of Architecture programs.",
+      "fee_savings": "Government quota architecture fee saves ₹2.5 Lakh/yr compared to management quota.",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Freehand Sketching & Perspective Drawing",
+          "focus": "1-point, 2-point, and 3-point perspective sketches of streetscapes, rooms, and shadow casting.",
+          "resources": [
+            "A Visual Dictionary of Architecture by Francis DK Ching",
+            "NATA Drawing Masterclass"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Architectural Awareness & History",
+          "focus": "Famous monuments, building materials, sustainable design concepts, and spatial visualization.",
+          "resources": [
+            "CoA Official NATA Brochure",
+            "Architecture Aptitude by PK Mishra"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Composition & Color Harmony Exercises",
+          "focus": "2D and 3D geometric composition drills with color wheel harmony.",
+          "resources": [
+            "NATA Official Portal (nata.in)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-020",
+      "name": "CLAT (Common Law Admission Test)",
+      "conducting_body": "Consortium of National Law Universities (NLUs)",
+      "target_field": "Law & Legal Studies (B.A. LL.B / B.B.A. LL.B)",
+      "state_coverage": "All India, Karnataka, Telangana, West Bengal, Tamil Nadu",
+      "district_coverage": "Bengaluru, Hyderabad, Kolkata, Tiruchirappalli, New Delhi",
+      "target_colleges": "NLSIU Bengaluru, NALSAR Hyderabad, WBNUJS Kolkata, TNNLU Tiruchirappalli",
+      "total_marks": "120 (English: 24, Current Affairs/GK: 30, Legal Reasoning: 35, Logical: 21, Quant: 10)",
+      "cutoff_range": "Rank 1 to 100 for NLSIU Bengaluru; Rank 1 to 500 for Top 5 NLUs",
+      "purpose": "Centralized entrance test for undergraduate admissions to the 24 National Law Universities in India.",
+      "fee_savings": "Premier legal education leading to high-paying Tier 1 law firm recruitments (₹18-24 LPA starting).",
+      "roadmap_stages": [
+        {
+          "stage": 1,
+          "title": "Comprehension-Based Legal Reasoning",
+          "focus": "Analyze legal principles, factual situations, constitutional law, and torts directly from comprehension passages.",
+          "resources": [
+            "Legal Aptitude for the CLAT by AP Bhardwaj",
+            "The Hindu & Indian Express Editorials"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Current Affairs & Static GK Compendiums",
+          "focus": "Daily reading of national legal developments, Supreme Court judgments, and international treaties.",
+          "resources": [
+            "LiveLaw / Bar & Bench Updates",
+            "CLAT Post / GK Today Monthly Compendium"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Timed Passage Reading & Speed Drills",
+          "focus": "Complete 120 questions across 28-30 long passages in 120 minutes with high precision.",
+          "resources": [
+            "Consortium of NLUs Official Portal (consortiumofnlus.ac.in)",
+            "LegalEdge / Career Launcher Mocks"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EXM-21",
+      "name": "CEETA PG 2026 (Tamil Nadu M.E / M.Tech Entrance)",
+      "conducting_body": "Anna University, Chennai",
+      "field": "Engineering & Technology",
+      "marks_cutoff": "100.00 Max Marks (CBT Exam)",
+      "stages": "1. Subject Syllabus Mastery, 2. Mock Test Series, 3. TANCA Counseling Registration",
+      "fee_savings": "Anna University Department Merit Scholarship for Top 100 Rankers",
+      "official_url": "https://tancet.annauniv.edu"
+    },
+    {
+      "id": "EXM-22",
+      "name": "CEETA PG 2026 (Tamil Nadu M.E / M.Tech Entrance)",
+      "conducting_body": "Anna University, Chennai",
+      "field": "Engineering & Technology",
+      "marks_cutoff": "100.00 Max Marks (CBT Exam)",
+      "stages": "1. Subject Syllabus Mastery, 2. Mock Test Series, 3. TANCA Counseling Registration",
+      "fee_savings": "Anna University Department Merit Scholarship for Top 100 Rankers",
+      "official_url": "https://tancet.annauniv.edu"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "EPR-01",
+      "author": "Karthikeyan S.",
+      "exam": "TNEA Engineering Admissions",
+      "college": "PSG College of Technology, Coimbatore",
+      "rating": 5,
+      "comment": "Maintaining 198.5 cutoff in 12th PCM secured my government quota CSE seat at PSG Tech with minimal tuition fee."
+    },
+    {
+      "id": "EPR-02",
+      "author": "Anirudh Sharma",
+      "exam": "JEE Advanced",
+      "college": "IIT Madras",
+      "rating": 5,
+      "comment": "Solving previous 15 years question papers and timing full 6-hour Sunday mocks was the game changer for cracking IIT Madras."
+    },
+    {
+      "id": "EPR-03",
+      "author": "Dr. Sneha Pillai",
+      "exam": "NEET UG",
+      "college": "PSG Institute of Medical Sciences, Coimbatore",
+      "rating": 4.9,
+      "comment": "Mastering every single line in NCERT Biology and practicing 200 minutes timed OMR bubble sheets guaranteed my medical seat."
+    },
+    {
+      "id": "EPR-04",
+      "author": "Praveen V.",
+      "exam": "TANCET MBA",
+      "college": "DoMS Anna University / CIT",
+      "rating": 4.8,
+      "comment": "Practicing Data Sufficiency questions on IndiaBIX and previous Anna University question papers gave me 98.2 percentile."
+    },
+    {
+      "id": "EPR-05",
+      "author": "Divya Murugan",
+      "exam": "AEEE",
+      "college": "Amrita Vishwa Vidyapeetham, Coimbatore",
+      "rating": 5,
+      "comment": "The syllabus is very similar to JEE Main. Scored under 300 rank and got 50% tuition scholarship."
+    },
+    {
+      "id": "EPR-06",
+      "author": "Rajesh Kannan",
+      "exam": "GATE Computer Science",
+      "college": "IISc Bengaluru",
+      "rating": 5,
+      "comment": "GATE Overflow PYQ discussion threads and standard textbooks for OS and Networks helped me achieve AIR 42."
+    },
+    {
+      "id": "EPR-07",
+      "author": "Harish Kumar",
+      "exam": "BITS Pilani / VITEEE",
+      "college": "Adithya & Coimbatore Engineering Forum",
+      "rating": 5,
+      "comment": "Speed drills with zero negative marking strategy on mock tests gave me the confidence to score top ranks in university entrances."
+    }
+  ]
+}

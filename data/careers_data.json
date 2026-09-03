@@ -1,0 +1,1233 @@
+{
+  "career_areas": [
+    {
+      "career_name": "Test Quantum Systems Architect",
+      "domain_name": "Quantum Computing",
+      "salary_range": "Rs. 28,00,000",
+      "required_skills": "Python, Qiskit",
+      "description": "Designs quantum hardware-software stacks.",
+      "id": 28
+    },
+    {
+      "career_name": "Test Quantum Systems Architect",
+      "domain_name": "Quantum Computing",
+      "salary_range": "Rs. 28,00,000",
+      "required_skills": "Python, Qiskit",
+      "description": "Designs quantum hardware-software stacks.",
+      "id": 26
+    },
+    {
+      "role": "Cloud DevOps Engineer",
+      "domain": "Cloud & DevOps",
+      "salary": "₹5–8 LPA",
+      "skills": [
+        "AWS",
+        "Linux",
+        "Git",
+        "Docker",
+        "Kubernetes",
+        "Jenkins",
+        "CI/CD",
+        "Python",
+        "Terraform",
+        "Networking"
+      ],
+      "education": "Bachelor’s Degree in Computer Science, Information Technology, or a related field",
+      "responsibilities": [
+        "Build and maintain CI/CD pipelines",
+        "manage cloud infrastructure",
+        "deploy applications",
+        "monitor system performance",
+        "automate development and deployment processes",
+        "and troubleshoot production issues."
+      ],
+      "growth_pathway": "Year 1: Junior DevOps Engineer → Year 2: DevOps Engineer → Year 3: Cloud DevOps Engineer → Year 4: Senior DevOps Engineer → Year 5: DevOps / Cloud Architect.",
+      "id": 25
+    },
+    {
+      "career_name": "Test Cloud Security Architect",
+      "category": "Cybersecurity",
+      "skills": "CISSP, AWS Security, Network Security",
+      "salary_range": "₹25L - ₹50L / yr",
+      "description": "Protect cloud infrastructures",
+      "id": 18
+    },
+    {
+      "id": "CAR-01",
+      "name": "Artificial Intelligence & Machine Learning",
+      "category": "Emerging Technologies",
+      "importance_10yr": "Critical & Transforming All Industries",
+      "avg_salary": "₹12–28 LPA",
+      "growth_rate": "+38% YoY",
+      "languages": [
+        "Python",
+        "C++",
+        "Julia",
+        "R"
+      ],
+      "core_technologies": [
+        "PyTorch",
+        "TensorFlow",
+        "LangChain",
+        "Transformers",
+        "CUDA",
+        "FastAPI"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Math Foundations & Python Mastery",
+          "desc": "Linear Algebra, Calculus, Probability, NumPy, Pandas, OOP in Python",
+          "duration": "6-8 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Classical ML & Statistical Modeling",
+          "desc": "Scikit-Learn, Regression, SVM, Ensemble Trees, Feature Engineering",
+          "duration": "8-10 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "Deep Learning & Neural Architectures",
+          "desc": "CNNs, RNNs, Transformers, PyTorch, Model Optimization",
+          "duration": "10-12 Weeks"
+        },
+        {
+          "step": 4,
+          "title": "LLMs, GenAI & Agentic Systems",
+          "desc": "RAG, Embeddings, LangChain, Vector DBs, Fine-Tuning Llama/Mistral",
+          "duration": "8-10 Weeks"
+        },
+        {
+          "step": 5,
+          "title": "Production Deployment & MLOps",
+          "desc": "Docker, BentoML, MLflow, AWS SageMaker, Monitoring Drift",
+          "duration": "6 Weeks"
+        }
+      ],
+      "skills": [
+        "Mathematical Logic",
+        "Algorithm Design",
+        "Data Preprocessing",
+        "Neural Network Fine-Tuning",
+        "Cloud Deployment"
+      ],
+      "demand_chart": {
+        "2022": 45,
+        "2023": 60,
+        "2024": 78,
+        "2025": 92,
+        "2026": 100
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹8-14 LPA",
+        "3-5 Yrs": "₹16-25 LPA",
+        "6+ Yrs": "₹30-55+ LPA"
+      },
+      "hiring_domains": [
+        "FinTech",
+        "HealthTech",
+        "Autonomous Systems",
+        "EdTech",
+        "E-Commerce"
+      ]
+    },
+    {
+      "id": "CAR-02",
+      "name": "Data Science & Advanced Analytics",
+      "category": "Core & Strategic",
+      "importance_10yr": "Essential for High-Value Decision Making",
+      "avg_salary": "₹10–24 LPA",
+      "growth_rate": "+32% YoY",
+      "languages": [
+        "Python",
+        "SQL",
+        "R",
+        "Scala"
+      ],
+      "core_technologies": [
+        "Tableau",
+        "PowerBI",
+        "Snowflake",
+        "Databricks",
+        "Spark",
+        "PostgreSQL"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Advanced SQL & Data Wrangling",
+          "desc": "Complex Joins, Window Functions, ETL Pipelines with Pandas",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Exploratory Data Analysis & Statistics",
+          "desc": "Hypothesis Testing, A/B Testing, Seaborn, Matplotlib",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "Predictive Modeling & Big Data",
+          "desc": "Time-Series Forecasting, Apache Spark, Cloud Warehouses",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 4,
+          "title": "Business Intelligence & Executive Storytelling",
+          "desc": "Executive Dashboards, ROI Metrics, KPI Tracking",
+          "duration": "4 Weeks"
+        }
+      ],
+      "skills": [
+        "Statistical Inference",
+        "SQL Mastery",
+        "Business Intuition",
+        "Data Pipeline Engineering"
+      ],
+      "demand_chart": {
+        "2022": 50,
+        "2023": 65,
+        "2024": 80,
+        "2025": 90,
+        "2026": 98
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹7-12 LPA",
+        "3-5 Yrs": "₹14-22 LPA",
+        "6+ Yrs": "₹26-48+ LPA"
+      },
+      "hiring_domains": [
+        "Banking & Risk",
+        "Retail Analytics",
+        "Consulting",
+        "Supply Chain"
+      ]
+    },
+    {
+      "id": "CAR-03",
+      "name": "Cloud Engineering & DevOps",
+      "category": "Infrastructure & Scalability",
+      "importance_10yr": "Mission-Critical for Cloud-Native Enterprises",
+      "avg_salary": "₹11–26 LPA",
+      "growth_rate": "+35% YoY",
+      "languages": [
+        "Go",
+        "Python",
+        "Bash",
+        "YAML"
+      ],
+      "core_technologies": [
+        "AWS",
+        "Kubernetes",
+        "Docker",
+        "Terraform",
+        "GitHub Actions",
+        "Ansible",
+        "ArgoCD"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Linux Kernel & Networking Foundations",
+          "desc": "TCP/IP, DNS, Systemd, Shell Scripting, Security Hardening",
+          "duration": "4-6 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Containerization & Microservices",
+          "desc": "Docker Multi-stage Builds, Container Security, Compose",
+          "duration": "4 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "Kubernetes Cluster Orchestration",
+          "desc": "Pods, Services, Ingress, Helm Charts, GitOps Workflows",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 4,
+          "title": "Infrastructure as Code & CI/CD",
+          "desc": "Terraform, AWS CDK, GitHub Actions Automation, SonarQube",
+          "duration": "6 Weeks"
+        }
+      ],
+      "skills": [
+        "Cloud Architecture",
+        "Zero-Downtime Deployment",
+        "Observability (Prometheus/Grafana)",
+        "Site Reliability"
+      ],
+      "demand_chart": {
+        "2022": 48,
+        "2023": 62,
+        "2024": 75,
+        "2025": 88,
+        "2026": 96
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹7.5-13 LPA",
+        "3-5 Yrs": "₹15-24 LPA",
+        "6+ Yrs": "₹28-50+ LPA"
+      },
+      "hiring_domains": [
+        "SaaS Unicorns",
+        "Telecom",
+        "Cloud Providers",
+        "Global In-house Centers"
+      ]
+    },
+    {
+      "id": "CAR-04",
+      "name": "Cybersecurity & Ethical Hacking",
+      "category": "Defensive & Offensive Security",
+      "importance_10yr": "Non-Negotiable Global Enterprise Defense",
+      "avg_salary": "₹10–25 LPA",
+      "growth_rate": "+34% YoY",
+      "languages": [
+        "Python",
+        "C",
+        "Assembly",
+        "Bash"
+      ],
+      "core_technologies": [
+        "Wireshark",
+        "Burp Suite",
+        "Metasploit",
+        "Splunk",
+        "Kali Linux",
+        "OWASP ZAP"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Network Protocols & OSI Security",
+          "desc": "Packet Analysis, Cryptography (RSA/AES), Firewall Rules",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Vulnerability Assessment & Web App PenTesting",
+          "desc": "OWASP Top 10, SQLi, XSS, CSRF, API Penetration Testing",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "SOC Analysis & Incident Response",
+          "desc": "SIEM Configuration (Splunk/Wazuh), Threat Hunting, Forensic Analysis",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 4,
+          "title": "Cloud & Zero-Trust Architecture",
+          "desc": "IAM Policies, Cloud Security Posture Management (CSPM)",
+          "duration": "6 Weeks"
+        }
+      ],
+      "skills": [
+        "Penetration Testing",
+        "Threat Modeling",
+        "SIEM Monitoring",
+        "Compliance & Governance"
+      ],
+      "demand_chart": {
+        "2022": 40,
+        "2023": 55,
+        "2024": 70,
+        "2025": 85,
+        "2026": 95
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹6.5-12 LPA",
+        "3-5 Yrs": "₹14-22 LPA",
+        "6+ Yrs": "₹25-45+ LPA"
+      },
+      "hiring_domains": [
+        "Defense & Aerospace",
+        "Financial Services",
+        "GovTech",
+        "Health Systems"
+      ]
+    },
+    {
+      "id": "CAR-05",
+      "name": "Full Stack Web & Distributed Systems",
+      "category": "Software Engineering",
+      "importance_10yr": "Core Engine for Global Digital Products",
+      "avg_salary": "₹9–22 LPA",
+      "growth_rate": "+28% YoY",
+      "languages": [
+        "TypeScript",
+        "JavaScript",
+        "Java",
+        "Python",
+        "Rust"
+      ],
+      "core_technologies": [
+        "React",
+        "Next.js",
+        "Node.js",
+        "Spring Boot",
+        "PostgreSQL",
+        "Redis",
+        "Kafka"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Frontend Fluency & React Architecture",
+          "desc": "Modern JS/TS, React Hooks, State Management (Zustand), Responsive UI",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Backend Engineering & REST/GraphQL",
+          "desc": "Node.js/Express, Spring Boot, Database Design, Indexing, Auth (JWT/OAuth)",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "Distributed Caching & Messaging",
+          "desc": "Redis Caching, RabbitMQ / Apache Kafka Event-Driven Systems",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 4,
+          "title": "System Design & Cloud Deployment",
+          "desc": "Microservices, Load Balancing, CDN Integration, AWS Architecture",
+          "duration": "6 Weeks"
+        }
+      ],
+      "skills": [
+        "System Design",
+        "Clean Code & Refactoring",
+        "API Performance Tuning",
+        "Database Architecture"
+      ],
+      "demand_chart": {
+        "2022": 60,
+        "2023": 72,
+        "2024": 82,
+        "2025": 90,
+        "2026": 95
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹6-11 LPA",
+        "3-5 Yrs": "₹12-20 LPA",
+        "6+ Yrs": "₹24-42+ LPA"
+      },
+      "hiring_domains": [
+        "Product Companies",
+        "E-Commerce",
+        "Media & Streaming",
+        "Enterprise SaaS"
+      ]
+    },
+    {
+      "id": "CAR-06",
+      "name": "Mobile App Engineering (Cross-Platform & Native)",
+      "category": "Client Platforms",
+      "importance_10yr": "Dominant User Experience Channel",
+      "avg_salary": "₹8–20 LPA",
+      "growth_rate": "+26% YoY",
+      "languages": [
+        "Dart",
+        "Kotlin",
+        "Swift",
+        "TypeScript"
+      ],
+      "core_technologies": [
+        "Flutter",
+        "React Native",
+        "Android Jetpack",
+        "SwiftUI",
+        "Firebase",
+        "GraphQL"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Mobile UI & State Management",
+          "desc": "Flutter Widgets, React Native Hooks, BLoC/Redux Architecture",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Native Device APIs & Offline Storage",
+          "desc": "Camera, GPS, Bluetooth, SQLite, Realm, Background Sync",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "Performance Optimization & App Stores",
+          "desc": "Profiling, Memory Leaks, CI/CD with Fastlane, Play Store & App Store Guidelines",
+          "duration": "4 Weeks"
+        }
+      ],
+      "skills": [
+        "Cross-Platform Architecture",
+        "Native Bridge Integration",
+        "Mobile Security",
+        "Offline-First Sync"
+      ],
+      "demand_chart": {
+        "2022": 52,
+        "2023": 64,
+        "2024": 74,
+        "2025": 84,
+        "2026": 90
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹5.5-10 LPA",
+        "3-5 Yrs": "₹11-18 LPA",
+        "6+ Yrs": "₹20-38+ LPA"
+      },
+      "hiring_domains": [
+        "FinTech Wallets",
+        "Logistics Apps",
+        "Social Networks",
+        "Gaming & AR"
+      ]
+    },
+    {
+      "id": "CAR-07",
+      "name": "UI/UX & Digital Product Design",
+      "category": "User Experience & Research",
+      "importance_10yr": "Strategic Differentiator for Consumer Products",
+      "avg_salary": "₹8–18 LPA",
+      "growth_rate": "+25% YoY",
+      "languages": [
+        "Design Systems",
+        "Figma",
+        "HTML/CSS prototyping"
+      ],
+      "core_technologies": [
+        "Figma",
+        "Framer",
+        "Adobe XD",
+        "Miro",
+        "Principle",
+        "UserTesting"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Design Thinking & User Research",
+          "desc": "User Interviews, Empathy Maps, Journey Mapping, Usability Audits",
+          "duration": "4 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Information Architecture & Wireframing",
+          "desc": "Site Hierarchy, Low-fi Wireframes, User Flows",
+          "duration": "4 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "Design Systems & High-Fidelity UI",
+          "desc": "Auto-Layout, Tokens, Micro-Interactions, Accessibility (WCAG 2.1)",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 4,
+          "title": "Prototyping & Usability Validation",
+          "desc": "Interactive Prototypes in Figma/Framer, User Testing Feedback Loops",
+          "duration": "4 Weeks"
+        }
+      ],
+      "skills": [
+        "User Empathy",
+        "Design System Engineering",
+        "Interaction Design",
+        "Accessibility Standards"
+      ],
+      "demand_chart": {
+        "2022": 45,
+        "2023": 56,
+        "2024": 68,
+        "2025": 78,
+        "2026": 85
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹5-9 LPA",
+        "3-5 Yrs": "₹10-17 LPA",
+        "6+ Yrs": "₹18-35+ LPA"
+      },
+      "hiring_domains": [
+        "B2B SaaS",
+        "Direct-to-Consumer",
+        "Agencies",
+        "HealthTech"
+      ]
+    },
+    {
+      "id": "CAR-08",
+      "name": "Internet of Things (IoT) & Robotics",
+      "category": "Hardware-Software Integration",
+      "importance_10yr": "Smart Manufacturing & Connected World Driver",
+      "avg_salary": "₹9–22 LPA",
+      "growth_rate": "+30% YoY",
+      "languages": [
+        "C",
+        "C++",
+        "Python",
+        "Embedded Rust"
+      ],
+      "core_technologies": [
+        "ROS2",
+        "ESP32",
+        "Raspberry Pi",
+        "MQTT",
+        "FreeRTOS",
+        "Edge Impulse"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Microcontrollers & Embedded C",
+          "desc": "Timers, Interrupts, GPIO, I2C, SPI, UART Communication",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Real-Time Operating Systems (RTOS)",
+          "desc": "FreeRTOS Tasks, Mutexes, Semaphores, Memory Management",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "IoT Protocols & Cloud Gateways",
+          "desc": "MQTT, CoAP, BLE, AWS IoT Core, Node-RED Dashboarding",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 4,
+          "title": "Robot Operating System (ROS2) & Computer Vision",
+          "desc": "Kinematics, SLAM, OpenCV on Edge, Path Planning",
+          "duration": "8 Weeks"
+        }
+      ],
+      "skills": [
+        "Circuit Debugging",
+        "Low-Latency Firmware",
+        "Edge AI Inference",
+        "Sensory Data Filtering"
+      ],
+      "demand_chart": {
+        "2022": 38,
+        "2023": 50,
+        "2024": 65,
+        "2025": 80,
+        "2026": 92
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹6-10.5 LPA",
+        "3-5 Yrs": "₹12-20 LPA",
+        "6+ Yrs": "₹22-40+ LPA"
+      },
+      "hiring_domains": [
+        "Automotive & EV",
+        "Industrial Automation",
+        "Agri-Tech Robotics",
+        "Smart Cities"
+      ]
+    },
+    {
+      "id": "CAR-09",
+      "name": "Blockchain & Decentralized Systems",
+      "category": "Cryptographic Architecture",
+      "importance_10yr": "Transforming Digital Trust & Asset Verification",
+      "avg_salary": "₹12–26 LPA",
+      "growth_rate": "+27% YoY",
+      "languages": [
+        "Solidity",
+        "Rust",
+        "Go",
+        "TypeScript"
+      ],
+      "core_technologies": [
+        "Ethereum",
+        "Hardhat",
+        "Foundry",
+        "Solana",
+        "Web3.js",
+        "IPFS",
+        "Chainlink"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Cryptographic Foundations & Consensus",
+          "desc": "Hashing, Asymmetric Keys, Merkle Trees, PoW vs PoS Protocols",
+          "duration": "4 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Smart Contract Engineering (Solidity/Rust)",
+          "desc": "ERC-20, ERC-721, Gas Optimization, Reentrancy Security",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "DApp Development & Web3 Integration",
+          "desc": "Foundry Testing, Wagmi/Viem, IPFS Storage, Chainlink Oracles",
+          "duration": "6 Weeks"
+        }
+      ],
+      "skills": [
+        "Smart Contract Auditing",
+        "Decentralized Storage",
+        "Consensus Algorithms",
+        "Security Testing"
+      ],
+      "demand_chart": {
+        "2022": 42,
+        "2023": 52,
+        "2024": 62,
+        "2025": 72,
+        "2026": 82
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹7-13 LPA",
+        "3-5 Yrs": "₹15-24 LPA",
+        "6+ Yrs": "₹26-48+ LPA"
+      },
+      "hiring_domains": [
+        "FinTech Protocols",
+        "Supply Chain Provenance",
+        "Digital Identity",
+        "Gaming"
+      ]
+    },
+    {
+      "id": "CAR-10",
+      "name": "Big Data Engineering & Distributed Pipelines",
+      "category": "Data Architecture",
+      "importance_10yr": "Foundation for Enterprise Data Scale",
+      "avg_salary": "₹11–25 LPA",
+      "growth_rate": "+31% YoY",
+      "languages": [
+        "Python",
+        "Scala",
+        "Java",
+        "SQL"
+      ],
+      "core_technologies": [
+        "Apache Spark",
+        "Apache Kafka",
+        "Airflow",
+        "Hadoop",
+        "Delta Lake",
+        "dbt",
+        "Snowflake"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Distributed Storage & Compute",
+          "desc": "HDFS, Parquet, Columnar Formats, MapReduce Fundamentals",
+          "duration": "5 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Batch & Stream Processing with Spark",
+          "desc": "PySpark, Spark SQL, Structured Streaming, GraphX",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "Workflow Orchestration & Lakehouses",
+          "desc": "Apache Airflow DAGs, dbt transformations, Delta Lake Lakehouses",
+          "duration": "6 Weeks"
+        }
+      ],
+      "skills": [
+        "High-Throughput Streaming",
+        "Data Quality Auditing",
+        "Lakehouse Architecture",
+        "Performance Tuning"
+      ],
+      "demand_chart": {
+        "2022": 46,
+        "2023": 58,
+        "2024": 72,
+        "2025": 86,
+        "2026": 94
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹7-12.5 LPA",
+        "3-5 Yrs": "₹14-23 LPA",
+        "6+ Yrs": "₹26-46+ LPA"
+      },
+      "hiring_domains": [
+        "E-Commerce Giants",
+        "Streaming Platforms",
+        "Telecom",
+        "Quantitative Finance"
+      ]
+    },
+    {
+      "id": "CAR-11",
+      "name": "Generative AI & Agentic Systems Architecture",
+      "category": "Emerging Technologies",
+      "importance_10yr": "Transformative Paradigm for Intelligent Automation",
+      "avg_salary": "₹14–32 LPA",
+      "growth_rate": "+48% YoY",
+      "languages": [
+        "Python",
+        "TypeScript",
+        "Rust",
+        "C++"
+      ],
+      "core_technologies": [
+        "LangChain",
+        "LlamaIndex",
+        "CrewAI",
+        "Vector Databases (Pinecone/Milvus)",
+        "vLLM",
+        "Ollama",
+        "OpenAI API"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Prompt Engineering & RAG Foundations",
+          "desc": "Vector Embeddings, Semantic Search, Chunking Strategies, Context Windows",
+          "duration": "4 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Multi-Agent Frameworks & Function Calling",
+          "desc": "Autonomous Agents, Tool Calling, LangGraph State Machines, Memory Architecture",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "Fine-Tuning & Model Quantization",
+          "desc": "LoRA, QLoRA, PEFT, Hugging Face, GGUF/AWQ deployment on GPUs",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 4,
+          "title": "Production LLM Monitoring & Security",
+          "desc": "Prompt Injection Defense, Guardrails AI, Latency & Token Cost Optimization",
+          "duration": "5 Weeks"
+        }
+      ],
+      "skills": [
+        "Agentic Orchestration",
+        "RAG Pipeline Engineering",
+        "Model Fine-Tuning",
+        "GPU Inference Optimization"
+      ],
+      "demand_chart": {
+        "2022": 20,
+        "2023": 45,
+        "2024": 75,
+        "2025": 92,
+        "2026": 100
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹9-16 LPA",
+        "3-5 Yrs": "₹18-30 LPA",
+        "6+ Yrs": "₹35-65+ LPA"
+      },
+      "hiring_domains": [
+        "Enterprise SaaS",
+        "FinTech Intelligence",
+        "Healthcare AI",
+        "Autonomous Customer Support"
+      ]
+    },
+    {
+      "id": "CAR-12",
+      "name": "Full-Stack Web & Scalable Microservices",
+      "category": "Core & Strategic",
+      "importance_10yr": "Fundamental Backbone for Digital Products",
+      "avg_salary": "₹10–22 LPA",
+      "growth_rate": "+28% YoY",
+      "languages": [
+        "TypeScript",
+        "JavaScript",
+        "Go",
+        "Python",
+        "SQL"
+      ],
+      "core_technologies": [
+        "Next.js",
+        "React",
+        "Node.js",
+        "FastAPI",
+        "PostgreSQL",
+        "Redis",
+        "Docker",
+        "GraphQL"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Modern Frontend & Component Systems",
+          "desc": "React 19, Next.js App Router, TailwindCSS, State Management, Web Vitals",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Backend Services & Concurrency",
+          "desc": "Node.js / Go APIs, Microservices, Authentication (OAuth/JWT), ORMs",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "Databases, Caching & Message Queues",
+          "desc": "PostgreSQL indexing, Redis caching, RabbitMQ/Kafka asynchronous messaging",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 4,
+          "title": "CI/CD, Cloud Deployment & Observability",
+          "desc": "Docker, Kubernetes, GitHub Actions, AWS/Vercel, Grafana/Prometheus",
+          "duration": "5 Weeks"
+        }
+      ],
+      "skills": [
+        "High-Performance Frontend",
+        "REST/GraphQL Architecture",
+        "Distributed Caching",
+        "Containerization"
+      ],
+      "demand_chart": {
+        "2022": 70,
+        "2023": 78,
+        "2024": 86,
+        "2025": 92,
+        "2026": 96
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹6.5-12 LPA",
+        "3-5 Yrs": "₹14-22 LPA",
+        "6+ Yrs": "₹25-45+ LPA"
+      },
+      "hiring_domains": [
+        "Product SaaS",
+        "FinTech",
+        "E-Commerce",
+        "EdTech"
+      ]
+    },
+    {
+      "id": "CAR-13",
+      "name": "Autonomous EV Systems & Embedded Firmware",
+      "category": "Specialized Engineering",
+      "importance_10yr": "Key Pillar for Clean Mobility & Robotics",
+      "avg_salary": "₹11–26 LPA",
+      "growth_rate": "+36% YoY",
+      "languages": [
+        "Embedded C",
+        "C++",
+        "Python",
+        "MATLAB"
+      ],
+      "core_technologies": [
+        "ARM Cortex-M",
+        "FreeRTOS",
+        "AUTOSAR",
+        "CAN / LIN / FlexRay",
+        "Simulink",
+        "ROS 2",
+        "BMS Firmware"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Embedded Hardware & Microcontrollers",
+          "desc": "STM32, GPIO, Timers, Interrupts, I2C, SPI, UART, Hardware Debugging",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Real-Time Operating Systems (RTOS)",
+          "desc": "Task scheduling, Semaphores, Mutex, Memory Management in FreeRTOS",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "Automotive Protocols & AUTOSAR",
+          "desc": "CAN bus analysis, Diagnostic over IP (DoIP), AUTOSAR Classic architecture",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 4,
+          "title": "EV Battery Management (BMS) & ADAS",
+          "desc": "SOC/SOH algorithms, Thermal management, Sensor fusion with ROS 2",
+          "duration": "7 Weeks"
+        }
+      ],
+      "skills": [
+        "Real-Time Kernel Programming",
+        "Automotive Networking",
+        "Safety-Critical Systems (ISO 26262)",
+        "Hardware-in-the-Loop Testing"
+      ],
+      "demand_chart": {
+        "2022": 40,
+        "2023": 55,
+        "2024": 74,
+        "2025": 88,
+        "2026": 96
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹7-13 LPA",
+        "3-5 Yrs": "₹15-25 LPA",
+        "6+ Yrs": "₹28-50+ LPA"
+      },
+      "hiring_domains": [
+        "EV Manufacturers",
+        "Automotive Tier-1 Suppliers",
+        "Industrial Robotics",
+        "Aerospace Avionics"
+      ]
+    },
+    {
+      "id": "CAR-14",
+      "name": "Spatial Computing, AR/VR & 3D Interactive Systems",
+      "category": "Emerging Technologies",
+      "importance_10yr": "Next Interface for Simulation, Training & Spatial Web",
+      "avg_salary": "₹10–24 LPA",
+      "growth_rate": "+30% YoY",
+      "languages": [
+        "C#",
+        "C++",
+        "GLSL / HLSL",
+        "TypeScript"
+      ],
+      "core_technologies": [
+        "Unity 3D",
+        "Unreal Engine 5",
+        "OpenXR",
+        "WebXR",
+        "Three.js",
+        "Blender",
+        "VisionOS SDK"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "3D Math, Vector Geometry & Engine Basics",
+          "desc": "Linear Algebra, Quaternions, Unity/Unreal Editor Fundamentals, C# Scripting",
+          "duration": "6 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Physics, Shaders & Rendering Pipelines",
+          "desc": "Universal Render Pipeline, Custom Shaders, PBR Materials, Lighting optimization",
+          "duration": "7 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "XR Interaction & Spatial Tracking",
+          "desc": "OpenXR standard, Hand tracking, Spatial audio, Passthrough AR development",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 4,
+          "title": "WebXR, Multi-User Networking & Optimization",
+          "desc": "Three.js, WebGL, Photon PUN / Mirror networking, VR framerate optimization",
+          "duration": "6 Weeks"
+        }
+      ],
+      "skills": [
+        "3D Coordinate Mathematics",
+        "Real-Time Shader Programming",
+        "Spatial UX Design",
+        "Cross-Platform VR/AR Deployment"
+      ],
+      "demand_chart": {
+        "2022": 35,
+        "2023": 50,
+        "2024": 68,
+        "2025": 82,
+        "2026": 92
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹6.5-12 LPA",
+        "3-5 Yrs": "₹14-22 LPA",
+        "6+ Yrs": "₹25-45+ LPA"
+      },
+      "hiring_domains": [
+        "Medical Simulation",
+        "Defense Training",
+        "Spatial Gaming",
+        "Industrial Digital Twins"
+      ]
+    },
+    {
+      "id": "CAR-15",
+      "name": "Quantum Computing & Post-Quantum Cryptography",
+      "category": "Specialized Engineering",
+      "importance_10yr": "Next Frontier for Computing, Security & Optimization",
+      "avg_salary": "₹15–35 LPA",
+      "growth_rate": "+42% YoY",
+      "languages": [
+        "Python",
+        "C++",
+        "Q#",
+        "Julia"
+      ],
+      "core_technologies": [
+        "Qiskit (IBM)",
+        "Cirq (Google)",
+        "PennyLane",
+        "QaaS Cloud",
+        "Lattice-Based Cryptography (Kyber/Dilithium)"
+      ],
+      "roadmap": [
+        {
+          "step": 1,
+          "title": "Linear Algebra & Quantum Mechanics Principles",
+          "desc": "Hilbert Spaces, State Vectors, Bra-Ket Notation, Superposition, Entanglement",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 2,
+          "title": "Quantum Circuit Design & Qiskit",
+          "desc": "Hadamard, Pauli, CNOT gates, Quantum Fourier Transform, Grover's Search Algorithm",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 3,
+          "title": "Quantum Machine Learning & Optimization",
+          "desc": "Variational Quantum Eigensolvers (VQE), QAOA for combinatorial optimization",
+          "duration": "8 Weeks"
+        },
+        {
+          "step": 4,
+          "title": "Post-Quantum Cryptographic Migration",
+          "desc": "NIST PQC Standards (ML-KEM, ML-DSA), Quantum Key Distribution (QKD)",
+          "duration": "6 Weeks"
+        }
+      ],
+      "skills": [
+        "Quantum Circuit Synthesis",
+        "Error Mitigation Techniques",
+        "Quantum Algorithmic Complexity",
+        "Post-Quantum Security Migration"
+      ],
+      "demand_chart": {
+        "2022": 15,
+        "2023": 30,
+        "2024": 52,
+        "2025": 75,
+        "2026": 90
+      },
+      "salary_by_exp": {
+        "0-2 Yrs": "₹10-18 LPA",
+        "3-5 Yrs": "₹20-34 LPA",
+        "6+ Yrs": "₹38-70+ LPA"
+      },
+      "hiring_domains": [
+        "Quantum Hardware R&D",
+        "Quantitative Cryptofinance",
+        "Drug Discovery & Materials",
+        "National Defense & Security"
+      ]
+    },
+    {
+      "role": "Generative AI Systems Engineer",
+      "domain": "Artificial Intelligence & Software",
+      "salary": "₹22.0 LPA (Top: ₹65 LPA)",
+      "skills": [
+        "LLMs",
+        "RAG",
+        "vLLM",
+        "Python",
+        "PyTorch"
+      ],
+      "education": "B.E / B.Tech / M.Tech in CS/AI",
+      "responsibilities": "Architect low-latency enterprise generative models and fine-tuning pipelines.",
+      "growth_pathway": "Junior GenAI Dev -> Senior GenAI Architect -> Head of AI Solutions",
+      "id": "CAR-16"
+    },
+    {
+      "role": "Generative AI Systems Engineer",
+      "domain": "Artificial Intelligence & Software",
+      "salary": "₹22.0 LPA (Top: ₹65 LPA)",
+      "skills": [
+        "LLMs",
+        "RAG",
+        "vLLM",
+        "Python",
+        "PyTorch"
+      ],
+      "education": "B.E / B.Tech / M.Tech in CS/AI",
+      "responsibilities": "Architect low-latency enterprise generative models and fine-tuning pipelines.",
+      "growth_pathway": "Junior GenAI Dev -> Senior GenAI Architect -> Head of AI Solutions",
+      "id": "CAR-17"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "REV-01",
+      "name": "Karthik Raja",
+      "role": "Junior ML Engineer",
+      "college": "Amrita Vishwa Vidyapeetham, Coimbatore",
+      "rating": 5,
+      "comment": "Following the AI roadmap helped me build end-to-end LLM applications and crack product company interviews within 6 months."
+    },
+    {
+      "id": "REV-02",
+      "name": "Sneha Madhavan",
+      "role": "Cloud DevOps Specialist",
+      "college": "PSG College of Technology, Coimbatore",
+      "rating": 5,
+      "comment": "The Kubernetes & Terraform step-by-step guidance was directly aligned with what cloud consulting companies asked in rounds."
+    },
+    {
+      "id": "REV-03",
+      "name": "Deepak Natarajan",
+      "role": "Full Stack Developer",
+      "college": "Coimbatore Institute of Technology",
+      "rating": 5,
+      "comment": "The structured milestones in TypeScript and Kafka distributed architecture gave me real confidence during technical interviews."
+    },
+    {
+      "id": "REV-04",
+      "name": "Pooja Varma",
+      "role": "Data Analyst",
+      "college": "ADITHYA COLLEGE OF ARTS AND SCIENCE, Coimbatore",
+      "rating": 4.8,
+      "comment": "The SQL and Tableau projects outlined in the roadmap gave my portfolio immediate credibility with analytics hiring managers."
+    },
+    {
+      "id": "REV-05",
+      "name": "Vikram Sundaram",
+      "role": "Cybersecurity Associate",
+      "college": "Karunya Institute of Technology and Sciences",
+      "rating": 4.9,
+      "comment": "The SOC analyst and web pen-testing hands-on labs were practical, clear, and perfectly mapped to current industry demand."
+    },
+    {
+      "id": "REV-06",
+      "name": "Ananya Krishnan",
+      "role": "Generative AI Engineer",
+      "college": "PSG College of Technology, Coimbatore",
+      "rating": 5.0,
+      "comment": "The LangChain and RAG vector search milestones guided my final year capstone project and helped me land an AI architect role at a SaaS unicorn."
+    },
+    {
+      "id": "REV-07",
+      "name": "Gautham Siddharth",
+      "role": "EV Firmware Engineer",
+      "college": "Kumaraguru College of Technology, Coimbatore",
+      "rating": 4.9,
+      "comment": "The step-by-step AUTOSAR and CAN protocol roadmap gave me exact hands-on preparation for electric powertrain testing interviews."
+    },
+    {
+      "id": "REV-08",
+      "name": "Divya Meenakshi",
+      "role": "3D Spatial Computing Developer",
+      "college": "Amrita Vishwa Vidyapeetham, Coimbatore",
+      "rating": 4.8,
+      "comment": "Clear breakdown of OpenXR and shader programming helped me transition from traditional frontend to spatial web & industrial digital twin development."
+    }
+  ]
+}

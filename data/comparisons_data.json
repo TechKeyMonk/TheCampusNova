@@ -1,0 +1,182 @@
+{
+  "reviews": [
+    {
+      "id": "CR-01",
+      "author": "Dr. S. Ramanathan",
+      "role": "Career Guidance Counselor",
+      "college": "Coimbatore Higher Education Forum",
+      "rating": 5,
+      "comment": "The side-by-side comparison tool gives parents clear metrics on median salary versus actual fee outlay instead of generic rankings."
+    },
+    {
+      "id": "CR-02",
+      "author": "Arun Prakash",
+      "role": "Parent of B.Tech Aspirant",
+      "college": "Coimbatore",
+      "rating": 4.9,
+      "comment": "Comparing Amrita vs Adithya gave us the exact clarity on hostel costs, lab specializations, and campus placement ratios."
+    },
+    {
+      "id": "CR-03",
+      "author": "Subhashree T.",
+      "role": "Alumni & Tech Recruiter",
+      "college": "Bengaluru",
+      "rating": 5,
+      "comment": "Factual comparison of placement statistics and verified student ratings prevents misleading marketing claims."
+    },
+    {
+      "id": "CR-04",
+      "author": "Karthik Narayanan",
+      "role": "Education Consultant",
+      "college": "Chennai",
+      "rating": 4.8,
+      "comment": "The 10-factor comparison matrix highlights real strengths and weaknesses so students make informed choices."
+    },
+    {
+      "id": "CR-05",
+      "author": "Meera Venkatesh",
+      "role": "Engineering Aspirant",
+      "college": "Coimbatore",
+      "rating": 5,
+      "comment": "Being able to compare two colleges side by side across cutoffs, fees, and recruiters helped me finalize my top counseling choice."
+    }
+  ],
+  "comparisons": [
+    {
+      "college_1": "IIT Madras",
+      "college_2": "NIT Trichy",
+      "category": "Engineering",
+      "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
+      "status": "active",
+      "id": "CMP-015",
+      "college1": "IIT Madras",
+      "college2": "NIT Trichy",
+      "db_id": 15
+    },
+    {
+      "college_1": "IIT Madras",
+      "college_2": "NIT Trichy",
+      "category": "Engineering",
+      "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
+      "status": "active",
+      "id": "CMP-014",
+      "college1": "IIT Madras",
+      "college2": "NIT Trichy",
+      "db_id": 14
+    },
+    {
+      "college_1": "IIT Madras",
+      "college_2": "NIT Trichy",
+      "category": "Engineering",
+      "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
+      "status": "active",
+      "id": "CMP-013",
+      "college1": "IIT Madras",
+      "college2": "NIT Trichy",
+      "db_id": 13
+    },
+    {
+      "college_1": "IIT Madras",
+      "college_2": "NIT Trichy",
+      "category": "Engineering",
+      "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
+      "status": "active",
+      "id": "CMP-012",
+      "college1": "IIT Madras",
+      "college2": "NIT Trichy",
+      "db_id": 12
+    },
+    {
+      "college_1": "IIT Madras",
+      "college_2": "NIT Trichy",
+      "category": "Engineering",
+      "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
+      "status": "active",
+      "id": "CMP-011",
+      "college1": "IIT Madras",
+      "college2": "NIT Trichy",
+      "db_id": 11
+    },
+    {
+      "college_1": "IIT Madras",
+      "college_2": "NIT Trichy",
+      "category": "Engineering",
+      "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
+      "status": "active",
+      "id": "CMP-010",
+      "college1": "IIT Madras",
+      "college2": "NIT Trichy",
+      "db_id": 10
+    },
+    {
+      "college_1": "IIT Madras",
+      "college_2": "NIT Trichy",
+      "category": "Engineering",
+      "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
+      "status": "active",
+      "id": "CMP-009",
+      "college1": "IIT Madras",
+      "college2": "NIT Trichy",
+      "db_id": 9
+    },
+    {
+      "college_1": "IIT Madras",
+      "college_2": "NIT Trichy",
+      "category": "Engineering",
+      "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
+      "status": "active",
+      "id": "CMP-008",
+      "college1": "IIT Madras",
+      "college2": "NIT Trichy",
+      "db_id": 8
+    },
+    {
+      "college_1": "IIT Madras",
+      "college_2": "NIT Trichy",
+      "category": "Engineering",
+      "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
+      "status": "active",
+      "id": "CMP-007",
+      "college1": "IIT Madras",
+      "college2": "NIT Trichy",
+      "db_id": 7
+    },
+    {
+      "college_1": "IIT Madras",
+      "college_2": "NIT Trichy",
+      "category": "Engineering",
+      "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
+      "status": "active",
+      "id": "CMP-006",
+      "college1": "IIT Madras",
+      "college2": "NIT Trichy",
+      "db_id": 6
+    },
+    {
+      "college_1": "IIT Madras",
+      "college_2": "BITS Pilani",
+      "category": "Engineering",
+      "id": "CMP-003"
+    },
+    {
+      "college1": "PSG College of Technology, Coimbatore",
+      "college2": "Thiagarajar College of Engineering, Madurai",
+      "category": "Engineering & IT",
+      "placements": "PSG Tech: ₹12.5L avg / TCE: ₹9.8L avg",
+      "facilities": "PSG Tech: 9.3/10 / TCE: 9.0/10",
+      "recommendation": "PSG Tech leads in software tier-1 CTC packages; TCE offers exceptional academic legacy and faculty experience.",
+      "reviewer_notes": "Both colleges maintain premier Anna University ranking and robust alumni networks.",
+      "id": "CMP-002"
+    },
+    {
+      "college1": "PSG College of Technology, Coimbatore",
+      "college2": "Thiagarajar College of Engineering, Madurai",
+      "category": "Engineering & IT",
+      "placements": "PSG Tech: ₹12.5L avg / TCE: ₹9.8L avg",
+      "facilities": "PSG Tech: 9.3/10 / TCE: 9.0/10",
+      "recommendation": "PSG Tech leads in software tier-1 CTC packages; TCE offers exceptional academic legacy and faculty experience.",
+      "reviewer_notes": "Both colleges maintain premier Anna University ranking and robust alumni networks.",
+      "id": "CMP-001"
+    }
+  ]
+}

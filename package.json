@@ -1,0 +1,12 @@
+{
+  "name": "campnova",
+  "version": "1.0.0",
+  "description": "CampusNova - Comprehensive Higher Education Portal",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.7"
+  }
+}

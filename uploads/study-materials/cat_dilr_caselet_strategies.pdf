@@ -1,0 +1,42 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1311 >>
+stream
+BT /F1 16 Tf 40 750 Td (CAT Data Interpretation & Logical Reasoning Caselet Strategy Guide) Tj ET
+BT /F1 11 Tf 40 728 Td (Target Exam: CAT 2026   |   Stream: Management   |   Subject: DILR) Tj ET
+BT /F1 9 Tf 40 710 Td (Verified Official Academic Preparation Material - TheCampusNova Learning Portal) Tj ET
+BT /F1 9 Tf 40 695 Td (-------------------------------------------------------------------------------------------------) Tj ET
+BT /F1 11 Tf 40 675 Td (Key Topics Covered: Matrix Arrangements, Tournaments, Venn Diagrams & Routes) Tj ET
+BT /F1 9.5 Tf 40 645 Td (1. Set Selection Protocol: Spend the first 5 minutes skimming all 4 sets; rank them by familiarity before writing a single digit) Tj ET
+BT /F1 9.5 Tf 40 629 Td (2. 4-Set Venn Diagrams: Master the Max-Min optimization framework across overlapping sets with unknown boundary conditions) Tj ET
+BT /F1 9.5 Tf 40 613 Td (3. Tournament Logic: Knockout vs Round-Robin matches, seeding rules, upsets identification, min points required to qualify) Tj ET
+BT /F1 9.5 Tf 40 597 Td (4. Matrix Arrangements: Use two-way grids for truth-teller/liar problems, color-code definite clues before conditional hypotheses) Tj ET
+BT /F1 9.5 Tf 40 581 Td (5. Benchmark Target: Accurately solving 2 full sets \(10 questions\) guarantees 98+ percentile in DILR.) Tj ET
+
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000244 00000 n 
+00000001641 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1721
+%%EOF

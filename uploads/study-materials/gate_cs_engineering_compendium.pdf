@@ -1,0 +1,43 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1547 >>
+stream
+BT /F1 16 Tf 40 750 Td (GATE Computer Science Core Technical Engineering Compendium) Tj ET
+BT /F1 11 Tf 40 728 Td (Target Exam: GATE 2026   |   Stream: Engineering   |   Subject: Computer Science) Tj ET
+BT /F1 9 Tf 40 710 Td (Verified Official Academic Preparation Material - TheCampusNova Learning Portal) Tj ET
+BT /F1 9 Tf 40 695 Td (-------------------------------------------------------------------------------------------------) Tj ET
+BT /F1 11 Tf 40 675 Td (Key Topics Covered: Data Structures, Algorithms, OS, DBMS & Computer Networks) Tj ET
+BT /F1 9.5 Tf 40 645 Td (1. Algorithms: Asymptotic Notation \(O, Omega, Theta\), Master Theorem for divide-and-conquer recurrences: T\(n\) = a*T\(n/b\) + f\(n\)) Tj ET
+BT /F1 9.5 Tf 40 629 Td (2. Data Structures: AVL tree rotation cases \(LL, RR, LR, RL\), Binary Heap insert/extract-min O\(log n\), Graph traversals \(BFS/DFS\)) Tj ET
+BT /F1 9.5 Tf 40 613 Td (3. Operating Systems: CPU Scheduling \(SJF, Round Robin\), Deadlock Banker Algorithm \(Need = Max - Allocation <= Available\)) Tj ET
+BT /F1 9.5 Tf 40 597 Td (4. DBMS: Normalization \(1NF, 2NF, 3NF, BCNF lossless-join & dependency-preserving checks\), Serializability precedence graph testing) Tj ET
+BT /F1 9.5 Tf 40 581 Td (5. Computer Networks: Subnetting \(CIDR prefix calculations\), TCP flow control vs congestion control \(Slow Start, Congestion Avoidance\)) Tj ET
+BT /F1 9.5 Tf 40 565 Td (6. Exam Strategy: Master Engineering Mathematics and General Aptitude first \(28 marks total\) to guarantee qualifying with top rank.) Tj ET
+
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000244 00000 n 
+00000001877 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1957
+%%EOF

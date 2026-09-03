@@ -1,0 +1,764 @@
+{
+  "jobs": [
+    {
+      "job_title": "Test Lead AI Compiler Engineer",
+      "company_name": "Test Global Tech",
+      "location": "Bengaluru",
+      "salary": "Rs. 35L - Rs. 55L",
+      "job_type": "Full-Time",
+      "id": 35
+    },
+    {
+      "job_title": "Test Lead AI Compiler Engineer",
+      "company_name": "Test Global Tech",
+      "location": "Bengaluru",
+      "salary": "Rs. 35L - Rs. 55L",
+      "job_type": "Full-Time",
+      "id": 33
+    },
+    {
+      "job_title": "Test Fullstack Python Engineer",
+      "company_name": "Test Corp Ltd",
+      "location": "Bengaluru",
+      "salary": "₹18 LPA",
+      "experience": "2-4 Years",
+      "id": 25
+    },
+    {
+      "role": "Test Automated Architect",
+      "company": "CampNova Test Labs",
+      "domain": "Engineering",
+      "salary": "₹30,00,000 / yr",
+      "location": "Chennai",
+      "experience": "5+ Years",
+      "why_join": "Building world class educational portals.",
+      "id": 23
+    },
+    {
+      "id": "JOB-01",
+      "company": "Google India",
+      "role": "Associate Software Engineer (Graduate)",
+      "domain": "Software Engineering",
+      "location": "Bengaluru / Hyderabad",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "education": "B.Tech / B.E / M.Tech / MCA",
+      "exp_level": "Fresher (0-1 Yrs)",
+      "salary": "₹24 - 42 LPA",
+      "why_join": "Work on planetary-scale distributed systems impacting billions of users with an unmatched engineering culture.",
+      "tech_skills": [
+        "C++",
+        "Java",
+        "Python",
+        "Data Structures",
+        "Distributed Systems"
+      ],
+      "soft_skills": [
+        "Analytical Reasoning",
+        "Googliness & Team Collaboration",
+        "Clear Communication"
+      ],
+      "assessment": "Online Coding Assessment (2 algorithmic challenges) + 3 Virtual Technical Rounds",
+      "verification": "Degree Certificate, Government ID, Academic Transcript (Min 7.0 CGPA)",
+      "eligibility": "2026 STEM / Computing Graduates with solid algorithmic foundations",
+      "website": "https://careers.google.com",
+      "growth_trend": "+24% YoY surge in Cloud & Large Language Models engineering roles"
+    },
+    {
+      "id": "JOB-02",
+      "company": "Zoho Corporation",
+      "role": "Software Developer",
+      "domain": "Product Development",
+      "location": "Coimbatore / Chennai / Tenkasi",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "education": "Any Degree (B.Sc, BCA, B.Tech, MCA, Arts & Science)",
+      "exp_level": "Fresher (0-2 Yrs)",
+      "salary": "₹6.5 - 12 LPA",
+      "why_join": "100% bootstrapped SaaS leader offering profound product ownership, merit-first culture, and zero micromanagement.",
+      "tech_skills": [
+        "C",
+        "C++",
+        "Java",
+        "Data Structures",
+        "Object-Oriented Design"
+      ],
+      "soft_skills": [
+        "Logical Thinking",
+        "Intellectual Curiosity",
+        "First-Principles Problem Solving"
+      ],
+      "assessment": "Round 1 (Basic C/Java) → Round 2 (Complex Logic) → Round 3 (App Design / LBA) → HR",
+      "verification": "Standard identity and educational certificates (no minimum marks barrier)",
+      "eligibility": "Open to all disciplines and self-taught programmers with proven problem-solving logic",
+      "website": "https://www.zoho.com/careers/",
+      "growth_trend": "Expanded Coimbatore & Rural development centers by 35% annually"
+    },
+    {
+      "id": "JOB-03",
+      "company": "Robert Bosch Engineering",
+      "role": "Embedded Automotive Systems Engineer",
+      "domain": "Hardware & Automotive",
+      "location": "Coimbatore (CHIL SEZ) / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "education": "B.E / B.Tech (ECE, EEE, CSE, Mechatronics)",
+      "exp_level": "Fresher to 2 Yrs",
+      "salary": "₹7.5 - 12 LPA",
+      "why_join": "Pioneer the future of Autonomous Mobility, Electric Vehicle powertrains, and Industrial IoT devices.",
+      "tech_skills": [
+        "Embedded C",
+        "Microcontrollers (ARM Cortex)",
+        "RTOS",
+        "CAN / LIN Protocols"
+      ],
+      "soft_skills": [
+        "Safety-First Mindset",
+        "Attention to Detail",
+        "Cross-Functional Collaboration"
+      ],
+      "assessment": "Technical MCQ + Circuit Logic + 2 Technical Interviews on Embedded Architecture",
+      "verification": "Engineering Degree with 65%+ or 6.5+ CGPA, Project Documentation",
+      "eligibility": "Circuit branches (ECE, EEE, EIE) & Computer Engineering graduates",
+      "website": "https://careers.bosch.com",
+      "growth_trend": "Established 5,000+ seat R&D testbed in Coimbatore CHIL SEZ"
+    },
+    {
+      "id": "JOB-04",
+      "company": "Tata Consultancy Services (TCS)",
+      "role": "Systems Engineer (Digital & Prime)",
+      "domain": "IT Services & Consulting",
+      "location": "Coimbatore / Chennai / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "education": "B.Sc (CS/IT), BCA, B.E / B.Tech, MCA",
+      "exp_level": "Fresher (0 Yrs)",
+      "salary": "₹4.0 - 9.5 LPA",
+      "why_join": "Global consulting powerhouse with structured digital skilling and international project mobility.",
+      "tech_skills": [
+        "Python",
+        "Java",
+        "SQL",
+        "Cloud Fundamentals",
+        "Data Structures"
+      ],
+      "soft_skills": [
+        "Agility",
+        "Customer Orientation",
+        "Team Leadership"
+      ],
+      "assessment": "TCS National Qualifier Test (NQT) Cognitive + Advanced Coding + Technical/HR Interview",
+      "verification": "60%+ in 10th, 12th & Graduation, Max 1 backlog allowed at interview",
+      "eligibility": "2026 Batch Graduates across STEM, Computing and Science streams",
+      "website": "https://www.tcs.com/careers",
+      "growth_trend": "Hiring 40,000+ engineering and science graduates annually across India"
+    },
+    {
+      "id": "JOB-05",
+      "company": "Microsoft IDC",
+      "role": "Full-Stack Software Engineer",
+      "domain": "Cloud Computing",
+      "location": "Bengaluru / Hyderabad / Noida",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "education": "B.E / B.Tech / M.Tech / MCA",
+      "exp_level": "0 - 2 Yrs",
+      "salary": "₹26 - 36 LPA",
+      "why_join": "Build foundational cloud architecture, developer tools, and AI enterprise platforms.",
+      "tech_skills": [
+        "C# / .NET",
+        "TypeScript",
+        "React",
+        "Azure Cloud",
+        "Distributed Databases"
+      ],
+      "soft_skills": [
+        "Growth Mindset",
+        "Customer Empathy",
+        "Collaborative Problem Solving"
+      ],
+      "assessment": "Online Technical Test (Codility) + 3 Virtual Loop Interviews",
+      "verification": "Degree Certificate, Background Check, Valid Government Photo ID",
+      "eligibility": "Graduates with 7.5+ CGPA and strong algorithmic & system design fundamentals",
+      "website": "https://careers.microsoft.com",
+      "growth_trend": "+30% expansion in Azure cloud enterprise solutions division"
+    },
+    {
+      "id": "JOB-06",
+      "company": "Amazon India",
+      "role": "Cloud Support Associate (AWS)",
+      "domain": "Cloud Infrastructure",
+      "location": "Chennai / Bengaluru / Hyderabad",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "education": "B.E / B.Tech / B.Sc (IT) / MCA",
+      "exp_level": "Fresher (0-1 Yrs)",
+      "salary": "₹12 - 19 LPA",
+      "why_join": "Solve complex architecture and networking issues for Fortune 500 enterprises running on AWS.",
+      "tech_skills": [
+        "Networking Fundamentals (TCP/IP, DNS)",
+        "Linux Administration",
+        "Storage & Virtualization",
+        "Python / Bash"
+      ],
+      "soft_skills": [
+        "Bias for Action",
+        "Customer Obsession",
+        "Ownership & Accountability"
+      ],
+      "assessment": "Online Assessment (Cognitive + Tech) + 2 Technical Architecture Rounds",
+      "verification": "6.0+ CGPA with clean academic record and verified identity",
+      "eligibility": "Graduates with deep Linux & Networking intuition and AWS curiosity",
+      "website": "https://www.amazon.jobs",
+      "growth_trend": "Surge in cloud migration contracts boosting support engineering intake"
+    },
+    {
+      "id": "JOB-07",
+      "company": "Infosys",
+      "role": "Specialist Programmer (Power Programmer)",
+      "domain": "Competitive Programming & Architecture",
+      "location": "Coimbatore / Mysuru / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "education": "B.E / B.Tech / M.Tech / MCA",
+      "exp_level": "Fresher",
+      "salary": "₹6.5 - 10 LPA",
+      "why_join": "Elite coding cadre within Infosys working on high-complexity digital modernization and microservices.",
+      "tech_skills": [
+        "Advanced Algorithms",
+        "Dynamic Programming",
+        "Java / Python / C++",
+        "Microservices"
+      ],
+      "soft_skills": [
+        "Problem Solving",
+        "Rapid Prototyping",
+        "Technical Communication"
+      ],
+      "assessment": "HackWithInfy Coding Competition / InfyTQ Certification + Technical Interview",
+      "verification": "Valid InfyTQ score card or HackWithInfy rank verification",
+      "eligibility": "Top competitive programmers from all recognized engineering colleges",
+      "website": "https://www.infosys.com/careers.html",
+      "growth_trend": "High demand for high-tier specialist programmers in fintech and retail"
+    },
+    {
+      "id": "JOB-08",
+      "company": "L&T Technology Services",
+      "role": "Design & Verification Engineer",
+      "domain": "Core Engineering & VLSI",
+      "location": "Coimbatore / Chennai / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "education": "B.E / B.Tech (ECE, EEE, Mechanical, Mechatronics)",
+      "exp_level": "Fresher to 1 Yr",
+      "salary": "₹5.8 - 9.0 LPA",
+      "why_join": "Leading engineering pure-play enterprise working on aerospace, defense, and electric vehicle systems.",
+      "tech_skills": [
+        "Verilog / VHDL",
+        "MATLAB / Simulink",
+        "CAD Design",
+        "Digital Electronics"
+      ],
+      "soft_skills": [
+        "Engineering Precision",
+        "Cross-Disciplinary Teamwork",
+        "Safety Focus"
+      ],
+      "assessment": "Domain Technical Test + Engineering Case Study + Personal Interview",
+      "verification": "60%+ throughout 10th, 12th & B.E/B.Tech",
+      "eligibility": "Core engineering circuit & mechanical graduates with practical lab proficiency",
+      "website": "https://www.ltts.com/careers",
+      "growth_trend": "Expanding aerospace, semiconductor and smart mobility design centers"
+    },
+    {
+      "id": "JOB-09",
+      "company": "Cognizant (CTS)",
+      "role": "GenC Next Developer",
+      "domain": "Digital Transformation & Cloud",
+      "location": "Coimbatore / Chennai / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "education": "B.E / B.Tech / MCA / M.Sc (CS/IT)",
+      "exp_level": "Fresher",
+      "salary": "₹6.8 - 8.5 LPA",
+      "why_join": "Premium digital engineering track working on cloud transformation and modern tech stacks.",
+      "tech_skills": [
+        "Full-Stack Development (React/Node)",
+        "Java / Spring Boot",
+        "SQL",
+        "Cloud Platforms"
+      ],
+      "soft_skills": [
+        "Client Orientation",
+        "Agile Adaptability",
+        "Analytical Thinking"
+      ],
+      "assessment": "Cognizant Skill Assessment (Coding + Data Structures) + Technical Interview",
+      "verification": "60%+ in Graduation with no active backlogs",
+      "eligibility": "Engineering and MCA graduates with demonstrated digital project portfolios",
+      "website": "https://careers.cognizant.com",
+      "growth_trend": "Growing intake across Coimbatore CHIL SEZ and Chennai campuses"
+    },
+    {
+      "id": "JOB-10",
+      "company": "Goldman Sachs",
+      "role": "New Analyst - Quantitative Strategist",
+      "domain": "Quantitative Finance & FinTech",
+      "location": "Bengaluru",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "education": "B.Tech / B.E / M.Sc Math / Data Science",
+      "exp_level": "Fresher (0-1 Yrs)",
+      "salary": "₹28 - 45 LPA",
+      "why_join": "Design high-frequency pricing models and algorithmic execution systems at a global tier-1 investment bank.",
+      "tech_skills": [
+        "Stochastic Calculus",
+        "C++",
+        "Python",
+        "Time-Series Econometrics",
+        "Probability"
+      ],
+      "soft_skills": [
+        "Quantitative Rigor",
+        "High-Stress Composure",
+        "Intellectual Integrity"
+      ],
+      "assessment": "Math/Probability Screening + Quantitative Coding Test + 4 Loop Interviews",
+      "verification": "Top academic quartile, verified university credentials",
+      "eligibility": "Graduates in Mathematics, Computing, Physics or Engineering with exceptional math fluency",
+      "website": "https://www.goldmansachs.com/careers/",
+      "growth_trend": "+28% headcount expansion in Bengaluru quantitative engineering teams"
+    },
+    {
+      "id": "JOB-11",
+      "company": "KLA Corporation",
+      "role": "Software & Algorithm Engineer",
+      "domain": "Semiconductor & Vision AI",
+      "location": "Chennai (IIT Madras Research Park)",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "education": "B.Tech / M.Tech (CS, ECE, Data Science)",
+      "exp_level": "Fresher to 1 Yr",
+      "salary": "₹16 - 24 LPA",
+      "why_join": "Global leader in semiconductor process control and optics-level computer vision inspection.",
+      "tech_skills": [
+        "C++",
+        "Computer Vision (OpenCV)",
+        "Image Processing",
+        "Multi-threading",
+        "CUDA"
+      ],
+      "soft_skills": [
+        "Research Rigor",
+        "Nanometer-Precision Focus",
+        "Problem Ownership"
+      ],
+      "assessment": "Algorithms + Vision Geometry Test + 3 Technical Architecture Rounds",
+      "verification": "7.0+ CGPA in B.Tech/M.Tech with relevant project/thesis work",
+      "eligibility": "Graduates with strong linear algebra, image processing, and C++ foundations",
+      "website": "https://www.kla.com/careers",
+      "growth_trend": "Expanded Chennai AI & Optics research facility by 45%"
+    },
+    {
+      "id": "JOB-12",
+      "company": "PayPal India",
+      "role": "Software Engineer I (FinTech Platform)",
+      "domain": "Payments & Security",
+      "location": "Chennai / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "education": "B.E / B.Tech / MCA",
+      "exp_level": "Fresher (0-1 Yrs)",
+      "salary": "₹18 - 28 LPA",
+      "why_join": "Architect resilient, fraud-resistant transaction platforms handling trillions in global digital commerce.",
+      "tech_skills": [
+        "Java",
+        "Spring Boot",
+        "Kafka",
+        "REST APIs",
+        "Microservices Architecture"
+      ],
+      "soft_skills": [
+        "Security Mindset",
+        "User Empathy",
+        "Collaborative Teamwork"
+      ],
+      "assessment": "Online Coding Assessment (HackerRank) + 3 Technical & System Logic Rounds",
+      "verification": "7.0+ CGPA, Government ID, Background Check",
+      "eligibility": "Graduates with proven backend development and database concurrency skills",
+      "website": "https://www.paypal.com/jobs",
+      "growth_trend": "Rapid growth in AI-driven fraud detection and global checkout platforms"
+    },
+    {
+      "id": "JOB-13",
+      "company": "Freshworks",
+      "role": "Associate Product Engineer",
+      "domain": "SaaS & Product Design",
+      "location": "Chennai / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "education": "B.Tech / B.E / B.Sc (CS) / MCA",
+      "exp_level": "Fresher to 1 Yr",
+      "salary": "₹12 - 18 LPA",
+      "why_join": "NASDAQ-listed SaaS company delivering modern customer engagement software to global brands.",
+      "tech_skills": [
+        "Ruby on Rails / Node.js",
+        "React.js",
+        "PostgreSQL",
+        "AWS / Docker"
+      ],
+      "soft_skills": [
+        "Product Sense",
+        "Design Craftsmanship",
+        "Agile Execution"
+      ],
+      "assessment": "Online Code Challenge + Product Feature Building Task + Engineering Discussion",
+      "verification": "Graduation Certificate, Verified Code Samples (GitHub / Live Projects)",
+      "eligibility": "Passionate product engineers with strong full-stack skills and UI sensibilities",
+      "website": "https://www.freshworks.com/careers/",
+      "growth_trend": "Increasing engineering hiring for GenAI-powered CRM workflows"
+    },
+    {
+      "id": "JOB-14",
+      "company": "Accenture",
+      "role": "Advanced Associate Software Engineer",
+      "domain": "Digital Consulting",
+      "location": "Coimbatore / Chennai / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "education": "B.E / B.Tech / MCA / M.Sc",
+      "exp_level": "Fresher",
+      "salary": "₹4.5 - 6.5 LPA",
+      "why_join": "Global digital transformation consulting firm with extensive Fortune 500 client projects.",
+      "tech_skills": [
+        "Cloud Basics",
+        "Java / Python",
+        "Database Querying",
+        "DevOps Fundamentals"
+      ],
+      "soft_skills": [
+        "Client Communication",
+        "Problem Structuring",
+        "Team Agility"
+      ],
+      "assessment": "Cognitive & Technical Assessment + Coding Challenge + Communication Evaluation",
+      "verification": "60%+ in graduation with no current backlogs",
+      "eligibility": "All eligible STEM graduates with strong logical aptitude and coding fundamentals",
+      "website": "https://www.accenture.com/in-en/careers",
+      "growth_trend": "Consistently hiring 25,000+ graduates across Indian innovation hubs"
+    },
+    {
+      "id": "JOB-15",
+      "company": "Wipro Limited",
+      "role": "Project Engineer (Turbo Track)",
+      "domain": "Enterprise IT Solutions",
+      "location": "Coimbatore / Chennai / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "education": "B.E / B.Tech / MCA",
+      "exp_level": "Fresher",
+      "salary": "₹6.5 - 8.5 LPA",
+      "why_join": "High-growth premium engineering track working on AI automation, cybersecurity, and cloud.",
+      "tech_skills": [
+        "Python",
+        "Java",
+        "Linux",
+        "Data Structures",
+        "SQL"
+      ],
+      "soft_skills": [
+        "Adaptability",
+        "Continuous Learning",
+        "Team Leadership"
+      ],
+      "assessment": "Wipro Elite National Talent Hunt (NLTH) + Coding Round + Interview",
+      "verification": "60%+ in 10th, 12th & B.Tech",
+      "eligibility": "2026 Batch B.E/B.Tech and MCA candidates with strong algorithmic proficiency",
+      "website": "https://careers.wipro.com",
+      "growth_trend": "Strong focus on AI-first enterprise application modernization"
+    },
+    {
+      "id": "JOB-16",
+      "company": "Cisco Systems",
+      "role": "Network Software Engineer",
+      "domain": "Networking & Security",
+      "location": "Bengaluru / Chennai",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "education": "B.Tech / M.Tech (CS, ECE, IT)",
+      "exp_level": "Fresher (0-1 Yrs)",
+      "salary": "₹16 - 25 LPA",
+      "why_join": "Power the Internet's foundational routing, switching, and cybersecurity infrastructure.",
+      "tech_skills": [
+        "C / C++",
+        "Python",
+        "TCP/IP Networking Protocols (BGP, OSPF)",
+        "Linux Kernel"
+      ],
+      "soft_skills": [
+        "Troubleshooting Logic",
+        "Collaborative Mindset",
+        "Detail Orientation"
+      ],
+      "assessment": "Online Technical Test (Networking + C/Data Structures) + 3 Technical Rounds",
+      "verification": "7.0+ CGPA with clear degree completion",
+      "eligibility": "Graduates passionate about low-level networking, protocols, and secure routing",
+      "website": "https://www.cisco.com/c/en/us/about/careers.html",
+      "growth_trend": "Rising investment in secure cloud networking and zero-trust architectures"
+    },
+    {
+      "id": "JOB-17",
+      "company": "Qualcomm",
+      "role": "Associate Engineer (Modem & 5G)",
+      "domain": "Wireless & Semiconductors",
+      "location": "Chennai / Bengaluru / Hyderabad",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "education": "B.Tech / M.Tech (ECE, EEE, CS)",
+      "exp_level": "Fresher to 1 Yr",
+      "salary": "₹18 - 28 LPA",
+      "why_join": "Pioneer wireless 5G/6G modem architectures, Snapdragon processors, and edge AI hardware.",
+      "tech_skills": [
+        "C / C++",
+        "Digital Signal Processing",
+        "Wireless Standards (5G/LTE)",
+        "RTOS"
+      ],
+      "soft_skills": [
+        "Analytical Depth",
+        "Engineering Rigor",
+        "Team Synergy"
+      ],
+      "assessment": "Technical Domain Assessment + DSP/C Test + 3 Deep-Dive Architecture Rounds",
+      "verification": "7.5+ CGPA in ECE/CS with coursework in communication systems",
+      "eligibility": "Circuit and computing graduates with deep signals and C programming intuition",
+      "website": "https://www.qualcomm.com/company/careers",
+      "growth_trend": "Expanding Chennai wireless testbeds and 5G cellular R&D centers"
+    },
+    {
+      "id": "JOB-18",
+      "company": "Oracle India",
+      "role": "Associate Applications Developer",
+      "domain": "Enterprise Cloud Applications",
+      "location": "Bengaluru / Hyderabad",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "education": "B.Tech / M.Tech / MCA",
+      "exp_level": "0 - 1 Yrs",
+      "salary": "₹15 - 22 LPA",
+      "why_join": "Build mission-critical ERP, HCM, and autonomous database engines for global enterprises.",
+      "tech_skills": [
+        "Java",
+        "SQL / PL-SQL",
+        "JavaScript / OJET",
+        "Cloud Microservices"
+      ],
+      "soft_skills": [
+        "Logical Structuring",
+        "High Ownership",
+        "Clarity in Communication"
+      ],
+      "assessment": "Online Code Screening + Database Query Test + 3 Technical Interviews",
+      "verification": "7.0+ CGPA, Government ID, Standard background verification",
+      "eligibility": "Graduates with exceptional relational database and enterprise software mastery",
+      "website": "https://www.oracle.com/corporate/careers/",
+      "growth_trend": "High demand for Oracle Cloud Infrastructure (OCI) developers"
+    },
+    {
+      "id": "JOB-19",
+      "company": "Schneider Electric",
+      "role": "Graduate Engineer Trainee (Smart Grid)",
+      "domain": "Energy Management & Automation",
+      "location": "Coimbatore / Bengaluru / Chennai",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "education": "B.E / B.Tech (EEE, ECE, Mechatronics, Instrumentation)",
+      "exp_level": "Fresher",
+      "salary": "₹6.0 - 9.0 LPA",
+      "why_join": "Drive sustainability and digital automation in energy management and next-generation smart grids.",
+      "tech_skills": [
+        "Power Systems",
+        "PLC / SCADA",
+        "Industrial IoT",
+        "MATLAB",
+        "Embedded Controls"
+      ],
+      "soft_skills": [
+        "Sustainability Passion",
+        "Safety Culture",
+        "Team Collaboration"
+      ],
+      "assessment": "Online Aptitude & Domain Test + Engineering Group Discussion + Interview",
+      "verification": "65%+ throughout 10th, 12th & Engineering degree",
+      "eligibility": "Electrical, electronics, and instrumentation engineering graduates",
+      "website": "https://www.se.com/in/en/about-us/careers/",
+      "growth_trend": "Establishing smart energy and automation engineering centers across South India"
+    },
+    {
+      "id": "JOB-20",
+      "company": "Tiger Analytics",
+      "role": "Analyst - Data Science & AI",
+      "domain": "AI Consulting & Analytics",
+      "location": "Chennai / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "education": "B.Tech / B.E / B.Sc Data Science / M.Sc",
+      "exp_level": "Fresher to 1 Yr",
+      "salary": "₹8.5 - 14 LPA",
+      "why_join": "Fast-growing AI and advanced analytics consultancy solving high-impact Fortune 500 problems.",
+      "tech_skills": [
+        "Python",
+        "SQL",
+        "Machine Learning Algorithms",
+        "Pandas / Scikit-Learn",
+        "Data Storytelling"
+      ],
+      "soft_skills": [
+        "Consultative Problem Solving",
+        "Executive Presentation",
+        "Business Intuition"
+      ],
+      "assessment": "Online Data Science & Coding Test + Case Study Presentation + Technical Interview",
+      "verification": "Graduation Degree, Data Science project portfolio or Kaggle profile",
+      "eligibility": "Passionate data analysts, statisticians, and engineers with real-world ML projects",
+      "website": "https://www.tigeranalytics.com/careers/",
+      "growth_trend": "+40% YoY expansion in AI analytics consulting headcount"
+    },
+    {
+      "company": "Freshworks Inc.",
+      "role": "Full Stack Cloud Platform Engineer",
+      "domain": "Cloud SaaS Applications",
+      "location": "Chennai (Hybrid)",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "salary": "₹12.0 - 18.5 LPA",
+      "education": "B.E / B.Tech / MCA",
+      "skills": [
+        "React",
+        "Ruby on Rails",
+        "PostgreSQL",
+        "AWS"
+      ],
+      "deadline": "April 30, 2026",
+      "apply_url": "https://careers.freshworks.com/openings",
+      "id": "JOB-21"
+    },
+    {
+      "company": "Freshworks Inc.",
+      "role": "Full Stack Cloud Platform Engineer",
+      "domain": "Cloud SaaS Applications",
+      "location": "Chennai (Hybrid)",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "salary": "₹12.0 - 18.5 LPA",
+      "education": "B.E / B.Tech / MCA",
+      "skills": [
+        "React",
+        "Ruby on Rails",
+        "PostgreSQL",
+        "AWS"
+      ],
+      "deadline": "April 30, 2026",
+      "apply_url": "https://careers.freshworks.com/openings",
+      "id": "JOB-22"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "JR-01",
+      "author": "Siddharth Menon",
+      "company": "Zoho Corporation",
+      "role": "Software Developer",
+      "rating": 4.9,
+      "comment": "The work environment is relaxed and empowering. If you know how to write clean code and think independently, you will thrive here."
+    },
+    {
+      "id": "JR-02",
+      "author": "Priya Ramesh",
+      "company": "Google India",
+      "role": "Associate Software Engineer",
+      "rating": 5.0,
+      "comment": "World-class engineering mentorship and massive scale. The interviews tested deep algorithmic intuition and problem breakdown."
+    },
+    {
+      "id": "JR-03",
+      "author": "Karthik Subramanian",
+      "company": "Robert Bosch",
+      "role": "Embedded Automotive Systems Engineer",
+      "rating": 4.7,
+      "comment": "Great place to build expertise in automotive firmware, ADAS, and connected vehicle technology in Coimbatore."
+    },
+    {
+      "id": "JR-04",
+      "author": "Divya Krishnan",
+      "company": "Amazon AWS",
+      "role": "Cloud Support Associate",
+      "rating": 4.8,
+      "comment": "Exceptional customer obsession culture and hands-on exposure to hyperscale cloud infrastructure."
+    },
+    {
+      "id": "JR-05",
+      "author": "Arun Kumar",
+      "company": "Tata Consultancy Services (TCS)",
+      "role": "TCS Prime Engineer",
+      "rating": 4.6,
+      "comment": "TCS Prime track provides excellent initial training and direct placement into enterprise AI/Cloud projects."
+    },
+    {
+      "id": "JR-06",
+      "author": "Meera Nambiar",
+      "company": "Cognizant Technology Solutions",
+      "role": "GenC Next Developer",
+      "rating": 4.7,
+      "comment": "Fast onboarding, great digital training modules, and fair compensation for campus recruits."
+    },
+    {
+      "id": "JR-07",
+      "author": "Harish Varadhan",
+      "company": "Goldman Sachs",
+      "role": "Quantitative Analyst",
+      "rating": 5.0,
+      "comment": "High intensity, intellectually stimulating financial modeling problems and brilliant peers."
+    },
+    {
+      "id": "JR-08",
+      "author": "Swetha Rajan",
+      "company": "Infosys",
+      "role": "Specialist Programmer",
+      "rating": 4.7,
+      "comment": "The Mysore training campus experience is legendary, providing rigorous hands-on software development training."
+    },
+    {
+      "id": "JR-09",
+      "author": "Naveen Prakash",
+      "company": "L&T Technology Services",
+      "role": "Associate Engineer - Embedded",
+      "rating": 4.6,
+      "comment": "Solid core engineering foundation with opportunities to work on automotive, medical devices, and smart manufacturing."
+    },
+    {
+      "id": "JR-10",
+      "author": "Anjali Sundar",
+      "company": "Tiger Analytics",
+      "role": "Data Science Analyst",
+      "rating": 4.9,
+      "comment": "Steep learning curve with immediate exposure to end-to-end machine learning pipelines for international clients."
+    },
+    {
+      "id": "JR-11",
+      "author": "Vigneshwaran P.",
+      "company": "Freshworks",
+      "role": "Product Engineer",
+      "rating": 4.9,
+      "comment": "Vibrant SaaS startup culture, modern tech stack (React, Node, Ruby), and transparent leadership."
+    },
+    {
+      "id": "JR-12",
+      "author": "Sneha Balaji",
+      "company": "PayPal India",
+      "role": "Software Engineer",
+      "rating": 4.8,
+      "comment": "Pioneering financial technology engineering with strong emphasis on security, distributed systems, and team diversity."
+    }
+  ]
+}

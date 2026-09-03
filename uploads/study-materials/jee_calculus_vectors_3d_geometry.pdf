@@ -1,0 +1,43 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1417 >>
+stream
+BT /F1 16 Tf 40 750 Td (JEE Calculus, Vectors & 3D Geometry Master Compendium) Tj ET
+BT /F1 11 Tf 40 728 Td (Target Exam: JEE Main & JEE Advanced 2026   |   Stream: Engineering   |   Subject: Mathematics) Tj ET
+BT /F1 9 Tf 40 710 Td (Verified Official Academic Preparation Material - TheCampusNova Learning Portal) Tj ET
+BT /F1 9 Tf 40 695 Td (-------------------------------------------------------------------------------------------------) Tj ET
+BT /F1 11 Tf 40 675 Td (Key Topics Covered: Definite Integration, Differential Equations & 3D Vectors) Tj ET
+BT /F1 9.5 Tf 40 645 Td (1. Definite Integration King Property: integral\(a to b, f\(x\)dx\) = integral\(a to b, f\(a+b-x\)dx\)) Tj ET
+BT /F1 9.5 Tf 40 629 Td (2. Leibniz Rule: d/dx [integral\(u\(x\) to v\(x\), f\(t\)dt\)] = f\(v\(x\)\)*v'\(x\) - f\(u\(x\)\)*u'\(x\)) Tj ET
+BT /F1 9.5 Tf 40 613 Td (3. Vectors: Dot Product \(a.b = |a||b|cos theta\) | Cross Product \(a x b = |a||b|sin theta * n_hat\)) Tj ET
+BT /F1 9.5 Tf 40 597 Td (4. 3D Line Equation: \(x - x1\)/l = \(y - y1\)/m = \(z - z1\)/n | Shortest distance between skew lines formula) Tj ET
+BT /F1 9.5 Tf 40 581 Td (5. Solved PYQ: Evaluate integral\(0 to pi/2, sqrt\(sin x\) / \(sqrt\(sin x\) + sqrt\(cos x\)\) dx\). Answer: pi / 4) Tj ET
+BT /F1 9.5 Tf 40 565 Td (6. Exam Strategy: Do not get stuck on lengthy Coordinate Geometry problems; Vectors & 3D Geometry take under 3 minutes per MCQ.) Tj ET
+
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000244 00000 n 
+00000001747 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1827
+%%EOF

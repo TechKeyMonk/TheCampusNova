@@ -1,0 +1,3982 @@
+{
+  "categories": [
+    {
+      "id": "engineering-it",
+      "name": "Engineering, IT & Computer Applications",
+      "icon": "💻",
+      "badge": "Technology & Computing",
+      "description": "Core engineering streams, computer science, intelligent systems, hardware design, and next-generation software architectures.",
+      "groups": [
+        {
+          "name": "Core Branches",
+          "subfields": [
+            {
+              "id": "cse",
+              "name": "Computer Science / CSE",
+              "icon": "🖥️",
+              "tagline": "Theoretical foundations of computation, algorithms, and full lifecycle software engineering.",
+              "programs": [
+                {
+                  "id": "prog-616642ce",
+                  "name": "QA Test Robotics Vitest_1788444771917 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-c8732c88",
+                  "name": "QA Test Robotics Vitest_1788443779800 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-05f0af60",
+                  "name": "QA Test Robotics Vitest_1788442369862 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-1a56bfc5",
+                  "name": "QA Test Robotics Vitest_1788441769435 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-ce8766ce",
+                  "name": "QA Test Robotics Vitest_1788441226812 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-ae13eb96",
+                  "name": "QA Test Robotics Vitest_1788440385496 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-f76b0bdc",
+                  "name": "QA Test Robotics Vitest_1788439674584 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-3ea23976",
+                  "name": "Test Robotics Engineering 2026",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive robotics program.",
+                  "annualTuitionFees": "Rs. 2,50,000",
+                  "annual_tuition_fees": "Rs. 2,50,000",
+                  "fees": "Rs. 2,50,000"
+                },
+                {
+                  "id": "prog-d50053f9",
+                  "name": "QA Test Robotics Vitest_1788438308367 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-73cca32a",
+                  "name": "QA Test Robotics Vitest_1788436205723 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-cfb1f581",
+                  "name": "QA Test Robotics Vitest_1788435132001 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-3f11ea56",
+                  "name": "QA Test Robotics Vitest_1788434762866 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-6af99ed6",
+                  "name": "QA Test Robotics Vitest_1788434745299 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-4e0f4795",
+                  "name": "Test Robotics Engineering 2026 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,75,000",
+                  "annual_tuition_fees": "Rs. 2,75,000",
+                  "fees": "Rs. 2,75,000"
+                },
+                {
+                  "id": "prog-bb4f61c4",
+                  "name": "B.Sc. Artificial Intelligence & Machine Learning",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 years",
+                  "eligibility": "10+2 / Higher Secondary with Mathematics or Computer Science from a recognized board",
+                  "overview": "An undergraduate program focused on artificial intelligence, machine learning, programming, data analysis and intelligent systems. Students develop practical skills in Python, machine learning algorithms, data processing and AI-based application development.",
+                  "annualTuitionFees": "₹80,000",
+                  "annual_tuition_fees": "₹80,000",
+                  "fees": "₹80,000"
+                },
+                {
+                  "id": "prog-0ba09348",
+                  "name": "Test Robotics Engineering 2026 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,75,000",
+                  "annual_tuition_fees": "Rs. 2,75,000",
+                  "fees": "Rs. 2,75,000"
+                },
+                {
+                  "id": "prog-b6f8eae1",
+                  "name": "Test Robotics Engineering 2026 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,75,000",
+                  "annual_tuition_fees": "Rs. 2,75,000",
+                  "fees": "Rs. 2,75,000"
+                },
+                {
+                  "id": "prog-3",
+                  "name": "Bsc COMPUTER SCIENCE",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 with Mathematics / Computer Science (min. 50-55%)",
+                  "overview": "Mathematical and scientific approach to computation, programming logic, data structures, and computational intelligence.",
+                  "annualTuitionFees": "₹80,000 - ₹1L / y",
+                  "annual_tuition_fees": "₹80,000 - ₹1L / y",
+                  "fees": "₹80,000 - ₹1L / y"
+                },
+                {
+                  "id": "prog-3",
+                  "name": "B.Sc Computer Science",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 with Mathematics / Computer Science (min. 50-55%)",
+                  "overview": "Mathematical and scientific approach to computation, programming logic, data structures, and computational intelligence."
+                },
+                {
+                  "id": "prog-72",
+                  "name": "Bachelor of Technology in Computer Science and Engineering",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "Candidates must have completed 10+2 or equivalent with Physics and Mathematics as compulsory subjects along with Chemistry/Biology/Computer Science. Admission is based on the applicable entrance examination and institute criteria.",
+                  "overview": "A four-year undergraduate programme focused on computer science fundamentals, software development and emerging technologies. Students gain practical knowledge through programming, database systems, web development, software engineering and AI/ML projects."
+                },
+                {
+                  "id": "prog-72",
+                  "name": "Bachelor of Technology in Computer Science and Engineering",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "Candidates must have completed 10+2 or equivalent with Physics and Mathematics as compulsory subjects along with Chemistry/Biology/Computer Science. Admission is based on the applicable entrance examination and institute criteria.",
+                  "overview": "A four-year undergraduate programme focused on computer science fundamentals, software development and emerging technologies. Students gain practical knowledge through programming, database systems, web development, software engineering and AI/ML projects.",
+                  "annualTuitionFees": "₹1.25L - ₹3.80L / yr"
+                },
+                {
+                  "id": "prog-72",
+                  "name": "Bachelor of Technology in Computer Science and Engineering",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "Candidates must have completed 10+2 or equivalent with Physics and Mathematics as compulsory subjects along with Chemistry/Biology/Computer Science. Admission is based on the applicable entrance examination and institute criteria.",
+                  "overview": "A four-year undergraduate programme focused on computer science fundamentals, software development and emerging technologies. Students gain practical knowledge through programming, database systems, web development, software engineering and AI/ML projects.",
+                  "annualTuitionFees": "₹1.25L - ₹3.80L / yr"
+                },
+                {
+                  "id": "prog-8241c591",
+                  "name": "B.Tech Robotics & Artificial Intelligence",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with PCM (60% aggregate)",
+                  "fees": "₹1.75 Lakhs / year",
+                  "overview": "Next-generation undergraduate program combining mechanical robotics with modern deep learning.",
+                  "skills": [
+                    "Kinematics",
+                    "ROS",
+                    "PyTorch",
+                    "Control Systems"
+                  ],
+                  "domains": [
+                    "Engineering, IT & Computer Applications"
+                  ],
+                  "career_scope": "Robotics Specialist, Autonomous Systems Engineer",
+                  "annualTuitionFees": "₹1.50L - ₹4.50L / yr"
+                },
+                {
+                  "id": "prog-416e045a",
+                  "name": "B.Tech Robotics & Artificial Intelligence",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with PCM (60% aggregate)",
+                  "fees": "₹1.75 Lakhs / year",
+                  "overview": "Next-generation undergraduate program combining mechanical robotics with modern deep learning.",
+                  "skills": [
+                    "Kinematics",
+                    "ROS",
+                    "PyTorch",
+                    "Control Systems"
+                  ],
+                  "domains": [
+                    "Engineering, IT & Computer Applications"
+                  ],
+                  "career_scope": "Robotics Specialist, Autonomous Systems Engineer",
+                  "annualTuitionFees": "₹1.50L - ₹4.50L / yr"
+                },
+                {
+                  "id": "prog-be-cse",
+                  "name": "B.E. Computer Science & Engineering",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 with Physics, Maths & Chemistry (min. 60%)",
+                  "overview": "Comprehensive curriculum.",
+                  "specializations": [
+                    "Core Software Systems",
+                    "Computer Architecture",
+                    "System Software Design"
+                  ],
+                  "skills": [
+                    "Data Structures & Algorithms",
+                    "C++ / Java / Python",
+                    "Computer Networks",
+                    "Operating Systems (Linux/Unix)",
+                    "Database Management (DBMS)"
+                  ],
+                  "domains": [
+                    "Software Engineering",
+                    "Systems Computing",
+                    "Algorithm Design"
+                  ],
+                  "careers": [
+                    "Software Development Engineer (SDE)",
+                    "Systems Software Engineer",
+                    "Backend Developer",
+                    "Firmware Engineer"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "JEE Advanced",
+                    "BITSAT",
+                    "State Engineering Entrance (MHT-CET, WBJEE, KCET)"
+                  ],
+                  "placementRelevance": "Consistently high campus placements with ₹9.5L - ₹28L / yr average starting packages across enterprise tech and product MNCs.",
+                  "topColleges": [
+                    "IIT Madras",
+                    "IIT Delhi",
+                    "IIT Bombay",
+                    "BITS Pilani",
+                    "Anna University"
+                  ],
+                  "annualTuitionFees": "₹1.25L - ₹3.80L / yr",
+                  "annual_tuition_fees": "₹1.25L - ₹3.80L / yr",
+                  "fees": "₹1.25L - ₹3.80L / yr"
+                },
+                {
+                  "id": "prog-btech-cse",
+                  "name": "B.Tech Computer Science & Engineering",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with Physics & Mathematics with min. 60% aggregate",
+                  "overview": "Application-driven technical degree covering modern full-stack development, distributed computing, cloud integration, and enterprise software engineering.",
+                  "specializations": [
+                    "Distributed Systems",
+                    "Cloud & Web Architectures",
+                    "Full-Stack Software Engineering"
+                  ],
+                  "skills": [
+                    "Java / Python / Go",
+                    "Data Structures & System Design",
+                    "Microservices & REST APIs",
+                    "SQL & NoSQL Databases",
+                    "CI/CD & Git"
+                  ],
+                  "domains": [
+                    "Software Engineering",
+                    "Enterprise Cloud",
+                    "Scalable Computing"
+                  ],
+                  "careers": [
+                    "SDE 1 (Product MNCs)",
+                    "Full-Stack Engineer",
+                    "Cloud Solutions Engineer",
+                    "DevOps Engineer"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "JEE Advanced",
+                    "BITSAT",
+                    "VITEEE",
+                    "SRMJEEE",
+                    "MET"
+                  ],
+                  "placementRelevance": "Top recruiter preference with tier-1 campus offers ranging from ₹10L - ₹36L / yr (top packages ₹50L+).",
+                  "topColleges": [
+                    "IIT Kharagpur",
+                    "IIIT Hyderabad",
+                    "IIT Roorkee",
+                    "BITS Pilani Goa",
+                    "NIT Trichy",
+                    "Vellore Institute"
+                  ],
+                  "annualTuitionFees": "₹1.50L - ₹4.50L / yr"
+                },
+                {
+                  "id": "prog-bsc-cs",
+                  "name": "B.Sc Computer Science",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 with Mathematics / Computer Science (min. 50-55%)",
+                  "overview": "Mathematical and scientific approach to computation, programming logic, data structures, and computational intelligence.",
+                  "specializations": [
+                    "Computational Mathematics",
+                    "Programming Paradigms",
+                    "Data Analytics Foundations"
+                  ],
+                  "skills": [
+                    "Python & C++",
+                    "Discrete Structures & Logic",
+                    "Data Analysis (Pandas)",
+                    "Relational Databases",
+                    "Web Foundations"
+                  ],
+                  "domains": [
+                    "Theoretical Computing",
+                    "Data Analysis",
+                    "Software Scripting"
+                  ],
+                  "careers": [
+                    "Junior Software Engineer",
+                    "Data Analyst Trainee",
+                    "QA Automation Associate",
+                    "Technical Analyst"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "State University Entrance",
+                    "Direct 12th Merit"
+                  ],
+                  "placementRelevance": "Direct recruitment into IT service giants and high progression value for MCA/M.Sc with starting packages ₹4.5L - ₹10L / yr.",
+                  "topColleges": [
+                    "St. Stephen's College DU",
+                    "Loyola College Chennai",
+                    "Christ University",
+                    "Fergusson College Pune",
+                    "St. Xavier's Kolkata"
+                  ],
+                  "annualTuitionFees": "₹45,000 - ₹1.20L / yr"
+                },
+                {
+                  "id": "prog-bca",
+                  "name": "Bachelor of Computer Applications (BCA)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 from any recognized board with Math/CS preference (min. 50%)",
+                  "overview": "Practical software development and application programming degree tailored for enterprise IT, web services, and app design.",
+                  "specializations": [
+                    "Web Application Engineering",
+                    "Mobile App Development",
+                    "Database Administration"
+                  ],
+                  "skills": [
+                    "JavaScript / React",
+                    "Java / Node.js",
+                    "SQL & Database Administration",
+                    "Mobile Computing",
+                    "UI/UX Basics"
+                  ],
+                  "domains": [
+                    "Application Development",
+                    "Web Technologies",
+                    "Database Management"
+                  ],
+                  "careers": [
+                    "Application Developer",
+                    "Frontend / Backend Developer",
+                    "Database Administrator",
+                    "IT Support Specialist"
+                  ],
+                  "exams": [
+                    "IPU CET",
+                    "CUET UG",
+                    "SET (Symbiosis)",
+                    "College Specific Tests"
+                  ],
+                  "placementRelevance": "Extensive IT services recruitment (TCS, Infosys, Wipro, Accenture) with ₹4L - ₹9.5L / yr starting packages.",
+                  "topColleges": [
+                    "Christ University Bengaluru",
+                    "Symbiosis Institute",
+                    "Amity University",
+                    "BVICAM Delhi",
+                    "Loyola College"
+                  ],
+                  "annualTuitionFees": "₹55,000 - ₹1.50L / yr"
+                },
+                {
+                  "id": "prog-mtech-cse",
+                  "name": "M.E. / M.Tech Computer Science & Engineering",
+                  "degreeType": "Postgraduate (PG)",
+                  "duration": "2 Years (4 Semesters)",
+                  "eligibility": "B.E. / B.Tech in CSE / IT / ECE or MCA / M.Sc CS with valid GATE score",
+                  "overview": "Advanced postgraduate research and development program focusing on distributed systems, high-performance computing, and algorithm optimization.",
+                  "specializations": [
+                    "High-Performance Computing (HPC)",
+                    "Distributed & Parallel Systems",
+                    "Theoretical Computer Science"
+                  ],
+                  "skills": [
+                    "Advanced Algorithms",
+                    "Parallel Architecture (CUDA/OpenMP)",
+                    "Distributed Systems",
+                    "Compiler Optimization",
+                    "Research Methodology"
+                  ],
+                  "domains": [
+                    "Advanced Computation",
+                    "Systems Research",
+                    "HPC Architecture"
+                  ],
+                  "careers": [
+                    "Principal Systems Engineer",
+                    "R&D Software Scientist",
+                    "High-Performance Computing Architect",
+                    "Lead Research Engineer"
+                  ],
+                  "exams": [
+                    "GATE (CS/IT)",
+                    "State PG Engineering Entrance",
+                    "Direct Institute Written Test & Interview"
+                  ],
+                  "placementRelevance": "Top-tier R&D campus recruitment (Google, Microsoft, NVIDIA, Intel) with packages from ₹18L - ₹45L / yr.",
+                  "topColleges": [
+                    "IISc Bengaluru",
+                    "IIT Bombay",
+                    "IIT Delhi",
+                    "IIT Madras",
+                    "IIIT Hyderabad"
+                  ],
+                  "annualTuitionFees": "₹90,000 - ₹2.20L / yr"
+                },
+                {
+                  "id": "prog-mca",
+                  "name": "Master of Computer Applications (MCA)",
+                  "degreeType": "Postgraduate (PG)",
+                  "duration": "2 Years ( 4 Semesters)",
+                  "eligibility": "BCA / B.Sc CS / B.Sc IT or any graduate with Mathematics at 10+2 or degree level (min. 50-55%)",
+                  "overview": "Professional master's program bridging application architecture, enterprise cloud engineering, and modern full-stack development.",
+                  "specializations": [
+                    "Cloud Application Architecture",
+                    "Enterprise Full-Stack",
+                    "Data Engineering & Analytics"
+                  ],
+                  "skills": [
+                    "Full-Stack Frameworks",
+                    "Cloud Deployments (AWS/Azure)",
+                    "Advanced DBMS & NoSQL",
+                    "Software Architecture & Design Patterns",
+                    "Agile & DevOps"
+                  ],
+                  "domains": [
+                    "Enterprise Software",
+                    "Cloud Infrastructure",
+                    "Full-Stack Development"
+                  ],
+                  "careers": [
+                    "Senior Software Engineer",
+                    "Full-Stack Architect",
+                    "Technical Lead",
+                    "DevOps Engineer"
+                  ],
+                  "exams": [
+                    "NIMCET (for NITs)",
+                    "CUET PG",
+                    "MAH MCA CET",
+                    "TANCET",
+                    "State CETs"
+                  ],
+                  "placementRelevance": "Excellent industry placement on par with B.Tech graduates at ₹8L - ₹22L / yr.",
+                  "topColleges": [
+                    "NIT Trichy",
+                    "NIT Surathkal",
+                    "JNU Delhi",
+                    "Delhi University",
+                    "PSG Tech Coimbatore"
+                  ],
+                  "annualTuitionFees": "70K-1L",
+                  "annual_tuition_fees": "70K-1L",
+                  "fees": "70K-1L"
+                }
+              ]
+            },
+            {
+              "id": "it",
+              "name": "Information Technology / IT",
+              "icon": "🌐",
+              "tagline": "Enterprise IT infrastructure, network communications, and web software engineering.",
+              "programs": [
+                {
+                  "id": "prog-btech-it",
+                  "name": "B.Tech Information Technology",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with PCM (min. 60%)",
+                  "overview": "Focuses on the implementation, administration, and architecture of enterprise software, data networks, and corporate IT ecosystems.",
+                  "specializations": [
+                    "Enterprise IT Architecture",
+                    "Network Systems & Security",
+                    "Web & Cloud Services"
+                  ],
+                  "skills": [
+                    "Software Engineering",
+                    "Cloud Infrastructure (AWS/Azure)",
+                    "Network Protocols & Routing",
+                    "SQL / NoSQL Databases",
+                    "Information Security Basics"
+                  ],
+                  "domains": [
+                    "Enterprise IT",
+                    "Software Engineering",
+                    "Network Systems"
+                  ],
+                  "careers": [
+                    "IT Solutions Architect",
+                    "Software Engineer",
+                    "DevOps Engineer",
+                    "IT Infrastructure Specialist"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "BITSAT",
+                    "COMEDK",
+                    "State Engineering Entrance"
+                  ],
+                  "placementRelevance": "Strong corporate tech placement with starting packages from ₹8L - ₹22L / yr.",
+                  "topColleges": [
+                    "Anna University",
+                    "Vellore Institute",
+                    "SRM Institute",
+                    "BITS Pilani",
+                    "Jadavpur University"
+                  ],
+                  "annualTuitionFees": "₹1.40L - ₹4.20L / yr"
+                },
+                {
+                  "id": "prog-bsc-it",
+                  "name": "B.Sc Information Technology",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 with Mathematics (min. 50%)",
+                  "overview": "Covers software application development, database management systems, network administration, and modern web technologies.",
+                  "specializations": [
+                    "Database Administration",
+                    "Network Management",
+                    "Web Application Development"
+                  ],
+                  "skills": [
+                    "Database Management (MySQL/Oracle)",
+                    "Web Development (HTML/CSS/JS/PHP)",
+                    "Network Administration",
+                    "Python Scripting"
+                  ],
+                  "domains": [
+                    "IT Operations",
+                    "Web Technologies",
+                    "Database Systems"
+                  ],
+                  "careers": [
+                    "Network Administrator",
+                    "Database Executive",
+                    "Web Developer",
+                    "IT Systems Analyst"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "University Merit Selection"
+                  ],
+                  "placementRelevance": "Active hiring by IT consultancies and service firms at ₹4L - ₹8.5L / yr.",
+                  "topColleges": [
+                    "Mumbai University Colleges",
+                    "Christ University",
+                    "Madras Christian College",
+                    "St. Xavier's"
+                  ],
+                  "annualTuitionFees": "₹40,000 - ₹1.10L / yr"
+                }
+              ]
+            },
+            {
+              "id": "eee",
+              "name": "Electrical / EEE",
+              "icon": "⚡",
+              "tagline": "Power grids, electrical machines, embedded electronics, and renewable energy.",
+              "programs": [
+                {
+                  "id": "prog-btech-eee",
+                  "name": "B.Tech Electrical & Electronics Engineering (EEE)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with Physics, Mathematics & Chemistry (min. 60%)",
+                  "overview": "Covers high-voltage electrical power generation, transmission, smart grids, control engineering, electric vehicles (EV), and microelectronic hardware design.",
+                  "specializations": [
+                    "Power Systems & Smart Grids",
+                    "Electric Vehicle (EV) Powertrains",
+                    "Embedded Systems & Control"
+                  ],
+                  "skills": [
+                    "Circuit Design & Simulation (MATLAB/Simulink)",
+                    "Microcontrollers & Embedded C",
+                    "Power Electronics",
+                    "Power Grid Transmission",
+                    "Control Systems"
+                  ],
+                  "domains": [
+                    "Power Systems",
+                    "Embedded Electronics",
+                    "Renewable Energy",
+                    "EV Tech"
+                  ],
+                  "careers": [
+                    "Power Systems Engineer",
+                    "EV Powertrain Engineer",
+                    "Control Systems Specialist",
+                    "Hardware Embedded Designer"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "JEE Advanced",
+                    "GATE (for PG)",
+                    "State CETs"
+                  ],
+                  "placementRelevance": "High demand across energy, automotive (EVs), defense, and semiconductor industries at ₹7.5L - ₹18L / yr.",
+                  "topColleges": [
+                    "IIT Kanpur",
+                    "IIT Kharagpur",
+                    "NIT Trichy",
+                    "Anna University",
+                    "BITS Pilani"
+                  ],
+                  "annualTuitionFees": "₹1.20L - ₹3.60L / yr"
+                }
+              ]
+            },
+            {
+              "id": "mechanical",
+              "name": "Mechanical Engineering",
+              "icon": "⚙️",
+              "tagline": "Thermodynamics, mechanical design, CAD/CAM, automotive engineering, and mechatronics.",
+              "programs": [
+                {
+                  "id": "prog-btech-mech",
+                  "name": "B.Tech Mechanical Engineering",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with Physics, Chemistry & Mathematics (min. 60%)",
+                  "overview": "Comprehensive engineering of physical machinery, thermal power engines, manufacturing automation, aerospace mechanisms, and automotive systems.",
+                  "specializations": [
+                    "Automotive Engineering",
+                    "Thermal & Fluids Systems",
+                    "Robotics & CAD/CAM Automation"
+                  ],
+                  "skills": [
+                    "AutoCAD / SolidWorks / CATIA",
+                    "Thermodynamics & Heat Transfer",
+                    "Finite Element Analysis (FEA)",
+                    "CNC Manufacturing",
+                    "Mechatronics"
+                  ],
+                  "domains": [
+                    "Automotive Engineering",
+                    "Thermodynamics",
+                    "Robotics & CAD",
+                    "Manufacturing"
+                  ],
+                  "careers": [
+                    "Mechanical Design Engineer",
+                    "Automotive Engineer",
+                    "Thermal Systems Specialist",
+                    "CAD/CAE Analyst"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "JEE Advanced",
+                    "BITSAT",
+                    "State Engineering Entrance"
+                  ],
+                  "placementRelevance": "Solid recruitment in automotive, aerospace, heavy manufacturing, and automation at ₹6.5L - ₹16L / yr.",
+                  "topColleges": [
+                    "IIT Madras",
+                    "IIT Bombay",
+                    "IIT Kanpur",
+                    "BITS Pilani",
+                    "Jadavpur University"
+                  ],
+                  "annualTuitionFees": "₹1.10L - ₹3.50L / yr"
+                }
+              ]
+            },
+            {
+              "id": "civil",
+              "name": "Civil Engineering",
+              "icon": "🏗️",
+              "tagline": "Structural design, urban infrastructure, smart city planning, and geotechnical engineering.",
+              "programs": [
+                {
+                  "id": "prog-btech-civil",
+                  "name": "B.Tech Civil Engineering",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with Physics, Chemistry & Mathematics (min. 60%)",
+                  "overview": "Principles of planning, designing, and constructing smart cities, transportation networks, mega bridges, dams, and sustainable infrastructure.",
+                  "specializations": [
+                    "Structural Engineering",
+                    "Transportation & Highways",
+                    "Geotechnical & Environmental"
+                  ],
+                  "skills": [
+                    "STAAD.Pro / ETABS",
+                    "AutoCAD Civil 3D",
+                    "Structural Design (RCC & Steel)",
+                    "Surveying & GIS",
+                    "Project Estimation"
+                  ],
+                  "domains": [
+                    "Structural Engineering",
+                    "Urban Infrastructure",
+                    "Geotechnical & Surveying",
+                    "Environmental Engineering"
+                  ],
+                  "careers": [
+                    "Structural Engineer",
+                    "Project Site Manager",
+                    "Transportation Planner",
+                    "Geotechnical Consultant"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "JEE Advanced",
+                    "State CETs",
+                    "GATE"
+                  ],
+                  "placementRelevance": "National infrastructure mega-projects, metro rails, construction conglomerates, and public sector undertakings at ₹6.0L - ₹15L / yr.",
+                  "topColleges": [
+                    "IIT Roorkee",
+                    "IIT Delhi",
+                    "IIT Madras",
+                    "NIT Surathkal",
+                    "Anna University"
+                  ],
+                  "annualTuitionFees": "₹1.00L - ₹3.20L / yr"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Emerging Specializations",
+          "subfields": [
+            {
+              "id": "aiml",
+              "name": "Artificial Intelligence & Machine Learning",
+              "icon": "🤖",
+              "tagline": "Deep neural networks, generative AI, computer vision, and cognitive systems.",
+              "programs": [
+                {
+                  "id": "prog-btech-aiml",
+                  "name": "B.Tech CSE (Artificial Intelligence & Machine Learning)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with Physics & Mathematics (min. 60-65%)",
+                  "overview": "Deep dive into artificial intelligence architectures, neural networks, computer vision, NLP, large language models (LLMs), and cognitive software systems.",
+                  "specializations": [
+                    "Deep Learning & LLMs",
+                    "Computer Vision",
+                    "Natural Language Processing (NLP)"
+                  ],
+                  "skills": [
+                    "PyTorch & TensorFlow",
+                    "Deep Neural Networks",
+                    "Transformer Architectures",
+                    "Python & NumPy/Pandas",
+                    "Mathematics for Machine Learning"
+                  ],
+                  "domains": [
+                    "Deep Learning",
+                    "Generative AI",
+                    "Computer Vision",
+                    "NLP"
+                  ],
+                  "careers": [
+                    "AI/ML Research Engineer",
+                    "Deep Learning Specialist",
+                    "Computer Vision Engineer",
+                    "LLM Prompt & Model Engineer"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "JEE Advanced",
+                    "BITSAT",
+                    "VITEEE",
+                    "MET"
+                  ],
+                  "placementRelevance": "Highest industry growth demand with premium starting packages ranging from ₹12L - ₹36L / yr.",
+                  "topColleges": [
+                    "IIT Delhi",
+                    "IISc Bengaluru",
+                    "IIT Bombay",
+                    "BITS Pilani",
+                    "IIIT Hyderabad",
+                    "Vellore Institute"
+                  ],
+                  "annualTuitionFees": "₹1.60L - ₹4.80L / yr"
+                },
+                {
+                  "id": "prog-mtech-ai",
+                  "name": "M.Tech in Artificial Intelligence",
+                  "degreeType": "Postgraduate (PG)",
+                  "duration": "2 Years (4 Semesters)",
+                  "eligibility": "B.Tech in CSE / IT / ECE or MCA with strong mathematical/coding background + GATE score",
+                  "overview": "Advanced research degree covering reinforcement learning, autonomous decision models, generative diffusion models, and AI ethics.",
+                  "specializations": [
+                    "Generative AI & Multimodal Models",
+                    "Reinforcement Learning",
+                    "AI Safety & Ethics"
+                  ],
+                  "skills": [
+                    "Advanced Deep Learning",
+                    "Reinforcement Learning Algorithms",
+                    "Distributed GPU Computing",
+                    "Probabilistic Graphical Models",
+                    "Research Thesis"
+                  ],
+                  "domains": [
+                    "Advanced AI",
+                    "Generative Modeling",
+                    "Autonomous Systems"
+                  ],
+                  "careers": [
+                    "Principal AI Scientist",
+                    "Machine Learning Staff Engineer",
+                    "Cognitive Systems Architect"
+                  ],
+                  "exams": [
+                    "GATE (CS/DA)",
+                    "Institute Written Test & Interview"
+                  ],
+                  "placementRelevance": "Direct entry into global AI research labs (Google DeepMind, Microsoft Research, Meta AI) with ₹25L - ₹60L / yr.",
+                  "topColleges": [
+                    "IISc Bengaluru",
+                    "IIT Hyderabad",
+                    "IIT Bombay",
+                    "IIT Madras",
+                    "IIIT Delhi"
+                  ],
+                  "annualTuitionFees": "₹1.00L - ₹2.50L / yr"
+                }
+              ]
+            },
+            {
+              "id": "datascience",
+              "name": "Data Science & Analytics",
+              "icon": "📊",
+              "tagline": "Big data analytics, predictive modeling, statistical learning, and business intelligence.",
+              "programs": [
+                {
+                  "id": "prog-btech-ds",
+                  "name": "B.Tech / B.Sc Data Science & Analytics",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 - 4 Years",
+                  "eligibility": "10+2 with Mathematics / Statistics / Computer Science (min. 60%)",
+                  "overview": "Mastering the science of extracting actionable intelligence, predictive signals, and decision models from massive datasets using modern computation.",
+                  "specializations": [
+                    "Big Data Analytics",
+                    "Predictive Modeling",
+                    "Business Intelligence"
+                  ],
+                  "skills": [
+                    "Python & R",
+                    "SQL & Data Warehousing",
+                    "Tableau & PowerBI",
+                    "Statistical Hypothesis Testing",
+                    "Spark & Big Data"
+                  ],
+                  "domains": [
+                    "Big Data Analytics",
+                    "Predictive Modeling",
+                    "Statistical Computing"
+                  ],
+                  "careers": [
+                    "Data Scientist",
+                    "Data Analytics Engineer",
+                    "Business Intelligence Lead",
+                    "Quantitative Analyst"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "CUET UG",
+                    "MET",
+                    "State CETs"
+                  ],
+                  "placementRelevance": "Massive hiring across FinTech, consulting, e-commerce, and healthcare at ₹10L - ₹26L / yr.",
+                  "topColleges": [
+                    "IIT Madras (BS Data Science)",
+                    "Christ University",
+                    "BITS Pilani",
+                    "Vellore Institute",
+                    "Manipal Academy"
+                  ],
+                  "annualTuitionFees": "₹1.50L - ₹4.20L / yr"
+                }
+              ]
+            },
+            {
+              "id": "cybersecurity",
+              "name": "Cyber Security",
+              "icon": "🛡️",
+              "tagline": "Network defense, ethical hacking, digital forensics, and cloud infrastructure security.",
+              "programs": [
+                {
+                  "id": "prog-btech-cyber",
+                  "name": "B.Tech CSE (Cyber Security & Digital Forensics)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with Physics, Chemistry & Mathematics (min. 60%)",
+                  "overview": "Protecting digital systems, cloud architectures, enterprise networks, and national infrastructure against modern cyber warfare and zero-day threats.",
+                  "specializations": [
+                    "Network Security & Defense",
+                    "Ethical Hacking & Penetration Testing",
+                    "Digital Forensics & Incident Response"
+                  ],
+                  "skills": [
+                    "Network Protocols & Wireshark",
+                    "Linux Administration",
+                    "Metasploit & Burp Suite",
+                    "Applied Cryptography",
+                    "SOC & SIEM Operations"
+                  ],
+                  "domains": [
+                    "Network Security",
+                    "Ethical Hacking",
+                    "Digital Forensics"
+                  ],
+                  "careers": [
+                    "Cyber Security Analyst",
+                    "Penetration Tester / Ethical Hacker",
+                    "Security Operations Center (SOC) Lead",
+                    "Information Security Officer"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "VITEEE",
+                    "SRMJEEE",
+                    "BITSAT"
+                  ],
+                  "placementRelevance": "Critical defense and corporate banking hiring with starting packages from ₹10L - ₹25L / yr.",
+                  "topColleges": [
+                    "IIT Kanpur (C3i Hub)",
+                    "National Forensic Sciences University",
+                    "IIIT Delhi",
+                    "Amity University",
+                    "SRM Institute"
+                  ],
+                  "annualTuitionFees": "₹1.50L - ₹4.40L / yr"
+                }
+              ]
+            },
+            {
+              "id": "cloud",
+              "name": "Cloud Computing",
+              "icon": "☁️",
+              "tagline": "Virtualization, multi-cloud architectures, Kubernetes, and DevOps pipelines.",
+              "programs": [
+                {
+                  "id": "prog-btech-cloud",
+                  "name": "B.Tech Cloud Computing & Virtualization",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with Physics & Mathematics (min. 60%)",
+                  "overview": "Designing, scaling, and orchestrating highly available cloud platforms, containerized microservices, and automated DevOps delivery pipelines.",
+                  "specializations": [
+                    "Cloud Infrastructure",
+                    "DevOps & CI/CD",
+                    "Serverless Architecture"
+                  ],
+                  "skills": [
+                    "AWS & Microsoft Azure",
+                    "Docker & Kubernetes",
+                    "Terraform (IaC)",
+                    "CI/CD Pipelines (Jenkins/GitHub Actions)",
+                    "Linux Systems Engineering"
+                  ],
+                  "domains": [
+                    "Cloud Infrastructure",
+                    "DevOps",
+                    "Serverless Systems"
+                  ],
+                  "careers": [
+                    "Cloud Solutions Architect",
+                    "DevOps Engineer",
+                    "Site Reliability Engineer (SRE)",
+                    "Cloud Security Specialist"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "BITSAT",
+                    "COMEDK",
+                    "State Engineering Entrance"
+                  ],
+                  "placementRelevance": "High enterprise cloud adoption leading to average packages from ₹11L - ₹28L / yr.",
+                  "topColleges": [
+                    "IIT Delhi",
+                    "BITS Pilani",
+                    "Vellore Institute",
+                    "Manipal Academy",
+                    "SRM Institute"
+                  ],
+                  "annualTuitionFees": "₹1.45L - ₹4.20L / yr"
+                }
+              ]
+            },
+            {
+              "id": "iot",
+              "name": "Internet of Things",
+              "icon": "📡",
+              "tagline": "Smart devices, embedded sensors, wireless mesh networks, and edge computing.",
+              "programs": [
+                {
+                  "id": "prog-btech-iot",
+                  "name": "B.Tech Internet of Things (IoT) & Smart Systems",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with PCM (min. 60%)",
+                  "overview": "Connecting physical hardware sensors, embedded microcontrollers, edge analytics, and cloud hubs to build intelligent smart home and industrial systems.",
+                  "specializations": [
+                    "Smart Hardware & Sensors",
+                    "Industrial IoT 4.0",
+                    "Edge AI Computation"
+                  ],
+                  "skills": [
+                    "Arduino / ESP32 / Raspberry Pi",
+                    "Embedded C / C++",
+                    "MQTT / HTTP / CoAP Protocols",
+                    "Sensor Interfacing",
+                    "Edge AI Computation"
+                  ],
+                  "domains": [
+                    "Smart Hardware",
+                    "Sensor Networks",
+                    "Embedded Firmware"
+                  ],
+                  "careers": [
+                    "IoT Systems Architect",
+                    "Embedded Firmware Developer",
+                    "Smart Devices Engineer",
+                    "Industrial Automation Lead"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "VITEEE",
+                    "MET",
+                    "State CETs"
+                  ],
+                  "placementRelevance": "Rising demand in smart manufacturing, automotive, and consumer electronics at ₹8.5L - ₹20L / yr.",
+                  "topColleges": [
+                    "IIT Kharagpur",
+                    "IIT Bombay",
+                    "Vellore Institute",
+                    "NIT Trichy",
+                    "Anna University"
+                  ],
+                  "annualTuitionFees": "₹1.35L - ₹3.90L / yr"
+                }
+              ]
+            },
+            {
+              "id": "fullstack",
+              "name": "Full-Stack Development",
+              "icon": "⚡",
+              "tagline": "Modern frontend frameworks, scalable backends, database design, and cloud deployments.",
+              "programs": [
+                {
+                  "id": "prog-bca-fullstack",
+                  "name": "BCA / B.Tech Full-Stack Software Development",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 - 4 Years",
+                  "eligibility": "10+2 with Mathematics / Computer Science (min. 50-60%)",
+                  "overview": "End-to-end web and mobile application engineering, spanning user interface design, server-side APIs, database modeling, and cloud hosting.",
+                  "specializations": [
+                    "Modern Frontend (React/Next)",
+                    "Scalable Backend (Node/Go/Java)",
+                    "Cloud Microservices"
+                  ],
+                  "skills": [
+                    "React.js & Next.js",
+                    "Node.js & Express / Django",
+                    "PostgreSQL & MongoDB",
+                    "REST & GraphQL APIs",
+                    "Git & CI/CD"
+                  ],
+                  "domains": [
+                    "Frontend & UI",
+                    "Backend Architecture",
+                    "APIs & Databases"
+                  ],
+                  "careers": [
+                    "Full-Stack Web Developer",
+                    "Frontend Engineer",
+                    "Backend Engineer",
+                    "Product Engineer"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "College Entrance Tests",
+                    "Direct Merit"
+                  ],
+                  "placementRelevance": "Immediate employability across tech startups and unicorns at ₹7.5L - ₹20L / yr.",
+                  "topColleges": [
+                    "Christ University",
+                    "Symbiosis Institute",
+                    "Amity University",
+                    "Manipal Academy",
+                    "Delhi University"
+                  ],
+                  "annualTuitionFees": "₹65,000 - ₹1.80L / yr"
+                }
+              ]
+            },
+            {
+              "id": "robotics",
+              "name": "Robotics",
+              "icon": "🦾",
+              "tagline": "Robot kinematics, autonomous navigation (SLAM), drone systems, and mechatronic control.",
+              "programs": [
+                {
+                  "id": "prog-btech-robotics",
+                  "name": "B.Tech Robotics & Autonomous Systems",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with Physics, Mathematics & Chemistry (min. 60%)",
+                  "overview": "Engineering intelligent physical robots, autonomous self-driving systems, aerial drones, and surgical robotic manipulators using ROS and computer vision.",
+                  "specializations": [
+                    "Autonomous Navigation & SLAM",
+                    "Industrial Robotics & Automation",
+                    "Drone & UAV Systems"
+                  ],
+                  "skills": [
+                    "Robot Operating System (ROS 2)",
+                    "C++ / Python",
+                    "Computer Vision (OpenCV)",
+                    "SLAM & Path Planning",
+                    "Kinematics & Motor Control"
+                  ],
+                  "domains": [
+                    "Kinematics & Dynamics",
+                    "Robot Operating System",
+                    "Autonomous Navigation"
+                  ],
+                  "careers": [
+                    "Robotics Software Engineer",
+                    "Autonomous Navigation Specialist",
+                    "Mechatronics Designer",
+                    "UAV & Drone Engineer"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "JEE Advanced",
+                    "BITSAT",
+                    "VITEEE"
+                  ],
+                  "placementRelevance": "Defense, aerospace, warehouse robotics, and surgical tech recruitment at ₹10L - ₹28L / yr.",
+                  "topColleges": [
+                    "IIT Kanpur",
+                    "IIT Madras",
+                    "IISc Bengaluru",
+                    "BITS Pilani",
+                    "PSG Tech Coimbatore"
+                  ],
+                  "annualTuitionFees": "₹1.50L - ₹4.50L / yr"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "commerce-mgmt",
+      "name": "Commerce, Management & Finance",
+      "icon": "📈",
+      "badge": "Business & Markets",
+      "description": "Financial accounting, corporate governance, quantitative analytics, FinTech, and executive leadership.",
+      "groups": [
+        {
+          "name": "Core Accounting & Corporate",
+          "subfields": [
+            {
+              "id": "bcom",
+              "name": "General B.Com / B.Com (Hons)",
+              "icon": "📑",
+              "tagline": "Foundational accounting, corporate taxation laws, auditing standards, and banking systems.",
+              "programs": [
+                {
+                  "id": "prog-bcom-gen",
+                  "name": "Bachelor of Commerce (General / Hons)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 in Commerce / Science / Arts with min. 50-60% aggregate",
+                  "overview": "Foundational commerce degree mastering accounting principles, corporate taxation laws, auditing standards, banking systems, and business law.",
+                  "specializations": [
+                    "Financial Accounting",
+                    "Corporate Taxation",
+                    "Auditing & Assurance"
+                  ],
+                  "skills": [
+                    "Financial Statements Analysis",
+                    "Corporate Tax & GST",
+                    "TallyPrime & QuickBooks",
+                    "Auditing Standards",
+                    "Excel Financial Modeling"
+                  ],
+                  "domains": [
+                    "Financial Accounting",
+                    "Corporate Taxation",
+                    "Auditing",
+                    "Banking & Insurance"
+                  ],
+                  "careers": [
+                    "Financial Accountant",
+                    "Tax Consultant",
+                    "Audit Associate",
+                    "Banking Operations Officer"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "University Entrance Exams",
+                    "12th Merit"
+                  ],
+                  "placementRelevance": "Big 4 accounting firms (Deloitte, PwC, EY, KPMG) and financial banks hiring at ₹4.5L - ₹10L / yr.",
+                  "topColleges": [
+                    "SRCC Delhi University",
+                    "Christ University",
+                    "Loyola College Chennai",
+                    "St. Xavier's Kolkata",
+                    "Symbiosis Pune"
+                  ],
+                  "annualTuitionFees": "₹30,000 - ₹95,000 / yr"
+                }
+              ]
+            },
+            {
+              "id": "bba",
+              "name": "Bachelor of Business Administration (BBA)",
+              "icon": "🏢",
+              "tagline": "Corporate leadership, strategic management, marketing strategy, and operations.",
+              "programs": [
+                {
+                  "id": "prog-bba-gen",
+                  "name": "Bachelor of Business Administration (BBA)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 from any recognized board with min. 50-55%",
+                  "overview": "Comprehensive business leadership degree covering marketing strategy, organizational behavior, financial accounting, and operations management.",
+                  "specializations": [
+                    "Marketing Management",
+                    "Human Resources",
+                    "Finance & Operations"
+                  ],
+                  "skills": [
+                    "Strategic Management",
+                    "Market Research",
+                    "Financial Accounting Basics",
+                    "Leadership & Negotiation",
+                    "Business Communication"
+                  ],
+                  "domains": [
+                    "General Management",
+                    "Marketing Strategy",
+                    "Operations"
+                  ],
+                  "careers": [
+                    "Business Development Associate",
+                    "Management Trainee",
+                    "Marketing Coordinator",
+                    "Operations Analyst"
+                  ],
+                  "exams": [
+                    "IPMAT (IIMs)",
+                    "CUET UG",
+                    "SET (Symbiosis)",
+                    "NMIMS NPAT"
+                  ],
+                  "placementRelevance": "Direct entry into management consulting, FMCG, and corporate leadership at ₹5.5L - ₹14L / yr.",
+                  "topColleges": [
+                    "IIM Indore (IPM)",
+                    "IIM Rohtak",
+                    "Shaheed Sukhdev College (DU)",
+                    "NMIMS Mumbai",
+                    "Christ University"
+                  ],
+                  "annualTuitionFees": "₹65,000 - ₹2.20L / yr"
+                }
+              ]
+            },
+            {
+              "id": "ca",
+              "name": "Chartered Accountancy (CA)",
+              "icon": "⚖️",
+              "tagline": "Statutory auditing, international taxation, forensic accounting, and corporate finance.",
+              "programs": [
+                {
+                  "id": "prog-ca-icai",
+                  "name": "Chartered Accountancy (ICAI Integrated)",
+                  "degreeType": "Professional Certification",
+                  "duration": "4 - 5 Years (Foundation + Inter + Articleship + Final)",
+                  "eligibility": "10+2 passed (for Foundation) or Bachelor's Degree (for Direct Entry)",
+                  "overview": "The gold-standard credential in accounting, taxation, auditing, and corporate finance governed by the statutory Institute of Chartered Accountants of India.",
+                  "specializations": [
+                    "Statutory Auditing",
+                    "International Taxation & Transfer Pricing",
+                    "Corporate Financial Reporting"
+                  ],
+                  "skills": [
+                    "Ind AS & IFRS Standards",
+                    "Statutory Auditing",
+                    "Corporate Taxation & Transfer Pricing",
+                    "Financial Reporting",
+                    "Forensic Auditing"
+                  ],
+                  "domains": [
+                    "Advanced Auditing",
+                    "Direct & Indirect Tax",
+                    "Corporate Finance"
+                  ],
+                  "careers": [
+                    "Chartered Accountant (CA)",
+                    "Chief Financial Officer (CFO)",
+                    "Statutory Auditor",
+                    "Corporate Tax Advisor"
+                  ],
+                  "exams": [
+                    "CA Foundation",
+                    "CA Intermediate",
+                    "CA Final (ICAI)"
+                  ],
+                  "placementRelevance": "Top-tier compensation across Big 4, investment banks, and conglomerates at ₹10L - ₹28L / yr.",
+                  "topColleges": [
+                    "Institute of Chartered Accountants of India (ICAI)",
+                    "Partner Universities with Integrated B.Com"
+                  ],
+                  "annualTuitionFees": "₹35,000 - ₹75,000 (Registration & Training Fees)"
+                }
+              ]
+            },
+            {
+              "id": "cs",
+              "name": "Company Secretary (CS)",
+              "icon": "📜",
+              "tagline": "Corporate governance, SEBI compliance, board resolutions, and capital market listings.",
+              "programs": [
+                {
+                  "id": "prog-cs-icsi",
+                  "name": "Company Secretary (ICSI Integrated)",
+                  "degreeType": "Professional Certification",
+                  "duration": "3 - 4 Years (CSEET + Executive + Professional)",
+                  "eligibility": "10+2 passed for CSEET or Graduate for Executive Entry",
+                  "overview": "Statutory corporate advisor role governing board room resolutions, SEBI compliance, capital market listings, and legal governance under Indian Company Law.",
+                  "specializations": [
+                    "Corporate Governance",
+                    "Securities & SEBI Compliance",
+                    "Secretarial Audits"
+                  ],
+                  "skills": [
+                    "Companies Act 2013",
+                    "SEBI Listing Regulations (LODR)",
+                    "Board Room Procedures & Minutes",
+                    "Corporate Restructuring",
+                    "Secretarial Audit"
+                  ],
+                  "domains": [
+                    "Corporate Governance",
+                    "Company Law",
+                    "Securities Regulation"
+                  ],
+                  "careers": [
+                    "Company Secretary (CS)",
+                    "Chief Compliance Officer",
+                    "Corporate Governance Advisor",
+                    "Legal & Board Secretary"
+                  ],
+                  "exams": [
+                    "CSEET (CS Executive Entrance Test)",
+                    "CS Executive",
+                    "CS Professional (ICSI)"
+                  ],
+                  "placementRelevance": "Mandatory statutory appointment for listed and public companies at ₹8.0L - ₹20L / yr.",
+                  "topColleges": [
+                    "Institute of Company Secretaries of India (ICSI)",
+                    "National Law Universities"
+                  ],
+                  "annualTuitionFees": "₹25,000 - ₹60,000 (Registration & Training Fees)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Specialized & Modern Domains",
+          "subfields": [
+            {
+              "id": "fintech",
+              "name": "FinTech",
+              "icon": "💳",
+              "tagline": "Digital banking, algorithmic trading, crypto assets, and open API finance.",
+              "programs": [
+                {
+                  "id": "prog-bba-fintech",
+                  "name": "BBA / MBA in Financial Technology (FinTech)",
+                  "degreeType": "Undergraduate / Postgraduate",
+                  "duration": "2 - 3 Years",
+                  "eligibility": "10+2 or Graduation with min. 50% with math/commerce background",
+                  "overview": "Bridging modern finance with technology: digital neo-banking, UPI payment gateways, algorithmic trading, and decentralized financial assets.",
+                  "specializations": [
+                    "Algorithmic Trading",
+                    "Digital Payment Architectures",
+                    "Blockchain & DeFi"
+                  ],
+                  "skills": [
+                    "Python for Finance",
+                    "Blockchain Architecture",
+                    "Financial Modeling",
+                    "API Banking & Open Finance",
+                    "Credit Risk Analytics"
+                  ],
+                  "domains": [
+                    "Digital Banking",
+                    "Blockchain Finance",
+                    "Algorithmic Trading"
+                  ],
+                  "careers": [
+                    "FinTech Product Manager",
+                    "Quantitative Trading Analyst",
+                    "Blockchain Finance Consultant",
+                    "Risk & Payments Lead"
+                  ],
+                  "exams": [
+                    "CAT",
+                    "XAT",
+                    "CUET UG",
+                    "GMAT"
+                  ],
+                  "placementRelevance": "High-velocity hiring in unicorn FinTechs, hedge funds, and neo-banks at ₹12L - ₹30L / yr.",
+                  "topColleges": [
+                    "IIM Ahmedabad",
+                    "SPJIMR Mumbai",
+                    "NMIMS Mumbai",
+                    "Christ University",
+                    "BITS Pilani"
+                  ],
+                  "annualTuitionFees": "₹90,000 - ₹2.80L / yr"
+                }
+              ]
+            },
+            {
+              "id": "businessanalytics",
+              "name": "Business Analytics",
+              "icon": "📊",
+              "tagline": "Decision science, commercial intelligence, customer metrics, and revenue modeling.",
+              "programs": [
+                {
+                  "id": "prog-bba-ba",
+                  "name": "BBA / MBA in Business Analytics & Intelligence",
+                  "degreeType": "Undergraduate / Postgraduate",
+                  "duration": "2 - 3 Years",
+                  "eligibility": "10+2 or Bachelor's degree with Mathematics / Statistics / Commerce",
+                  "overview": "Translating big business data into high-stakes strategic decisions, predictive customer metrics, and revenue optimization models.",
+                  "specializations": [
+                    "Decision Science",
+                    "Customer Lifetime Analytics",
+                    "Supply Chain Analytics"
+                  ],
+                  "skills": [
+                    "PowerBI & Tableau",
+                    "Advanced SQL",
+                    "Python / R Business Modeling",
+                    "Data-driven Strategy",
+                    "Market Basket Analysis"
+                  ],
+                  "domains": [
+                    "Decision Science",
+                    "Customer Analytics",
+                    "Predictive Modeling"
+                  ],
+                  "careers": [
+                    "Business Analytics Consultant",
+                    "Commercial Intelligence Analyst",
+                    "Strategy Associate",
+                    "Operations Planner"
+                  ],
+                  "exams": [
+                    "CAT",
+                    "GMAT",
+                    "CUET PG",
+                    "IPMAT"
+                  ],
+                  "placementRelevance": "High corporate demand across consulting (McKinsey, BCG, Bain) and tech at ₹11L - ₹25L / yr.",
+                  "topColleges": [
+                    "IIM Bangalore",
+                    "IIM Calcutta",
+                    "Great Lakes Institute",
+                    "NMIMS Mumbai",
+                    "Symbiosis Pune"
+                  ],
+                  "annualTuitionFees": "₹85,000 - ₹2.60L / yr"
+                }
+              ]
+            },
+            {
+              "id": "digitalmarketing",
+              "name": "Digital Marketing",
+              "icon": "🎯",
+              "tagline": "Performance marketing, SEO algorithms, social commerce, and marketing automation.",
+              "programs": [
+                {
+                  "id": "prog-bba-dm",
+                  "name": "BBA / MBA in Digital Marketing & Social Commerce",
+                  "degreeType": "Undergraduate / Postgraduate",
+                  "duration": "2 - 3 Years",
+                  "eligibility": "10+2 or Graduate in any stream with min. 50%",
+                  "overview": "Mastering omni-channel customer acquisition, performance advertising algorithms, web analytics, and brand virality across digital ecosystems.",
+                  "specializations": [
+                    "Performance Marketing (PPC)",
+                    "SEO & Growth Hacking",
+                    "Social Commerce & Content"
+                  ],
+                  "skills": [
+                    "Google Ads & Meta Ads",
+                    "Google Analytics 4 (GA4)",
+                    "Search Engine Optimization (SEO)",
+                    "Content Marketing Strategy",
+                    "HubSpot & Mailchimp CRM"
+                  ],
+                  "domains": [
+                    "Performance Marketing",
+                    "Brand Strategy",
+                    "Marketing Automation"
+                  ],
+                  "careers": [
+                    "Digital Marketing Manager",
+                    "Growth Marketing Lead",
+                    "Performance Media Buyer",
+                    "Brand Communications Strategist"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "CAT",
+                    "NMAT",
+                    "Direct University Test"
+                  ],
+                  "placementRelevance": "D2C brands, advertising agencies, and global digital platforms at ₹6.5L - ₹18L / yr.",
+                  "topColleges": [
+                    "MICA Ahmedabad",
+                    "Symbiosis Institute of Media",
+                    "Christ University",
+                    "Amity University",
+                    "Delhi University"
+                  ],
+                  "annualTuitionFees": "₹75,000 - ₹2.40L / yr"
+                }
+              ]
+            },
+            {
+              "id": "ecommerce",
+              "name": "E-Commerce",
+              "icon": "🛍️",
+              "tagline": "Marketplace operations, digital merchandising, inventory hubs, and D2C strategy.",
+              "programs": [
+                {
+                  "id": "prog-bcom-ecom",
+                  "name": "B.Com / BBA in E-Commerce & Retail Operations",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 in any stream with min. 50%",
+                  "overview": "End-to-end management of online marketplace platforms, direct-to-consumer brand storefronts, multi-channel cataloging, and digital retail fulfillment.",
+                  "specializations": [
+                    "Marketplace Management",
+                    "D2C Brand Growth",
+                    "Retail Merchandising"
+                  ],
+                  "skills": [
+                    "Shopify & Amazon Marketplace Management",
+                    "Inventory Control Systems",
+                    "Digital Merchandising",
+                    "Payment & Return Logistics",
+                    "Customer Experience (CX)"
+                  ],
+                  "domains": [
+                    "E-Commerce Marketplaces",
+                    "Warehouse & Inventory",
+                    "D2C Operations"
+                  ],
+                  "careers": [
+                    "E-Commerce Category Manager",
+                    "Marketplace Operations Specialist",
+                    "D2C Brand Growth Lead",
+                    "Retail Merchandiser"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "University Entrance Exams",
+                    "Merit Based"
+                  ],
+                  "placementRelevance": "E-commerce giants (Amazon, Flipkart, Myntra) and rapid D2C brands at ₹6.0L - ₹16L / yr.",
+                  "topColleges": [
+                    "Symbiosis Pune",
+                    "Christ University",
+                    "Delhi University",
+                    "Loyola College Chennai",
+                    "St. Joseph's Bengaluru"
+                  ],
+                  "annualTuitionFees": "₹45,000 - ₹1.35L / yr"
+                }
+              ]
+            },
+            {
+              "id": "supplychain",
+              "name": "Logistics & Supply Chain",
+              "icon": "🚢",
+              "tagline": "Global freight, smart automated warehousing, procurement, and route optimization.",
+              "programs": [
+                {
+                  "id": "prog-bba-scm",
+                  "name": "BBA / MBA in Logistics & Supply Chain Management",
+                  "degreeType": "Undergraduate / Postgraduate",
+                  "duration": "2 - 3 Years",
+                  "eligibility": "10+2 or Graduation with min. 50% aggregate",
+                  "overview": "Orchestrating global freight flows, smart automated warehousing, demand-supply equilibrium, and high-efficiency procurement systems.",
+                  "specializations": [
+                    "Global Freight & Shipping",
+                    "Warehouse Automation",
+                    "Procurement & Vendor Ops"
+                  ],
+                  "skills": [
+                    "SAP SCM / ERP Systems",
+                    "Demand Forecasting",
+                    "Route Optimization",
+                    "Vendor Management",
+                    "Six Sigma & Lean Methodologies"
+                  ],
+                  "domains": [
+                    "Global Freight",
+                    "Warehouse Automation",
+                    "Procurement"
+                  ],
+                  "careers": [
+                    "Supply Chain Analyst",
+                    "Logistics Operations Lead",
+                    "Procurement Specialist",
+                    "Warehouse Hub Manager"
+                  ],
+                  "exams": [
+                    "CAT",
+                    "XAT",
+                    "CUET UG",
+                    "MAT"
+                  ],
+                  "placementRelevance": "International shipping, 3PL logistics, and global manufacturing firms at ₹7.5L - ₹20L / yr.",
+                  "topColleges": [
+                    "IIM Mumbai (NITIE)",
+                    "SPJIMR Mumbai",
+                    "Symbiosis Institute of Operations Management",
+                    "Amity University"
+                  ],
+                  "annualTuitionFees": "₹80,000 - ₹2.50L / yr"
+                }
+              ]
+            },
+            {
+              "id": "riskmanagement",
+              "name": "Risk Management",
+              "icon": "📉",
+              "tagline": "Actuarial probability, insurance underwriting, enterprise risk governance, and capital adequacy.",
+              "programs": [
+                {
+                  "id": "prog-bcom-risk",
+                  "name": "B.Com / MBA in Risk Management & Actuarial Studies",
+                  "degreeType": "Undergraduate / Postgraduate",
+                  "duration": "2 - 3 Years",
+                  "eligibility": "10+2 with Mathematics / Statistics / Commerce (min. 60%)",
+                  "overview": "Quantifying catastrophic uncertainties, insurance underwriting probabilities, enterprise risk governance, and regulatory capital solvency.",
+                  "specializations": [
+                    "Enterprise Risk Management (ERM)",
+                    "Actuarial Science",
+                    "Credit & Market Risk"
+                  ],
+                  "skills": [
+                    "Probability & Actuarial Mathematics",
+                    "Risk Modeling & Stress Testing",
+                    "Basel III & Solvency II Frameworks",
+                    "Statistical Analysis (R/Python)",
+                    "Financial Derivative Valuation"
+                  ],
+                  "domains": [
+                    "Enterprise Risk",
+                    "Actuarial Science",
+                    "Insurance Underwriting"
+                  ],
+                  "careers": [
+                    "Risk Manager",
+                    "Actuarial Associate",
+                    "Underwriting Specialist",
+                    "Credit Risk Modeling Analyst"
+                  ],
+                  "exams": [
+                    "ACET (Actuarial Common Entrance Test)",
+                    "CAT",
+                    "CUET UG"
+                  ],
+                  "placementRelevance": "Global investment banks, reinsurers, and rating agencies at ₹9.0L - ₹24L / yr.",
+                  "topColleges": [
+                    "Institute of Actuaries of India (IAI)",
+                    "Christ University",
+                    "Delhi University",
+                    "IIM Ahmedabad"
+                  ],
+                  "annualTuitionFees": "₹60,000 - ₹1.80L / yr"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "medical-health",
+      "name": "Medical, Allied Health & Life Sciences",
+      "icon": "🩺",
+      "badge": "Healthcare & Life Sciences",
+      "description": "Clinical medicine, dental surgery, AYUSH systems, pharmacology, critical nursing, and biotechnology research.",
+      "groups": [
+        {
+          "name": "Core Medicine & Clinical",
+          "subfields": [
+            {
+              "id": "mbbs",
+              "name": "MBBS",
+              "icon": "⚕️",
+              "tagline": "Premier clinical medicine, surgical disciplines, hospital ward rotations, and diagnostics.",
+              "programs": [
+                {
+                  "id": "prog-mbbs",
+                  "name": "MBBS (Bachelor of Medicine & Bachelor of Surgery)",
+                  "degreeType": "Undergraduate (UG Professional)",
+                  "duration": "5.5 Years (4.5 Yrs Academics + 1 Yr Compulsory Rotating Internship)",
+                  "eligibility": "10+2 with Physics, Chemistry & Biology/Biotech with min. 50% & valid NEET UG score",
+                  "overview": "The premier clinical medical qualification preparing physicians and surgeons through rigorous pre-clinical, para-clinical, and hospital bedside rotations.",
+                  "specializations": [
+                    "Internal Medicine",
+                    "General Surgery",
+                    "Pediatrics & Obstetrics"
+                  ],
+                  "skills": [
+                    "Clinical Diagnosis & Patient History",
+                    "Pharmacology & Therapeutics",
+                    "Surgical & Suturing Techniques",
+                    "Emergency Life Support (BLS/ACLS)",
+                    "Medical Ethics & Communication"
+                  ],
+                  "domains": [
+                    "Clinical Medicine",
+                    "Surgery",
+                    "Emergency Care"
+                  ],
+                  "careers": [
+                    "Medical Practitioner / Physician",
+                    "Resident Medical Officer",
+                    "Hospital Administrator",
+                    "Medical Officer (UPSC CMS)"
+                  ],
+                  "exams": [
+                    "NEET UG (National Eligibility cum Entrance Test)",
+                    "NExT (National Exit Test for License)"
+                  ],
+                  "placementRelevance": "Essential clinical qualification with government and private hospital appointments starting at ₹10L - ₹24L / yr.",
+                  "topColleges": [
+                    "AIIMS Delhi",
+                    "CMC Vellore",
+                    "JIPMER Puducherry",
+                    "KMC Manipal",
+                    "King George's Medical University"
+                  ],
+                  "annualTuitionFees": "₹1.20L - ₹16.5L / yr"
+                }
+              ]
+            },
+            {
+              "id": "bds",
+              "name": "BDS",
+              "icon": "🦷",
+              "tagline": "Dental surgery, orthodontics, cosmetic smile restoration, and maxillofacial surgery.",
+              "programs": [
+                {
+                  "id": "prog-bds",
+                  "name": "BDS (Bachelor of Dental Surgery)",
+                  "degreeType": "Undergraduate (UG Professional)",
+                  "duration": "5 Years (4 Yrs Academics + 1 Yr Paid Rotatory Internship)",
+                  "eligibility": "10+2 with Physics, Chemistry & Biology with min. 50% & NEET UG Qualification",
+                  "overview": "Specialized clinical degree in dental diagnosis, oral pathology, maxillofacial surgery, cosmetic smile restoration, and orthodontics.",
+                  "specializations": [
+                    "Orthodontics",
+                    "Prosthodontics & Implants",
+                    "Oral & Maxillofacial Surgery"
+                  ],
+                  "skills": [
+                    "Dental Radiology & Imaging",
+                    "Tooth Restoration & Endodontics (RCT)",
+                    "Oral Surgical Extractions",
+                    "Prosthetic Design & Implants",
+                    "Dental Hygiene & Periodontics"
+                  ],
+                  "domains": [
+                    "Orthodontics",
+                    "Dental Surgery",
+                    "Oral Pathology"
+                  ],
+                  "careers": [
+                    "Dental Surgeon",
+                    "Cosmetic Dentist",
+                    "Public Health Dentist",
+                    "Clinical Dental Specialist"
+                  ],
+                  "exams": [
+                    "NEET UG",
+                    "NEET MDS (for Specialization)"
+                  ],
+                  "placementRelevance": "Private dental clinics, hospital dental departments, and independent practice at ₹6.0L - ₹15L / yr.",
+                  "topColleges": [
+                    "Maulana Azad Institute of Dental Sciences Delhi",
+                    "Manipal College of Dental Sciences",
+                    "SDM College of Dental Sciences",
+                    "ABSMIDS Mangalore"
+                  ],
+                  "annualTuitionFees": "₹1.50L - ₹6.50L / yr"
+                }
+              ]
+            },
+            {
+              "id": "bams",
+              "name": "BAMS",
+              "icon": "🌿",
+              "tagline": "Ayurvedic pharmacology, Panchakarma therapy, and holistic natural healing.",
+              "programs": [
+                {
+                  "id": "prog-bams",
+                  "name": "BAMS (Bachelor of Ayurvedic Medicine & Surgery)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "5.5 Years (4.5 Yrs + 1 Yr Internship)",
+                  "eligibility": "10+2 with PCB (min. 50%) & NEET UG qualification",
+                  "overview": "Holistic clinical qualification synthesizing classical Ayurvedic principles with modern diagnostic science, Panchakarma, and herbal therapeutics.",
+                  "specializations": [
+                    "Panchakarma",
+                    "Dravyaguna (Pharmacology)",
+                    "Kayachikitsa (Internal Medicine)"
+                  ],
+                  "skills": [
+                    "Nadi Pariksha (Pulse Diagnosis)",
+                    "Panchakarma Procedures",
+                    "Herbal Toxicology & Formulations",
+                    "Dietary Therapeutics",
+                    "Integrated Clinical Diagnosis"
+                  ],
+                  "domains": [
+                    "Ayurvedic Medicine",
+                    "Panchakarma",
+                    "Herbal Pharmacology"
+                  ],
+                  "careers": [
+                    "Ayurvedic Doctor / Vaidya",
+                    "Panchakarma Specialist",
+                    "Ayurvedic Drug R&D Scientist",
+                    "Wellness Center Medical Director"
+                  ],
+                  "exams": [
+                    "NEET UG",
+                    "AYUSH All-India Counseling"
+                  ],
+                  "placementRelevance": "AYUSH hospitals, wellness retreats, herbal pharmaceutical firms at ₹5.5L - ₹14L / yr.",
+                  "topColleges": [
+                    "Institute of Medical Sciences BHU Varanasi",
+                    "National Institute of Ayurveda Jaipur",
+                    "Government Ayurvedic College Kerala"
+                  ],
+                  "annualTuitionFees": "₹80,000 - ₹3.50L / yr"
+                }
+              ]
+            },
+            {
+              "id": "bhms",
+              "name": "BHMS",
+              "icon": "💊",
+              "tagline": "Homeopathic materia medica, repertory studies, and constitutional chronic care.",
+              "programs": [
+                {
+                  "id": "prog-bhms",
+                  "name": "BHMS (Bachelor of Homeopathic Medicine & Surgery)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "5.5 Years (4.5 Yrs + 1 Yr Internship)",
+                  "eligibility": "10+2 with Physics, Chemistry & Biology (min. 50%) with NEET score",
+                  "overview": "Clinical degree focusing on the law of similars, individual constitutional treatment, chronic ailment therapies, and homeopathic medicine.",
+                  "specializations": [
+                    "Homeopathic Materia Medica",
+                    "Repertorization",
+                    "Constitutional Medicine"
+                  ],
+                  "skills": [
+                    "Case Taking & Patient Repertorization",
+                    "Homeopathic Materia Medica",
+                    "Remedy Potentization",
+                    "Preventive Healthcare",
+                    "Chronic Disease Management"
+                  ],
+                  "domains": [
+                    "Homeopathic Therapeutics",
+                    "Repertory Studies",
+                    "Constitutional Medicine"
+                  ],
+                  "careers": [
+                    "Homeopathic Physician",
+                    "Clinical Researcher",
+                    "Homeopathic Pharmacy Consultant",
+                    "Public Health Medical Officer"
+                  ],
+                  "exams": [
+                    "NEET UG"
+                  ],
+                  "placementRelevance": "Clinical consultations, homeopathic dispensaries, and international research institutes at ₹5.0L - ₹12L / yr.",
+                  "topColleges": [
+                    "National Institute of Homoeopathy Kolkata",
+                    "Nehru Homoeopathic Medical College Delhi",
+                    "Father Muller Homoeopathic Medical College"
+                  ],
+                  "annualTuitionFees": "₹60,000 - ₹2.80L / yr"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Allied Health & Biotechnology",
+          "subfields": [
+            {
+              "id": "bpharm",
+              "name": "B.Pharm",
+              "icon": "🧪",
+              "tagline": "Pharmaceutical synthesis, drug formulation, quality control, and clinical trials.",
+              "programs": [
+                {
+                  "id": "prog-bpharm",
+                  "name": "Bachelor of Pharmacy (B.Pharm)",
+                  "degreeType": "Undergraduate (UG Professional)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 with Physics, Chemistry and Biology/Mathematics (min. 55%)",
+                  "overview": "Science and industrial technology of drug formulation, synthesis, quality analysis, clinical pharmacology, and regulatory drug compliance.",
+                  "specializations": [
+                    "Pharmaceutical Formulation",
+                    "Quality Assurance & QC",
+                    "Clinical Pharmacology"
+                  ],
+                  "skills": [
+                    "Drug Synthesis & Analysis",
+                    "HPLC / GC Spectroscopy",
+                    "Pharmacokinetics & Dynamics",
+                    "Good Manufacturing Practices (GMP)",
+                    "Clinical Trial Documentation"
+                  ],
+                  "domains": [
+                    "Pharmaceutical Chemistry",
+                    "Pharmacology",
+                    "Drug Formulation & QA"
+                  ],
+                  "careers": [
+                    "Pharmaceutical Formulation Scientist",
+                    "Quality Assurance (QA/QC) Analyst",
+                    "Clinical Research Associate (CRA)",
+                    "Registered Pharmacist"
+                  ],
+                  "exams": [
+                    "State Pharmacy CETs",
+                    "GPAT (for M.Pharm)",
+                    "NEET / CUET UG"
+                  ],
+                  "placementRelevance": "Global pharma leaders (Sun Pharma, Cipla, Dr. Reddy's, Pfizer) at ₹5.5L - ₹14L / yr.",
+                  "topColleges": [
+                    "Jamia Hamdard Delhi",
+                    "NIPER SAS Nagar",
+                    "BITS Pilani",
+                    "Manipal College of Pharmaceutical Sciences",
+                    "JSS College of Pharmacy"
+                  ],
+                  "annualTuitionFees": "₹75,000 - ₹2.20L / yr"
+                }
+              ]
+            },
+            {
+              "id": "nursing",
+              "name": "B.Sc Nursing",
+              "icon": "💉",
+              "tagline": "Critical care nursing, pediatric care, maternal health, and emergency patient triage.",
+              "programs": [
+                {
+                  "id": "prog-nursing",
+                  "name": "B.Sc Nursing",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (Includes Clinical Rotations)",
+                  "eligibility": "10+2 with Physics, Chemistry & Biology with min. 45-50% & English",
+                  "overview": "Prepares clinical healthcare nurses in acute critical care, hospital ward management, maternal health, and emergency patient resuscitation.",
+                  "specializations": [
+                    "Critical Care Nursing",
+                    "Pediatric & Maternal Care",
+                    "Surgical & Trauma Nursing"
+                  ],
+                  "skills": [
+                    "Patient Triage & Vital Monitoring",
+                    "Emergency & Critical Care Procedures",
+                    "Medication Administration & IV Therapy",
+                    "Wound Care & Infection Control",
+                    "Patient Care Documentation"
+                  ],
+                  "domains": [
+                    "Critical Care Nursing",
+                    "Pediatric Care",
+                    "Community Health"
+                  ],
+                  "careers": [
+                    "Registered Staff Nurse",
+                    "ICU / Critical Care Specialist Nurse",
+                    "Nursing Officer (AIIMS / Military)",
+                    "Clinical Nursing Instructor"
+                  ],
+                  "exams": [
+                    "AIIMS Nursing Entrance",
+                    "State Nursing CETs",
+                    "NEET (select states)"
+                  ],
+                  "placementRelevance": "Huge global demand across India, UK (NHS), US, Australia, and Gulf nations starting at ₹5.0L - ₹12L / yr (Global: ₹25L+).",
+                  "topColleges": [
+                    "AIIMS Delhi (College of Nursing)",
+                    "CMC Vellore",
+                    "Manipal College of Nursing",
+                    "RAK College of Nursing Delhi"
+                  ],
+                  "annualTuitionFees": "₹45,000 - ₹1.60L / yr"
+                }
+              ]
+            },
+            {
+              "id": "bpt",
+              "name": "BPT (Physiotherapy)",
+              "icon": "🏃",
+              "tagline": "Sports rehabilitation, musculoskeletal mobilization, and neurological recovery.",
+              "programs": [
+                {
+                  "id": "prog-bpt",
+                  "name": "Bachelor of Physiotherapy (BPT)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4.5 Years (4 Yrs Academics + 6 Months Hospital Internship)",
+                  "eligibility": "10+2 with Physics, Chemistry & Biology with min. 50%",
+                  "overview": "Clinical rehabilitation discipline treating musculoskeletal injuries, neurological disorders, post-operative mobility, and sports injuries without drugs.",
+                  "specializations": [
+                    "Sports Rehabilitation",
+                    "Neuro-Physiotherapy",
+                    "Orthopedic Rehab"
+                  ],
+                  "skills": [
+                    "Manual Therapy & Joint Mobilization",
+                    "Electrotherapy & Ultrasound Modalities",
+                    "Biomechanics & Gait Analysis",
+                    "Post-Surgical Exercise Prescription",
+                    "Sports Injury Taping"
+                  ],
+                  "domains": [
+                    "Sports Rehabilitation",
+                    "Neuro-Physiotherapy",
+                    "Orthopedic Rehab"
+                  ],
+                  "careers": [
+                    "Physiotherapist",
+                    "Sports Rehabilitation Specialist",
+                    "Ergonomics Consultant",
+                    "Neuro-Rehab Physiotherapist"
+                  ],
+                  "exams": [
+                    "State Allied Health CETs",
+                    "NEET / University Entrance Exams"
+                  ],
+                  "placementRelevance": "Hospitals, sports franchises, orthopedic centers, and private rehab clinics at ₹5.5L - ₹14L / yr.",
+                  "topColleges": [
+                    "Manipal College of Health Professions",
+                    "CMC Vellore",
+                    "Kasturba Medical College",
+                    "Apollo College of Physiotherapy"
+                  ],
+                  "annualTuitionFees": "₹55,000 - ₹1.80L / yr"
+                }
+              ]
+            },
+            {
+              "id": "bmlt",
+              "name": "BMLT",
+              "icon": "🔬",
+              "tagline": "Clinical hematology, molecular PCR assays, microbiology, and diagnostic pathology.",
+              "programs": [
+                {
+                  "id": "prog-bmlt",
+                  "name": "B.Sc Medical Laboratory Technology (BMLT)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 - 3.5 Years (Includes Clinical Lab Rotation)",
+                  "eligibility": "10+2 with PCB / PCM (min. 50%)",
+                  "overview": "Operating advanced diagnostic analyzers, blood pathology assays, microbial cultures, and molecular PCR tests for disease detection.",
+                  "specializations": [
+                    "Clinical Hematology",
+                    "Microbiology & Serology",
+                    "Molecular Diagnostics & PCR"
+                  ],
+                  "skills": [
+                    "Automated Blood Analyzers & Centrifuges",
+                    "Microbial Culture & Gram Staining",
+                    "PCR & Molecular Diagnostics",
+                    "Histopathology Tissue Sectioning",
+                    "Lab Safety & Quality Control (NABL)"
+                  ],
+                  "domains": [
+                    "Clinical Hematology",
+                    "Microbiology",
+                    "Molecular Diagnostics"
+                  ],
+                  "careers": [
+                    "Medical Lab Technologist",
+                    "Clinical Diagnostic Specialist",
+                    "Pathology Lab Supervisor",
+                    "Biomedical QC Officer"
+                  ],
+                  "exams": [
+                    "State Para-Medical CETs",
+                    "CUET UG",
+                    "Merit Based"
+                  ],
+                  "placementRelevance": "Diagnostic chains (Dr Lal PathLabs, SRL Diagnostics, Apollo) and hospital labs at ₹4.5L - ₹10L / yr.",
+                  "topColleges": [
+                    "Manipal Academy of Higher Education",
+                    "Jamia Hamdard",
+                    "Christian Medical College",
+                    "Apollo Hospitals Educational Trust"
+                  ],
+                  "annualTuitionFees": "₹40,000 - ₹1.25L / yr"
+                }
+              ]
+            },
+            {
+              "id": "biotech",
+              "name": "Biotechnology",
+              "icon": "🧬",
+              "tagline": "Recombinant DNA, genetic engineering (CRISPR), industrial fermentation, and biologics.",
+              "programs": [
+                {
+                  "id": "prog-biotech",
+                  "name": "B.Tech / B.Sc in Biotechnology",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 - 4 Years",
+                  "eligibility": "10+2 with Physics, Chemistry & Biology/Mathematics (min. 60%)",
+                  "overview": "Harnessing living cellular systems, genetic engineering (CRISPR), industrial fermentation, and biologic vaccine development.",
+                  "specializations": [
+                    "Genetic Engineering & CRISPR",
+                    "Bioprocess & Vaccine Biologics",
+                    "Genomics & Proteomics"
+                  ],
+                  "skills": [
+                    "CRISPR & Recombinant DNA Tech",
+                    "Bioreactor Operation & Scale-up",
+                    "Mammalian Cell Culture",
+                    "Gel Electrophoresis & Western Blot",
+                    "Bio-Safety Protocols (GLP/GMP)"
+                  ],
+                  "domains": [
+                    "Genetic Engineering",
+                    "Bioprocess",
+                    "Vaccine Biologics"
+                  ],
+                  "careers": [
+                    "Biotechnology Research Scientist",
+                    "Bioprocess Engineer",
+                    "Genomics Specialist",
+                    "Regulatory Affairs Executive"
+                  ],
+                  "exams": [
+                    "JEE Main",
+                    "CUET UG",
+                    "BITSAT",
+                    "State Engineering CETs"
+                  ],
+                  "placementRelevance": "Biopharma (Biocon, Serum Institute, Bharat Biotech) and genomic R&D labs at ₹6.5L - ₹16L / yr.",
+                  "topColleges": [
+                    "IIT Delhi",
+                    "IIT Kharagpur",
+                    "BITS Pilani",
+                    "Vellore Institute",
+                    "Manipal Academy"
+                  ],
+                  "annualTuitionFees": "₹85,000 - ₹2.60L / yr"
+                }
+              ]
+            },
+            {
+              "id": "bioinformatics",
+              "name": "Bioinformatics",
+              "icon": "💻",
+              "tagline": "Genomic sequence alignment, computational biology, and in-silico drug discovery.",
+              "programs": [
+                {
+                  "id": "prog-bioinfo",
+                  "name": "B.Sc / B.Tech in Bioinformatics & Computational Biology",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 - 4 Years",
+                  "eligibility": "10+2 with Biology / Math / Computer Science (min. 55-60%)",
+                  "overview": "Applying computer algorithms, machine learning, and statistical modeling to map the human genome, analyze biological data, and design pharmaceutical drugs.",
+                  "specializations": [
+                    "Genomic Sequencing (NGS)",
+                    "Computer-Aided Drug Design (CADD)",
+                    "Structural Biology"
+                  ],
+                  "skills": [
+                    "BioPython & R (Bioconductor)",
+                    "BLAST & Sequence Alignment",
+                    "PyMOL / AutoDock Molecular Modeling",
+                    "Next-Gen Sequencing (NGS) Pipelines",
+                    "SQL for Biological Databases"
+                  ],
+                  "domains": [
+                    "Genomic Data",
+                    "Drug Discovery",
+                    "Computational Biology"
+                  ],
+                  "careers": [
+                    "Bioinformatics Analyst",
+                    "Computational Biologist",
+                    "In-silico Drug Designer",
+                    "Genomics Data Scientist"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "JEE Main",
+                    "State CETs"
+                  ],
+                  "placementRelevance": "Pharma R&D, precision medicine startups, and genomic diagnostics at ₹7.5L - ₹18L / yr.",
+                  "topColleges": [
+                    "IIT Delhi",
+                    "IISc Bengaluru",
+                    "IBAB Bengaluru",
+                    "Pondicherry University",
+                    "Vellore Institute"
+                  ],
+                  "annualTuitionFees": "₹70,000 - ₹2.20L / yr"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design-media",
+      "name": "Design, Media & Creative Arts",
+      "icon": "🎨",
+      "badge": "Creativity & Media",
+      "description": "Visual arts, haute couture, user experience (UI/UX), industrial products, 3D gaming, and immersive AR/VR media.",
+      "groups": [
+        {
+          "name": "Traditional & Creative Arts",
+          "subfields": [
+            {
+              "id": "bfa",
+              "name": "BFA (Fine Arts)",
+              "icon": "🖌️",
+              "tagline": "Atelier drawing, classical painting, sculpture, and contemporary illustration.",
+              "programs": [
+                {
+                  "id": "prog-bfa",
+                  "name": "Bachelor of Fine Arts (BFA)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 in any stream with creative aptitude test",
+                  "overview": "Mastering the fundamentals of fine arts, figurative painting, tactile sculpture, contemporary illustration, and museum-grade curation.",
+                  "specializations": [
+                    "Applied Art & Advertising",
+                    "Painting & Illustration",
+                    "Sculpture & Ceramics"
+                  ],
+                  "skills": [
+                    "Anatomy Drawing & Perspective",
+                    "Color Theory & Mediums",
+                    "Digital Painting (Procreate/Photoshop)",
+                    "Visual Composition",
+                    "Exhibition Curation"
+                  ],
+                  "domains": [
+                    "Studio Art",
+                    "Illustration",
+                    "Sculpture"
+                  ],
+                  "careers": [
+                    "Commercial Illustrator",
+                    "Art Director",
+                    "Exhibition Curator",
+                    "Fine Artist & Muralist"
+                  ],
+                  "exams": [
+                    "BHU BFA Entrance",
+                    "Sir JJ School of Art Entrance",
+                    "CUET UG"
+                  ],
+                  "placementRelevance": "Creative ad agencies, publishing houses, gaming art studios, and private galleries at ₹5.0L - ₹12L / yr.",
+                  "topColleges": [
+                    "Sir J.J. Institute of Applied Art Mumbai",
+                    "Faculty of Visual Arts BHU",
+                    "College of Art Delhi",
+                    "Kala Bhavana Santiniketan"
+                  ],
+                  "annualTuitionFees": "₹40,000 - ₹1.40L / yr"
+                }
+              ]
+            },
+            {
+              "id": "fashion",
+              "name": "Fashion Design",
+              "icon": "👗",
+              "tagline": "Apparel drafting, textile science, 3D virtual fashion (CLO 3D), and runway collections.",
+              "programs": [
+                {
+                  "id": "prog-fashion",
+                  "name": "Bachelor of Design in Fashion Design (B.Des)",
+                  "degreeType": "Undergraduate (UG Professional)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 in any stream with NIFT / UCEED entrance qualification",
+                  "overview": "Creative concept development, garment draping, textile science, 3D virtual fashion design, and runway collection production.",
+                  "specializations": [
+                    "Haute Couture Apparel",
+                    "Sustainable Textile Technology",
+                    "Digital 3D Fashion"
+                  ],
+                  "skills": [
+                    "Fashion Illustration (CLO 3D)",
+                    "Pattern Making & Draping",
+                    "Garment Construction",
+                    "Textile Science & Dyeing",
+                    "Trend Forecasting (WGSN)"
+                  ],
+                  "domains": [
+                    "Haute Couture",
+                    "Textile Tech",
+                    "Fashion Merchandising"
+                  ],
+                  "careers": [
+                    "Fashion Designer",
+                    "Apparel Stylist",
+                    "Fashion Merchandiser",
+                    "Textile & Trend Forecaster"
+                  ],
+                  "exams": [
+                    "NIFT Entrance Exam (CAT/GAT)",
+                    "UCEED",
+                    "NID DAT"
+                  ],
+                  "placementRelevance": "Luxury fashion houses, international retail apparel brands, and export design firms at ₹6.0L - ₹18L / yr.",
+                  "topColleges": [
+                    "NIFT New Delhi",
+                    "NIFT Mumbai",
+                    "NIFT Bengaluru",
+                    "Pearl Academy",
+                    "National Institute of Design (NID)"
+                  ],
+                  "annualTuitionFees": "₹1.20L - ₹3.80L / yr"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Modern Digital & Interactive",
+          "subfields": [
+            {
+              "id": "uiux",
+              "name": "UI/UX Design",
+              "icon": "📱",
+              "tagline": "Interaction architecture, wireframing, enterprise design systems (Figma), and user research.",
+              "programs": [
+                {
+                  "id": "prog-uiux",
+                  "name": "Bachelor of Design in UI/UX & Interaction Design",
+                  "degreeType": "Undergraduate (UG Professional)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 from any stream with valid UCEED / NID DAT score or design test",
+                  "overview": "Designing intuitive digital applications, mobile interfaces, enterprise design systems, and conducting qualitative user research.",
+                  "specializations": [
+                    "Interaction Design",
+                    "User Experience Research (UXR)",
+                    "Design Systems Architecture"
+                  ],
+                  "skills": [
+                    "Figma & Prototyping",
+                    "User Journey Mapping & Wireframing",
+                    "Design Systems & Token Architecture",
+                    "Usability Testing & Heuristic Evaluation",
+                    "Micro-Interactions (Framer)"
+                  ],
+                  "domains": [
+                    "User Research",
+                    "Interaction Design",
+                    "Design Systems"
+                  ],
+                  "careers": [
+                    "Product Designer",
+                    "UI/UX Designer",
+                    "User Experience Researcher (UXR)",
+                    "Interaction Designer"
+                  ],
+                  "exams": [
+                    "UCEED (IIT Bombay)",
+                    "NID DAT",
+                    "SEED (Symbiosis)",
+                    "MIT-DAT"
+                  ],
+                  "placementRelevance": "Top tech product companies (Swiggy, Razorpay, CRED, Google) at ₹10L - ₹28L / yr.",
+                  "topColleges": [
+                    "NID Ahmedabad",
+                    "IDC School of Design IIT Bombay",
+                    "IIT Guwahati (DoD)",
+                    "Srishti Manipal",
+                    "Symbiosis Institute of Design"
+                  ],
+                  "annualTuitionFees": "₹1.40L - ₹4.20L / yr"
+                }
+              ]
+            },
+            {
+              "id": "productdesign",
+              "name": "Product Design",
+              "icon": "📦",
+              "tagline": "Physical consumer electronics, 3D CAD modeling, ergonomics, and rapid prototyping.",
+              "programs": [
+                {
+                  "id": "prog-product",
+                  "name": "Bachelor of Design in Industrial & Product Design",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 in any stream (Science/Math helpful) with UCEED / NID score",
+                  "overview": "Conceiving, modeling, and prototyping physical consumer electronics, smart hardware devices, home mobility, and ergonomic furniture.",
+                  "specializations": [
+                    "Consumer Electronics Design",
+                    "Ergonomics & Mobility",
+                    "Sustainable Material Hardware"
+                  ],
+                  "skills": [
+                    "Rhino 3D / SolidWorks",
+                    "Rapid 3D Printing & Model Making",
+                    "Ergonomics & Anthropometry",
+                    "Design for Manufacturing (DFM)",
+                    "Rendering (KeyShot)"
+                  ],
+                  "domains": [
+                    "Physical Product Design",
+                    "Consumer Electronics",
+                    "Rapid Prototyping"
+                  ],
+                  "careers": [
+                    "Industrial Product Designer",
+                    "Consumer Hardware Designer",
+                    "Packaging Specialist",
+                    "Design Strategist"
+                  ],
+                  "exams": [
+                    "UCEED",
+                    "NID DAT",
+                    "CEED (for M.Des)"
+                  ],
+                  "placementRelevance": "Automotive studios, consumer appliance brands, and smart hardware startups at ₹8.5L - ₹22L / yr.",
+                  "topColleges": [
+                    "NID Ahmedabad",
+                    "IIT Bombay (IDC)",
+                    "MIT Institute of Design Pune",
+                    "Srishti Institute"
+                  ],
+                  "annualTuitionFees": "₹1.30L - ₹3.90L / yr"
+                }
+              ]
+            },
+            {
+              "id": "graphicdesign",
+              "name": "Graphic Design",
+              "icon": "📐",
+              "tagline": "Brand identity systems, modern typography, editorial layouts, and visual communication.",
+              "programs": [
+                {
+                  "id": "prog-graphic",
+                  "name": "B.Des in Graphic Design & Visual Communication",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years (8 Semesters)",
+                  "eligibility": "10+2 in any stream with design aptitude",
+                  "overview": "Visual language, corporate branding systems, modern typography, packaging design, and multi-media visual storytelling.",
+                  "specializations": [
+                    "Brand Identity Systems",
+                    "Typography & Editorial Design",
+                    "Motion Design"
+                  ],
+                  "skills": [
+                    "Adobe Creative Suite (Illustrator, InDesign, Photoshop)",
+                    "Typography & Grid Systems",
+                    "Brand Strategy & Guidelines",
+                    "Packaging Die-Lines",
+                    "Motion Graphics (After Effects)"
+                  ],
+                  "domains": [
+                    "Brand Identity",
+                    "Typography",
+                    "Visual Communication"
+                  ],
+                  "careers": [
+                    "Brand Identity Designer",
+                    "Senior Graphic Artist",
+                    "Creative Director",
+                    "Visual Communications Lead"
+                  ],
+                  "exams": [
+                    "NID DAT",
+                    "UCEED",
+                    "MIT-DAT",
+                    "SEED"
+                  ],
+                  "placementRelevance": "Brand consultancies, marketing agencies, and global publishing media at ₹6.5L - ₹18L / yr.",
+                  "topColleges": [
+                    "NID Ahmedabad",
+                    "Srishti Manipal",
+                    "Symbiosis Institute of Design",
+                    "Pearl Academy",
+                    "MIT Institute of Design"
+                  ],
+                  "annualTuitionFees": "₹95,000 - ₹3.00L / yr"
+                }
+              ]
+            },
+            {
+              "id": "gamedev",
+              "name": "Game Development",
+              "icon": "🎮",
+              "tagline": "Game engine programming, Unreal Engine 5, Unity C#, and real-time level design.",
+              "programs": [
+                {
+                  "id": "prog-gamedev",
+                  "name": "B.Sc in Game Development & Real-Time Engines",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 - 4 Years",
+                  "eligibility": "10+2 in any stream (Science/Computer helpful for Game Dev)",
+                  "overview": "Architecting real-time video games, player physics, artificial intelligence gameplay, shaders, and cross-platform publishing.",
+                  "specializations": [
+                    "Game Engine Architecture",
+                    "Gameplay Programming",
+                    "Level & Mechanics Design"
+                  ],
+                  "skills": [
+                    "Unreal Engine 5 (C++)",
+                    "Unity (C#)",
+                    "Game Physics & Shaders",
+                    "3D Math & Linear Algebra",
+                    "Multiplayer Networking"
+                  ],
+                  "domains": [
+                    "Game Engines",
+                    "Interactive Mechanics",
+                    "Multiplayer Systems"
+                  ],
+                  "careers": [
+                    "Game Developer",
+                    "Gameplay Programmer",
+                    "Level Designer",
+                    "Technical Artist"
+                  ],
+                  "exams": [
+                    "University Specific Creative Tests",
+                    "Merit Based"
+                  ],
+                  "placementRelevance": "AAA gaming studios (Ubisoft, EA, Rockstar India) and mobile gaming firms at ₹8.0L - ₹24L / yr.",
+                  "topColleges": [
+                    "Whistling Woods International Mumbai",
+                    "Srishti Institute",
+                    "Manipal University",
+                    "Arena Animation Guild"
+                  ],
+                  "annualTuitionFees": "₹1.10L - ₹3.50L / yr"
+                }
+              ]
+            },
+            {
+              "id": "vfx",
+              "name": "Visual Effects (VFX)",
+              "icon": "🎬",
+              "tagline": "CGI compositing, particle simulations, 3D character rigging, and cinematic post-production.",
+              "programs": [
+                {
+                  "id": "prog-vfx",
+                  "name": "B.Sc in Visual Effects (VFX) & Animation",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 - 4 Years",
+                  "eligibility": "10+2 in any stream",
+                  "overview": "Producing cinematic visual effects (VFX), high-end 3D character animation, photorealistic particle simulations, and live-action CGI compositing.",
+                  "specializations": [
+                    "VFX Compositing (Nuke)",
+                    "3D Animation & Rigging",
+                    "Houdini Particle FX"
+                  ],
+                  "skills": [
+                    "Nuke & After Effects",
+                    "Autodesk Maya & Blender",
+                    "Houdini FX",
+                    "ZBrush Digital Sculpting",
+                    "Lighting & Render Engines (Arnold/V-Ray)"
+                  ],
+                  "domains": [
+                    "CGI Compositing",
+                    "Particle FX",
+                    "3D Animation"
+                  ],
+                  "careers": [
+                    "VFX Compositor",
+                    "3D Animator",
+                    "FX Simulation Artist",
+                    "Lighting & Rendering Specialist"
+                  ],
+                  "exams": [
+                    "Creative Portfolio Review & Entrance Test"
+                  ],
+                  "placementRelevance": "Hollywood and Bollywood post-production houses (DNEG, MPC, Prime Focus) at ₹7.0L - ₹22L / yr.",
+                  "topColleges": [
+                    "Whistling Woods International Mumbai",
+                    "Arena Animation",
+                    "Maya Academy of Advanced Cinematics",
+                    "Srishti Institute"
+                  ],
+                  "annualTuitionFees": "₹90,000 - ₹2.80L / yr"
+                }
+              ]
+            },
+            {
+              "id": "arvr",
+              "name": "Immersive Media (AR/VR)",
+              "icon": "🥽",
+              "tagline": "Spatial computing, hand-tracking, Apple visionOS, and virtual simulation worlds.",
+              "programs": [
+                {
+                  "id": "prog-arvr",
+                  "name": "B.Des / B.Sc in Spatial Computing & AR/VR",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 - 4 Years",
+                  "eligibility": "10+2 with Math/Science or Creative aptitude (min. 55%)",
+                  "overview": "Architecting next-generation spatial computing interfaces, virtual reality medical/defense simulations, and augmented reality wearables.",
+                  "specializations": [
+                    "Spatial User Experience",
+                    "Augmented Reality Wearables",
+                    "Virtual Simulation Systems"
+                  ],
+                  "skills": [
+                    "Unity XR Interaction Toolkit",
+                    "Unreal Engine VR",
+                    "Meta Quest & visionOS SDKs",
+                    "Spatial Audio & 3D Interaction",
+                    "Blender 3D Assets"
+                  ],
+                  "domains": [
+                    "Spatial UX",
+                    "Virtual Reality",
+                    "Augmented Reality"
+                  ],
+                  "careers": [
+                    "AR/VR Experience Designer",
+                    "Spatial Computing Engineer",
+                    "Metaverse World Architect",
+                    "Virtual Simulation Developer"
+                  ],
+                  "exams": [
+                    "UCEED",
+                    "Design Entrance Exams",
+                    "Direct University Evaluation"
+                  ],
+                  "placementRelevance": "Metaverse, spatial computing hardware firms (Apple, Meta, Qualcomm), defense simulators at ₹9.0L - ₹26L / yr.",
+                  "topColleges": [
+                    "IIT Madras (IoE Immersive Lab)",
+                    "NID Ahmedabad",
+                    "Srishti Manipal",
+                    "UPES Dehradun"
+                  ],
+                  "annualTuitionFees": "₹1.25L - ₹3.80L / yr"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arts-humanities",
+      "name": "Arts, Humanities & Social Sciences",
+      "icon": "🏛️",
+      "badge": "Society, Culture & Behavior",
+      "description": "Literary criticism, historical civilizations, diplomatic governance, cognitive psychology, and investigative journalism.",
+      "groups": [
+        {
+          "name": "Core Humanities & Social Studies",
+          "subfields": [
+            {
+              "id": "literature",
+              "name": "English & World Literature",
+              "icon": "📖",
+              "tagline": "Comparative world literature, literary criticism, creative discourse, and editorial publishing.",
+              "programs": [
+                {
+                  "id": "prog-ba-lit",
+                  "name": "B.A. English & World Literature",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 in any stream (min. 50-55%)",
+                  "overview": "In-depth study of world literature, cultural discourse, textual criticism, linguistic structures, and high-impact written communication.",
+                  "specializations": [
+                    "Literary Criticism",
+                    "Comparative Literature",
+                    "Creative & Publishing Writing"
+                  ],
+                  "skills": [
+                    "Critical Discourse Analysis",
+                    "Creative & Technical Writing",
+                    "Literary Theory & Hermeneutics",
+                    "Proofreading & Editorial Publishing",
+                    "Rhetoric & Public Speaking"
+                  ],
+                  "domains": [
+                    "Literary Criticism",
+                    "Comparative Literature",
+                    "Creative Writing"
+                  ],
+                  "careers": [
+                    "Publishing Editor",
+                    "Content Strategist & Copywriter",
+                    "Literary Critic & Author",
+                    "Corporate Communications Specialist"
+                  ],
+                  "exams": [
+                    "CUET UG (Delhi University / BHU)",
+                    "JNU Entrance",
+                    "Merit Based"
+                  ],
+                  "placementRelevance": "Publishing houses (Penguin, Oxford), media organizations, and corporate communications at ₹4.5L - ₹12L / yr.",
+                  "topColleges": [
+                    "St. Stephen's College DU",
+                    "Lady Shri Ram College (LSR)",
+                    "Loyola College Chennai",
+                    "Christ University",
+                    "Presidency University Kolkata"
+                  ],
+                  "annualTuitionFees": "₹20,000 - ₹65,000 / yr"
+                }
+              ]
+            },
+            {
+              "id": "history",
+              "name": "History & Archaeological Heritage",
+              "icon": "🏺",
+              "tagline": "Ancient civilizational roots, medieval geopolitical empires, archival records, and museum curation.",
+              "programs": [
+                {
+                  "id": "prog-ba-history",
+                  "name": "B.A. History & Archaeological Heritage",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 from any recognized board (min. 50%)",
+                  "overview": "Analyzing historical trajectories, geopolitical evolutions, archival records, civilization roots, and cultural heritage conservation.",
+                  "specializations": [
+                    "Ancient & Medieval Civilizations",
+                    "Modern World Geopolitics",
+                    "Archaeological Methods & Numismatics"
+                  ],
+                  "skills": [
+                    "Archival Source Evaluation",
+                    "Historiographical Analysis",
+                    "Epigraphy & Numismatics",
+                    "Heritage Preservation Protocols",
+                    "Analytical Essay Writing"
+                  ],
+                  "domains": [
+                    "Ancient Civilizations",
+                    "Archaeological Methods",
+                    "Heritage Conservation"
+                  ],
+                  "careers": [
+                    "Historian & Archival Researcher",
+                    "Archaeological Survey Officer",
+                    "Museum & Heritage Curator",
+                    "Civil Services Officer (UPSC)"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "UPSC CSE (Top Optional Subject)",
+                    "State University Exams"
+                  ],
+                  "placementRelevance": "Archaeological Survey of India (ASI), museums, academic research, and civil services at ₹4.0L - ₹10L / yr.",
+                  "topColleges": [
+                    "St. Stephen's College DU",
+                    "Hindu College Delhi",
+                    "Jadavpur University",
+                    "Madras Christian College",
+                    "BHU Varanasi"
+                  ],
+                  "annualTuitionFees": "₹18,000 - ₹55,000 / yr"
+                }
+              ]
+            },
+            {
+              "id": "politicalscience",
+              "name": "Political Science & Diplomacy",
+              "icon": "🌐",
+              "tagline": "Constitutional jurisprudence, democratic institutions, international treaties, and foreign policy.",
+              "programs": [
+                {
+                  "id": "prog-ba-polsci",
+                  "name": "B.A. Political Science & International Relations",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 in any stream with min. 50-60%",
+                  "overview": "Rigorous investigation of democratic systems, state power dynamics, international treaties, global geopolitical treaties, and governance.",
+                  "specializations": [
+                    "International Relations & Diplomacy",
+                    "Indian Constitutional Framework",
+                    "Public Policy Analysis"
+                  ],
+                  "skills": [
+                    "Comparative Constitutional Analysis",
+                    "International Diplomacy Frameworks",
+                    "Policy Drafting & Evaluation",
+                    "Qualitative Political Research",
+                    "Public Debate & Advocacy"
+                  ],
+                  "domains": [
+                    "Political Theory",
+                    "Indian Constitution",
+                    "International Diplomacy"
+                  ],
+                  "careers": [
+                    "Policy Analyst",
+                    "Diplomatic / Foreign Affairs Consultant",
+                    "Political Campaign Strategist",
+                    "Civil Services / IAS Officer"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "UPSC Civil Services",
+                    "State PSCs"
+                  ],
+                  "placementRelevance": "Think tanks, diplomatic missions, political consulting, and civil services at ₹5.0L - ₹14L / yr.",
+                  "topColleges": [
+                    "Hindu College DU",
+                    "Lady Shri Ram College",
+                    "Jawaharlal Nehru University (JNU)",
+                    "Ashoka University",
+                    "St. Xavier's Mumbai"
+                  ],
+                  "annualTuitionFees": "₹22,000 - ₹70,000 / yr"
+                }
+              ]
+            },
+            {
+              "id": "philosophy",
+              "name": "Philosophy, Logic & Ethics",
+              "icon": "💡",
+              "tagline": "Formal symbolic logic, cognitive metaphysics, moral philosophy, and AI bioethics.",
+              "programs": [
+                {
+                  "id": "prog-ba-phil",
+                  "name": "B.A. Philosophy, Logic & Ethics",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 in any discipline with min. 50%",
+                  "overview": "Training the mind in rigorous formal logic, metaphysical inquiry, existential thought, cognitive truth systems, and modern AI bioethics.",
+                  "specializations": [
+                    "Formal & Symbolic Logic",
+                    "Epistemology & Metaphysics",
+                    "Applied Bioethics & AI Ethics"
+                  ],
+                  "skills": [
+                    "Symbolic & Propositional Logic",
+                    "Critical Reasoning & Fallacy Detection",
+                    "Ethical Decision Frameworks",
+                    "Philosophical Synthesis",
+                    "Structured Debate"
+                  ],
+                  "domains": [
+                    "Epistemology",
+                    "Formal Logic",
+                    "AI Ethics"
+                  ],
+                  "careers": [
+                    "Ethics & AI Compliance Consultant",
+                    "Legal Researcher",
+                    "Academic Philosopher",
+                    "Strategic Policy Think Tank Lead"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "University Merit Lists"
+                  ],
+                  "placementRelevance": "Tech ethics boards, corporate legal research, policy foundations at ₹5.0L - ₹12L / yr.",
+                  "topColleges": [
+                    "St. Stephen's College DU",
+                    "Presidency College Chennai",
+                    "Ramakrishna Mission Institute",
+                    "Delhi University"
+                  ],
+                  "annualTuitionFees": "₹18,000 - ₹50,000 / yr"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Applied & Social Fields",
+          "subfields": [
+            {
+              "id": "psychology",
+              "name": "Applied Psychology",
+              "icon": "🧠",
+              "tagline": "Cognitive neuroscience, psychometric assessments, clinical counseling, and organizational behavior.",
+              "programs": [
+                {
+                  "id": "prog-psychology",
+                  "name": "B.A. / B.Sc in Applied Psychology & Cognitive Science",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 - 4 Years",
+                  "eligibility": "10+2 in any stream (min. 50-60%)",
+                  "overview": "Scientific exploration of human cognition, mental health diagnostics, psychological assessments, neural behavior, and counseling.",
+                  "specializations": [
+                    "Clinical & Counseling Psychology",
+                    "Cognitive Neuroscience",
+                    "Organizational & HR Psychology"
+                  ],
+                  "skills": [
+                    "Psychometric Testing & Assessment",
+                    "SPSS / R Statistical Analysis",
+                    "CBT & Therapeutic Interviewing",
+                    "Behavioral Observation Protocols",
+                    "Cognitive Neuroscience Mapping"
+                  ],
+                  "domains": [
+                    "Clinical Psychology",
+                    "Cognitive Neuroscience",
+                    "Organizational Behavior"
+                  ],
+                  "careers": [
+                    "Counseling Psychologist",
+                    "Human Resources & Talent Specialist",
+                    "Cognitive Ergonomics Lead",
+                    "Behavioral Researcher"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "Christ University Entrance",
+                    "Symbiosis Entrance"
+                  ],
+                  "placementRelevance": "Hospitals, mental wellness platforms, corporate HR teams, and sports franchises at ₹5.5L - ₹15L / yr.",
+                  "topColleges": [
+                    "Lady Shri Ram College DU",
+                    "Christ University Bengaluru",
+                    "Fergusson College Pune",
+                    "Tata Institute of Social Sciences (TISS)",
+                    "Ashoka University"
+                  ],
+                  "annualTuitionFees": "₹35,000 - ₹1.20L / yr"
+                }
+              ]
+            },
+            {
+              "id": "bjmc",
+              "name": "Journalism & Mass Communication (BJMC)",
+              "icon": "🎙️",
+              "tagline": "Newsroom reporting, TV broadcast production, digital documentary media, and PR.",
+              "programs": [
+                {
+                  "id": "prog-bjmc",
+                  "name": "Bachelor of Journalism & Mass Communication (BJMC)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 from any stream with strong communication skills (min. 50%)",
+                  "overview": "Newsroom journalism, television broadcast production, digital documentary storytelling, media ethics, and corporate public relations.",
+                  "specializations": [
+                    "Broadcast News & Podcasting",
+                    "Investigative Digital Journalism",
+                    "Public Relations & Brand Media"
+                  ],
+                  "skills": [
+                    "News Reporting & Fact-Checking",
+                    "Video Editing (Premiere Pro)",
+                    "Camera Work & Studio Production",
+                    "Media Law & Press Ethics",
+                    "Press Release Drafting"
+                  ],
+                  "domains": [
+                    "Investigative Journalism",
+                    "Broadcast News",
+                    "Public Relations"
+                  ],
+                  "careers": [
+                    "News Anchor & Broadcast Journalist",
+                    "Investigative Reporter",
+                    "Public Relations (PR) Specialist",
+                    "Digital Media Producer"
+                  ],
+                  "exams": [
+                    "IIMC Entrance",
+                    "IPU CET",
+                    "CUET UG",
+                    "SET"
+                  ],
+                  "placementRelevance": "National news channels, digital media companies, PR agencies at ₹5.0L - ₹14L / yr.",
+                  "topColleges": [
+                    "Indian Institute of Mass Communication (IIMC)",
+                    "Symbiosis Centre for Media (SCMC)",
+                    "AJK MCRC Jamia Millia",
+                    "Delhi University",
+                    "Christ University"
+                  ],
+                  "annualTuitionFees": "₹55,000 - ₹1.80L / yr"
+                }
+              ]
+            },
+            {
+              "id": "behavioraleconomics",
+              "name": "Behavioral Economics",
+              "icon": "📈",
+              "tagline": "Nudge theory, choice architecture, heuristics & cognitive biases, and experimental economics.",
+              "programs": [
+                {
+                  "id": "prog-behav-econ",
+                  "name": "B.A. / B.Sc in Behavioral Economics & Consumer Choice",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 with Mathematics / Economics / Commerce (min. 60%)",
+                  "overview": "Synthesizing microeconomic models with cognitive psychology to analyze irrational decision-making, nudge public policy, and optimize consumer choices.",
+                  "specializations": [
+                    "Nudge Theory & Policy Design",
+                    "Experimental Economics",
+                    "Consumer Choice Architecture"
+                  ],
+                  "skills": [
+                    "Experimental Game Theory",
+                    "Nudge Design & Choice Architecture",
+                    "R / Stata Econometrics",
+                    "Hypothesis & A/B Testing",
+                    "Behavioral Survey Design"
+                  ],
+                  "domains": [
+                    "Nudge Theory",
+                    "Choice Architecture",
+                    "Experimental Economics"
+                  ],
+                  "careers": [
+                    "Behavioral Insights Specialist",
+                    "Policy Design Consultant",
+                    "Consumer Experience Strategist",
+                    "Market Research Director"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "Ashoka University AAT",
+                    "Symbiosis SET"
+                  ],
+                  "placementRelevance": "Behavioral nudge units (government), consumer product tech companies at ₹8.0L - ₹20L / yr.",
+                  "topColleges": [
+                    "Delhi School of Economics (DSE)",
+                    "Ashoka University",
+                    "Christ University",
+                    "St. Xavier's Mumbai",
+                    "NMIMS Mumbai"
+                  ],
+                  "annualTuitionFees": "₹45,000 - ₹1.50L / yr"
+                }
+              ]
+            },
+            {
+              "id": "digitalhumanities",
+              "name": "Digital Humanities",
+              "icon": "💾",
+              "tagline": "Computational linguistics, historical GIS spatial mapping, and text mining in cultural archives.",
+              "programs": [
+                {
+                  "id": "prog-dig-hum",
+                  "name": "B.A. in Digital Humanities & Cultural Informatics",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "10+2 in any stream (min. 50-55%)",
+                  "overview": "Applying big data analytics, natural language processing, digital 3D archiving, and GIS mapping to historical and cultural humanities.",
+                  "specializations": [
+                    "Computational Linguistics",
+                    "Digital Archiving & GIS",
+                    "Text Mining in Literature"
+                  ],
+                  "skills": [
+                    "Text Mining & NLP (Python)",
+                    "GIS Mapping for History (QGIS)",
+                    "Digital Archive Metadata (Dublin Core)",
+                    "Data Visualization for Social Science",
+                    "Digital Curation"
+                  ],
+                  "domains": [
+                    "Computational Linguistics",
+                    "Digital Archiving",
+                    "Spatial GIS"
+                  ],
+                  "careers": [
+                    "Digital Archivist",
+                    "Cultural Data Analyst",
+                    "Computational Social Scientist",
+                    "Museum Digital Experience Lead"
+                  ],
+                  "exams": [
+                    "CUET UG",
+                    "University Specific Selection"
+                  ],
+                  "placementRelevance": "International cultural foundations, digital preservation archives at ₹6.0L - ₹16L / yr.",
+                  "topColleges": [
+                    "Ashoka University",
+                    "IIT Gandhinagar (Centre for Digital Humanities)",
+                    "Jawaharlal Nehru University (JNU)",
+                    "Delhi University"
+                  ],
+                  "annualTuitionFees": "₹35,000 - ₹1.10L / yr"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "law-policy",
+      "name": "Law & Public Policy",
+      "icon": "⚖️",
+      "badge": "Legal & Governance",
+      "description": "Constitutional jurisprudence, corporate M&A contracts, cyber privacy law, intellectual property, and public policy.",
+      "groups": [
+        {
+          "name": "Core Law & Litigation",
+          "subfields": [
+            {
+              "id": "llb-3yr",
+              "name": "3-Year LL.B",
+              "icon": "📖",
+              "tagline": "Graduate law degree, civil & criminal litigation, contract law, and bar admission.",
+              "programs": [
+                {
+                  "id": "prog-llb3",
+                  "name": "LL.B (3-Year Bachelor of Laws)",
+                  "degreeType": "Undergraduate (Post-Graduation Law)",
+                  "duration": "3 Years (6 Semesters)",
+                  "eligibility": "Graduation in any discipline (B.A., B.Com, B.Sc, B.Tech) with min. 45-50% aggregate",
+                  "overview": "Comprehensive legal education for degree graduates seeking admission to the Bar, litigation practice, judiciary exams, and corporate advocacy.",
+                  "specializations": [
+                    "Constitutional Law",
+                    "Civil & Criminal Litigation",
+                    "Contract & Commercial Law"
+                  ],
+                  "skills": [
+                    "Legal Research & Case Briefing",
+                    "Moot Court Oral Advocacy",
+                    "Pleadings & Affidavits Drafting",
+                    "Cross-Examination Strategies",
+                    "Statutory Interpretation"
+                  ],
+                  "domains": [
+                    "Constitutional Law",
+                    "Litigation",
+                    "Contract Law"
+                  ],
+                  "careers": [
+                    "Advocate / Litigator",
+                    "Civil Judge / Judicial Magistrate",
+                    "Legal Consultant",
+                    "Public Prosecutor"
+                  ],
+                  "exams": [
+                    "DU LL.B (CUET PG)",
+                    "NLSAT (NLSIU Bengaluru)",
+                    "MH CET Law",
+                    "State Law Entrance"
+                  ],
+                  "placementRelevance": "High Court / Supreme Court litigation chambers, judiciary, and corporate in-house roles at ₹6.5L - ₹18L / yr.",
+                  "topColleges": [
+                    "NLSIU Bengaluru (3-Year LL.B)",
+                    "Faculty of Law Delhi University",
+                    "ILS Law College Pune",
+                    "Government Law College (GLC) Mumbai"
+                  ],
+                  "annualTuitionFees": "₹40,000 - ₹1.50L / yr"
+                }
+              ]
+            },
+            {
+              "id": "ballb",
+              "name": "5-Year Integrated BA LL.B",
+              "icon": "⚖️",
+              "tagline": "Premier integrated law degree synthesizing humanities with constitutional law and advocacy.",
+              "programs": [
+                {
+                  "id": "prog-ballb",
+                  "name": "B.A. LL.B (Hons) - 5-Year Integrated Law Program",
+                  "degreeType": "Integrated Degree (5 Years)",
+                  "duration": "5 Years (10 Semesters)",
+                  "eligibility": "10+2 from any stream with valid CLAT / AILET score (min. 45-50%)",
+                  "overview": "Premier integrated double degree combining humanities disciplines with comprehensive legal jurisprudence at India's National Law Universities.",
+                  "specializations": [
+                    "Constitutional Jurisprudence",
+                    "International Law & Human Rights",
+                    "Commercial & Corporate Advocacy"
+                  ],
+                  "skills": [
+                    "Contract Drafting & Due Diligence",
+                    "Legal Analytics & SCC Online",
+                    "Constitutional Argumentation",
+                    "Alternative Dispute Resolution (ADR)",
+                    "Moot Court Advocacy"
+                  ],
+                  "domains": [
+                    "Constitutional Jurisprudence",
+                    "Human Rights Law",
+                    "International Law"
+                  ],
+                  "careers": [
+                    "Corporate Law Associate",
+                    "High Court / Supreme Court Litigator",
+                    "Judicial Officer",
+                    "Legal Counsel for MNCs"
+                  ],
+                  "exams": [
+                    "CLAT (Common Law Admission Test)",
+                    "AILET (NLU Delhi)",
+                    "LSAT-India",
+                    "SLAT (Symbiosis)"
+                  ],
+                  "placementRelevance": "Tier-1 Law Firms (Shardul Amarchand, Cyril Amarchand, AZB & Partners, Trilegal, Khaitan) at ₹12L - ₹26L / yr.",
+                  "topColleges": [
+                    "NLSIU Bengaluru",
+                    "NALSAR Hyderabad",
+                    "WBNUJS Kolkata",
+                    "NLU Delhi",
+                    "NLU Jodhpur"
+                  ],
+                  "annualTuitionFees": "₹95,000 - ₹3.20L / yr"
+                }
+              ]
+            },
+            {
+              "id": "bballb",
+              "name": "5-Year Integrated BBA LL.B",
+              "icon": "🏢",
+              "tagline": "Corporate mergers & acquisitions, securities law, IBC insolvency, and commercial arbitration.",
+              "programs": [
+                {
+                  "id": "prog-bballb",
+                  "name": "BBA LL.B (Hons) - 5-Year Integrated Business Law",
+                  "degreeType": "Integrated Degree (5 Years)",
+                  "duration": "5 Years (10 Semesters)",
+                  "eligibility": "10+2 with Commerce / Arts / Science with valid CLAT score (min. 50%)",
+                  "overview": "Integrates business administration principles with corporate laws, M&A contracts, competition guidelines, and commercial dispute resolution.",
+                  "specializations": [
+                    "Mergers & Acquisitions (M&A)",
+                    "Insolvency & Bankruptcy (IBC)",
+                    "Banking & Securities Regulation"
+                  ],
+                  "skills": [
+                    "M&A Due Diligence",
+                    "Commercial Contract Drafting",
+                    "Insolvency & Bankruptcy Code (IBC)",
+                    "SEBI & Competition Law Compliance",
+                    "Financial Accounting Analysis"
+                  ],
+                  "domains": [
+                    "Mergers & Acquisitions",
+                    "Corporate Securities",
+                    "Commercial Arbitration"
+                  ],
+                  "careers": [
+                    "Corporate In-House Counsel",
+                    "M&A Legal Associate",
+                    "Banking Compliance Officer",
+                    "Securities Law Specialist"
+                  ],
+                  "exams": [
+                    "CLAT",
+                    "SLAT",
+                    "NMIMS LAT",
+                    "LSAT-India"
+                  ],
+                  "placementRelevance": "Corporate legal teams, investment banks, and transaction advisory firms at ₹11L - ₹25L / yr.",
+                  "topColleges": [
+                    "NLU Jodhpur",
+                    "Symbiosis Law School Pune",
+                    "GNLU Gandhinagar",
+                    "Christ University",
+                    "Jindal Global Law School"
+                  ],
+                  "annualTuitionFees": "₹1.10L - ₹3.50L / yr"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Niche Domains & Public Policy",
+          "subfields": [
+            {
+              "id": "corporatelaw",
+              "name": "Corporate Law",
+              "icon": "💼",
+              "tagline": "Cross-border investment, FEMA compliance, antitrust filings, and hostile takeover defenses.",
+              "programs": [
+                {
+                  "id": "prog-llm-corp",
+                  "name": "LL.M in Corporate & Commercial Law",
+                  "degreeType": "Postgraduate (PG)",
+                  "duration": "1 - 2 Years",
+                  "eligibility": "LL.B (3-Year or 5-Year) with min. 50-55% aggregate",
+                  "overview": "Postgraduate mastery of multinational cross-border investments, hostile takeover defenses, competition regulations, and corporate restructuring.",
+                  "specializations": [
+                    "Cross-Border Mergers & Takeovers",
+                    "FEMA & Foreign Direct Investment (FDI)",
+                    "Competition Law & Market Abuse"
+                  ],
+                  "skills": [
+                    "Cross-Border M&A Structuring",
+                    "FEMA & FDI Compliance",
+                    "Competition Commission of India (CCI) Filings",
+                    "Debt Restructuring & CIRP",
+                    "Shareholders' Agreements"
+                  ],
+                  "domains": [
+                    "Mergers & Acquisitions",
+                    "Cross-Border Investment",
+                    "Competition Law"
+                  ],
+                  "careers": [
+                    "Senior Corporate Legal Associate",
+                    "General Counsel (GC)",
+                    "Investment Banking Legal Specialist",
+                    "Anti-Trust / Competition Law Consultant"
+                  ],
+                  "exams": [
+                    "CLAT PG",
+                    "AILET PG",
+                    "ILI CAT"
+                  ],
+                  "placementRelevance": "Senior positions in multinational law firms and global investment banks at ₹14L - ₹32L / yr.",
+                  "topColleges": [
+                    "NLSIU Bengaluru",
+                    "NALSAR Hyderabad",
+                    "WBNUJS Kolkata",
+                    "Faculty of Law DU",
+                    "Indian Law Institute Delhi"
+                  ],
+                  "annualTuitionFees": "₹65,000 - ₹2.00L / yr"
+                }
+              ]
+            },
+            {
+              "id": "cyberlaw",
+              "name": "Cyber Law",
+              "icon": "🛡️",
+              "tagline": "Digital Personal Data Protection (DPDP), electronic evidence admissibility, and AI liability.",
+              "programs": [
+                {
+                  "id": "prog-cyberlaw",
+                  "name": "Specialization in Cyber Law & Digital Privacy",
+                  "degreeType": "Undergraduate / Postgraduate Specialization",
+                  "duration": "1 - 2 Years",
+                  "eligibility": "Law Degree (LL.B) or Bachelor's in relevant discipline with min. 50%",
+                  "overview": "Navigating the legal frontiers of digital personal data privacy (DPDP), electronic evidence admissibility, cyber warfare, and AI liabilities.",
+                  "specializations": [
+                    "DPDP Act & GDPR Privacy Compliance",
+                    "Electronic Evidence & Cyber Crime",
+                    "AI Governance & Algorithmic Liability"
+                  ],
+                  "skills": [
+                    "Digital Personal Data Protection Act 2023",
+                    "Information Technology Act 2000 (Section 65B Evidence)",
+                    "GDPR Compliance & Privacy Audits",
+                    "Smart Contracts Legal Review",
+                    "Cyber Incident Legal Advisory"
+                  ],
+                  "domains": [
+                    "Data Protection (DPDP)",
+                    "Cyber Crime Evidence",
+                    "AI Governance"
+                  ],
+                  "careers": [
+                    "Data Protection Officer (DPO)",
+                    "Cyber Crime Legal Consultant",
+                    "Technology Policy Advisor",
+                    "Digital Forensics Legal Strategist"
+                  ],
+                  "exams": [
+                    "CLAT PG",
+                    "University Law Entrance",
+                    "Direct Merit"
+                  ],
+                  "placementRelevance": "Big Tech legal teams, global IT consultancies, and privacy audit firms at ₹10L - ₹26L / yr.",
+                  "topColleges": [
+                    "NLSIU Bengaluru (Cyber Law Center)",
+                    "NALSAR Hyderabad",
+                    "Indian Law Institute Delhi",
+                    "Symbiosis Law School"
+                  ],
+                  "annualTuitionFees": "₹50,000 - ₹1.60L / yr"
+                }
+              ]
+            },
+            {
+              "id": "iplaw",
+              "name": "Intellectual Property Law",
+              "icon": "💡",
+              "tagline": "Patent prosecution, trademark infringement litigation, pharmaceutical patents, and WIPO treaties.",
+              "programs": [
+                {
+                  "id": "prog-iplaw",
+                  "name": "Specialization in Intellectual Property & Patent Law (IP Law)",
+                  "degreeType": "Postgraduate / Integrated Specialization",
+                  "duration": "1 - 2 Years",
+                  "eligibility": "Bachelor's in Law (LL.B) or STEM Degree (for Patent Agent exam)",
+                  "overview": "Protecting technological inventions, pharmaceutical patent filings, global trademark brand assets, and creative intellectual property rights.",
+                  "specializations": [
+                    "Patent Claim Drafting & Prosecution",
+                    "Trademarks & Brand Infringement",
+                    "Copyrights & Tech Transfer"
+                  ],
+                  "skills": [
+                    "Patent Claim Drafting",
+                    "Prior Art Search & Patentability Analysis",
+                    "Trademark Opposition & Infringement Litigation",
+                    "TRIPS & WIPO Conventions",
+                    "IP Licensing Agreements"
+                  ],
+                  "domains": [
+                    "Patent Prosecution",
+                    "Brand Protection",
+                    "Technology Transfer"
+                  ],
+                  "careers": [
+                    "Patent Attorney / Agent",
+                    "IP Litigation Counsel",
+                    "Trademark & Brand Protection Specialist",
+                    "Technology Transfer Officer"
+                  ],
+                  "exams": [
+                    "Indian Patent Agent Examination",
+                    "CLAT PG",
+                    "University Tests"
+                  ],
+                  "placementRelevance": "Specialized IP boutiques, pharma corporations, and tech patent hubs at ₹10L - ₹25L / yr.",
+                  "topColleges": [
+                    "IIT Kharagpur (RGSOIPL Law School)",
+                    "NALSAR Hyderabad",
+                    "NLSIU Bengaluru",
+                    "NLU Delhi"
+                  ],
+                  "annualTuitionFees": "₹55,000 - ₹1.75L / yr"
+                }
+              ]
+            },
+            {
+              "id": "publicpolicy",
+              "name": "International Policy (MPP)",
+              "icon": "🏛️",
+              "tagline": "Legislative bill drafting, quantitative policy evaluation, climate treaties, and international governance.",
+              "programs": [
+                {
+                  "id": "prog-mpp",
+                  "name": "Master of Public Policy & International Governance (MPP)",
+                  "degreeType": "Postgraduate (PG)",
+                  "duration": "2 Years (4 Semesters)",
+                  "eligibility": "Bachelor's degree in any discipline with min. 50-55%",
+                  "overview": "Designing and evaluating high-impact public policies, national legislative bills, climate agreements, and international development initiatives.",
+                  "specializations": [
+                    "Quantitative Policy Evaluation",
+                    "International Geopolitics & Climate Treaties",
+                    "Urban Governance & Development Economics"
+                  ],
+                  "skills": [
+                    "Cost-Benefit Policy Analysis",
+                    "Quantitative Policy Evaluation (Stata/R)",
+                    "Stakeholder Engagement & Advocacy",
+                    "Legislative Bill Drafting",
+                    "Global Trade Agreement Analysis"
+                  ],
+                  "domains": [
+                    "Public Policy",
+                    "International Relations",
+                    "Development Economics"
+                  ],
+                  "careers": [
+                    "Public Policy Consultant",
+                    "Government Affairs Lead (MNCs)",
+                    "Think Tank Research Fellow (CPR/Brookings)",
+                    "International Development Officer (World Bank/UN)"
+                  ],
+                  "exams": [
+                    "CAT",
+                    "GMAT",
+                    "NLSAT-Policy (NLSIU)",
+                    "TISS-NET / CUET PG"
+                  ],
+                  "placementRelevance": "World Bank, UN agencies, global strategy consulting (Bain Public Policy, Dalberg), and government ministries at ₹11L - ₹28L / yr.",
+                  "topColleges": [
+                    "NLSIU Bengaluru (MPP Program)",
+                    "ISPP (Indian School of Public Policy)",
+                    "St. Stephen's / Ashoka University",
+                    "TISS Mumbai"
+                  ],
+                  "annualTuitionFees": "₹80,000 - ₹2.50L / yr"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "online-skills",
+      "name": "Online, Distance & Skill-Based Learning",
+      "icon": "🚀",
+      "badge": "Flexible & Micro-Credentials",
+      "description": "UGC-recognized online degrees, multi-cloud certifications, coding accelerators, executive diplomas, and modular skill credentials.",
+      "groups": [
+        {
+          "name": "Flexible Online Degrees & Skill Bootcamps",
+          "subfields": [
+            {
+              "id": "onlinedegrees",
+              "name": "Online Degrees",
+              "icon": "🎓",
+              "tagline": "UGC-DEB recognized online undergraduate and master's degrees with asynchronous masterclasses.",
+              "programs": [
+                {
+                  "id": "prog-onl-bca",
+                  "name": "UGC-Approved Online BCA in Cloud & Software Systems",
+                  "degreeType": "Online Degree (UGC-DEB Recognized)",
+                  "duration": "3 Years (6 Semesters, Self-Paced Option)",
+                  "eligibility": "10+2 passed from any stream with min. 45-50%",
+                  "overview": "Government UGC-approved online undergraduate degree offering university equivalence with asynchronous learning, live weekend sessions, and industry projects.",
+                  "specializations": [
+                    "Cloud Software Systems",
+                    "Full-Stack Web Engineering",
+                    "Database Management"
+                  ],
+                  "skills": [
+                    "JavaScript & Python",
+                    "Cloud Computing Basics",
+                    "SQL & Database Design",
+                    "Software Testing",
+                    "Agile Methodologies"
+                  ],
+                  "domains": [
+                    "Cloud Software",
+                    "Web & Mobile Development",
+                    "Database Systems"
+                  ],
+                  "careers": [
+                    "Cloud Software Developer",
+                    "Junior DevOps Specialist",
+                    "Application Support Engineer",
+                    "Full-Stack Trainee"
+                  ],
+                  "exams": [
+                    "Direct Online Admission / UGC University Screening"
+                  ],
+                  "placementRelevance": "Equal job eligibility with on-campus degrees; placement portal access with packages from ₹5.0L - ₹12L / yr.",
+                  "topColleges": [
+                    "IIT Madras (Online BS)",
+                    "Manipal University Online",
+                    "Amity University Online",
+                    "BITS Pilani (WILP)",
+                    "Chandigarh University Online"
+                  ],
+                  "annualTuitionFees": "₹35,000 - ₹75,000 / yr"
+                }
+              ]
+            },
+            {
+              "id": "cloudcert",
+              "name": "Cloud Certifications",
+              "icon": "☁️",
+              "tagline": "AWS Solutions Architect, Azure Administrator, Terraform Infrastructure as Code, and disaster recovery.",
+              "programs": [
+                {
+                  "id": "prog-cloud-cert",
+                  "name": "Multi-Cloud Solutions Architecture Specialization (AWS & Azure)",
+                  "degreeType": "Professional Certification",
+                  "duration": "6 Months (Part-Time)",
+                  "eligibility": "Basic knowledge of networking, operating systems or coding (Any graduate / student)",
+                  "overview": "Rigorous hands-on cloud credential covering architecture blueprints, high availability, serverless computing, and hybrid cloud migrations.",
+                  "specializations": [
+                    "AWS Architecture (SAA-C03)",
+                    "Azure Solutions (AZ-104 / AZ-305)",
+                    "Terraform IaC"
+                  ],
+                  "skills": [
+                    "AWS VPC, EC2 & S3 Architecture",
+                    "Azure Virtual Networks & Resource Groups",
+                    "Terraform & CloudFormation",
+                    "IAM & Cloud Security",
+                    "Cloud Cost Management"
+                  ],
+                  "domains": [
+                    "Multi-Cloud Architecture",
+                    "Disaster Recovery",
+                    "Cloud Cost Optimization"
+                  ],
+                  "careers": [
+                    "AWS Certified Solutions Architect",
+                    "Azure Cloud Infrastructure Engineer",
+                    "Cloud Migration Specialist",
+                    "DevOps Consultant"
+                  ],
+                  "exams": [
+                    "AWS SAA-C03",
+                    "Microsoft AZ-104 / AZ-305"
+                  ],
+                  "placementRelevance": "Globally recognized industry certifications commanding salaries from ₹8.5L - ₹22L / yr.",
+                  "topColleges": [
+                    "AWS Academy Partner Institutions",
+                    "Microsoft Learn Global Hubs",
+                    "TheCampusNova Cloud Lab"
+                  ],
+                  "annualTuitionFees": "₹25,000 - ₹65,000 (Complete Track)"
+                }
+              ]
+            },
+            {
+              "id": "codingcert",
+              "name": "Coding Certifications",
+              "icon": "💻",
+              "tagline": "LeetCode DSA mastery, low-level and high-level system design, microservices, and live production builds.",
+              "programs": [
+                {
+                  "id": "prog-code-bootcamp",
+                  "name": "Full-Stack Software Engineering & System Design Bootcamp",
+                  "degreeType": "Professional Certification / Micro-Degree",
+                  "duration": "6 - 9 Months",
+                  "eligibility": "Open to all students and working professionals passionate about software engineering",
+                  "overview": "Intensive coding accelerator preparing learners for top-tier tech product companies (MAANG/Unicorns) through DSA, full-stack builds, and system design.",
+                  "specializations": [
+                    "Advanced DSA for Tech Interviews",
+                    "Full-Stack SaaS Architecture",
+                    "High-Level System Design (HLD)"
+                  ],
+                  "skills": [
+                    "Advanced React & Next.js",
+                    "Node.js & Go / Java Backends",
+                    "System Design (Scalability, Caching, DB Sharding)",
+                    "Data Structures (LeetCode 300+)",
+                    "Docker & CI/CD"
+                  ],
+                  "domains": [
+                    "Full-Stack Architecture",
+                    "System Design",
+                    "Microservices"
+                  ],
+                  "careers": [
+                    "Software Engineer (SDE 1)",
+                    "Full-Stack Developer",
+                    "Backend Engineer",
+                    "Frontend Specialist"
+                  ],
+                  "exams": [
+                    "Coding Aptitude Challenge"
+                  ],
+                  "placementRelevance": "Direct referral pipelines to unicorn tech startups with packages from ₹9.0L - ₹24L / yr.",
+                  "topColleges": [
+                    "TheCampusNova Skill Radar",
+                    "Scaler Academy",
+                    "Coding Ninjas",
+                    "Newton School"
+                  ],
+                  "annualTuitionFees": "₹45,000 - ₹1.20L (Placement-Linked Track)"
+                }
+              ]
+            },
+            {
+              "id": "datacert",
+              "name": "Data Analytics Certifications",
+              "icon": "📊",
+              "tagline": "Advanced SQL joins, Power BI DAX formulas, Tableau executive dashboards, and business data storytelling.",
+              "programs": [
+                {
+                  "id": "prog-data-cert",
+                  "name": "Applied Data Analytics & Business Intelligence Executive Certificate",
+                  "degreeType": "Professional Certification",
+                  "duration": "4 - 6 Months",
+                  "eligibility": "Graduates / Professionals from any stream (No coding prerequisite)",
+                  "overview": "Job-ready certification in extracting insights from relational databases, modeling data in SQL, building Power BI dashboards, and data storytelling.",
+                  "specializations": [
+                    "SQL Data Modeling",
+                    "Power BI & DAX Visual Analytics",
+                    "Tableau Executive Dashboards"
+                  ],
+                  "skills": [
+                    "Advanced SQL Queries & Joins",
+                    "Power BI & DAX Formulas",
+                    "Tableau Interactive Dashboards",
+                    "Excel Financial Modeling",
+                    "Python Data Analytics (Pandas)"
+                  ],
+                  "domains": [
+                    "Business Analytics",
+                    "SQL Data Warehousing",
+                    "Dashboard Architecture"
+                  ],
+                  "careers": [
+                    "Data Analyst",
+                    "Business Intelligence (BI) Analyst",
+                    "Marketing Analytics Associate",
+                    "Operations Data Lead"
+                  ],
+                  "exams": [
+                    "Direct Enrollment / Portfolio Screening"
+                  ],
+                  "placementRelevance": "High placement volume across banking, retail, and tech consulting at ₹6.5L - ₹16L / yr.",
+                  "topColleges": [
+                    "IIT Roorkee / E&ICT Academy",
+                    "Google Career Certificates",
+                    "Great Learning",
+                    "UpGrad"
+                  ],
+                  "annualTuitionFees": "₹30,000 - ₹85,000 (Complete Track)"
+                }
+              ]
+            },
+            {
+              "id": "profcert",
+              "name": "Professional Certifications",
+              "icon": "🎖️",
+              "tagline": "Executive managerial economics, corporate digital transformation, and senior leadership acceleration.",
+              "programs": [
+                {
+                  "id": "prog-exec-mgmt",
+                  "name": "Executive PG Program in Management & Strategic Leadership",
+                  "degreeType": "Professional Certification / Executive PG",
+                  "duration": "11 - 12 Months",
+                  "eligibility": "Bachelor's degree with min. 2+ years of full-time professional experience",
+                  "overview": "Intensive mid-career management acceleration designed for working executives seeking senior leadership and strategic business roles.",
+                  "specializations": [
+                    "Strategic Business Planning",
+                    "Corporate Digital Transformation",
+                    "Cross-Functional Leadership"
+                  ],
+                  "skills": [
+                    "Strategic Business Planning",
+                    "Executive Financial Decision-Making",
+                    "Change Management",
+                    "Data-driven Strategy",
+                    "Cross-Functional Leadership"
+                  ],
+                  "domains": [
+                    "Strategic Leadership",
+                    "Corporate Finance",
+                    "Digital Transformation"
+                  ],
+                  "careers": [
+                    "Associate Director",
+                    "Business Unit Head",
+                    "Management Consultant",
+                    "Senior Operations Manager"
+                  ],
+                  "exams": [
+                    "Profile Evaluation & Executive Interview"
+                  ],
+                  "placementRelevance": "Senior executive elevations and mid-career pivots with compensation from ₹18L - ₹42L / yr.",
+                  "topColleges": [
+                    "IIM Kozhikode Executive",
+                    "XLRI Jamshedpur (Virtual)",
+                    "ISB Hyderabad",
+                    "IIM Calcutta Executive"
+                  ],
+                  "annualTuitionFees": "₹1.20L - ₹3.50L (Executive Track)"
+                }
+              ]
+            },
+            {
+              "id": "vocational",
+              "name": "Vocational Diplomas",
+              "icon": "🛠️",
+              "tagline": "NSQF Level 6 hands-on hardware circuits, Raspberry Pi edge AI, sensor interfacing, and smart factory robotics.",
+              "programs": [
+                {
+                  "id": "prog-voc-ai-iot",
+                  "name": "Advanced Vocational Diploma in AI Application Development & IoT",
+                  "degreeType": "Vocational Diploma (NSQF Level 6)",
+                  "duration": "1 Year (2 Semesters)",
+                  "eligibility": "10+2 in any stream or 10th + 2-Year ITI Diploma",
+                  "overview": "Practical hands-on vocational program training learners to construct physical AI-powered smart devices, sensor circuits, and factory automation systems.",
+                  "specializations": [
+                    "Applied AI Software",
+                    "Industrial IoT Devices",
+                    "Smart Automation Prototyping"
+                  ],
+                  "skills": [
+                    "Python for Edge AI",
+                    "Raspberry Pi & Sensor Systems",
+                    "Computer Vision with OpenCV",
+                    "MQTT Communication",
+                    "API Integration"
+                  ],
+                  "domains": [
+                    "Applied AI Software",
+                    "Industrial IoT",
+                    "Smart Automation"
+                  ],
+                  "careers": [
+                    "AI Application Developer",
+                    "IoT Hardware Technician",
+                    "Automation Support Associate",
+                    "Smart Device Maintenance Lead"
+                  ],
+                  "exams": [
+                    "Direct Admission / Skill Assessment"
+                  ],
+                  "placementRelevance": "Smart manufacturing, robotics maintenance, and IoT hardware labs at ₹5.0L - ₹12L / yr.",
+                  "topColleges": [
+                    "National Skill Development Corporation (NSDC)",
+                    "State Skill Universities",
+                    "Polytechnic Institutes"
+                  ],
+                  "annualTuitionFees": "₹28,000 - ₹65,000 / yr"
+                }
+              ]
+            },
+            {
+              "id": "otherskills",
+              "name": "Other Skill-Based Programs",
+              "icon": "⭐",
+              "tagline": "Product discovery, PRD writing, wireframing in Figma, RICE feature prioritization, and North Star metrics.",
+              "programs": [
+                {
+                  "id": "prog-pm-accelerator",
+                  "name": "Certified Product Management Accelerator",
+                  "degreeType": "Professional Certification",
+                  "duration": "4 Months",
+                  "eligibility": "Students / Professionals interested in technology product strategy",
+                  "overview": "Fast-track product management program covering product discovery, PRD writing, user experience mapping, sprint execution, and analytics.",
+                  "specializations": [
+                    "Product Strategy & Discovery",
+                    "PRD Drafting & Wireframing",
+                    "Product Analytics & Growth"
+                  ],
+                  "skills": [
+                    "Product Requirement Document (PRD) Writing",
+                    "Wireframing in Figma",
+                    "Mixpanel / Amplitude Product Analytics",
+                    "Agile & Scrum Sprints",
+                    "GTM (Go-to-Market) Strategy"
+                  ],
+                  "domains": [
+                    "Product Strategy",
+                    "User Journey & PRDs",
+                    "Metrics & Analytics"
+                  ],
+                  "careers": [
+                    "Associate Product Manager (APM)",
+                    "Product Owner",
+                    "Growth Product Manager",
+                    "Technical Product Consultant"
+                  ],
+                  "exams": [
+                    "Case Study Submission & Interview"
+                  ],
+                  "placementRelevance": "High-demand tech product role at startups and unicorn platforms at ₹12L - ₹28L / yr.",
+                  "topColleges": [
+                    "Product School Partner Guild",
+                    "ISB Executive Product Track",
+                    "TheCampusNova PM Radar"
+                  ],
+                  "annualTuitionFees": "₹35,000 - ₹95,000 (Accelerator Track)"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

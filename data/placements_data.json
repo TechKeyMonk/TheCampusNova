@@ -1,0 +1,895 @@
+{
+  "stats": {
+    "total_partner_companies": 850,
+    "highest_package": "₹52.0 LPA",
+    "average_package": "₹7.8 LPA",
+    "overall_placement_rate": "94.2%",
+    "offers_made_2025": "18,420+",
+    "past_10yr_trend": [
+      {
+        "year": "2016",
+        "avg_lpa": 4.2,
+        "placement_pct": 82
+      },
+      {
+        "year": "2017",
+        "avg_lpa": 4.6,
+        "placement_pct": 84
+      },
+      {
+        "year": "2018",
+        "avg_lpa": 5.1,
+        "placement_pct": 86
+      },
+      {
+        "year": "2019",
+        "avg_lpa": 5.6,
+        "placement_pct": 88
+      },
+      {
+        "year": "2020",
+        "avg_lpa": 5.8,
+        "placement_pct": 87
+      },
+      {
+        "year": "2021",
+        "avg_lpa": 6.4,
+        "placement_pct": 90
+      },
+      {
+        "year": "2022",
+        "avg_lpa": 7.1,
+        "placement_pct": 92
+      },
+      {
+        "year": "2023",
+        "avg_lpa": 7.4,
+        "placement_pct": 93
+      },
+      {
+        "year": "2024",
+        "avg_lpa": 7.6,
+        "placement_pct": 94
+      },
+      {
+        "year": "2025",
+        "avg_lpa": 7.8,
+        "placement_pct": 95
+      }
+    ],
+    "future_5yr_opportunity_trend": [
+      {
+        "year": "2026",
+        "growth_index": 105,
+        "top_sector": "AI & Automation"
+      },
+      {
+        "year": "2027",
+        "growth_index": 118,
+        "top_sector": "Cloud & Cybersecurity"
+      },
+      {
+        "year": "2028",
+        "growth_index": 132,
+        "top_sector": "Data Science & Green Energy"
+      },
+      {
+        "year": "2029",
+        "growth_index": 148,
+        "top_sector": "Autonomous & IoT Robotics"
+      },
+      {
+        "year": "2030",
+        "growth_index": 165,
+        "top_sector": "Quantum & Distributed Systems"
+      }
+    ]
+  },
+  "company_visits": [
+    {
+      "company_name": "Test Nvidia Quantum AI",
+      "college_id": 2,
+      "average_package": "Rs. 24 LPA",
+      "highest_package": "Rs. 65 LPA",
+      "placement_percentage": "98%",
+      "year": 2026,
+      "id": 39
+    },
+    {
+      "company_name": "Test Nvidia Quantum AI",
+      "college_id": 2,
+      "average_package": "Rs. 24 LPA",
+      "highest_package": "Rs. 65 LPA",
+      "placement_percentage": "98%",
+      "year": 2026,
+      "id": 38
+    },
+    {
+      "company": "Freshworks",
+      "domain": "Product Software & AI",
+      "packages": "₹6–15 LPA",
+      "participating_colleges": [
+        "IITs",
+        "NITs",
+        "IIITs",
+        "leading engineering and technology colleges"
+      ],
+      "roles": [
+        "Software Engineer",
+        "Product Engineer",
+        "Frontend Developer",
+        "Backend Developer",
+        "QA Engineer"
+      ],
+      "weightage": "Aptitude – 40%, Technical & Coding – 60%",
+      "interview_tips": [
+        "1. Online Assessment → 2. Coding Round → 3. Technical Interview → 4. HR/Managerial Round. Prepare programming fundamentals",
+        "DSA basics",
+        "SQL",
+        "OOP",
+        "web development",
+        "problem-solving and project-based questions."
+      ],
+      "id": 36
+    },
+    {
+      "college_name": "IISc Bengaluru",
+      "company_name": "Test Tech Innovations",
+      "year": 2026,
+      "highest_package": "45 LPA",
+      "average_package": "18 LPA",
+      "id": 29
+    },
+    {
+      "id": "PLC-001",
+      "company": "Zoho Corporation",
+      "logo_text": "ZOHO",
+      "industry": "Product",
+      "website": "https://www.zoho.com/careers/",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0009",
+        "COL-0006",
+        "COL-0007",
+        "COL-0008"
+      ],
+      "roles": [
+        "Software Development Engineer",
+        "Product Specialist",
+        "Member Technical Staff",
+        "QA Automation Engineer"
+      ],
+      "vacancies_estimate": "120+ across TN",
+      "package_range": "₹6.5 - 14.0 LPA",
+      "required_skills": [
+        "Data Structures & Algorithms",
+        "C/Java/Python",
+        "Problem Solving",
+        "Object-Oriented Design"
+      ],
+      "benefits": [
+        "Free Gourmet Food",
+        "Health Insurance",
+        "Stock Units",
+        "Flexible Work Culture"
+      ],
+      "preparation_process": "1. Aptitude & Basic C/Java -> 2. Advanced Problem Solving -> 3. LBA (Language Based Assessment) -> 4. HR Interview"
+    },
+    {
+      "id": "PLC-002",
+      "company": "Tata Consultancy Services (TCS)",
+      "logo_text": "TCS",
+      "industry": "Consulting",
+      "website": "https://www.tcs.com/careers",
+      "colleges_visited": [
+        "COL-0001",
+        "COL-0003",
+        "COL-0004",
+        "COL-0006",
+        "COL-0009"
+      ],
+      "roles": [
+        "TCS Prime (₹9.0 LPA)",
+        "TCS Digital (₹7.5 LPA)",
+        "TCS Ninja (₹3.6 LPA)"
+      ],
+      "vacancies_estimate": "350+ Campus Offers",
+      "package_range": "₹3.6 - 9.0 LPA",
+      "required_skills": [
+        "Quantitative Aptitude",
+        "Logical Reasoning",
+        "Coding in C/C++/Java/Python",
+        "SQL"
+      ],
+      "benefits": [
+        "Learning Incentives",
+        "Global Onsite Opportunities",
+        "Comprehensive Health Benefits"
+      ],
+      "preparation_process": "1. TCS NQT National Test -> 2. Technical Interview -> 3. Managerial & HR Round"
+    },
+    {
+      "id": "PLC-003",
+      "company": "Robert Bosch",
+      "logo_text": "BOSCH",
+      "industry": "Automotive",
+      "website": "https://careers.bosch.com",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0006",
+        "COL-0009"
+      ],
+      "roles": [
+        "Embedded Software Engineer",
+        "Automotive Systems Engineer",
+        "IoT Firmware Developer"
+      ],
+      "vacancies_estimate": "60+ Roles in Coimbatore R&D",
+      "package_range": "₹7.0 - 12.5 LPA",
+      "required_skills": [
+        "Embedded C",
+        "Microcontrollers",
+        "Automotive Protocols (CAN/LIN)",
+        "MATLAB/Simulink"
+      ],
+      "benefits": [
+        "R&D Patents Bonus",
+        "Transport Facility",
+        "Relocation Support",
+        "Medical Shield"
+      ],
+      "preparation_process": "1. Online Technical MCQ & Logic -> 2. Hardware/Firmware Coding -> 3. System Design Panel -> 4. HR"
+    },
+    {
+      "id": "PLC-004",
+      "company": "Amazon AWS",
+      "logo_text": "AMAZON",
+      "industry": "Cloud",
+      "website": "https://www.amazon.jobs",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0001"
+      ],
+      "roles": [
+        "Software Development Engineer I",
+        "Cloud Support Associate",
+        "Data Engineer Intern"
+      ],
+      "vacancies_estimate": "35+ Offers",
+      "package_range": "₹28.0 - 44.0 LPA",
+      "required_skills": [
+        "Advanced DSA",
+        "Distributed Systems",
+        "AWS Fundamentals",
+        "Java/C++"
+      ],
+      "benefits": [
+        "Amazon RSUs",
+        "Sign-on Bonus",
+        "Comprehensive Health Coverage",
+        "Wellness Stipend"
+      ],
+      "preparation_process": "1. Online Assessment (2 Coding + Work Simulation) -> 2. Three Technical Video Rounds -> 3. Bar Raiser Round"
+    },
+    {
+      "id": "PLC-005",
+      "company": "Cognizant Technology Solutions",
+      "logo_text": "CTS",
+      "industry": "Consulting",
+      "website": "https://careers.cognizant.com",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0006",
+        "COL-0009",
+        "COL-0007"
+      ],
+      "roles": [
+        "GenC Next (₹6.75 LPA)",
+        "GenC Elevate (₹4.25 LPA)",
+        "GenC (₹4.0 LPA)"
+      ],
+      "vacancies_estimate": "280+ Recruits",
+      "package_range": "₹4.0 - 6.75 LPA",
+      "required_skills": [
+        "Programming Fundamentals",
+        "SQL",
+        "Cloud Basics",
+        "Aptitude"
+      ],
+      "benefits": [
+        "Skill Enhancer Grants",
+        "Group Medical Coverage",
+        "Annual Performance Bonuses"
+      ],
+      "preparation_process": "1. GenC Aptitude & Coding Assessment -> 2. SME Technical Interview -> 3. HR Verification"
+    },
+    {
+      "id": "PLC-006",
+      "company": "Infosys",
+      "logo_text": "INFY",
+      "industry": "Consulting",
+      "website": "https://www.infosys.com/careers.html",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0009",
+        "COL-0006",
+        "COL-0008"
+      ],
+      "roles": [
+        "Specialist Programmer (₹9.5 LPA)",
+        "Digital Specialist Engineer (₹6.5 LPA)",
+        "Systems Engineer (₹3.6 LPA)"
+      ],
+      "vacancies_estimate": "250+ Offers",
+      "package_range": "₹3.6 - 9.5 LPA",
+      "required_skills": [
+        "Algorithms",
+        "Dynamic Programming",
+        "Java/Python",
+        "Relational Databases"
+      ],
+      "benefits": [
+        "Mysore Campus Global Training",
+        "Health Insurance",
+        "Stock Purchase Options"
+      ],
+      "preparation_process": "1. HackWithInfy / InfyTQ Online Rounds -> 2. Advanced Coding -> 3. Technical Interview"
+    },
+    {
+      "id": "PLC-007",
+      "company": "L&T Technology Services",
+      "logo_text": "LTTS",
+      "industry": "Automotive",
+      "website": "https://www.ltts.com/careers",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0009",
+        "COL-0006"
+      ],
+      "roles": [
+        "Associate Engineer - Embedded",
+        "Digital Manufacturing Specialist",
+        "VLSI Design Engineer"
+      ],
+      "vacancies_estimate": "80+ Openings",
+      "package_range": "₹5.5 - 9.0 LPA",
+      "required_skills": [
+        "C/C++",
+        "Digital Signal Processing",
+        "CAD/CAE / Embedded Systems",
+        "Linux Internals"
+      ],
+      "benefits": [
+        "Higher Education Support",
+        "Medical Insurance",
+        "Performance Incentives"
+      ],
+      "preparation_process": "1. Core Engineering Domain Test -> 2. Technical Viva -> 3. HR Discussion"
+    },
+    {
+      "id": "PLC-008",
+      "company": "Goldman Sachs",
+      "logo_text": "GS",
+      "industry": "FinTech",
+      "website": "https://www.goldmansachs.com/careers",
+      "colleges_visited": [
+        "COL-0004"
+      ],
+      "roles": [
+        "New Analyst - Engineering",
+        "Quantitative Strategist",
+        "Risk & Financial Analyst"
+      ],
+      "vacancies_estimate": "18 Premium Offers",
+      "package_range": "₹26.0 - 38.0 LPA",
+      "required_skills": [
+        "Stochastic Math",
+        "Advanced Algorithms",
+        "C++ / Python",
+        "Data Structures"
+      ],
+      "benefits": [
+        "Global Mobility",
+        "Premium Healthcare",
+        "Retirement Benefits",
+        "Gym & Wellness Subsidies"
+      ],
+      "preparation_process": "1. HackerRank Aptitude & Math Test -> 2. 3x Technical Whiteboard Rounds -> 3. Senior Partner Round"
+    },
+    {
+      "id": "PLC-009",
+      "company": "Accenture India",
+      "logo_text": "ACN",
+      "industry": "Consulting",
+      "website": "https://www.accenture.com/in-en/careers",
+      "colleges_visited": [
+        "COL-0001",
+        "COL-0004",
+        "COL-0006",
+        "COL-0009",
+        "COL-0008"
+      ],
+      "roles": [
+        "Advanced Application Engineering Analyst",
+        "Associate Software Engineer",
+        "Data Analytics Associate"
+      ],
+      "vacancies_estimate": "320+ Offers",
+      "package_range": "₹4.5 - 6.5 LPA",
+      "required_skills": [
+        "Critical Thinking",
+        "Cloud Concepts",
+        "Coding in Java/Python",
+        "English Communication"
+      ],
+      "benefits": [
+        "Learning Rewards",
+        "Wellness Insurance",
+        "Flexible Remote/Hybrid Options"
+      ],
+      "preparation_process": "1. Cognitive & Technical Assessment -> 2. Coding Round -> 3. Communication Assessment -> 4. Interview"
+    },
+    {
+      "id": "PLC-010",
+      "company": "Wipro Technologies",
+      "logo_text": "WIPRO",
+      "industry": "Consulting",
+      "website": "https://careers.wipro.com",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0009",
+        "COL-0006"
+      ],
+      "roles": [
+        "Turbo Candidate (₹6.5 LPA)",
+        "Elite National Talent (₹3.5 LPA)",
+        "Cloud Associate"
+      ],
+      "vacancies_estimate": "200+ Campus Offers",
+      "package_range": "₹3.5 - 6.5 LPA",
+      "required_skills": [
+        "Quantitative Ability",
+        "Verbal English",
+        "Basic Programming",
+        "Data Structures"
+      ],
+      "benefits": [
+        "Higher Degree Sponsorship (M.Tech)",
+        "Health Insurance",
+        "Variable Pay"
+      ],
+      "preparation_process": "1. Wipro NLTH Online Test -> 2. Business Technical Interview -> 3. HR Verification"
+    },
+    {
+      "id": "PLC-011",
+      "company": "Microsoft IDC",
+      "logo_text": "MSFT",
+      "industry": "Cloud",
+      "website": "https://careers.microsoft.com",
+      "colleges_visited": [
+        "COL-0004"
+      ],
+      "roles": [
+        "Software Engineer I",
+        "Cloud Solution Architect Associate",
+        "Support Escalation Engineer"
+      ],
+      "vacancies_estimate": "22 Offers",
+      "package_range": "₹28.0 - 45.0 LPA",
+      "required_skills": [
+        "Data Structures & Algorithms",
+        "C# / C++ / Python",
+        "System Design",
+        "Cloud Infrastructure"
+      ],
+      "benefits": [
+        "Stock Awards (RSUs)",
+        "Comprehensive Family Insurance",
+        "Productivity Allowance"
+      ],
+      "preparation_process": "1. Codility Online Assessment -> 2. Three Technical Rounds -> 3. Hiring Manager AA Round"
+    },
+    {
+      "id": "PLC-012",
+      "company": "Freshworks Inc",
+      "logo_text": "FRESH",
+      "industry": "Product",
+      "website": "https://www.freshworks.com/company/careers/",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0009"
+      ],
+      "roles": [
+        "Product Development Engineer",
+        "Front-End Engineer",
+        "Cloud Infrastructure SRE"
+      ],
+      "vacancies_estimate": "40+ Roles",
+      "package_range": "₹12.0 - 20.0 LPA",
+      "required_skills": [
+        "Ruby on Rails / Node.js",
+        "React.js / TypeScript",
+        "AWS",
+        "API Design"
+      ],
+      "benefits": [
+        "Equity Grants",
+        "Catered Meals",
+        "Learning Stipends",
+        "Comprehensive Medical Cover"
+      ],
+      "preparation_process": "1. HackerEarth Online Coding -> 2. Hands-on Machine Task -> 3. Tech Architecture -> 4. Culture Fit"
+    },
+    {
+      "id": "PLC-013",
+      "company": "Qualcomm India",
+      "logo_text": "QCOM",
+      "industry": "Automotive",
+      "website": "https://www.qualcomm.com/company/careers",
+      "colleges_visited": [
+        "COL-0004"
+      ],
+      "roles": [
+        "Associate Hardware Engineer",
+        "Modem Software Developer",
+        "Embedded Firmware Engineer"
+      ],
+      "vacancies_estimate": "25 Offers",
+      "package_range": "₹18.0 - 26.0 LPA",
+      "required_skills": [
+        "Computer Architecture",
+        "Digital Electronics",
+        "C / C++",
+        "Verilog / SystemVerilog"
+      ],
+      "benefits": [
+        "Relocation Allowance",
+        "Annual Bonus",
+        "Health Shield",
+        "Employee Stock Purchase Plan"
+      ],
+      "preparation_process": "1. Digital Logic & C Aptitude Test -> 2. Technical Core Interviews -> 3. Director Round"
+    },
+    {
+      "id": "PLC-014",
+      "company": "Capgemini India",
+      "logo_text": "CAP",
+      "industry": "Consulting",
+      "website": "https://www.capgemini.com/in-en/careers/",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0009",
+        "COL-0006",
+        "COL-0008"
+      ],
+      "roles": [
+        "Senior Analyst (₹7.5 LPA)",
+        "Software Analyst (₹4.0 LPA)",
+        "Cloud Operations Associate"
+      ],
+      "vacancies_estimate": "180+ Recruits",
+      "package_range": "₹4.0 - 7.5 LPA",
+      "required_skills": [
+        "Data Structures",
+        "Java / Python",
+        "Pseudo Code & Logic",
+        "Verbal Ability"
+      ],
+      "benefits": [
+        "Global Certification Grants",
+        "Medical Insurance",
+        "Hybrid Workplace"
+      ],
+      "preparation_process": "1. Pseudo Code + English Test -> 2. Game-based Aptitude -> 3. Coding -> 4. Interview"
+    },
+    {
+      "id": "PLC-015",
+      "company": "HCL Technologies",
+      "logo_text": "HCL",
+      "industry": "Consulting",
+      "website": "https://www.hcltech.com/careers",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0009",
+        "COL-0006"
+      ],
+      "roles": [
+        "Graduate Engineer Trainee",
+        "Design Engineer",
+        "Network Operations Associate"
+      ],
+      "vacancies_estimate": "160+ Offers",
+      "package_range": "₹3.8 - 6.0 LPA",
+      "required_skills": [
+        "Networking Basics",
+        "Core Java / C++",
+        "Database Queries",
+        "Aptitude"
+      ],
+      "benefits": [
+        "Technical Training",
+        "Medical Cover",
+        "Shift Allowances"
+      ],
+      "preparation_process": "1. Online Aptitude & Domain Test -> 2. Technical Viva -> 3. HR Verification"
+    },
+    {
+      "id": "PLC-016",
+      "company": "NVIDIA Graphics",
+      "logo_text": "NVDA",
+      "industry": "Cloud",
+      "website": "https://www.nvidia.com/en-in/about-nvidia/careers/",
+      "colleges_visited": [
+        "COL-0004"
+      ],
+      "roles": [
+        "System Software Engineer",
+        "GPU Architect Intern",
+        "Deep Learning Solution Engineer"
+      ],
+      "vacancies_estimate": "15 Premium Offers",
+      "package_range": "₹30.0 - 52.0 LPA",
+      "required_skills": [
+        "CUDA Programming",
+        "Computer Architecture",
+        "C++",
+        "PyTorch / GPU Optimization"
+      ],
+      "benefits": [
+        "NVIDIA ESPP",
+        "Sign-on Bonus",
+        "Comprehensive Medical Cover",
+        "Wellness Stipends"
+      ],
+      "preparation_process": "1. Advanced C++ / System Coding Test -> 2. 4x Deep Technical Architecture Rounds -> 3. Managerial"
+    },
+    {
+      "id": "PLC-017",
+      "company": "Cisco Systems",
+      "logo_text": "CSCO",
+      "industry": "Cloud",
+      "website": "https://jobs.cisco.com",
+      "colleges_visited": [
+        "COL-0004"
+      ],
+      "roles": [
+        "Software Engineer - Network Security",
+        "Technical Consulting Engineer",
+        "Cloud Infrastructure Engineer"
+      ],
+      "vacancies_estimate": "30 Offers",
+      "package_range": "₹16.0 - 24.0 LPA",
+      "required_skills": [
+        "TCP/IP Protocols",
+        "Network Security",
+        "Python / C++",
+        "Linux Kernel"
+      ],
+      "benefits": [
+        "Tuition Reimbursement",
+        "Emergency Travel Insurance",
+        "Annual Bonus",
+        "RSUs"
+      ],
+      "preparation_process": "1. Networking & Coding Test -> 2. Two Technical Rounds -> 3. Managerial & HR"
+    },
+    {
+      "id": "PLC-018",
+      "company": "Deloitte India",
+      "logo_text": "DELOITTE",
+      "industry": "Consulting",
+      "website": "https://www2.deloitte.com/in/en/careers.html",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0009",
+        "COL-0006"
+      ],
+      "roles": [
+        "Technology Analyst",
+        "Cyber Risk Associate",
+        "Cloud & Data Analytics Consultant"
+      ],
+      "vacancies_estimate": "90+ Recruits",
+      "package_range": "₹7.5 - 11.5 LPA",
+      "required_skills": [
+        "Data Analytics & SQL",
+        "Cloud Infrastructure",
+        "Communication",
+        "Problem Solving"
+      ],
+      "benefits": [
+        "Client Travel Allowances",
+        "Health Insurance",
+        "Executive Education Grants"
+      ],
+      "preparation_process": "1. Cognitive & Verbal Assessment -> 2. Case Study Interview -> 3. Partner Interview"
+    },
+    {
+      "id": "PLC-019",
+      "company": "Oracle India",
+      "logo_text": "ORACLE",
+      "industry": "Cloud",
+      "website": "https://www.oracle.com/in/corporate/careers/",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0009"
+      ],
+      "roles": [
+        "Associate Applications Developer",
+        "Cloud Infrastructure SRE",
+        "Database Systems Engineer"
+      ],
+      "vacancies_estimate": "45 Offers",
+      "package_range": "₹14.0 - 22.0 LPA",
+      "required_skills": [
+        "SQL & Database Internals",
+        "Core Java",
+        "Data Structures",
+        "Cloud Architecture"
+      ],
+      "benefits": [
+        "Oracle Stock Options",
+        "Family Health Insurance",
+        "Flexible Work Arrangements"
+      ],
+      "preparation_process": "1. Online Test (DSA + CS Fundamentals) -> 2. Three Technical Interview Rounds -> 3. HR"
+    },
+    {
+      "id": "PLC-020",
+      "company": "Paytm / One97 Communications",
+      "logo_text": "PAYTM",
+      "industry": "FinTech",
+      "website": "https://paytm.com/careers",
+      "colleges_visited": [
+        "COL-0004",
+        "COL-0009"
+      ],
+      "roles": [
+        "Software Engineer - Payment Systems",
+        "Backend Engineer - Go/Java",
+        "Data Analytics Engineer"
+      ],
+      "vacancies_estimate": "35 Offers",
+      "package_range": "₹12.0 - 18.0 LPA",
+      "required_skills": [
+        "Java / Go",
+        "Microservices",
+        "Kafka / Redis",
+        "High Throughput Systems"
+      ],
+      "benefits": [
+        "ESOPs",
+        "Health Insurance",
+        "Daily Meal Cards",
+        "Gym Reimbursement"
+      ],
+      "preparation_process": "1. Online Machine Coding Test -> 2. System Design & Low Level Design -> 3. HR Round"
+    }
+  ],
+  "preparation_platforms": [
+    {
+      "name": "IndiaBIX",
+      "url": "https://www.indiabix.com",
+      "focus": "Quantitative Aptitude, Verbal Reasoning, Data Interpretation & Formulas",
+      "description": "Comprehensive question banks with step-by-step arithmetic, profit-loss, time-speed, and logical deduction explanations."
+    },
+    {
+      "name": "AptitudeTest",
+      "url": "https://www.aptitudetest.com",
+      "focus": "Standardized Psychometric & Numerical Reasoning Simulations",
+      "description": "Timed mock drills designed to emulate corporate first-round screening tests."
+    },
+    {
+      "name": "PrepInsta",
+      "url": "https://www.prepinsta.com",
+      "focus": "Company-Specific Placement Dashboards & Coding Blueprints",
+      "description": "Exhaustive syllabus breakdowns and past question archives for TCS, Zoho, Infosys, Cognizant, Wipro, and Accenture."
+    },
+    {
+      "name": "GeeksforGeeks",
+      "url": "https://www.geeksforgeeks.com",
+      "focus": "Data Structures, Algorithms & Core Computer Science Interviews",
+      "description": "Industry-standard coding practice sets, DSA mastery paths, and company interview archives."
+    },
+    {
+      "name": "Feel Free to Learn",
+      "url": "https://www.feelfreetolearn.com",
+      "focus": "Speed Math Shortcuts & Competitive Aptitude Video Tutorials",
+      "description": "Specialized visual shortcuts and mental math techniques for solving quant problems in under 45 seconds."
+    },
+    {
+      "name": "Reddit",
+      "url": "https://www.reddit.com",
+      "focus": "Peer Interview Experiences & Transparent Compensation Archives",
+      "description": "Real-time discussions on subreddits like r/developersIndia and r/cscareerquestions regarding hiring rounds."
+    },
+    {
+      "name": "Placement Preparation",
+      "url": "https://www.placementpreparation.com",
+      "focus": "Comprehensive Mock Tests, GD Topics & HR Interview Playbooks",
+      "description": "End-to-end guidance covering group discussions, technical interviews, and resume structuring."
+    }
+  ],
+  "reviews": [
+    {
+      "id": "PLR-01",
+      "student": "Siddharth Menon",
+      "company": "Zoho Corporation",
+      "college": "Adithya Institute of Technology, Coimbatore",
+      "package": "₹8.5 LPA",
+      "comment": "Practicing company questions on IndiaBIX and PrepInsta helped me clear Zoho's first two rounds easily."
+    },
+    {
+      "id": "PLR-02",
+      "student": "Nandhini Kumar",
+      "company": "Amazon SDE",
+      "college": "Amrita Vishwa Vidyapeetham, Coimbatore",
+      "package": "₹32.0 LPA",
+      "comment": "GeeksforGeeks and Reddit interview archives gave me exact clarity on tree algorithms and system scalability rounds."
+    },
+    {
+      "id": "PLR-03",
+      "student": "Pranav Ramesh",
+      "company": "Robert Bosch",
+      "college": "Karunya Institute of Technology and Sciences",
+      "package": "₹9.2 LPA",
+      "comment": "The campus drive was well coordinated with 4 technical rounds focusing heavily on embedded microcontrollers."
+    },
+    {
+      "id": "PLR-04",
+      "student": "Keerthana Sundar",
+      "company": "TCS Digital",
+      "college": "Rathinam Global University, Coimbatore",
+      "package": "₹7.5 LPA",
+      "comment": "Feel Free to Learn speed math shortcuts gave me the edge to complete the quantitative section 15 minutes before time."
+    },
+    {
+      "id": "PLR-05",
+      "student": "Ashwin Raj",
+      "company": "Cognizant GenC Next",
+      "college": "School of Postgraduate Studies, Coimbatore",
+      "package": "₹6.8 LPA",
+      "comment": "Mock tests and placement preparation resources allowed 85% of our batch to receive offers by semester 7."
+    },
+    {
+      "id": "PLR-06",
+      "student": "Monika Balan",
+      "company": "L&T Technology Services",
+      "college": "Coimbatore Institute of Technology",
+      "package": "₹7.0 LPA",
+      "comment": "Great placement training cell with regular mock interviews and aptitude drills."
+    },
+    {
+      "id": "PLR-07",
+      "student": "Dinesh Kumar",
+      "company": "Accenture",
+      "college": "ADITHYA COLLEGE OF ARTS AND SCIENCE, Coimbatore",
+      "package": "₹5.4 LPA",
+      "comment": "Aptitudetest.com simulations prepared us for the online assessment environment."
+    },
+    {
+      "id": "PLR-08",
+      "student": "Harish V.",
+      "company": "Wipro Turbo",
+      "college": "PSG College of Technology, Coimbatore",
+      "package": "₹6.5 LPA",
+      "comment": "Solid foundational training provided right from 2nd year."
+    },
+    {
+      "id": "PLR-09",
+      "student": "Divya Prakash",
+      "company": "Infosys SP",
+      "college": "Amrita Vishwa Vidyapeetham, Coimbatore",
+      "package": "₹9.5 LPA",
+      "comment": "Coding round required thorough knowledge of DP and graphs."
+    },
+    {
+      "id": "PLR-10",
+      "student": "Gokul Prasad",
+      "company": "TCS Prime",
+      "college": "Adithya Institute of Technology, Coimbatore",
+      "package": "₹9.0 LPA",
+      "comment": "Consistent practice on IndiaBIX and PrepInsta was the key to cracking TCS Prime."
+    }
+  ]
+}

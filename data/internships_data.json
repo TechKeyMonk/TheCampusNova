@@ -1,0 +1,743 @@
+{
+  "past_10yr_trends": {
+    "title": "Past 10 Years: Internship Evolution & Campus Progression (2016-2025)",
+    "metrics": [
+      {
+        "year": "2016",
+        "internship_rate": "32%",
+        "avg_stipend": "₹6,000/mo",
+        "ppo_conversion": "28%"
+      },
+      {
+        "year": "2018",
+        "internship_rate": "48%",
+        "avg_stipend": "₹10,500/mo",
+        "ppo_conversion": "38%"
+      },
+      {
+        "year": "2020",
+        "internship_rate": "62%",
+        "avg_stipend": "₹15,000/mo",
+        "ppo_conversion": "45%"
+      },
+      {
+        "year": "2022",
+        "internship_rate": "78%",
+        "avg_stipend": "₹22,000/mo",
+        "ppo_conversion": "58%"
+      },
+      {
+        "year": "2024",
+        "internship_rate": "89%",
+        "avg_stipend": "₹28,500/mo",
+        "ppo_conversion": "68%"
+      },
+      {
+        "year": "2025",
+        "internship_rate": "93%",
+        "avg_stipend": "₹32,000/mo",
+        "ppo_conversion": "74%"
+      }
+    ],
+    "key_takeaway": "Mandatory credit-based internships increased pre-placement offer (PPO) conversion rates by 2.6x across technical universities."
+  },
+  "future_5yr_pathway": {
+    "title": "Future 5 Years: High-Impact Internship & Research Pathways (2026-2030)",
+    "domains": [
+      {
+        "domain": "Agentic AI & LLM Systems",
+        "growth": "+45%",
+        "recommended_courses": [
+          "B.Tech AI & Data Science",
+          "M.Tech Intelligent Systems"
+        ],
+        "target_companies": [
+          "OpenAI Partners",
+          "Microsoft Research",
+          "Zoho AI Labs"
+        ]
+      },
+      {
+        "domain": "EV Battery & Smart Grid Tech",
+        "growth": "+38%",
+        "recommended_courses": [
+          "B.E EEE / Mechatronics",
+          "B.Tech Energy Systems"
+        ],
+        "target_companies": [
+          "Ather Energy",
+          "Bosch",
+          "Tata Motors R&D"
+        ]
+      },
+      {
+        "domain": "Zero-Trust Cloud & Cyber Defense",
+        "growth": "+40%",
+        "recommended_courses": [
+          "B.Sc Cybersecurity",
+          "B.Tech Network Security"
+        ],
+        "target_companies": [
+          "Palo Alto Networks",
+          "CrowdStrike",
+          "Quick Heal"
+        ]
+      },
+      {
+        "domain": "Bio-Informatics & Agri-Tech",
+        "growth": "+32%",
+        "recommended_courses": [
+          "B.Sc Agri-Tech",
+          "B.Tech Bio-Engineering"
+        ],
+        "target_companies": [
+          "TNAU Incubators",
+          "Syngenta",
+          "Bayer Digital"
+        ]
+      }
+    ]
+  },
+  "top_10_projects": [
+    {
+      "rank": 1,
+      "project": "AI-Powered Early Crop Disease Detection Drone",
+      "domain": "AI / AgriTech",
+      "college": "Tamilnadu Agricultural University, Coimbatore",
+      "company_partner": "TNAU Incubator",
+      "impact": "96.4% precision on leaf blight detection saving ₹1.2 Cr in crop loss"
+    },
+    {
+      "rank": 2,
+      "project": "High-Efficiency Regenerative Braking Controller for EVs",
+      "domain": "EV / Embedded",
+      "college": "Amrita Vishwa Vidyapeetham, Coimbatore",
+      "company_partner": "Robert Bosch R&D",
+      "impact": "14% extended battery range in urban driving cycles"
+    },
+    {
+      "rank": 3,
+      "project": "Zero-Knowledge Proof Identity Verification SDK",
+      "domain": "Web3 / Cryptography",
+      "college": "PSG College of Technology, Coimbatore",
+      "company_partner": "Polygon Labs",
+      "impact": "Over 120,000 instant on-chain student identity proofs generated"
+    },
+    {
+      "rank": 4,
+      "project": "Automated ICU Patient Vitals Anomaly Detector",
+      "domain": "IoT / HealthTech",
+      "college": "Karunya Institute of Technology and Sciences",
+      "company_partner": "Apollo Health Tech",
+      "impact": "Sub-second alerting for sudden oxygen and pulse variations"
+    },
+    {
+      "rank": 5,
+      "project": "Autonomous Solar Panel Cleaning & Inspection Robot",
+      "domain": "Robotics",
+      "college": "Adithya Institute of Technology, Coimbatore",
+      "company_partner": "Adithya Renewable Energy",
+      "impact": "18% improvement in solar power capture without water wastage"
+    },
+    {
+      "rank": 6,
+      "project": "Microservices Load Optimizer for High-Traffic SaaS",
+      "domain": "Cloud / DevOps",
+      "college": "Rathinam Global University, Coimbatore",
+      "company_partner": "Zoho Labs",
+      "impact": "Reduced database latency by 32% during seasonal peak loads"
+    },
+    {
+      "rank": 7,
+      "project": "Decentralized Credential & Certificate Vault",
+      "domain": "Blockchain",
+      "college": "School of Postgraduate Studies, Coimbatore",
+      "company_partner": "GovTech Tamil Nadu",
+      "impact": "Zero forgery tamper-proof marksheets for university students"
+    },
+    {
+      "rank": 8,
+      "project": "Multilingual AI Voice Assistant for Rural Banking",
+      "domain": "NLP / FinTech",
+      "college": "Amrita Vishwa Vidyapeetham, Coimbatore",
+      "company_partner": "Canara Bank Innovation Hub",
+      "impact": "Supported 6 South Indian regional languages with 94% intent accuracy"
+    },
+    {
+      "rank": 9,
+      "project": "Smart Water Distribution & Leakage Isolation Network",
+      "domain": "Smart City IoT",
+      "college": "Coimbatore Institute of Technology",
+      "company_partner": "Coimbatore Smart City Mission",
+      "impact": "Detected 45+ underground pipeline leaks saving 1.8M liters daily"
+    },
+    {
+      "rank": 10,
+      "project": "Container Security Hardening & Vulnerability Scanner",
+      "domain": "Cybersecurity",
+      "college": "ADITHYA COLLEGE OF ARTS AND SCIENCE, Coimbatore",
+      "company_partner": "CyberShield Labs",
+      "impact": "Integrated automated vulnerability scans into CI/CD pipelines for 80+ apps"
+    }
+  ],
+  "internships": [
+    {
+      "title": "Test Advanced ML Research Intern",
+      "company_name": "Test DeepMind Research",
+      "location": "Bengaluru",
+      "stipend": "Rs. 75,000 / month",
+      "duration": "6 Months",
+      "id": 38
+    },
+    {
+      "title": "Test Advanced ML Research Intern",
+      "company_name": "Test DeepMind Research",
+      "location": "Bengaluru",
+      "stipend": "Rs. 75,000 / month",
+      "duration": "6 Months",
+      "id": 37
+    },
+    {
+      "title": "Test AI Research Intern",
+      "company_name": "Test DeepLabs",
+      "location": "Chennai",
+      "stipend": "₹30,000 / month",
+      "duration": "6 Months",
+      "id": 28,
+      "company": "Test DeepLabs",
+      "role": "Test AI Research Intern",
+      "domain": "Data Science",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "eligibility": "Students in final/pre-final year.",
+      "skills": [
+        "Problem Solving",
+        "Data Structures"
+      ],
+      "deadline": "Ongoing",
+      "apply_url": "https://www.infosys.com/careers/"
+    },
+    {
+      "id": "INT-01",
+      "company": "Zoho Corporation",
+      "role": "Software Engineering Intern",
+      "domain": "Python Development",
+      "location": "Coimbatore (Rathinam TechZone)",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "duration": "6 Months (Semester)",
+      "type": "Paid",
+      "stipend": "₹25,000 / month",
+      "eligibility": "B.Sc, BCA, B.E / B.Tech (Final / Pre-Final Year)",
+      "skills": [
+        "Python",
+        "FastAPI",
+        "PostgreSQL",
+        "OOP Logic"
+      ],
+      "certifications": "Python Certification or GitHub Project Portfolio",
+      "website": "https://www.zoho.com/careers/",
+      "details": "Hands-on engineering within real Zoho SaaS product modules. High PPO conversion rate."
+    },
+    {
+      "id": "INT-02",
+      "company": "Robert Bosch",
+      "role": "Embedded Automotive R&D Intern",
+      "domain": "IoT & Robotics",
+      "location": "Coimbatore (CHIL SEZ, Saravanampatti)",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "duration": "6 Months (Semester)",
+      "type": "Paid",
+      "stipend": "₹30,000 / month",
+      "eligibility": "B.E / B.Tech (ECE, EEE, Mechatronics, CSE)",
+      "skills": [
+        "Embedded C",
+        "Microcontrollers",
+        "RTOS",
+        "MATLAB"
+      ],
+      "certifications": "Embedded Systems Course / Hardware Project",
+      "website": "https://careers.bosch.com",
+      "details": "Work with automotive firmware and vehicle diagnostics teams in the Coimbatore engineering campus."
+    },
+    {
+      "id": "INT-03",
+      "company": "TNAU Agri-Tech Incubator",
+      "role": "Data Analytics & GIS Research Intern",
+      "domain": "Data Analytics",
+      "location": "Coimbatore (Lawley Road)",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "duration": "3 Months",
+      "type": "Paid",
+      "stipend": "₹18,000 / month",
+      "eligibility": "B.Sc (Agri/CS/IT), B.Tech, M.Sc",
+      "skills": [
+        "Python",
+        "Pandas",
+        "QGIS / Remote Sensing",
+        "SQL"
+      ],
+      "certifications": "Data Analytics Specialization",
+      "website": "https://tnau.ac.in",
+      "details": "Analyze satellite and drone imagery for precision agriculture and yield forecasting models."
+    },
+    {
+      "id": "INT-04",
+      "company": "Amazon Web Services (AWS)",
+      "role": "Cloud Architecture Intern",
+      "domain": "Cloud Computing",
+      "location": "Bengaluru / Remote",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "duration": "2 Months (Summer)",
+      "type": "Paid",
+      "stipend": "₹45,000 / month",
+      "eligibility": "B.E / B.Tech / MCA (3rd / 4th Year)",
+      "skills": [
+        "AWS Core (EC2, S3, IAM)",
+        "Linux",
+        "Terraform",
+        "Python"
+      ],
+      "certifications": "AWS Certified Cloud Practitioner (Preferred)",
+      "website": "https://www.amazon.jobs",
+      "details": "Work with Solutions Architects designing resilient cloud infrastructure."
+    },
+    {
+      "id": "INT-05",
+      "company": "Cognizant AI Labs",
+      "role": "Machine Learning Research Intern",
+      "domain": "Artificial Intelligence",
+      "location": "Coimbatore (KCT Tech Park) / Chennai",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "duration": "3 Months",
+      "type": "Paid",
+      "stipend": "₹22,000 / month",
+      "eligibility": "B.Tech, B.Sc (Data Science/CS), M.Tech",
+      "skills": [
+        "PyTorch",
+        "Transformers",
+        "NLP",
+        "Scikit-Learn"
+      ],
+      "certifications": "Deep Learning Specialization",
+      "website": "https://careers.cognizant.com",
+      "details": "Develop generative AI workflows and fine-tune domain-specific LLMs for enterprise automation."
+    },
+    {
+      "id": "INT-06",
+      "company": "Google India",
+      "role": "Software Engineering Summer Intern",
+      "domain": "Python Development",
+      "location": "Bengaluru / Hyderabad",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "duration": "2 Months (Summer)",
+      "type": "Paid",
+      "stipend": "₹1,00,000 / month",
+      "eligibility": "Pre-final year undergraduate or dual degree students",
+      "skills": [
+        "Data Structures",
+        "Algorithms",
+        "C++ / Java / Python"
+      ],
+      "certifications": "Strong GitHub or Competitive Programming Track Record",
+      "website": "https://careers.google.com",
+      "details": "Work directly on core search, YouTube or cloud developer infrastructure with top mentors."
+    },
+    {
+      "id": "INT-07",
+      "company": "Microsoft Research India",
+      "role": "Research Fellow & Applied AI Intern",
+      "domain": "Artificial Intelligence",
+      "location": "Bengaluru",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "duration": "6 Months",
+      "type": "Paid",
+      "stipend": "₹75,000 / month",
+      "eligibility": "B.Tech / M.Tech / M.Sc in CS, Math, AI",
+      "skills": [
+        "Python",
+        "PyTorch",
+        "Mathematical Modeling",
+        "Research Writing"
+      ],
+      "certifications": "Prior research publications or open-source ML contributions",
+      "website": "https://www.microsoft.com/en-us/research/careers/",
+      "details": "Collaborate with world-renowned scientists on novel deep learning architectures."
+    },
+    {
+      "id": "INT-08",
+      "company": "Goldman Sachs",
+      "role": "Summer Analyst - Quantitative Analytics",
+      "domain": "Data Analytics",
+      "location": "Bengaluru",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "duration": "2 Months (Summer)",
+      "type": "Paid",
+      "stipend": "₹85,000 / month",
+      "eligibility": "Pre-final year STEM / Economics / Finance students",
+      "skills": [
+        "Probability & Statistics",
+        "Python",
+        "SQL",
+        "Financial Econometrics"
+      ],
+      "certifications": "Strong numerical aptitude and financial markets interest",
+      "website": "https://www.goldmansachs.com/careers/",
+      "details": "Build quantitative models for risk valuation, market intelligence, and algorithmic pricing."
+    },
+    {
+      "id": "INT-09",
+      "company": "KLA Corporation",
+      "role": "Computer Vision & Algorithms Intern",
+      "domain": "Artificial Intelligence",
+      "location": "Chennai (IIT Madras Research Park)",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "duration": "6 Months (Semester)",
+      "type": "Paid",
+      "stipend": "₹40,000 / month",
+      "eligibility": "B.Tech / M.Tech (CS, ECE, Data Science)",
+      "skills": [
+        "C++",
+        "OpenCV",
+        "Image Processing",
+        "Linear Algebra"
+      ],
+      "certifications": "Computer Vision specialization or GPU programming experience",
+      "website": "https://www.kla.com/careers",
+      "details": "Develop nanometer-level optical inspection algorithms for advanced semiconductor wafer manufacturing."
+    },
+    {
+      "id": "INT-10",
+      "company": "Freshworks",
+      "role": "UI/UX & Frontend Engineering Intern",
+      "domain": "Python Development",
+      "location": "Chennai / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "duration": "3 Months",
+      "type": "Paid",
+      "stipend": "₹30,000 / month",
+      "eligibility": "B.Des, B.Tech, BCA, B.Sc (CS/Design)",
+      "skills": [
+        "React.js",
+        "TypeScript",
+        "TailwindCSS",
+        "Figma",
+        "REST APIs"
+      ],
+      "certifications": "UI/UX Design Portfolio or live deployed web applications",
+      "website": "https://www.freshworks.com/careers/",
+      "details": "Build responsive, accessible user interfaces for global SaaS products."
+    },
+    {
+      "id": "INT-11",
+      "company": "Schneider Electric",
+      "role": "Smart Energy & IoT Intern",
+      "domain": "IoT & Robotics",
+      "location": "Coimbatore / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "duration": "6 Months",
+      "type": "Paid",
+      "stipend": "₹22,000 / month",
+      "eligibility": "B.E / B.Tech (EEE, ECE, Mechatronics)",
+      "skills": [
+        "Industrial IoT",
+        "PLC Basics",
+        "Embedded Sensors",
+        "MATLAB"
+      ],
+      "certifications": "Industrial Automation or Smart Grid fundamentals",
+      "website": "https://www.se.com/in/en/about-us/careers/",
+      "details": "Build telemetry and condition monitoring systems for next-gen green power distribution grids."
+    },
+    {
+      "id": "INT-12",
+      "company": "PayPal India",
+      "role": "Cybersecurity & Risk Defense Intern",
+      "domain": "Cloud Computing",
+      "location": "Chennai",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "duration": "3 Months",
+      "type": "Paid",
+      "stipend": "₹50,000 / month",
+      "eligibility": "B.Tech / B.Sc in Information Security, CS, IT",
+      "skills": [
+        "Network Security",
+        "Cryptography",
+        "Python",
+        "OWASP Top 10"
+      ],
+      "certifications": "CEH / CompTIA Security+ (Preferred)",
+      "website": "https://www.paypal.com/jobs",
+      "details": "Implement threat detection, API security auditing, and secure tokenization engines."
+    },
+    {
+      "id": "INT-13",
+      "company": "PricewaterhouseCoopers (PwC) India",
+      "role": "Technology Consulting Intern",
+      "domain": "Data Analytics",
+      "location": "Bengaluru / Chennai",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "duration": "2 Months",
+      "type": "Paid",
+      "stipend": "₹35,000 / month",
+      "eligibility": "B.Tech, BBA, B.Com, MBA, MCA",
+      "skills": [
+        "PowerBI",
+        "Advanced Excel",
+        "SQL",
+        "Business Problem Framing"
+      ],
+      "certifications": "Data Visualization & Business Analytics certification",
+      "website": "https://www.pwc.in/careers.html",
+      "details": "Assist advisory teams in crafting digital transformation roadmaps for enterprise clients."
+    },
+    {
+      "id": "INT-14",
+      "company": "Ather Energy",
+      "role": "EV Battery Management Intern",
+      "domain": "IoT & Robotics",
+      "location": "Hosur / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "duration": "6 Months",
+      "type": "Paid",
+      "stipend": "₹28,000 / month",
+      "eligibility": "B.E / B.Tech (EEE, ECE, Mechanical, Mechatronics)",
+      "skills": [
+        "Battery Chemistry",
+        "Simulink",
+        "C Programming",
+        "Thermal Modeling"
+      ],
+      "certifications": "Electric Vehicle Systems certification",
+      "website": "https://www.atherenergy.com/careers",
+      "details": "Develop battery state-of-charge estimation and intelligent thermal cooling firmware."
+    },
+    {
+      "id": "INT-15",
+      "company": "Tiger Analytics",
+      "role": "Data Engineering Intern",
+      "domain": "Data Analytics",
+      "location": "Chennai / Remote",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "duration": "3 Months",
+      "type": "Paid",
+      "stipend": "₹25,000 / month",
+      "eligibility": "B.Tech / B.Sc (Data Science, CS, IT)",
+      "skills": [
+        "Python",
+        "PySpark",
+        "Snowflake",
+        "SQL ETL"
+      ],
+      "certifications": "Cloud Data Engineering Certification",
+      "website": "https://www.tigeranalytics.com/careers/",
+      "details": "Construct enterprise data pipelines and high-throughput streaming architectures."
+    },
+    {
+      "id": "INT-16",
+      "company": "Tata Elxsi",
+      "role": "Autonomous Driving Systems Intern",
+      "domain": "IoT & Robotics",
+      "location": "Coimbatore / Bengaluru",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "duration": "6 Months",
+      "type": "Paid",
+      "stipend": "₹24,000 / month",
+      "eligibility": "B.E / B.Tech (ECE, CSE, Robotics)",
+      "skills": [
+        "ROS (Robot Operating System)",
+        "C++",
+        "LiDAR Data Processing",
+        "Linux"
+      ],
+      "certifications": "Robotics / Autonomous Systems coursework",
+      "website": "https://www.tataelxsi.com/careers",
+      "details": "Work on sensor fusion algorithms and vehicle simulation environments in Coimbatore tech center."
+    },
+    {
+      "id": "INT-17",
+      "company": "IIT Madras Research Park Incubators",
+      "role": "DeepTech Startup Venture Intern",
+      "domain": "Python Development",
+      "location": "Chennai (IITMRP)",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "duration": "3 Months",
+      "type": "Paid",
+      "stipend": "₹20,000 / month",
+      "eligibility": "Undergraduate / Postgraduate students across all engineering streams",
+      "skills": [
+        "Python",
+        "Hardware Prototyping",
+        "Full-Stack Web",
+        "Product Sprinting"
+      ],
+      "certifications": "Hackathon participation or startup prototype portfolio",
+      "website": "https://respark.iitm.ac.in",
+      "details": "Fast-paced immersion in deep-tech startups working on space tech, energy, and robotics."
+    },
+    {
+      "id": "INT-18",
+      "company": "L&T Technology Services",
+      "role": "Smart City IoT Solutions Intern",
+      "domain": "IoT & Robotics",
+      "location": "Coimbatore / Chennai",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "duration": "6 Months",
+      "type": "Paid",
+      "stipend": "₹22,000 / month",
+      "eligibility": "B.E / B.Tech (ECE, CSE, Civil, Mechatronics)",
+      "skills": [
+        "LoRaWAN",
+        "MQTT Protocols",
+        "Node.js",
+        "Embedded Sensors"
+      ],
+      "certifications": "IoT architecture or sensor networks certification",
+      "website": "https://www.ltts.com/careers",
+      "details": "Design connected infrastructure telemetry for smart urban utilities and municipal grids."
+    },
+    {
+      "id": "INT-19",
+      "company": "Infosys InStep",
+      "role": "Global Technology & Digital Intern",
+      "domain": "Cloud Computing",
+      "location": "Bengaluru / Mysuru Campus",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "duration": "2 Months (Summer)",
+      "type": "Paid",
+      "stipend": "₹40,000 / month",
+      "eligibility": "Top 10% academic standing in recognized universities",
+      "skills": [
+        "Java / Python",
+        "Microservices",
+        "Cloud Architecture",
+        "Data Science"
+      ],
+      "certifications": "Top academic grades and coding achievements",
+      "website": "https://www.infosys.com/instep/",
+      "details": "Ranked the #1 internship program in the world by Vault for five consecutive years."
+    },
+    {
+      "id": "INT-20",
+      "company": "Adithya Renewable Technologies",
+      "role": "Solar PV & Smart Energy Intern",
+      "domain": "IoT & Robotics",
+      "location": "Coimbatore",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "duration": "3 Months",
+      "type": "Paid",
+      "stipend": "₹15,000 / month",
+      "eligibility": "B.E / B.Tech (EEE, ECE, Mechanical), B.Sc Physics",
+      "skills": [
+        "PVsyst Simulation",
+        "Solar Inverter Design",
+        "IoT Data Logging",
+        "AutoCAD"
+      ],
+      "certifications": "Solar energy systems or renewable energy certification",
+      "website": "https://adithyatech.edu.in",
+      "details": "Field testing and monitoring of commercial solar installations and energy yield optimization."
+    }
+  ],
+  "reviews": [
+    {
+      "id": "IR-01",
+      "student": "Vigneshwaran P.",
+      "company": "Zoho Corporation",
+      "college": "Adithya Institute of Technology, Coimbatore",
+      "rating": 5,
+      "comment": "My 6-month internship at Zoho Coimbatore directly resulted in a full-time SDE offer. Best learning curve ever!"
+    },
+    {
+      "id": "IR-02",
+      "student": "Sowmya R.",
+      "company": "Robert Bosch",
+      "college": "Amrita Vishwa Vidyapeetham, Coimbatore",
+      "rating": 5,
+      "comment": "Got to work on real ADAS test benches and hardware-in-the-loop simulations in Coimbatore."
+    },
+    {
+      "id": "IR-03",
+      "student": "Kavitha M.",
+      "company": "TNAU Incubator",
+      "college": "Tamilnadu Agricultural University, Coimbatore",
+      "rating": 4.8,
+      "comment": "Practical exposure to GIS mapping and drone image analytics with supportive senior agricultural scientists."
+    },
+    {
+      "id": "IR-04",
+      "student": "Rahul N.",
+      "company": "Google India",
+      "college": "PSG College of Technology, Coimbatore",
+      "rating": 5,
+      "comment": "The 2-month summer internship provided deep exposure to scalable distributed microservices and code reviews."
+    },
+    {
+      "id": "IR-05",
+      "student": "Ananya Sen",
+      "company": "Goldman Sachs",
+      "college": "IIT Madras",
+      "rating": 4.9,
+      "comment": "Exceptional quantitative modeling rigor. Worked on time-series risk prediction with senior analysts."
+    },
+    {
+      "id": "IR-06",
+      "student": "Dinesh Karthik",
+      "company": "Amazon AWS",
+      "college": "Coimbatore Institute of Technology",
+      "rating": 5.0,
+      "comment": "Hands-on distributed infrastructure internship debugging cloud storage latencies with senior SRE mentors."
+    },
+    {
+      "id": "IR-07",
+      "student": "Pooja Venkataraman",
+      "company": "Tiger Analytics",
+      "college": "PSG College of Technology, Coimbatore",
+      "rating": 4.8,
+      "comment": "End-to-end Python ML data pipeline deployment with direct feedback from client analytics teams."
+    },
+    {
+      "id": "IR-08",
+      "student": "Gautham Sundar",
+      "company": "L&T Technology Services",
+      "college": "Adithya Institute of Technology, Coimbatore",
+      "rating": 4.9,
+      "comment": "Designed smart factory IoT telemetry with FreeRTOS and LoRaWAN, leading to an immediate full-time PPO."
+    },
+    {
+      "id": "IR-09",
+      "student": "Meenakshi Iyer",
+      "company": "Schneider Electric",
+      "college": "Kumaraguru College of Technology, Coimbatore",
+      "rating": 4.8,
+      "comment": "Solar grid monitoring and energy yield simulation with senior architects in Coimbatore R&D center."
+    },
+    {
+      "id": "IR-10",
+      "student": "Karthikeyan M.",
+      "company": "Freshworks Inc",
+      "college": "Sri Krishna College of Engg & Tech, Coimbatore",
+      "rating": 5.0,
+      "comment": "Shipped accessible React and TypeScript component library improvements used by thousands of SaaS customers daily."
+    }
+  ]
+}

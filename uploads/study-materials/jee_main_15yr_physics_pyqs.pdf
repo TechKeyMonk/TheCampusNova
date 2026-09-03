@@ -1,0 +1,44 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1540 >>
+stream
+BT /F1 16 Tf 40 750 Td (JEE Main & Advanced 15-Year Solved Physics Archive) Tj ET
+BT /F1 11 Tf 40 728 Td (Target Exam: JEE Main & JEE Advanced 2026   |   Stream: Engineering   |   Subject: Physics) Tj ET
+BT /F1 9 Tf 40 710 Td (Verified Official Academic Preparation Material - TheCampusNova Learning Portal) Tj ET
+BT /F1 9 Tf 40 695 Td (-------------------------------------------------------------------------------------------------) Tj ET
+BT /F1 11 Tf 40 675 Td (Key Topics Covered: Electrodynamics, Mechanics & Modern Physics) Tj ET
+BT /F1 9.5 Tf 40 645 Td (1. Mechanics: Conservation of Linear Momentum, Rotational Dynamics \(I = sum\(m*r^2\)\), Torque = I*alpha) Tj ET
+BT /F1 9.5 Tf 40 629 Td (2. Electrodynamics: Coulomb Law \(F = q1*q2 / 4*pi*eps0*r^2\), Gauss Law \(Flux = Q_in / eps0\)) Tj ET
+BT /F1 9.5 Tf 40 613 Td (3. Biot-Savart Law: dB = \(mu0 / 4*pi\) * \(I*dl x r\) / r^3 | Ampere Circuital Law: integral\(B.dl\) = mu0*I_enc) Tj ET
+BT /F1 9.5 Tf 40 597 Td (4. Modern Physics: Photoelectric Equation \(E_k = h*nu - Phi\), de Broglie wavelength \(lambda = h/p\)) Tj ET
+BT /F1 9.5 Tf 40 581 Td (5. Solved PYQ 1: Find magnetic field at center of circular loop carrying current I. Answer: B = mu0*I / \(2*R\)) Tj ET
+BT /F1 9.5 Tf 40 565 Td (6. Solved PYQ 2: A particle undergoes SHM with amplitude A. At what displacement is KE = PE? Answer: x = A / sqrt\(2\)) Tj ET
+BT /F1 9.5 Tf 40 549 Td (7. Exam Strategy: Solve Mechanics first only if calculation speed is high; Modern Physics gives guaranteed marks with zero risk.) Tj ET
+
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000244 00000 n 
+00000001870 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1950
+%%EOF

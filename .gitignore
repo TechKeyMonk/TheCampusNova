@@ -1,0 +1,17 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.coverage
+node_modules/
+.cursor/
+.vscode/
+.theme_backup/
+scratch/
+cloudflared.exe
+client_secret.json
+smtp_config.json
+token.json

@@ -1,0 +1,872 @@
+{
+  "active_admissions_count": 48,
+  "admission_notifications": [
+    {
+      "id": "NOTIF-01",
+      "college": "Amrita Vishwa Vidyapeetham, Coimbatore",
+      "title": "B.Tech & M.Tech Admissions 2026 Open",
+      "date": "Closing Soon: 15 May 2026",
+      "badge": "URGENT"
+    },
+    {
+      "id": "NOTIF-02",
+      "college": "Tamilnadu Agricultural University, Coimbatore",
+      "title": "UG Agri & Agri-Tech Counselling Registration",
+      "date": "Starts: 20 May 2026",
+      "badge": "NEW"
+    },
+    {
+      "id": "NOTIF-03",
+      "college": "Adithya Institute of Technology, Coimbatore",
+      "title": "Direct B.E / B.Tech Merit Admission Round",
+      "date": "Walk-in Open Daily",
+      "badge": "ACTIVE"
+    },
+    {
+      "id": "NOTIF-04",
+      "college": "Karunya Institute of Technology and Sciences, Coimbatore",
+      "title": "KEE 2026 Engineering Scholarship Test",
+      "date": "Exam Date: 28 April 2026",
+      "badge": "SCHOLARSHIP"
+    },
+    {
+      "id": "NOTIF-05",
+      "college": "PSG College of Technology, Coimbatore",
+      "title": "TNEA Single Window Engineering Allotment 2026",
+      "date": "Counseling Starts: June 2026",
+      "badge": "GOVT QUOTA"
+    }
+  ],
+  "admissions": [
+    {
+      "college_id": 2,
+      "admission_type": "Direct Merit Entrance 2026",
+      "application_start": "2026-04-01",
+      "application_end": "2026-06-30",
+      "eligibility": "10+2 with 75% in PCM",
+      "status": "active",
+      "id": 42
+    },
+    {
+      "college_id": 2,
+      "admission_type": "Direct Merit Entrance 2026",
+      "application_start": "2026-04-01",
+      "application_end": "2026-06-30",
+      "eligibility": "10+2 with 75% in PCM",
+      "status": "active",
+      "id": 41
+    },
+    {
+      "college_name": "IISc Bengaluru",
+      "admission_type": "Test Merit Counseling 2026",
+      "eligibility": "10+2 PCM 90%",
+      "application_start": "May 2026",
+      "application_end": "June 2026",
+      "fees": "₹50,000 / yr",
+      "id": 32
+    },
+    {
+      "id": "ADM-001",
+      "college_id": "COL-0004",
+      "college_name": "Amrita Vishwa Vidyapeetham, Coimbatore",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.Tech Computer Science & AI",
+        "B.Tech Cyber Security",
+        "M.Tech Data Science",
+        "MBA",
+        "Integrated M.Sc"
+      ],
+      "course_fees": "₹2,50,000 / year",
+      "admission_fee": "₹15,000 (One-time Non-refundable)",
+      "fee_structure": {
+        "tuition_fee": "₹2,25,000 / year",
+        "lab_library_fee": "₹25,000 / year",
+        "hostel_fee": "₹85,000 / year (AC / Non-AC options)",
+        "bus_transport_fee": "₹32,000 / year (Optional daily routes across Coimbatore)",
+        "canteen_food_fee": "₹45,000 / year (Nutritious Veg/Multi-cuisine)"
+      },
+      "college_timings": "8:30 AM - 4:30 PM",
+      "admission_office_timings": "9:00 AM - 5:30 PM (Mon-Sat)",
+      "required_documents": [
+        "10th & 12th Standard Original Marksheets",
+        "Transfer Certificate (TC) & Conduct Certificate",
+        "Community Certificate (if applicable)",
+        "Aadhaar Card Copy (Student & Parent)",
+        "AEEE / JEE Main Scorecard",
+        "4 Recent Passport Size Photographs"
+      ],
+      "eligibility": "Minimum 60% aggregate in Physics, Chemistry & Mathematics in 10+2.",
+      "admission_process": "1. Online Application Submission -> 2. AEEE Entrance Exam / JEE Score Merit -> 3. Centralized Seat Allotment -> 4. Document Verification & Fee Payment -> 5. Orientation & ID Card Issuance.",
+      "opening_date": "01 January 2026",
+      "closing_date": "15 May 2026",
+      "id_card_process": "Digital biometric registration on Day 1 of campus induction."
+    },
+    {
+      "id": "ADM-002",
+      "college_id": "COL-0003",
+      "college_name": "Tamilnadu Agricultural University, Coimbatore",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.Sc (Hons) Agriculture",
+        "B.Tech Agricultural Engineering",
+        "B.Tech Biotechnology",
+        "M.Sc Horticulture"
+      ],
+      "course_fees": "₹52,000 / year",
+      "admission_fee": "₹8,000 (One-time)",
+      "fee_structure": {
+        "tuition_fee": "₹38,000 / year",
+        "lab_library_fee": "₹14,000 / year",
+        "hostel_fee": "₹42,000 / year",
+        "bus_transport_fee": "₹18,000 / year",
+        "canteen_food_fee": "₹36,000 / year"
+      },
+      "college_timings": "8:00 AM - 4:00 PM",
+      "admission_office_timings": "9:30 AM - 5:00 PM (Mon-Fri)",
+      "required_documents": [
+        "10th & 12th Marksheets (Biology/Maths mandatory)",
+        "Transfer Certificate & Migration Certificate",
+        "Permanent Community Card / Nativity Certificate",
+        "First Graduate Certificate (if applicable for fee concession)",
+        "Income Certificate & Aadhaar Copy"
+      ],
+      "eligibility": "Pass in 10+2 with PCB or PCM with minimum 55% for General, 45% for Reserved categories.",
+      "admission_process": "1. TNAU Online Portal Registration -> 2. Single Window Merit Rank List -> 3. Online Counselling -> 4. Physical Document Verification at Coimbatore Campus -> 5. Seat Confirmation.",
+      "opening_date": "15 April 2026",
+      "closing_date": "10 June 2026",
+      "id_card_process": "RFID Smart ID card issued during initial week."
+    },
+    {
+      "id": "ADM-003",
+      "college_id": "COL-0009",
+      "college_name": "Adithya Institute of Technology, Coimbatore",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.E Computer Science & Engineering",
+        "B.E Artificial Intelligence & Data Science",
+        "B.E Mechanical Engineering",
+        "B.E ECE",
+        "B.E Mechatronics"
+      ],
+      "course_fees": "₹75,000 / year (Govt Quota) | ₹1,40,000 / yr (Mgmt)",
+      "admission_fee": "₹5,000 (One-time Admission Kit & Reg)",
+      "fee_structure": {
+        "tuition_fee": "₹65,000 / year",
+        "lab_library_fee": "₹10,000 / year",
+        "hostel_fee": "₹55,000 / year (Standard Rooms with Wi-Fi)",
+        "bus_transport_fee": "₹22,000 / year (Covers all Coimbatore, Pollachi, Tiruppur routes)",
+        "canteen_food_fee": "₹38,000 / year (Hygienic South Indian mess)"
+      },
+      "college_timings": "8:45 AM - 4:45 PM",
+      "admission_office_timings": "8:30 AM - 6:00 PM (All 7 Days during admission season)",
+      "required_documents": [
+        "10th & 12th Original Marksheets + 3 Photocopies",
+        "Transfer Certificate (TC)",
+        "Community Certificate",
+        "First Graduate Certificate & Joint Declaration (if applying for TN Govt waiver)",
+        "Passport Size Photos (5 Nos) & Aadhaar Copy"
+      ],
+      "eligibility": "Pass in 10+2 with Physics, Chemistry & Maths (45% for General, 40% for BC/MBC/SC/ST).",
+      "admission_process": "Government Quota via TNEA Single Window (College Code: 2753) OR Direct Management Quota Application at College Admission Desk.",
+      "opening_date": "01 March 2026",
+      "closing_date": "31 August 2026",
+      "id_card_process": "Instant digital ID card generated upon document verification."
+    },
+    {
+      "id": "ADM-004",
+      "college_id": "COL-0006",
+      "college_name": "Karunya Institute of Technology and Sciences, Coimbatore",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.Tech Robotics & Automation",
+        "B.Tech Computer Engineering",
+        "B.Tech Aerospace",
+        "B.Tech Biomedical Engineering"
+      ],
+      "course_fees": "₹2,10,000 / year",
+      "admission_fee": "₹12,000 (One-time)",
+      "fee_structure": {
+        "tuition_fee": "₹1,85,000 / year",
+        "lab_library_fee": "₹25,000 / year",
+        "hostel_fee": "₹78,000 / year",
+        "bus_transport_fee": "₹28,000 / year",
+        "canteen_food_fee": "₹44,000 / year"
+      },
+      "college_timings": "8:30 AM - 4:30 PM",
+      "admission_office_timings": "9:00 AM - 5:00 PM",
+      "required_documents": [
+        "10th & 12th Marksheets",
+        "TC & Migration",
+        "KEE Entrance Scorecard",
+        "Aadhaar Card Copy"
+      ],
+      "eligibility": "50% aggregate in PCM in 10+2.",
+      "admission_process": "1. Karunya Entrance Exam (KEE) -> 2. Merit Allotment -> 3. Fee Remittance.",
+      "opening_date": "10 February 2026",
+      "closing_date": "30 June 2026",
+      "id_card_process": "Issued on campus orientation day."
+    },
+    {
+      "id": "ADM-005",
+      "college_id": "COL-0008",
+      "college_name": "ADITHYA COLLEGE OF ARTS AND SCIENCE, Coimbatore",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.Sc Computer Science",
+        "B.Sc Information Technology",
+        "B.Com Professional Accounting",
+        "BBA",
+        "B.Sc Data Science"
+      ],
+      "course_fees": "₹45,000 / year",
+      "admission_fee": "₹3,000 (One-time)",
+      "fee_structure": {
+        "tuition_fee": "₹38,000 / year",
+        "lab_library_fee": "₹7,000 / year",
+        "hostel_fee": "₹48,000 / year",
+        "bus_transport_fee": "₹20,000 / year",
+        "canteen_food_fee": "₹34,000 / year"
+      },
+      "college_timings": "9:00 AM - 3:30 PM",
+      "admission_office_timings": "8:30 AM - 5:30 PM",
+      "required_documents": [
+        "10th & 12th Marksheet",
+        "TC & Conduct Certificate",
+        "Community Certificate",
+        "Aadhaar Card"
+      ],
+      "eligibility": "Pass in 10+2 from recognized State/CBSE Board.",
+      "admission_process": "Direct Merit Application -> Spot Document Verification -> Admission Confirmation.",
+      "opening_date": "01 April 2026",
+      "closing_date": "31 July 2026",
+      "id_card_process": "Issued within 3 days of enrollment."
+    },
+    {
+      "id": "ADM-006",
+      "college_id": "COL-0007",
+      "college_name": "Rathinam Global University, Coimbatore",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.Tech Artificial Intelligence",
+        "BCA Cloud Tech",
+        "B.Sc Digital Media",
+        "MBA FinTech"
+      ],
+      "course_fees": "₹1,20,000 / year",
+      "admission_fee": "₹10,000 (One-time)",
+      "fee_structure": {
+        "tuition_fee": "₹1,00,000 / year",
+        "lab_library_fee": "₹20,000 / year",
+        "hostel_fee": "₹68,000 / year",
+        "bus_transport_fee": "₹24,000 / year",
+        "canteen_food_fee": "₹40,000 / year"
+      },
+      "college_timings": "8:45 AM - 4:15 PM",
+      "admission_office_timings": "9:00 AM - 5:30 PM",
+      "required_documents": [
+        "10+2 Marksheet",
+        "TC",
+        "Community Certificate",
+        "Aadhaar Card"
+      ],
+      "eligibility": "50%+ in 10+2 with relevant subjects.",
+      "admission_process": "Online portal application -> Aptitude assessment -> Seat allotment.",
+      "opening_date": "15 March 2026",
+      "closing_date": "15 August 2026",
+      "id_card_process": "Digital NFC ID card."
+    },
+    {
+      "id": "ADM-007",
+      "college_id": "COL-0001",
+      "college_name": "School of Postgraduate Studies, Coimbatore",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "M.Sc Plant Genetics",
+        "M.Tech Bio-Energy",
+        "Ph.D Agricultural Sciences"
+      ],
+      "course_fees": "₹60,000 / year",
+      "admission_fee": "₹10,000 (One-time)",
+      "fee_structure": {
+        "tuition_fee": "₹45,000 / year",
+        "lab_library_fee": "₹15,000 / year",
+        "hostel_fee": "₹45,000 / year",
+        "bus_transport_fee": "₹18,000 / year",
+        "canteen_food_fee": "₹38,000 / year"
+      },
+      "college_timings": "8:30 AM - 4:30 PM",
+      "admission_office_timings": "9:30 AM - 5:00 PM",
+      "required_documents": [
+        "UG Degree Certificate",
+        "Consolidated Marksheet",
+        "GATE / ICAR Score Card",
+        "Aadhaar"
+      ],
+      "eligibility": "B.Sc / B.Tech in relevant domain with 60% aggregate.",
+      "admission_process": "Entrance Exam / ICAR PG rank -> Interview -> Allotment.",
+      "opening_date": "01 May 2026",
+      "closing_date": "15 July 2026",
+      "id_card_process": "Issued on orientation."
+    },
+    {
+      "id": "ADM-008",
+      "college_id": "COL-0002",
+      "college_name": "SoRSPE, Ramakrishna Mission Vivekananda University",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.P.Ed (Physical Education)",
+        "M.P.Ed",
+        "B.Sc Adapted Physical Education",
+        "Diploma Yoga"
+      ],
+      "course_fees": "₹35,000 / year",
+      "admission_fee": "₹5,000",
+      "fee_structure": {
+        "tuition_fee": "₹25,000 / year",
+        "lab_library_fee": "₹10,000 / year",
+        "hostel_fee": "₹38,000 / year",
+        "bus_transport_fee": "₹15,000 / year",
+        "canteen_food_fee": "₹32,000 / year"
+      },
+      "college_timings": "7:30 AM - 4:30 PM (Includes Morning Physical Training)",
+      "admission_office_timings": "9:00 AM - 4:30 PM",
+      "required_documents": [
+        "12th Marksheet",
+        "Physical Fitness Certificate",
+        "Sports Participation Certificates",
+        "TC",
+        "Aadhaar"
+      ],
+      "eligibility": "Pass in 10+2 with state/district level sports participation.",
+      "admission_process": "Physical Efficiency Test (PET) + Personal Interview + Merit Confirmation.",
+      "opening_date": "15 April 2026",
+      "closing_date": "30 June 2026",
+      "id_card_process": "Issued during sports induction."
+    },
+    {
+      "id": "ADM-009",
+      "college_id": "COL-002",
+      "college_name": "IIT Madras",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "courses_offered": [
+        "B.Tech Computer Science",
+        "B.Tech Electrical",
+        "B.Tech Mechanical",
+        "Dual Degree B.Tech+M.Tech"
+      ],
+      "course_fees": "₹2,20,000 / year (Full waiver for SC/ST & <₹1L income)",
+      "admission_fee": "₹18,000 (One-time)",
+      "fee_structure": {
+        "tuition_fee": "₹2,00,000 / year",
+        "lab_library_fee": "₹20,000 / year",
+        "hostel_fee": "₹65,000 / year",
+        "bus_transport_fee": "₹0 (Campus Cycle/EV Shuttle Free)",
+        "canteen_food_fee": "₹42,000 / year"
+      },
+      "college_timings": "8:00 AM - 5:00 PM",
+      "admission_office_timings": "9:00 AM - 5:30 PM",
+      "required_documents": [
+        "JEE Advanced Rank Card",
+        "JoSAA Allotment Letter",
+        "Class 10 & 12 Certificates",
+        "Medical Fitness Certificate",
+        "Aadhaar"
+      ],
+      "eligibility": "Top rank in JEE Advanced 2026 and 75%+ in 12th Board Exams.",
+      "admission_process": "Centralized JoSAA Online Counselling rounds 1-6.",
+      "opening_date": "10 June 2026",
+      "closing_date": "25 July 2026",
+      "id_card_process": "Smart RFID ID card issued on JoSAA reporting day."
+    },
+    {
+      "id": "ADM-010",
+      "college_id": "COL-003",
+      "college_name": "IIT Delhi",
+      "state": "Delhi",
+      "district": "New Delhi",
+      "courses_offered": [
+        "B.Tech Computer Science",
+        "B.Tech AI & Data Engineering",
+        "B.Tech Electrical",
+        "B.Tech Chemical"
+      ],
+      "course_fees": "₹2,20,000 / year",
+      "admission_fee": "₹18,000 (One-time)",
+      "fee_structure": {
+        "tuition_fee": "₹2,00,000 / year",
+        "lab_library_fee": "₹20,000 / year",
+        "hostel_fee": "₹68,000 / year",
+        "bus_transport_fee": "₹0 (Campus Shuttle)",
+        "canteen_food_fee": "₹44,000 / year"
+      },
+      "college_timings": "8:30 AM - 5:30 PM",
+      "admission_office_timings": "9:00 AM - 5:00 PM",
+      "required_documents": [
+        "JEE Advanced Scorecard",
+        "JoSAA Allotment Order",
+        "Class 10/12 Marksheets",
+        "Category Certificate"
+      ],
+      "eligibility": "JEE Advanced Rank under cutoff bracket + 75% in 12th Board.",
+      "admission_process": "JoSAA Online Seat Allocation Process.",
+      "opening_date": "10 June 2026",
+      "closing_date": "25 July 2026",
+      "id_card_process": "Biometric smart card generated at registration desk."
+    },
+    {
+      "id": "ADM-011",
+      "college_id": "COL-001",
+      "college_name": "IISc Bengaluru",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "courses_offered": [
+        "Bachelor of Science (Research)",
+        "B.Tech Mathematics & Computing",
+        "M.Tech",
+        "Integrated Ph.D"
+      ],
+      "course_fees": "₹35,000 / year (Heavily subsidized by Govt of India)",
+      "admission_fee": "₹5,000 (One-time)",
+      "fee_structure": {
+        "tuition_fee": "₹25,000 / year",
+        "lab_library_fee": "₹10,000 / year",
+        "hostel_fee": "₹35,000 / year",
+        "bus_transport_fee": "₹0 (Internal campus transport)",
+        "canteen_food_fee": "₹38,000 / year"
+      },
+      "college_timings": "8:30 AM - 5:30 PM",
+      "admission_office_timings": "9:00 AM - 5:00 PM",
+      "required_documents": [
+        "JEE Advanced / KVPY / NEET / IAT Scorecard",
+        "10+2 Certificates",
+        "Aadhaar Card"
+      ],
+      "eligibility": "Top 250 in JEE Advanced or 99.5+ percentile in JEE Main / IAT.",
+      "admission_process": "IISc Admissions Portal direct merit ranking and physical document verification.",
+      "opening_date": "01 April 2026",
+      "closing_date": "30 June 2026",
+      "id_card_process": "Issued on campus induction."
+    },
+    {
+      "id": "ADM-012",
+      "college_id": "COL-010",
+      "college_name": "PSG College of Technology",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.E Computer Science",
+        "B.Tech Information Technology",
+        "B.E Robotics & Automation",
+        "B.E Mechanical (Sandwich)"
+      ],
+      "course_fees": "₹85,000 / yr (Aided) | ₹1,65,000 / yr (Self-Supporting)",
+      "admission_fee": "₹10,000",
+      "fee_structure": {
+        "tuition_fee": "₹75,000 / year",
+        "lab_library_fee": "₹10,000 / year",
+        "hostel_fee": "₹72,000 / year",
+        "bus_transport_fee": "₹24,000 / year",
+        "canteen_food_fee": "₹42,000 / year"
+      },
+      "college_timings": "8:30 AM - 4:45 PM",
+      "admission_office_timings": "8:30 AM - 5:30 PM",
+      "required_documents": [
+        "TNEA Allotment Order",
+        "10th & 12th Marksheets",
+        "TC",
+        "Community Certificate",
+        "First Graduate Form (if eligible)"
+      ],
+      "eligibility": "TNEA Cutoff 195+ for CSE/IT; 185+ for other engineering branches.",
+      "admission_process": "TNEA Single Window Counselling (College Code: 2006) + Physical reporting at Peelamedu campus.",
+      "opening_date": "05 May 2026",
+      "closing_date": "15 August 2026",
+      "id_card_process": "NFC Campus Smart Card generated on admission day."
+    },
+    {
+      "id": "ADM-013",
+      "college_id": "COL-011",
+      "college_name": "Coimbatore Institute of Technology (CIT)",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.E CSE",
+        "B.Tech Artificial Intelligence",
+        "B.E ECE",
+        "M.Sc Decision & Computing (5-Yr)"
+      ],
+      "course_fees": "₹75,000 / year",
+      "admission_fee": "₹8,000",
+      "fee_structure": {
+        "tuition_fee": "₹65,000 / year",
+        "lab_library_fee": "₹10,000 / year",
+        "hostel_fee": "₹58,000 / year",
+        "bus_transport_fee": "₹22,000 / year",
+        "canteen_food_fee": "₹38,000 / year"
+      },
+      "college_timings": "8:30 AM - 4:30 PM",
+      "admission_office_timings": "9:00 AM - 5:00 PM",
+      "required_documents": [
+        "TNEA Allotment Order",
+        "12th Marksheet",
+        "TC",
+        "Community Card",
+        "Aadhaar"
+      ],
+      "eligibility": "TNEA Cutoff score 190+ for Computing, 175+ for Core branches.",
+      "admission_process": "TNEA Counseling (Code: 2007) and CIT M.Sc Integrated Entrance Test.",
+      "opening_date": "05 May 2026",
+      "closing_date": "10 August 2026",
+      "id_card_process": "RFID Smart ID card issued during initial week."
+    },
+    {
+      "id": "ADM-014",
+      "college_id": "COL-012",
+      "college_name": "Kumaraguru College of Technology (KCT)",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.E Artificial Intelligence",
+        "B.E Mechatronics",
+        "B.Tech Biotechnology",
+        "B.E Aeronautical"
+      ],
+      "course_fees": "₹1,25,000 / year",
+      "admission_fee": "₹10,000",
+      "fee_structure": {
+        "tuition_fee": "₹1,10,000 / year",
+        "lab_library_fee": "₹15,000 / year",
+        "hostel_fee": "₹75,000 / year",
+        "bus_transport_fee": "₹26,000 / year",
+        "canteen_food_fee": "₹42,000 / year"
+      },
+      "college_timings": "8:30 AM - 4:30 PM",
+      "admission_office_timings": "9:00 AM - 5:30 PM",
+      "required_documents": [
+        "10th & 12th Marksheet",
+        "TC",
+        "Community Certificate",
+        "Aadhaar",
+        "Passport Photos"
+      ],
+      "eligibility": "10+2 with 50%+ in PCM or TNEA cutoff allotment.",
+      "admission_process": "TNEA Single Window (Code: 2712) or Management Quota Application.",
+      "opening_date": "01 April 2026",
+      "closing_date": "20 August 2026",
+      "id_card_process": "Issued on orientation."
+    },
+    {
+      "id": "ADM-015",
+      "college_id": "COL-013",
+      "college_name": "Sri Krishna College of Engineering & Technology",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.E Computer Science",
+        "B.Tech IT",
+        "B.E Cyber Security",
+        "B.E Mechanical"
+      ],
+      "course_fees": "₹1,15,000 / year",
+      "admission_fee": "₹8,000",
+      "fee_structure": {
+        "tuition_fee": "₹1,00,000 / year",
+        "lab_library_fee": "₹15,000 / year",
+        "hostel_fee": "₹65,000 / year",
+        "bus_transport_fee": "₹22,000 / year",
+        "canteen_food_fee": "₹38,000 / year"
+      },
+      "college_timings": "8:45 AM - 4:45 PM",
+      "admission_office_timings": "8:30 AM - 6:00 PM",
+      "required_documents": [
+        "10th & 12th Marksheets",
+        "TC",
+        "Community Certificate",
+        "Aadhaar"
+      ],
+      "eligibility": "10+2 PCM pass with minimum 45% aggregate.",
+      "admission_process": "TNEA (Code: 2718) & Direct Merit Counseling Desk.",
+      "opening_date": "10 March 2026",
+      "closing_date": "25 August 2026",
+      "id_card_process": "Smart card on day 1."
+    },
+    {
+      "id": "ADM-016",
+      "college_id": "COL-014",
+      "college_name": "Vellore Institute of Technology (VIT)",
+      "state": "Tamil Nadu",
+      "district": "Vellore",
+      "courses_offered": [
+        "B.Tech CSE",
+        "B.Tech CSE (Information Security)",
+        "B.Tech ECE",
+        "Integrated M.Tech"
+      ],
+      "course_fees": "₹1,98,000 - ₹3,95,000 / year (Category 1 to 5)",
+      "admission_fee": "₹12,000",
+      "fee_structure": {
+        "tuition_fee": "₹1,75,000 / year (Category 1)",
+        "lab_library_fee": "₹23,000 / year",
+        "hostel_fee": "₹95,000 / year (2/3/4/6 Bed AC & Non-AC)",
+        "bus_transport_fee": "₹28,000 / year",
+        "canteen_food_fee": "₹52,000 / year (Special/Veg/Non-Veg mess options)"
+      },
+      "college_timings": "8:00 AM - 6:00 PM (Fully Flexible Credit System)",
+      "admission_office_timings": "9:00 AM - 5:00 PM",
+      "required_documents": [
+        "VITEEE Rank Card",
+        "12th Marksheet",
+        "TC",
+        "Migration",
+        "Aadhaar"
+      ],
+      "eligibility": "60% aggregate in PCM/PCB in 10+2 + valid VITEEE rank.",
+      "admission_process": "VITEEE Online Entrance Exam -> Multi-phase Online Counseling -> Fee Payment.",
+      "opening_date": "01 November 2025",
+      "closing_date": "15 April 2026",
+      "id_card_process": "Biometric photo ID issued on registration."
+    },
+    {
+      "id": "ADM-017",
+      "college_id": "COL-015",
+      "college_name": "Christ University Bengaluru",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "courses_offered": [
+        "B.Sc Computer Science",
+        "B.Sc Data Science",
+        "BBA Finance",
+        "B.Com International Finance",
+        "BA Economics"
+      ],
+      "course_fees": "₹1,45,000 / year",
+      "admission_fee": "₹15,000",
+      "fee_structure": {
+        "tuition_fee": "₹1,25,000 / year",
+        "lab_library_fee": "₹20,000 / year",
+        "hostel_fee": "₹82,000 / year",
+        "bus_transport_fee": "₹25,000 / year",
+        "canteen_food_fee": "₹45,000 / year"
+      },
+      "college_timings": "8:30 AM - 4:30 PM",
+      "admission_office_timings": "9:00 AM - 5:00 PM",
+      "required_documents": [
+        "Class 10 & 12 Statement of Marks",
+        "Transfer Certificate",
+        "Migration Certificate",
+        "Aadhaar"
+      ],
+      "eligibility": "60%+ in 10+2 from recognized board.",
+      "admission_process": "Christ University Entrance Test (CUET) + Micro Presentation (MP) + Personal Interview (PI).",
+      "opening_date": "10 December 2025",
+      "closing_date": "15 April 2026",
+      "id_card_process": "Smart ID issued on physical reporting."
+    },
+    {
+      "id": "ADM-018",
+      "college_id": "COL-018",
+      "college_name": "Loyola College, Chennai",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "courses_offered": [
+        "B.Com (General / Honours)",
+        "B.Sc Visual Communication",
+        "B.Sc Computer Science",
+        "B.A Economics"
+      ],
+      "course_fees": "₹42,000 / yr (Shift I) | ₹85,000 / yr (Shift II)",
+      "admission_fee": "₹5,000",
+      "fee_structure": {
+        "tuition_fee": "₹35,000 / year",
+        "lab_library_fee": "₹7,000 / year",
+        "hostel_fee": "₹60,000 / year",
+        "bus_transport_fee": "₹18,000 / year",
+        "canteen_food_fee": "₹38,000 / year"
+      },
+      "college_timings": "Shift 1: 8:15 AM - 1:15 PM | Shift 2: 1:30 PM - 6:30 PM",
+      "admission_office_timings": "9:00 AM - 4:30 PM",
+      "required_documents": [
+        "12th Board Marksheet",
+        "TC",
+        "Conduct Certificate",
+        "Community Certificate",
+        "Aadhaar"
+      ],
+      "eligibility": "Top merit percentage in relevant 12th subjects (Commerce/Maths/Science).",
+      "admission_process": "Online portal merit shortlist -> Document verification & Interview -> Admission.",
+      "opening_date": "01 May 2026",
+      "closing_date": "10 June 2026",
+      "id_card_process": "Issued in first week."
+    },
+    {
+      "id": "ADM-019",
+      "college_id": "COL-020",
+      "college_name": "PSG Institute of Medical Sciences & Research",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "MBBS (5.5 Years)",
+        "MD General Medicine",
+        "MS General Surgery",
+        "B.Sc Allied Health Sciences"
+      ],
+      "course_fees": "₹4,50,000 / yr (Govt Quota) | ₹14,50,000 / yr (Management)",
+      "admission_fee": "₹25,000",
+      "fee_structure": {
+        "tuition_fee": "₹4,00,000 / year (Govt Quota)",
+        "lab_library_fee": "₹50,000 / year",
+        "hostel_fee": "₹95,000 / year",
+        "bus_transport_fee": "₹24,000 / year",
+        "canteen_food_fee": "₹48,000 / year"
+      },
+      "college_timings": "8:00 AM - 5:00 PM (Clinical Postings Included)",
+      "admission_office_timings": "9:00 AM - 5:00 PM",
+      "required_documents": [
+        "NEET UG Scorecard",
+        "Selection Committee Allotment Order",
+        "10+2 PCB Marksheet",
+        "TC",
+        "Community Certificate",
+        "Physical Fitness"
+      ],
+      "eligibility": "Qualifying percentile in NEET UG 2026 and 50%+ in PCB.",
+      "admission_process": "Tamil Nadu Medical Selection Committee (DME) Online Counseling.",
+      "opening_date": "01 July 2026",
+      "closing_date": "30 August 2026",
+      "id_card_process": "Smart Medical Trainee ID card."
+    },
+    {
+      "id": "ADM-020",
+      "college_id": "COL-021",
+      "college_name": "Government College of Technology (GCT)",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.E Civil",
+        "B.E Mechanical",
+        "B.E Electrical",
+        "B.E Electronics & Communication",
+        "B.E Computer Science"
+      ],
+      "course_fees": "₹32,000 / year (Government Subsidized)",
+      "admission_fee": "₹3,000 (One-time)",
+      "fee_structure": {
+        "tuition_fee": "₹22,000 / year",
+        "lab_library_fee": "₹10,000 / year",
+        "hostel_fee": "₹35,000 / year",
+        "bus_transport_fee": "₹15,000 / year",
+        "canteen_food_fee": "₹32,000 / year"
+      },
+      "college_timings": "8:30 AM - 4:30 PM",
+      "admission_office_timings": "9:00 AM - 5:00 PM",
+      "required_documents": [
+        "TNEA Allotment Order",
+        "10th & 12th Marksheets",
+        "TC",
+        "Community Certificate",
+        "Income Certificate"
+      ],
+      "eligibility": "TNEA Cutoff score 185+ for General Category.",
+      "admission_process": "100% Single Window Counseling via TNEA (College Code: 2005).",
+      "opening_date": "05 May 2026",
+      "closing_date": "15 August 2026",
+      "id_card_process": "Issued during induction week."
+    },
+    {
+      "college_name": "Government College of Technology (GCT), Coimbatore",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.E Civil",
+        "B.E Mechanical",
+        "B.E ECE",
+        "B.Tech IT"
+      ],
+      "mode": "TNEA State Counseling (Merit-Based)",
+      "application_dates": "May 6 – June 10, 2026",
+      "cutoff": "188+ / 200 PCM Cutoff",
+      "fees": "₹15,000 / yr (Government Institution)",
+      "portal_url": "https://gct.ac.in/admissions",
+      "id": "ADM-021"
+    },
+    {
+      "college_name": "Government College of Technology (GCT), Coimbatore",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "courses_offered": [
+        "B.E Civil",
+        "B.E Mechanical",
+        "B.E ECE",
+        "B.Tech IT"
+      ],
+      "mode": "TNEA State Counseling (Merit-Based)",
+      "application_dates": "May 6 – June 10, 2026",
+      "cutoff": "188+ / 200 PCM Cutoff",
+      "fees": "₹15,000 / yr (Government Institution)",
+      "portal_url": "https://gct.ac.in/admissions",
+      "id": "ADM-022"
+    },
+    {
+      "college_name": "Indian Institute of Technology Hyderabad (IIT Hyderabad)",
+      "state": "Telungana",
+      "district": "Sangareddy",
+      "courses_offered": "B.Tech in Artificial Intelligence, Biomedical Engineering, Biotechnology & Bioinformatics, Chemical Engineering, Civil Engineering, Computer Science & Engineering, Computational Engineering, Electrical Engineering, Engineering Physics, Engineering Science, IC Design & Technology, Industrial Chemistry, Materials Science & Metallurgical Engineering, Mathematics & Computing, Mechanical & Aerospace Engineering.",
+      "mode": "Management Quota",
+      "application_dates": [
+        "May 6- Jun 30",
+        "2027"
+      ],
+      "cutoff": "185",
+      "fees": [
+        "75",
+        "000/yr"
+      ],
+      "portal_url": "https://iith.ac.in/",
+      "id": "ADM-023"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "AR-01",
+      "author": "S. Rajeshwaran",
+      "role": "Parent of 2026 Engineering Aspirant",
+      "college": "Adithya Institute of Technology, Coimbatore",
+      "rating": 5,
+      "comment": "The transparent fee structure breakdown and bus route details gave us total clarity before paying the admission fee."
+    },
+    {
+      "id": "AR-02",
+      "author": "Deepa Sundaram",
+      "role": "B.Sc Agriculture Candidate",
+      "college": "Tamilnadu Agricultural University, Coimbatore",
+      "rating": 4.9,
+      "comment": "Document verification process was smooth. The first graduate fee concession was applied on the spot during admission."
+    },
+    {
+      "id": "AR-03",
+      "author": "Karthik Raja",
+      "role": "B.Tech Student",
+      "college": "Amrita Vishwa Vidyapeetham, Coimbatore",
+      "rating": 4.8,
+      "comment": "AEEE admission counseling portal was very straightforward with regular SMS and email alerts on document submission."
+    },
+    {
+      "id": "AR-04",
+      "author": "Meenakshi R.",
+      "role": "Parent",
+      "college": "PSG College of Technology, Coimbatore",
+      "rating": 5,
+      "comment": "Single window TNEA counseling process was clearly outlined with exact dates and required certificate checklists."
+    }
+  ]
+}

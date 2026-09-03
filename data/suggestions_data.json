@@ -1,0 +1,92 @@
+{
+  "suggestions": [
+    {
+      "id": "SUG-108",
+      "type": "ranking",
+      "user_name": "Test Student",
+      "email": "test@example.com",
+      "target_id": "COL-0004",
+      "subject": "Automated Verification Feedback",
+      "message": "Excellent campus guidance and transparent placement statistics.",
+      "status": "pending_review",
+      "created_at": "2026-08-31 23:20:50"
+    },
+    {
+      "id": "SUG-107",
+      "type": "website_feedback",
+      "user_name": "Deepak Raj",
+      "email": "student@example.com",
+      "target_id": "🚀 Website Usability & UI",
+      "subject": "User Review for Website_feedback",
+      "message": "The interactive filters, roadmaps, and comparison tool make higher education selection so straightforward. Great platform design! | Suggestion: Keep adding more district data.",
+      "status": "pending_review",
+      "created_at": "2026-08-31 22:59:34"
+    },
+    {
+      "id": "SUG-106",
+      "type": "exam_remark",
+      "user_name": "Priya Ramesh",
+      "email": "student@example.com",
+      "target_id": "JEE Main / JEE Advanced",
+      "subject": "User Review for Exam_remark",
+      "message": "Practiced 15 years previous question papers with strict 3-hour timer. | Advice: Never compromise on negative marking control.",
+      "status": "pending_review",
+      "created_at": "2026-08-31 22:54:01"
+    },
+    {
+      "id": "SUG-105",
+      "type": "domain_remark",
+      "user_name": "Arjun Sharma",
+      "email": "student@example.com",
+      "target_id": "Artificial Intelligence & ML",
+      "subject": "User Review for Domain_remark",
+      "message": "Focus heavily on foundational linear algebra and transformer architectures before jumping into LLM fine-tuning.",
+      "status": "pending_review",
+      "created_at": "2026-08-31 22:54:01"
+    },
+    {
+      "id": "SUG-104",
+      "type": "ranking",
+      "user_name": "Test Aspirant",
+      "email": "aspirant@test.com",
+      "target_id": "COL-0009",
+      "subject": "User Review for Ranking",
+      "message": "Automated verification test suggestion",
+      "status": "pending_review",
+      "created_at": "2026-08-31 22:42:06"
+    },
+    {
+      "id": "SUG-103",
+      "type": "ranking",
+      "user_name": "Test Aspirant",
+      "email": "aspirant@test.com",
+      "target_id": "COL-0009",
+      "subject": "User Review for Ranking",
+      "message": "Automated verification test suggestion",
+      "status": "pending_review",
+      "created_at": "2026-08-31 22:40:50"
+    },
+    {
+      "id": "SUG-001",
+      "type": "ranking",
+      "user_name": "Suresh Babu",
+      "email": "suresh@gmail.com",
+      "target_id": "COL-0009",
+      "subject": "Add new IoT innovation ranking",
+      "message": "Adithya Institute has launched a new 5G robotics lab that should be reflected in the infrastructure score.",
+      "status": "approved",
+      "created_at": "2026-08-30 14:20:00"
+    },
+    {
+      "id": "SUG-002",
+      "type": "career",
+      "user_name": "Divya N.",
+      "email": "divya@yahoo.com",
+      "target_id": "CAR-01",
+      "subject": "Include LangGraph in AI Roadmap",
+      "message": "LangGraph is becoming essential for multi-agent LLM systems in current job requirements.",
+      "status": "approved",
+      "created_at": "2026-08-31 09:15:00"
+    }
+  ]
+}

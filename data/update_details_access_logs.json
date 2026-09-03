@@ -1,0 +1,40 @@
+{
+  "access_logs": [
+    {
+      "id": "ACC-103",
+      "college_name": "Christ University",
+      "authorized_email": "adminchrist@gmail.com",
+      "aishe_code": "U-0217",
+      "access_date": "2026-09-02",
+      "access_time": "21:07:31",
+      "access_status": "Granted",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "created_at": "2026-09-02T21:07:31Z"
+    },
+    {
+      "id": "ACC-102",
+      "college_name": "Vellore Institute of Technology (VIT)",
+      "authorized_email": "adminvit@gmail.com",
+      "aishe_code": "U-0490",
+      "access_date": "2026-09-02",
+      "access_time": "17:36:41",
+      "access_status": "Granted",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "created_at": "2026-09-02T17:36:41Z"
+    },
+    {
+      "id": "ACC-101",
+      "college_name": "SoRSPE, Ramakrishna Mission Vivekananda University",
+      "authorized_email": "office@vucbe.org",
+      "aishe_code": "C-35003",
+      "access_date": "2026-09-02",
+      "access_time": "12:12:10",
+      "access_status": "Granted",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Werkzeug/3.1.6",
+      "created_at": "2026-09-02T12:12:10Z"
+    }
+  ]
+}

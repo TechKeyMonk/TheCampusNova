@@ -1,0 +1,294 @@
+{
+  "application_flow": [
+    {
+      "step": 1,
+      "name": "Check Eligibility",
+      "desc": "Verify minimum academic percentage (60%+), domicile state, college accreditation, and family income ceiling."
+    },
+    {
+      "step": 2,
+      "name": "Prepare Documents",
+      "desc": "Collect Income Certificate, Community/Caste Certificate, 10+2 Marksheets, Allotment Order, and Aadhaar-seeded Bank Passbook."
+    },
+    {
+      "step": 3,
+      "name": "Verification",
+      "desc": "Documents are verified by Tahsildar / e-Sevai / Revenue Officials and confirmed by College Nodal Desk."
+    },
+    {
+      "step": 4,
+      "name": "Application",
+      "desc": "Submit the digital form on the State NSP / e-Grantz / University portal before the published deadline."
+    },
+    {
+      "step": 5,
+      "name": "Approval",
+      "desc": "State Welfare Board or Central Ministry reviews the verified dossier and issues sanction grant letters."
+    },
+    {
+      "step": 6,
+      "name": "Scholarship Result/Benefit",
+      "desc": "Direct Benefit Transfer (DBT) funds credited into student bank account or tuition fee directly deducted."
+    }
+  ],
+  "scholarships": [
+    {
+      "name": "Test Merit Fellowship Scheme 2026",
+      "provider": "Government of Tamil Nadu",
+      "amount": "Rs. 1,00,000",
+      "eligibility": "Top 1% rank in entrance exam.",
+      "id": 14
+    },
+    {
+      "name": "Test Merit Fellowship Scheme 2026",
+      "provider": "Government of Tamil Nadu",
+      "amount": "Rs. 1,00,000",
+      "eligibility": "Top 1% rank in entrance exam.",
+      "id": 13
+    },
+    {
+      "name": "Test Merit Fellowship Scheme 2026",
+      "provider": "Government of Tamil Nadu",
+      "amount": "Rs. 1,00,000",
+      "eligibility": "Top 1% rank in entrance exam.",
+      "id": 12
+    },
+    {
+      "scholarship_name": "Test National Merit Scholarship 2026",
+      "provider": "CampNova Trust",
+      "amount": "₹75,000 / yr",
+      "eligibility": "Top 1% rankers",
+      "id": "SCH-013",
+      "name": "Test National Merit Scholarship 2026"
+    },
+    {
+      "name": "Tamil Nadu Chief Minister STEM Excellence Grant 2026",
+      "type": "State Government Scheme",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "benefit": "100% Tuition Fee Waiver + ₹25,000 Books Allowance",
+      "eligible_courses": "All B.E / B.Tech Professional Degrees",
+      "eligibility": "First generation graduate from government schools (7.5% quota).",
+      "deadline": "November 15, 2026",
+      "portal_url": "https://tnscholarships.gov.in",
+      "id": "SCH-012"
+    },
+    {
+      "name": "Tamil Nadu Chief Minister STEM Excellence Grant 2026",
+      "type": "State Government Scheme",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "benefit": "100% Tuition Fee Waiver + ₹25,000 Books Allowance",
+      "eligible_courses": "All B.E / B.Tech Professional Degrees",
+      "eligibility": "First generation graduate from government schools (7.5% quota).",
+      "deadline": "November 15, 2026",
+      "portal_url": "https://tnscholarships.gov.in",
+      "id": "SCH-011"
+    },
+    {
+      "amount": "₹75,000 / year",
+      "district": "Coimbatore",
+      "eligibility": "Top 1% rankers with family income < ₹4.5 LPA",
+      "id": "SCH-TEST-99",
+      "name": "State Merit Higher Tech Fellowship 2026",
+      "provider": "Department of Higher Education",
+      "state": "Tamil Nadu",
+      "status": "active"
+    },
+    {
+      "amount": "₹75,000 / year",
+      "district": "Coimbatore",
+      "eligibility": "Top 1% rankers with family income < ₹4.5 LPA",
+      "id": "SCH-TEST-99",
+      "name": "State Merit Higher Tech Fellowship 2026",
+      "provider": "Department of Higher Education",
+      "state": "Tamil Nadu",
+      "status": "active"
+    },
+    {
+      "id": "SCH-001",
+      "name": "Tamil Nadu First Graduate Tuition Fee Concession",
+      "type": "State Government Scheme",
+      "state": "Tamil Nadu",
+      "district": "All Districts (Coimbatore, Chennai, etc.)",
+      "college_eligibility": "All TNEA Approved Engineering & Professional Colleges (Adithya, CIT, PSG, GCT, KCT, SKCET)",
+      "benefit": "Full Tuition Fee Waiver (₹25,000 to ₹50,000 / year)",
+      "eligibility_criteria": "Student must be the first person in the immediate family to graduate. No family income ceiling.",
+      "required_documents": [
+        "First Graduate Certificate issued by Tahsildar / e-Sevai",
+        "Joint Declaration signed by Parent & Student",
+        "Siblings Educational Status Certificate",
+        "TNEA Allotment Order & 12th Marksheet",
+        "Aadhaar Card & Bank Account Proof"
+      ],
+      "application_process": "Submit First Graduate Certificate during TNEA Single Window Counselling / College Admission Desk.",
+      "deadline": "31 August 2026"
+    },
+    {
+      "id": "SCH-002",
+      "name": "Pragati Scholarship Scheme for Girl Students (AICTE)",
+      "type": "Central Government Scheme",
+      "state": "All India",
+      "district": "Coimbatore & All Districts",
+      "college_eligibility": "AICTE Approved Technical Colleges (Adithya, CIT, PSG, Amrita, Karunya)",
+      "benefit": "₹50,000 per year towards tuition fees and study materials",
+      "eligibility_criteria": "Female student admitted to 1st year degree/diploma. Family income less than ₹8 Lakh per annum. Max 2 girls per family.",
+      "required_documents": [
+        "Income Certificate from Competent Authority",
+        "10+2 / Diploma Marksheet",
+        "Admission Fee Receipt of Current Academic Year",
+        "Aadhaar Seeded Bank Account Details",
+        "Bonafide Student Certificate from Principal"
+      ],
+      "application_process": "Apply online on National Scholarship Portal (NSP) -> Institute Nodal Officer Verification -> DBT Release.",
+      "deadline": "31 October 2026"
+    },
+    {
+      "id": "SCH-003",
+      "name": "Post-Matric Scholarship for SC/ST/SCC Students",
+      "type": "State Government Scheme",
+      "state": "Tamil Nadu",
+      "district": "All Districts",
+      "college_eligibility": "All Recognized Higher Education Institutions",
+      "benefit": "100% Compulsory Non-Refundable Fee + Monthly Maintenance Allowance",
+      "eligibility_criteria": "SC/ST/SCC students pursuing UG/PG degree. Annual family income below ₹2.50 Lakh.",
+      "required_documents": [
+        "Permanent Community Certificate",
+        "Income Certificate (Current Financial Year)",
+        "Attendance & Previous Exam Marksheet",
+        "Hostel Stay Certificate (for Hostellers)",
+        "Aadhaar & Bank Passbook"
+      ],
+      "application_process": "Apply through TN e-District / National Scholarship Portal with college verification.",
+      "deadline": "15 November 2026"
+    },
+    {
+      "id": "SCH-004",
+      "name": "Amrita Chancellor Merit Scholarship",
+      "type": "Institutional Merit Scheme",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "college_eligibility": "Amrita Vishwa Vidyapeetham, Coimbatore (COL-0004)",
+      "benefit": "25% to 90% Tuition Fee Waiver for top AEEE rankers",
+      "eligibility_criteria": "AEEE Rank under 500 or 95%+ in 10+2 PCM. Maintain 8.5+ CGPA annually.",
+      "required_documents": [
+        "AEEE Scorecard / Rank Letter",
+        "12th Board Marksheet",
+        "Merit Scholarship Form from Dean Office"
+      ],
+      "application_process": "Automatic fee discount applied during admission counselling based on rank.",
+      "deadline": "30 June 2026"
+    },
+    {
+      "id": "SCH-005",
+      "name": "Adithya Founder's Merit Scholarship",
+      "type": "Institutional Merit Scheme",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "college_eligibility": "Adithya Institute of Technology & Adithya College of Arts and Science (COL-0009, COL-0008)",
+      "benefit": "50% to 100% Tuition Fee Concession for top board scorers & sports achievers",
+      "eligibility_criteria": "Cutoff 180+ in 10+2 PCM or State/National level sports representation.",
+      "required_documents": [
+        "10+2 Original Marksheet",
+        "Sports Achievement Certificates (State/National)",
+        "Scholarship Application Form"
+      ],
+      "application_process": "Direct evaluation at the Adithya Admission Desk during enrollment.",
+      "deadline": "15 August 2026"
+    },
+    {
+      "id": "SCH-006",
+      "name": "Central Sector Scheme of Scholarships (CSSS)",
+      "type": "Central Government Scheme",
+      "state": "All India",
+      "district": "All Districts",
+      "college_eligibility": "All UGC/AICTE Recognized Universities and Colleges",
+      "benefit": "₹12,000/yr for graduation (1st 3 yrs) and ₹20,000/yr for PG",
+      "eligibility_criteria": "Top 80th percentile in respective 12th State/CBSE Board. Family income below ₹4.5 Lakh.",
+      "required_documents": [
+        "12th Marksheet with Board Percentile Rank",
+        "Income Certificate (< ₹4.5L)",
+        "College Bonafide Certificate",
+        "Aadhaar-seeded Bank Passbook"
+      ],
+      "application_process": "Apply on National Scholarship Portal (scholarships.gov.in) -> Institute Verification.",
+      "deadline": "31 October 2026"
+    },
+    {
+      "id": "SCH-007",
+      "name": "INSPIRE Scholarship for Higher Education (SHE)",
+      "type": "Central Government Scheme",
+      "state": "All India",
+      "district": "All Districts",
+      "college_eligibility": "Students pursuing B.Sc / M.Sc Basic and Natural Sciences",
+      "benefit": "₹80,000 per year (₹60,000 cash + ₹20,000 mentorship grant)",
+      "eligibility_criteria": "Top 1% in Class 12 Board Exam or JEE/NEET top rankers opting for Pure Sciences.",
+      "required_documents": [
+        "Class 12 Marksheet & Top 1% Eligibility Note",
+        "College Admission Fee Receipt in B.Sc/BS",
+        "SBI Bank Account Details"
+      ],
+      "application_process": "Online application on online-inspire.gov.in under Department of Science & Technology.",
+      "deadline": "30 November 2026"
+    },
+    {
+      "id": "SCH-008",
+      "name": "TNAU Agri-Fellowship & ICAR National Talent Scholarship",
+      "type": "Welfare Scheme",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "college_eligibility": "Tamilnadu Agricultural University & School of Postgraduate Studies (COL-0003, COL-0001)",
+      "benefit": "₹3,000 / month for UG & ₹5,000 / month for PG Scholars",
+      "eligibility_criteria": "Students admitted through AIEEA ICAR national counseling or TNAU merit fellowship.",
+      "required_documents": [
+        "ICAR Rank Letter & Allotment Order",
+        "TNAU Student ID & Bank Passbook",
+        "Semester Performance Records"
+      ],
+      "application_process": "Automatic disbursement via TNAU Dean Office upon semester registration.",
+      "deadline": "15 September 2026"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "SR-01",
+      "student": "Bhuvaneshwari M.",
+      "scheme": "First Graduate Concession",
+      "college": "Adithya Institute of Technology, Coimbatore",
+      "rating": 5,
+      "comment": "Getting the ₹25,000 annual fee waiver as a First Graduate in my family made engineering college affordable."
+    },
+    {
+      "id": "SR-02",
+      "student": "Haritha Krishnan",
+      "scheme": "Pragati Scholarship",
+      "college": "Karunya Institute of Technology and Sciences",
+      "rating": 5,
+      "comment": "The ₹50,000 annual stipend covered my laptop and technical books completely. Highly recommend all eligible girls apply!"
+    },
+    {
+      "id": "SR-03",
+      "student": "Manoj Kumar",
+      "scheme": "Post-Matric Scholarship",
+      "college": "Tamilnadu Agricultural University, Coimbatore",
+      "rating": 4.9,
+      "comment": "Full tuition and hostel fee reimbursement was processed through DBT directly to my bank account with zero hassle."
+    },
+    {
+      "id": "SR-04",
+      "student": "Swathi Sundaram",
+      "scheme": "Amrita Chancellor Merit",
+      "college": "Amrita Vishwa Vidyapeetham, Coimbatore",
+      "rating": 5,
+      "comment": "Received 50% tuition scholarship based on my AEEE rank. The renewal process each year based on CGPA is transparent."
+    },
+    {
+      "id": "SR-05",
+      "student": "Pradeep R.",
+      "scheme": "Adithya Founder's Merit",
+      "college": "ADITHYA COLLEGE OF ARTS AND SCIENCE, Coimbatore",
+      "rating": 4.8,
+      "comment": "Scored 92% in 12th Commerce and received merit concession right at the time of admission."
+    }
+  ]
+}
