@@ -19788,17 +19788,18 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   /* 3. Mobile Navbar - Static logo, single horizontal row for controls, zero overlap */
+  /* 3. Mobile Navbar - Static logo, single horizontal row for controls, zero overlap */
   .site-header {
     display: flex !important;
     flex-wrap: wrap !important;
     align-items: center !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
     padding: 8px clamp(10px, 2.8vw, 12px) 10px clamp(10px, 2.8vw, 12px) !important;
     height: auto !important;
     min-height: 52px !important;
     max-height: none !important;
     overflow: visible !important;
-    gap: 8px 6px !important;
+    gap: 0 !important;
     background: #FFFFFF !important;
     position: sticky !important;
     top: 0 !important;
@@ -19809,33 +19810,44 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 100vw !important;
   }
 
-  /* Row 1 Left: Brand Logo (STATIC in position & appearance) */
+  /* Row 1 Left: Brand Logo (STATIC, small, compact, directly to the left of Explore) */
   .brand.header-brand {
     order: 1 !important;
     flex: 0 0 auto !important;
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
+    justify-content: center !important;
     margin: 0 !important;
-  }
-  .header-logo-img {
-    height: 36px !important;
-    width: auto !important;
-    max-width: 120px !important;
-    object-fit: contain !important;
-    display: block !important;
+    margin-right: 8px !important; /* Small clean gap between logo and Explore button */
+    padding: 0 !important;
+    height: 38px !important;
   }
 
-  /* Row 1 Right: Explore + EN + Login + Hamburger Menu in ONE neat row */
+  .header-logo-img {
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    object-fit: contain !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Row 1 Right: [ Explore ] [ EN ] [ Login ] [ Menu ] in the SAME horizontal header row */
   .header-right-controls {
     order: 2 !important;
-    flex: 0 0 auto !important;
-    margin-left: auto !important;
-    display: flex !important;
+    flex: 1 1 auto !important;
+    margin: 0 !important;
+    margin-left: 0 !important;
+    display: inline-flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
     align-items: center !important;
-    justify-content: flex-end !important;
-    gap: 7px !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    min-width: 0 !important;
   }
 
   /* Hide Desktop-Only Menus from Header Bar */
@@ -19849,23 +19861,23 @@ h1, h2, h3, h4, h5, h6 {
      EXPLORE BUTTON: COMPACT ALIGNMENT IN SINGLE ROW
      ======================================================================== */
   .explore-menu {
-    display: inline-block !important;
+    display: inline-flex !important;
     position: relative !important;
     flex-shrink: 0 !important;
     margin: 0 !important;
   }
 
   .explore-menu .explore-trigger {
-    height: 38px !important;
-    min-height: 38px !important;
-    padding: 0 10px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 9px !important;
     border-radius: 8px !important;
     background: #FFFFFF !important;
     border: 1.5px solid #93C5FD !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 5px !important;
+    gap: 4px !important;
     cursor: pointer !important;
     box-shadow: 0 1px 3px rgba(59, 130, 246, 0.08) !important;
     transition: all 0.18s ease !important;
@@ -19890,7 +19902,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .explore-menu .explore-trigger .pill-btn-text {
-    font-size: 12.5px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
     color: #1E293B !important;
     display: inline !important;
@@ -19912,23 +19924,29 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   /* ========================================================================
-     16-FIELD EXPLORE DROPDOWN: FULL VIEWPORT VISIBILITY WITHOUT CLIPPING
+     16-FIELD EXPLORE DROPDOWN: MATCHING EXACT REFERENCE HERO CONTENT BOX
+     Starts at same left position, ends at same right position, generous width
      ======================================================================== */
+  .explore-panel,
+  .menu-panel.explore-panel,
+  .custom-menu .explore-panel,
   .explore-menu .explore-panel {
     position: fixed !important;
-    top: clamp(52px, 10vh, 58px) !important;
-    left: 10px !important;
-    right: 10px !important;
+    top: clamp(54px, 8.5vh, 62px) !important;
+    left: clamp(14px, 4vw, 18px) !important;
+    right: clamp(14px, 4vw, 18px) !important;
     width: auto !important;
-    max-width: calc(100vw - 20px) !important;
-    margin: 0 auto !important;
+    max-width: calc(100vw - 2 * clamp(14px, 4vw, 18px)) !important;
+    min-width: 0 !important;
+    height: auto !important;
     max-height: min(440px, calc(100dvh - 75px)) !important;
+    margin: 0 auto !important;
     background: #FFFFFF !important;
     border: 1.5px solid #CBD5E1 !important;
-    border-radius: 12px !important;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.16) !important;
     z-index: 100000 !important;
-    padding: 10px 10px 12px 10px !important;
+    padding: 12px 12px 14px 12px !important;
     display: none !important;
     box-sizing: border-box !important;
     overflow-y: auto !important;
@@ -19936,7 +19954,10 @@ h1, h2, h3, h4, h5, h6 {
     scrollbar-width: thin !important;
   }
 
-  .explore-menu.open .explore-panel {
+  .explore-menu.open .explore-panel,
+  .custom-menu.open .explore-panel,
+  .explore-menu.open #explorePanel,
+  .custom-menu.open #explorePanel {
     display: block !important;
   }
 
@@ -19944,13 +19965,13 @@ h1, h2, h3, h4, h5, h6 {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 0 4px 8px 4px !important;
-    margin-bottom: 8px !important;
+    padding: 0 4px 10px 4px !important;
+    margin-bottom: 10px !important;
     border-bottom: 1px solid #E2E8F0 !important;
   }
 
   .explore-panel-header span {
-    font-size: 11.5px !important;
+    font-size: 12px !important;
     font-weight: 800 !important;
     letter-spacing: 0.06em !important;
     text-transform: uppercase !important;
@@ -19958,11 +19979,11 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .explore-panel-header small {
-    font-size: 10.5px !important;
+    font-size: 11px !important;
     color: #64748B !important;
     font-weight: 700 !important;
     background: #F1F5F9 !important;
-    padding: 2px 7px !important;
+    padding: 2px 8px !important;
     border-radius: 6px !important;
   }
 
@@ -19970,11 +19991,11 @@ h1, h2, h3, h4, h5, h6 {
     display: none !important;
   }
 
-  /* Balanced 2-Column Grid (8 rows of 2, fitting full width comfortably) */
+  /* Balanced 2-Column Grid (8 rows of 2, generous readable width matching reference box) */
   .explore-grid {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 6px 8px !important;
+    gap: 8px 10px !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
@@ -19982,9 +20003,9 @@ h1, h2, h3, h4, h5, h6 {
   .explore-item {
     display: flex !important;
     align-items: center !important;
-    gap: 7px !important;
-    padding: 7px 8px !important;
-    min-height: 38px !important;
+    gap: 8px !important;
+    padding: 8px 10px !important;
+    min-height: 40px !important;
     border-radius: 8px !important;
     background: #F8FAFC !important;
     border: 1px solid #E2E8F0 !important;
@@ -20022,10 +20043,10 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .exp-text strong {
-    font-size: 11.5px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
     color: #0F172A !important;
-    line-height: 1.2 !important;
+    line-height: 1.25 !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
@@ -20040,17 +20061,17 @@ h1, h2, h3, h4, h5, h6 {
      LANGUAGE BUTTON (EN) - COMFORTABLE TAP TARGET & SINGLE ROW ALIGNMENT
      ======================================================================== */
   .language-menu {
-    display: inline-block !important;
+    display: inline-flex !important;
     position: relative !important;
     margin: 0 !important;
     flex-shrink: 0 !important;
   }
   .language-menu .header-pill-btn {
     width: auto !important;
-    min-width: 44px !important;
-    height: 38px !important;
-    min-height: 38px !important;
-    padding: 0 8px !important;
+    min-width: 40px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 7px !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -20077,7 +20098,7 @@ h1, h2, h3, h4, h5, h6 {
   /* Language Dropdown Panel */
   .language-menu .language-panel {
     position: fixed !important;
-    top: clamp(52px, 10vh, 58px) !important;
+    top: clamp(54px, 8.5vh, 62px) !important;
     right: 10px !important;
     left: auto !important;
     width: min(290px, calc(100vw - 20px)) !important;
@@ -20176,16 +20197,16 @@ h1, h2, h3, h4, h5, h6 {
      LOGIN BUTTON: INCREASED USABLE WIDTH & EASY TO TAP
      ======================================================================== */
   .profile-menu {
-    display: inline-block !important;
+    display: inline-flex !important;
     margin: 0 !important;
     flex-shrink: 0 !important;
   }
 
   .header-login-btn {
-    height: 38px !important;
-    min-height: 38px !important;
-    padding: 0 14px !important;
-    font-size: 12.5px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 12px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
     border-radius: 8px !important;
     white-space: nowrap !important;
@@ -20199,9 +20220,9 @@ h1, h2, h3, h4, h5, h6 {
 
   /* Profile Avatar Button */
   .profile-avatar-btn {
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
     border-radius: 50% !important;
     font-size: 13px !important;
     margin: 0 !important;
@@ -20211,15 +20232,15 @@ h1, h2, h3, h4, h5, h6 {
      HAMBURGER MENU BUTTON: COMFORTABLE TOUCH TARGET
      ======================================================================== */
   .header-menu-wrap {
-    display: inline-block !important;
+    display: inline-flex !important;
     margin: 0 !important;
     flex-shrink: 0 !important;
   }
 
   .header-menu-btn {
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
     border-radius: 8px !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -20237,7 +20258,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 100% !important;
     flex: 0 0 100% !important;
     max-width: 100% !important;
-    margin: 4px 0 0 0 !important;
+    margin: 6px 0 0 0 !important;
   }
 
   .ai-entry {
@@ -22006,9 +22027,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 360px) {
+  .brand.header-brand {
+    order: 1 !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    margin-right: 8px !important;
+    height: 38px !important;
+  }
   .header-logo-img {
-    max-width: 100px !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
     height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    object-fit: contain !important;
   }
   .header-right-controls {
     gap: 4px !important;
@@ -22038,11 +22071,15 @@ h1, h2, h3, h4, h5, h6 {
     height: 36px !important;
     min-width: 36px !important;
   }
+  .explore-panel,
+  .menu-panel.explore-panel,
+  .custom-menu .explore-panel,
   .explore-menu .explore-panel {
-    left: 6px !important;
-    right: 6px !important;
-    max-width: calc(100vw - 12px) !important;
-    padding: 8px 6px !important;
+    left: 14px !important;
+    right: 14px !important;
+    max-width: calc(100vw - 28px) !important;
+    padding: 10px 10px 12px 10px !important;
+    border-radius: 16px !important;
   }
   .explore-item {
     padding: 5px 6px !important;
