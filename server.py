@@ -18,7 +18,8 @@ logger = logging.getLogger(__name__)
 # Load environment variables securely from .env
 load_dotenv()
 
-app = Flask(__name__, static_folder=".")
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+app = Flask(__name__, static_folder=ROOT_DIR)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", secrets.token_hex(32))
 
 ADMIN_PASSKEY = os.environ.get("ADMIN_PASSKEY", "admin123")
@@ -133,6 +134,50 @@ def block_sensitive_files():
     for ext in blocked_extensions:
         if path.endswith(ext):
             return jsonify({"error": "Forbidden", "message": "Access restricted."}), 403
+
+ALLOWED_ORIGIN_PATTERNS = [
+    r"^https?://localhost(:\d+)?$",
+    r"^https?://127\.0\.0\.1(:\d+)?$",
+    r"^https://([a-zA-Z0-9_-]+\.)?vercel\.app$",
+    r"^https://([a-zA-Z0-9_-]+\.)?thecampusnova\.com$",
+    r"^https://thecampusnova\.com$"
+]
+
+@app.after_request
+def apply_cors_and_security_headers(response):
+    origin = request.headers.get("Origin")
+    if origin:
+        allowed = any(re.match(pattern, origin, re.IGNORECASE) for pattern in ALLOWED_ORIGIN_PATTERNS)
+        if allowed:
+            response.headers["Access-Control-Allow-Origin"] = origin
+            response.headers["Access-Control-Allow-Credentials"] = "true"
+            response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+            response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Admin-Role, X-Admin-Passkey, X-Requested-With, Accept"
+    
+    # Security Headers
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+
+    # Cache / Stale Data Prevention for all API routes (prevents browser/CDN stale reads after Admin updates)
+    if request.path.startswith("/api/"):
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+    return response
+
+@app.route("/api/<path:path>", methods=["OPTIONS"])
+def api_options_handler(path):
+    response = jsonify({"status": "ok"})
+    origin = request.headers.get("Origin")
+    if origin:
+        allowed = any(re.match(pattern, origin, re.IGNORECASE) for pattern in ALLOWED_ORIGIN_PATTERNS)
+        if allowed:
+            response.headers["Access-Control-Allow-Origin"] = origin
+            response.headers["Access-Control-Allow-Credentials"] = "true"
+            response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+            response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Admin-Role, X-Admin-Passkey, X-Requested-With, Accept"
+    return response, 204
 
 # In-memory secure state stores for authentication & captcha verification
 captcha_store = {}
@@ -606,14 +651,14 @@ def load_colleges_data():
     """Loads complete college registry from PostgreSQL as single source of truth, with seamless caching."""
     global _cached_colleges_registry, _cached_colleges_timestamp
     now = time.time()
-    if _cached_colleges_registry is not None and (now - _cached_colleges_timestamp < 60):
+    if _cached_colleges_registry is not None and (now - _cached_colleges_timestamp < 1):
         return _cached_colleges_registry
 
     # 1. PostgreSQL is the primary Single Source of Truth
     if db.is_pg_connected():
         try:
             db_colleges = db.query_all("SELECT * FROM colleges WHERE status != 'archived' ORDER BY id ASC")
-            if db_colleges:
+            if db_colleges is not None:
                 result = [_row_to_college_dict(row) for row in db_colleges if row]
                 _cached_colleges_registry = result
                 _cached_colleges_timestamp = now
@@ -1314,15 +1359,21 @@ def api_submit_update():
     save_approvals_data(appr_data)
     _record_audit_log("College Update Submitted", "Approvals", new_appr_id, f"Submitted update {new_appr_id} for {college_name}")
 
-    # Send email notification to official TheCampusNova Gmail (non-blocking)
-    send_college_update_notification(new_approval)
+    # Send email notification to official TheCampusNova Gmail
+    email_sent = send_college_update_notification(new_approval)
 
     # Invalidate token after successful submission so it cannot be reused
     del verified_tokens[token]
 
+    if email_sent:
+        msg = f"Update details for {college_name} submitted successfully and email notification delivered to official administrator."
+    else:
+        msg = f"Update details for {college_name} saved successfully in database and queued for administrative review (email notification pending delivery)."
+
     return jsonify({
         "success": True,
-        "message": f"Update details for {college_name} submitted successfully and queued for review.",
+        "email_sent": email_sent,
+        "message": msg,
         "college": college_name
     })
 
@@ -2014,7 +2065,7 @@ def api_get_domains():
             params.extend([f"%{q}%", f"%{q}%", f"%{q}%"])
         sql += " ORDER BY id ASC"
         domains = db.query_all(sql, params)
-        if domains:
+        if domains is not None:
             for d in domains:
                 d["name"] = d.get("domain_name") or d.get("name")
                 d["stream"] = d.get("stream") or "Engineering & Technology"
@@ -2111,7 +2162,7 @@ def api_get_exams():
             params.extend([f"%{q}%", f"%{q}%", f"%{q}%"])
         sql += " ORDER BY id ASC"
         exams = db.query_all(sql, params)
-        if exams:
+        if exams is not None:
             mapped_exams = [_row_to_exam_dict(e) for e in exams]
             return jsonify({"success": True, "total": len(mapped_exams), "exams": mapped_exams})
 
@@ -3948,11 +3999,21 @@ def api_translate_cache_stats():
 # ----------------------------------------------------
 @app.route("/")
 def index():
-    return send_from_directory(".", "index.html")
+    return send_from_directory(ROOT_DIR, "index.html")
+
+@app.route("/admin")
+@app.route("/admin.html")
+def admin_page():
+    return send_from_directory(ROOT_DIR, "admin.html")
 
 @app.route("/<path:path>")
 def static_files(path):
-    return send_from_directory(".", path)
+    full_path = os.path.join(ROOT_DIR, path)
+    if os.path.isfile(full_path):
+        return send_from_directory(ROOT_DIR, path)
+    if path.startswith("api/"):
+        return jsonify({"success": False, "error": "Endpoint not found", "path": path}), 404
+    return send_from_directory(ROOT_DIR, "index.html")
 
 
 # ----------------------------------------------------
@@ -4229,10 +4290,11 @@ def api_submit_mentor_enquiry():
     _record_audit_log("Mentor Enquiry Submitted", "Mentors", enquiry_id, f"Enquiry submitted by {user_name} ({user_email}) for mentor {mentor_name}")
 
     # 4. Prepare email notification for official TheCampusNova email
-    send_mentor_enquiry_notification(enquiry_record)
+    email_sent = send_mentor_enquiry_notification(enquiry_record)
 
     return jsonify({
         "success": True,
+        "email_sent": email_sent,
         "message": "Thank you for sharing your details. Our team has received your enquiry and will connect with you regarding the next steps.",
         "enquiry_id": enquiry_id
     }), 201
@@ -4473,6 +4535,45 @@ def api_admin_update_enquiry_status(enquiry_id):
 # APPROVALS API (Workflow & Actions)
 # ----------------------------------------------------
 def load_approvals_data():
+    approvals = []
+    # 1. Authoritative PostgreSQL source
+    if db.is_pg_connected():
+        try:
+            rows = db.query_all("SELECT * FROM content_updates ORDER BY created_at DESC LIMIT 200;")
+            if rows:
+                for r in rows:
+                    raw_data = r.get("new_data") or {}
+                    if isinstance(raw_data, str):
+                        try:
+                            raw_data = json.loads(raw_data)
+                        except Exception:
+                            raw_data = {}
+                    appr_id = f"APP-{r['id']}"
+                    c_at = r.get("created_at")
+                    dt_str = str(c_at).split(" ")[0] if c_at else time.strftime("%Y-%m-%d")
+                    tm_str = str(c_at).split(" ")[1][:8] if (c_at and " " in str(c_at)) else time.strftime("%H:%M:%S")
+                    status_raw = str(r.get("status") or "Pending").capitalize()
+                    approvals.append({
+                        "id": appr_id,
+                        "db_id": r["id"],
+                        "date": raw_data.get("date") or dt_str,
+                        "time": tm_str,
+                        "target_type": "College" if r.get("module_name") == "colleges" else str(r.get("module_name", "Content")).capitalize(),
+                        "target_id": r.get("record_id") or "",
+                        "target_title": raw_data.get("college_name") or raw_data.get("collegeName") or r.get("record_id") or "Institutional Update",
+                        "field": raw_data.get("title") or raw_data.get("category") or "Institutional Updates",
+                        "old_value": "Existing Profile",
+                        "new_value": raw_data.get("description") or raw_data.get("placement") or raw_data.get("fees") or raw_data.get("notes") or "Profile Update",
+                        "submitted_by": raw_data.get("submitted_by") or raw_data.get("submittedBy") or "Authorized Officer",
+                        "submitted_by_email": raw_data.get("verified_email") or raw_data.get("email") or "",
+                        "status": status_raw,
+                        "notes": raw_data.get("notes") or raw_data.get("description") or "Submitted via portal for administrative review."
+                    })
+                return {"approvals": approvals}
+        except Exception as e:
+            logger.warning(f"[PostgreSQL Approvals Load Warning] {e}")
+
+    # 2. Fallback to approvals_data.json
     if os.path.exists(APPROVALS_DATA_FILE):
         try:
             with open(APPROVALS_DATA_FILE, "r", encoding="utf-8") as f:
@@ -4526,10 +4627,22 @@ def api_create_approval():
         "notes": body.get("notes", "Submitted via portal for administrative review.")
     }
     
+    if db.is_pg_connected():
+        try:
+            ins_res = db.execute_query(
+                "INSERT INTO content_updates (module_name, record_id, action, new_data, status) VALUES (%s, %s, %s, %s, 'pending') RETURNING id;",
+                (body.get("target_type", "colleges").lower(), str(body.get("target_id", "")), "update", json.dumps(new_approval))
+            )
+            if ins_res and isinstance(ins_res, dict) and "id" in ins_res:
+                new_approval["db_id"] = ins_res["id"]
+                new_approval["id"] = f"APP-{ins_res['id']}"
+        except Exception as e:
+            logger.warning(f"[PostgreSQL Approval Insert Warning] {e}")
+
     approvals.insert(0, new_approval)
     data["approvals"] = approvals
     save_approvals_data(data)
-    _record_audit_log("Approval Submitted", "Approvals", new_id, f"Submitted update {new_id} for {new_approval['target_title']}")
+    _record_audit_log("Approval Submitted", "Approvals", new_approval["id"], f"Submitted update {new_approval['id']} for {new_approval['target_title']}")
     return jsonify({"success": True, "message": "Approval request submitted", "approval": new_approval}), 201
 
 @app.route("/api/approvals/<approval_id>", methods=["PUT"])
@@ -4537,17 +4650,17 @@ def api_create_approval():
 @require_admin_auth
 def api_process_approval(approval_id):
     body = request.get_json(force=True, silent=True) or {}
-    action = body.get("action", "").strip().lower() # 'approve' or 'reject'
+    action = body.get("action", "").strip().lower() # 'approve', 'pending', or 'reject'
     admin_name = body.get("reviewed_by", "Super Admin")
     
     if action not in ["approve", "reject", "pending"]:
-        return jsonify({"success": False, "message": "Action must be 'approve' or 'reject'"}), 400
+        return jsonify({"success": False, "message": "Action must be 'approve', 'pending', or 'reject'"}), 400
         
     data = load_approvals_data()
     approvals = data.get("approvals", [])
     found_idx = -1
     for idx, a in enumerate(approvals):
-        if a.get("id") == approval_id:
+        if str(a.get("id")) == str(approval_id) or str(a.get("db_id")) == str(approval_id):
             found_idx = idx
             break
             
@@ -4557,6 +4670,9 @@ def api_process_approval(approval_id):
     import datetime
     now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     target_record = approvals[found_idx]
+    target_id = target_record.get("target_id")
+    target_title = target_record.get("target_title", "")
+    db_id = target_record.get("db_id")
     
     if action == "approve":
         target_record["status"] = "Approved"
@@ -4564,8 +4680,6 @@ def api_process_approval(approval_id):
         target_record["reviewed_by"] = admin_name
         
         # Apply approved change to target college / database
-        target_id = target_record.get("target_id")
-        target_title = target_record.get("target_title", "")
         if target_id or target_title:
             col = get_college_record(target_id) or get_college_record(target_title)
             if col:
@@ -4584,10 +4698,6 @@ def api_process_approval(approval_id):
                 _sync_college_to_json_file(col)
                 invalidate_colleges_cache()
                 if db.is_pg_connected():
-                    db.execute_query(
-                        "UPDATE content_updates SET status = 'approved' WHERE record_id = %s OR record_id = %s",
-                        (str(target_id), str(target_title))
-                    )
                     col_id_int = col.get("id")
                     if col_id_int and str(col_id_int).isdigit():
                         if "placement" in field:
@@ -4597,17 +4707,68 @@ def api_process_approval(approval_id):
                         elif "description" in field:
                             db.execute_query("UPDATE colleges SET description = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (col.get("description", ""), int(col_id_int)))
                 
+        if db.is_pg_connected():
+            if db_id:
+                db.execute_query("UPDATE content_updates SET status = 'approved', reviewed_at = CURRENT_TIMESTAMP WHERE id = %s", (db_id,))
+            else:
+                db.execute_query("UPDATE content_updates SET status = 'approved', reviewed_at = CURRENT_TIMESTAMP WHERE record_id = %s OR record_id = %s", (str(target_id), str(target_title)))
         _record_audit_log("Approval Processed", "Approvals", approval_id, f"Approved update for {target_record.get('target_title')}")
+    elif action == "pending":
+        target_record["status"] = "Pending"
+        target_record["reviewed_at"] = now_str
+        target_record["reviewed_by"] = admin_name
+        if db.is_pg_connected():
+            if db_id:
+                db.execute_query("UPDATE content_updates SET status = 'pending', reviewed_at = CURRENT_TIMESTAMP WHERE id = %s", (db_id,))
+            else:
+                db.execute_query("UPDATE content_updates SET status = 'pending', reviewed_at = CURRENT_TIMESTAMP WHERE record_id = %s OR record_id = %s", (str(target_id), str(target_title)))
+        _record_audit_log("Approval Set Pending", "Approvals", approval_id, f"Set update pending for {target_record.get('target_title')}")
     else:
         target_record["status"] = "Rejected"
         target_record["reviewed_at"] = now_str
         target_record["reviewed_by"] = admin_name
+        if db.is_pg_connected():
+            if db_id:
+                db.execute_query("UPDATE content_updates SET status = 'rejected', reviewed_at = CURRENT_TIMESTAMP WHERE id = %s", (db_id,))
+            else:
+                db.execute_query("UPDATE content_updates SET status = 'rejected', reviewed_at = CURRENT_TIMESTAMP WHERE record_id = %s OR record_id = %s", (str(target_id), str(target_title)))
         _record_audit_log("Approval Rejected", "Approvals", approval_id, f"Rejected update for {target_record.get('target_title')}")
         
     approvals[found_idx] = target_record
     data["approvals"] = approvals
     save_approvals_data(data)
     return jsonify({"success": True, "message": f"Update marked as {target_record['status']}.", "approval": target_record})
+
+@app.route("/api/approvals/<approval_id>", methods=["DELETE"])
+@app.route("/api/admin/approvals/<approval_id>", methods=["DELETE"])
+@require_admin_auth
+def api_delete_approval(approval_id):
+    data = load_approvals_data()
+    approvals = data.get("approvals", [])
+    found_idx = -1
+    target_rec = None
+    for idx, a in enumerate(approvals):
+        if str(a.get("id")) == str(approval_id) or str(a.get("db_id")) == str(approval_id):
+            found_idx = idx
+            target_rec = a
+            break
+            
+    if found_idx == -1:
+        return jsonify({"success": False, "message": "Approval record not found"}), 404
+        
+    del approvals[found_idx]
+    data["approvals"] = approvals
+    save_approvals_data(data)
+    
+    if db.is_pg_connected() and target_rec:
+        db_id = target_rec.get("db_id")
+        if db_id:
+            db.execute_query("DELETE FROM content_updates WHERE id = %s", (db_id,))
+        else:
+            db.execute_query("DELETE FROM content_updates WHERE record_id = %s OR record_id = %s", (str(target_rec.get("target_id")), str(target_rec.get("target_title"))))
+            
+    _record_audit_log("Approval Deleted", "Approvals", str(approval_id), f"Deleted approval {approval_id}")
+    return jsonify({"success": True, "message": f"Approval {approval_id} deleted successfully."})
 
 # ----------------------------------------------------
 # EVENTS REST API (PostgreSQL + JSON Store)
@@ -5539,7 +5700,7 @@ def api_get_careers():
             params.extend([f"%{q}%", f"%{q}%", f"%{q}%"])
         sql += " ORDER BY c.id ASC"
         rows = db.query_all(sql, params)
-        if rows:
+        if rows is not None:
             for r in rows:
                 if isinstance(r.get("skills"), str):
                     skills_list = [s.strip() for s in r["skills"].split(",") if s.strip()]
@@ -5563,14 +5724,11 @@ def api_get_careers():
                     for idx, pt in enumerate(parts, 1):
                         stages.append({
                             "step": idx,
-                            "title": pt if len(pt) < 40 else pt[:37] + "...",
-                            "desc": pt,
-                            "duration": "4 - 8 Months"
+                            "title": pt if not ":" in pt else pt.split(":")[0].strip(),
+                            "desc": pt if not ":" in pt else pt.split(":")[1].strip(),
+                            "duration": "Yearly Progression"
                         })
-                elif isinstance(raw_rd, list):
-                    stages = raw_rd
-
-                if not stages:
+                else:
                     stages = [
                         {"step": 1, "title": "Core Foundations & Theory", "desc": "Foundational programming, mathematics and system design principles.", "duration": "3-6 Months"},
                         {"step": 2, "title": "Frameworks & Production Tooling", "desc": "Hands-on projects with production frameworks, databases and testing.", "duration": "6-12 Months"},

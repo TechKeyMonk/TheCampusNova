@@ -1426,14 +1426,17 @@ if (furtherDetailsForm) {
       });
       const data = await res.json();
       if (!data.success) {
-        showToast(data.message || 'Submission failed.');
+        showToast(data.message || 'Submission failed. Please check your inputs.');
         return;
       }
-    } catch(err) {}
-
-    showToast(`Update details submitted for ${collegeName}! Submitted to Admin for review.`);
-    furtherDetailsForm.reset();
-    window._authSessionToken = null;
+      showToast(data.message || `Update details submitted for ${collegeName}! Submitted to Admin for review.`);
+      furtherDetailsForm.reset();
+      window._authSessionToken = null;
+    } catch(err) {
+      console.error('[Submit Update Error]', err);
+      showToast('Connection error: Unable to submit update to database. Please try again.');
+      return;
+    }
     
     const m3 = document.getElementById('collegeUpdateModal');
     if (m3) {

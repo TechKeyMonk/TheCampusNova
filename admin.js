@@ -10554,6 +10554,7 @@ async function deleteUniversalRecord(categoryKey, recordId, recordName) {
     reviews: `/api/reviews/${recordId}`,
     rankings: `/api/rankings/${recordId}`,
     comparisons: `/api/comparisons/${recordId}`,
+    mentors: `/api/admin/mentors/${recordId}`,
     events: `/api/events/${recordId}`,
     news: `/api/news/${recordId}`
   };
@@ -10588,6 +10589,7 @@ async function deleteUniversalRecord(categoryKey, recordId, recordName) {
       else if (categoryKey === 'study_materials' && typeof loadAdminStudyMaterials === 'function') loadAdminStudyMaterials();
       else if (categoryKey === 'reviews' && typeof loadAdminReviews === 'function') loadAdminReviews();
       else if (categoryKey === 'comparisons' && typeof loadAdminComparisons === 'function') loadAdminComparisons();
+      else if (categoryKey === 'mentors' && typeof loadAdminMentors === 'function') loadAdminMentors();
       else if (categoryKey === 'events' && typeof loadAdminEvents === 'function') loadAdminEvents();
       else if (categoryKey === 'news' && typeof loadAdminNews === 'function') loadAdminNews();
       else if (categoryKey === 'colleges' && typeof renderCollegesTable === 'function') renderCollegesTable();

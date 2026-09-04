@@ -176,10 +176,8 @@ def save_cache(force=False):
             return
 
         try:
-            temp_file = f"{CACHE_FILE}.tmp"
-            with open(temp_file, "w", encoding="utf-8") as f:
+            with open(CACHE_FILE, "w", encoding="utf-8") as f:
                 json.dump(_cache, f, ensure_ascii=False, indent=2)
-            os.replace(temp_file, CACHE_FILE)
             _cache_dirty = False
             _last_save_time = now
             logger.info(f"Translation cache saved to disk: {CACHE_FILE}")

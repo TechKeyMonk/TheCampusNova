@@ -30,13 +30,18 @@ PGPASSWORD = os.environ.get("PGPASSWORD", "postgres")
 _connection_pool = None
 _is_connected = False
 _last_pool_attempt = 0
-_POOL_RETRY_INTERVAL = 20  # seconds between reconnect attempts
+_POOL_RETRY_INTERVAL = 3  # seconds between reconnect attempts
+_CONNECT_TIMEOUT = int(os.environ.get("PGCONNECT_TIMEOUT", "10"))
 
 def get_connection_params():
     """Builds connection configuration dictionary."""
     database_url = os.environ.get("DATABASE_URL")
     if database_url and database_url.strip():
-        return {"dsn": database_url.strip()}
+        dsn = database_url.strip()
+        # Normalize postgres:// to postgresql:// for psycopg2
+        if dsn.startswith("postgres://"):
+            dsn = "postgresql://" + dsn[len("postgres://"):]
+        return {"dsn": dsn}
     return {
         "host": os.environ.get("PGHOST", "localhost"),
         "port": os.environ.get("PGPORT", "5432"),
@@ -60,27 +65,50 @@ def get_pool():
 
         try:
             params = get_connection_params()
+            max_conn = int(os.environ.get("PGMAXCONN", "10"))
             if "dsn" in params:
                 dsn = params["dsn"]
+                from urllib.parse import urlparse
+                parsed = urlparse(dsn)
+                db_host = parsed.hostname or "remote"
+                db_port = parsed.port or 5432
+                db_name = (parsed.path or "").lstrip("/") or "database"
+
+                # Enforce sslmode=require for non-local PostgreSQL instances if not already defined
+                if db_host not in ["localhost", "127.0.0.1", "::1"] and "sslmode" not in dsn:
+                    sep = "&" if "?" in dsn else "?"
+                    dsn = f"{dsn}{sep}sslmode=require"
+
                 if "connect_timeout" not in dsn:
                     sep = "&" if "?" in dsn else "?"
-                    dsn = f"{dsn}{sep}connect_timeout=1"
-                _connection_pool = pool.ThreadedConnectionPool(minconn=1, maxconn=20, dsn=dsn)
+                    dsn = f"{dsn}{sep}connect_timeout={_CONNECT_TIMEOUT}"
+
+                _connection_pool = pool.ThreadedConnectionPool(minconn=1, maxconn=max_conn, dsn=dsn)
+                _is_connected = True
+                print(f"[PostgreSQL] Connected to shared database '{db_name}' at {db_host}:{db_port}")
             else:
+                db_host = params["host"]
+                db_port = params["port"]
+                db_name = params["dbname"]
                 _connection_pool = pool.ThreadedConnectionPool(
                     minconn=1,
-                    maxconn=20,
-                    host=params["host"],
-                    port=params["port"],
-                    dbname=params["dbname"],
+                    maxconn=max_conn,
+                    host=db_host,
+                    port=db_port,
+                    dbname=db_name,
                     user=params["user"],
                     password=params["password"],
-                    connect_timeout=1
+                    connect_timeout=_CONNECT_TIMEOUT
                 )
-            _is_connected = True
-            print(f"[PostgreSQL] Connected to database '{PGDATABASE}' at {PGHOST}:{PGPORT}")
+                _is_connected = True
+                print(f"[PostgreSQL] Connected to database '{db_name}' at {db_host}:{db_port}")
         except Exception as e:
             _is_connected = False
+            # Safely report error without leaking credentials
+            err_msg = str(e)
+            if "@" in err_msg:
+                err_msg = err_msg.split("@")[-1]
+            print(f"[PostgreSQL Connection Error] Failed to connect: {err_msg}")
             return None
     return _connection_pool
 
