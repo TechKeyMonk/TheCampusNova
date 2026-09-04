@@ -4,6 +4,9 @@ import json
 import time
 import secrets
 import hashlib
+import hmac
+import base64
+import urllib.parse
 import logging
 from email_service import send_email
 from functools import wraps
@@ -20,7 +23,8 @@ load_dotenv()
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, static_folder=ROOT_DIR)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", secrets.token_hex(32))
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "thecampusnova_production_secret_key_2026_auth")
+SECRET_SIGNING_KEY = str(app.secret_key).encode("utf-8")
 
 ADMIN_PASSKEY = os.environ.get("ADMIN_PASSKEY", "admin123")
 
@@ -78,22 +82,65 @@ def mask_mobile_public(mobile):
         return f"{clean[:2]}****{clean[-2:]}"
     return "967*******68"
 
-def generate_captcha_challenge():
+# Secure state stores for authentication & captcha verification (stateless signed tokens + memory cache)
+captcha_store = {}
+verified_tokens = {}
+used_tokens = set()
+
+def sign_payload(data_dict: dict) -> str:
+    """Signs a dict into a URL-safe token: base64(json).hmac"""
+    payload_b64 = base64.urlsafe_b64encode(json.dumps(data_dict).encode("utf-8")).decode("utf-8").rstrip("=")
+    sig = hmac.new(SECRET_SIGNING_KEY, payload_b64.encode("utf-8"), hashlib.sha256).hexdigest()[:16]
+    return f"{payload_b64}.{sig}"
+
+def verify_and_decode_payload(token_str: str) -> dict:
+    """Verifies HMAC signature and expiration; returns dict if valid, else None."""
+    if not token_str or "." not in token_str:
+        return None
+    parts = token_str.split(".", 1)
+    if len(parts) != 2:
+        return None
+    payload_b64, sig = parts
+    expected_sig = hmac.new(SECRET_SIGNING_KEY, payload_b64.encode("utf-8"), hashlib.sha256).hexdigest()[:16]
+    if not hmac.compare_digest(sig, expected_sig):
+        return None
+    try:
+        padding = 4 - (len(payload_b64) % 4)
+        if padding != 4:
+            payload_b64 += "=" * padding
+        raw_json = base64.urlsafe_b64decode(payload_b64).decode("utf-8")
+        data = json.loads(raw_json)
+        if "exp" in data and time.time() > data["exp"]:
+            return None
+        return data
+    except Exception as e:
+        logger.debug(f"[HMAC Token Decode Error] {e}")
+        return None
+
+def generate_captcha_challenge(email=None, college=None, aishe=None, college_id=None):
     """
     Generates a cryptographically randomized, server-side SVG visual CAPTCHA challenge.
-    Stores the SHA-256 hash of the answer with a 10-minute validity in captcha_store.
+    Stores the SHA-256 hash of the answer with a 10-minute validity in both a stateless signed ID and captcha_store cache.
     """
     chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
     captcha_text = "".join(secrets.choice(chars) for _ in range(6))
-    captcha_id = f"CAP-{secrets.token_hex(8)}"
     answer_hash = hashlib.sha256(captcha_text.upper().encode("utf-8")).hexdigest()
-    
-    captcha_store[captcha_id] = {
+    exp_time = time.time() + 600
+
+    token_data = {
         "hash": answer_hash,
-        "text": captcha_text,
-        "expires_at": time.time() + 600,
-        "attempts": 3
+        "exp": exp_time,
+        "email": email or "",
+        "college": college or "",
+        "aishe": aishe or "",
+        "college_id": college_id or "",
+        "attempts": 3,
+        "nonce": secrets.token_hex(4)
     }
+    captcha_id = "CAP-" + sign_payload(token_data)
+    
+    # Also store in memory cache for backward compatibility
+    captcha_store[captcha_id] = token_data
     
     lines_svg = []
     for _ in range(6):
@@ -143,16 +190,50 @@ ALLOWED_ORIGIN_PATTERNS = [
     r"^https://thecampusnova\.com$"
 ]
 
+ALLOWED_EXACT_ORIGINS = {
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://thecampusnova.vercel.app",
+    "https://www.thecampusnova.com",
+    "https://thecampusnova.com"
+}
+
+def get_allowed_origin(raw_origin_or_referer: str):
+    """
+    Normalizes Origin or Referer (strips path and trailing slash)
+    and checks against allowed exact origins and regex patterns.
+    Returns the normalized allowed origin string if permitted, else None.
+    """
+    if not raw_origin_or_referer:
+        return None
+    raw = str(raw_origin_or_referer).strip()
+    try:
+        parsed = urllib.parse.urlparse(raw)
+        if parsed.scheme and parsed.netloc:
+            normalized = f"{parsed.scheme}://{parsed.netloc}".rstrip("/").lower()
+        else:
+            normalized = raw.rstrip("/").lower()
+    except Exception:
+        normalized = raw.rstrip("/").lower()
+
+    if normalized in ALLOWED_EXACT_ORIGINS:
+        return normalized
+
+    for pattern in ALLOWED_ORIGIN_PATTERNS:
+        if re.match(pattern, normalized, re.IGNORECASE):
+            return normalized
+
+    return None
+
 @app.after_request
 def apply_cors_and_security_headers(response):
-    origin = request.headers.get("Origin")
-    if origin:
-        allowed = any(re.match(pattern, origin, re.IGNORECASE) for pattern in ALLOWED_ORIGIN_PATTERNS)
-        if allowed:
-            response.headers["Access-Control-Allow-Origin"] = origin
-            response.headers["Access-Control-Allow-Credentials"] = "true"
-            response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
-            response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Admin-Role, X-Admin-Passkey, X-Requested-With, Accept"
+    req_origin = request.headers.get("Origin") or request.headers.get("Referer")
+    allowed = get_allowed_origin(req_origin)
+    if allowed:
+        response.headers["Access-Control-Allow-Origin"] = allowed
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Admin-Role, X-Admin-Passkey, X-Requested-With, Accept"
     
     # Security Headers
     response.headers["X-Content-Type-Options"] = "nosniff"
@@ -169,19 +250,14 @@ def apply_cors_and_security_headers(response):
 @app.route("/api/<path:path>", methods=["OPTIONS"])
 def api_options_handler(path):
     response = jsonify({"status": "ok"})
-    origin = request.headers.get("Origin")
-    if origin:
-        allowed = any(re.match(pattern, origin, re.IGNORECASE) for pattern in ALLOWED_ORIGIN_PATTERNS)
-        if allowed:
-            response.headers["Access-Control-Allow-Origin"] = origin
-            response.headers["Access-Control-Allow-Credentials"] = "true"
-            response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
-            response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Admin-Role, X-Admin-Passkey, X-Requested-With, Accept"
+    req_origin = request.headers.get("Origin") or request.headers.get("Referer")
+    allowed = get_allowed_origin(req_origin)
+    if allowed:
+        response.headers["Access-Control-Allow-Origin"] = allowed
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Admin-Role, X-Admin-Passkey, X-Requested-With, Accept"
     return response, 204
-
-# In-memory secure state stores for authentication & captcha verification
-captcha_store = {}
-verified_tokens = {}
 
 
 # Path to data registries (preserved as backup and initial seed)
@@ -1075,16 +1151,16 @@ def api_request_update_captcha():
         return jsonify({"success": False, "message": msg}), 400
 
     resolved_name = col.get("name") or col.get("college_name") or college_name or college
-    captcha_id, captcha_svg = generate_captcha_challenge()
+    captcha_id, captcha_svg = generate_captcha_challenge(email=email, college=resolved_name, aishe=aishe, college_id=col.get("id"))
     
-    # Store challenge metadata
+    # Store challenge metadata in memory cache as well
     if captcha_id in captcha_store:
         captcha_store[captcha_id]["email"] = email
         captcha_store[captcha_id]["college"] = resolved_name
         captcha_store[captcha_id]["college_id"] = col.get("id")
         captcha_store[captcha_id]["aishe"] = aishe
 
-    logger.info(f"[CAPTCHA CHALLENGE] Generated challenge {captcha_id} for {email} ({resolved_name}, AISHE: {aishe})")
+    logger.info(f"[CAPTCHA CHALLENGE] Generated challenge {captcha_id[:24]}... for {email} ({resolved_name}, AISHE: {aishe})")
     
     return jsonify({
         "success": True,
@@ -1099,10 +1175,11 @@ def api_request_update_captcha():
 def api_verify_update_captcha():
     """
     Step 2: Validates CAPTCHA answer securely on backend.
+    Supports in-memory cache and stateless signed challenge tokens for serverless reliability.
     On success:
       1. Saves Access Log in PostgreSQL (and JSON fallback)
       2. Records Audit Log
-      3. Issues session token to access Update Details form
+      3. Issues stateless signed session token to access Update Details form
     """
     data = request.get_json(force=True, silent=True) or {}
     captcha_id = str(data.get("captcha_id") or data.get("captchaId") or "").strip()
@@ -1114,27 +1191,37 @@ def api_verify_update_captcha():
     if not user_code:
         return jsonify({"success": False, "message": "Please enter the CAPTCHA code shown in the image."}), 400
 
-    if not captcha_id or captcha_id not in captcha_store:
-        return jsonify({"success": False, "message": "CAPTCHA challenge expired. Please click Refresh to get a new code."}), 400
+    session = None
+    if captcha_id and captcha_id in captcha_store:
+        session = captcha_store[captcha_id]
+    elif captcha_id and captcha_id.startswith("CAP-"):
+        session = verify_and_decode_payload(captcha_id[4:])
 
-    session = captcha_store[captcha_id]
-    if time.time() > session.get("expires_at", 0):
-        del captcha_store[captcha_id]
+    if not session:
+        return jsonify({"success": False, "message": "CAPTCHA challenge expired or invalid. Please click Refresh to get a new code."}), 400
+
+    exp_ts = session.get("exp") or session.get("expires_at", 0)
+    if time.time() > exp_ts:
+        if captcha_id in captcha_store:
+            del captcha_store[captcha_id]
         return jsonify({"success": False, "message": "CAPTCHA challenge expired. Please click Refresh to get a new code."}), 400
 
     expected_hash = hashlib.sha256(user_code.encode("utf-8")).hexdigest()
     if expected_hash != session.get("hash"):
-        session["attempts"] = session.get("attempts", 3) - 1
-        if session["attempts"] <= 0:
-            del captcha_store[captcha_id]
-            return jsonify({"success": False, "message": "Too many incorrect CAPTCHA attempts. Please request a new CAPTCHA challenge."}), 400
-        return jsonify({"success": False, "message": f"Incorrect CAPTCHA entered ({session['attempts']} attempts remaining). Please try again."}), 400
+        if captcha_id in captcha_store:
+            captcha_store[captcha_id]["attempts"] = captcha_store[captcha_id].get("attempts", 3) - 1
+            if captcha_store[captcha_id]["attempts"] <= 0:
+                del captcha_store[captcha_id]
+                return jsonify({"success": False, "message": "Too many incorrect CAPTCHA attempts. Please request a new CAPTCHA challenge."}), 400
+            return jsonify({"success": False, "message": f"Incorrect CAPTCHA entered ({captcha_store[captcha_id]['attempts']} attempts remaining). Please try again."}), 400
+        return jsonify({"success": False, "message": "Incorrect CAPTCHA entered. Please try again."}), 400
 
     # CAPTCHA Verified!
     resolved_email = session.get("email") or email
     resolved_college = session.get("college") or college
     resolved_aishe = session.get("aishe") or aishe
-    del captcha_store[captcha_id]
+    if captcha_id in captcha_store:
+        del captcha_store[captcha_id]
 
     now_dt = time.strftime("%Y-%m-%d")
     now_tm = time.strftime("%H:%M:%S")
@@ -1177,14 +1264,16 @@ def api_verify_update_captcha():
     # 3. Record Audit Log
     _record_audit_log("Update Details Access Granted", "Colleges", resolved_college, f"Authorized access granted to {resolved_email} (AISHE: {resolved_aishe}) via CAPTCHA verification")
 
-    # 4. Issue single-use secure authorization token valid for 1 hour
-    token = secrets.token_urlsafe(32)
-    verified_tokens[token] = {
+    # 4. Issue stateless signed authorization token valid for 1 hour
+    verified_payload = {
         "email": resolved_email,
         "college": resolved_college,
         "aishe": resolved_aishe,
-        "expires_at": time.time() + 3600
+        "exp": time.time() + 3600,
+        "nonce": secrets.token_hex(4)
     }
+    token = "VER-" + sign_payload(verified_payload)
+    verified_tokens[token] = verified_payload
 
     logger.info(f"[ACCESS LOGGED] Authorized Update Details access granted for {resolved_email} ({resolved_college})")
 
@@ -1207,7 +1296,7 @@ def api_refresh_update_captcha():
     if old_id and old_id in captcha_store:
         del captcha_store[old_id]
         
-    captcha_id, captcha_svg = generate_captcha_challenge()
+    captcha_id, captcha_svg = generate_captcha_challenge(email=email, college=college, aishe=aishe)
     if captcha_id in captcha_store:
         if email: captcha_store[captcha_id]["email"] = email
         if college: captcha_store[captcha_id]["college"] = college
@@ -1290,13 +1379,23 @@ def api_submit_update():
     data = request.get_json(force=True, silent=True) or {}
     token = data.get("token")
     
-    # 1. Enforce verified CAPTCHA session token
-    if not token or token not in verified_tokens:
-        return jsonify({"success": False, "message": "Unauthorized: Verification required. Please complete CAPTCHA verification first."}), 401
+    # 1. Enforce verified CAPTCHA session token (supports in-memory or stateless signed token)
+    if not token or token in used_tokens:
+        return jsonify({"success": False, "message": "Unauthorized: Verification required or session expired. Please complete CAPTCHA verification first."}), 401
+
+    session_info = None
+    if token in verified_tokens:
+        session_info = verified_tokens[token]
+    elif token.startswith("VER-"):
+        session_info = verify_and_decode_payload(token[4:])
     
-    session_info = verified_tokens[token]
-    if time.time() > session_info.get("expires_at", 0):
-        del verified_tokens[token]
+    if not session_info:
+        return jsonify({"success": False, "message": "Unauthorized: Verification required or session expired. Please complete CAPTCHA verification first."}), 401
+    
+    exp_ts = session_info.get("exp") or session_info.get("expires_at", 0)
+    if time.time() > exp_ts:
+        if token in verified_tokens:
+            del verified_tokens[token]
         return jsonify({"success": False, "message": "Verification session expired. Please verify again."}), 401
 
     # 2. Enforce Terms & Conditions agreement
@@ -1323,22 +1422,26 @@ def api_submit_update():
         "submitted_at": time.strftime("%Y-%m-%dT%H:%M:%SZ")
     }
 
+    db_saved = False
     if db.is_pg_connected():
-        db.execute_query(
-            "INSERT INTO content_updates (module_name, record_id, action, new_data, status) VALUES (%s, %s, %s, %s, %s)",
-            ("colleges", college_name, "update", json.dumps(update_record), "pending")
-        )
-        db.execute_query(
-            "INSERT INTO audit_logs (action, module_name, record_id, description) VALUES (%s, %s, %s, %s)",
-            ("College Profile Update Submitted", "colleges", college_name, f"Update submitted for {college_name} (AISHE: {aishe_code}) by {verified_email}")
-        )
-    
+        try:
+            db.execute_query(
+                "INSERT INTO content_updates (module_name, record_id, action, new_data, status) VALUES (%s, %s, %s, %s, %s)",
+                ("colleges", college_name, "update", json.dumps(update_record), "pending")
+            )
+            db.execute_query(
+                "INSERT INTO audit_logs (action, module_name, record_id, description) VALUES (%s, %s, %s, %s)",
+                ("College Profile Update Submitted", "colleges", college_name, f"Update submitted for {college_name} (AISHE: {aishe_code}) by {verified_email}")
+            )
+            db_saved = True
+        except Exception as e:
+            logger.error(f"[PostgreSQL Update Save Error] {e}")
+
     # Also sync into Admin Approvals store
-    appr_data = load_approvals_data()
-    approvals = appr_data.get("approvals", [])
+    json_saved = False
     now_dt = time.strftime("%Y-%m-%d")
     now_tm = time.strftime("%H:%M:%S")
-    new_appr_id = f"APP-{len(approvals) + 101}"
+    new_appr_id = f"APP-{int(time.time()) % 100000:05d}"
     new_approval = {
         "id": new_appr_id,
         "date": now_dt,
@@ -1354,25 +1457,43 @@ def api_submit_update():
         "status": "Pending",
         "notes": data.get("notes") or data.get("description") or "Submitted via portal for administrative review."
     }
-    approvals.insert(0, new_approval)
-    appr_data["approvals"] = approvals
-    save_approvals_data(appr_data)
-    _record_audit_log("College Update Submitted", "Approvals", new_appr_id, f"Submitted update {new_appr_id} for {college_name}")
+
+    try:
+        appr_data = load_approvals_data()
+        approvals = appr_data.get("approvals", [])
+        new_approval["id"] = f"APP-{len(approvals) + 101}"
+        approvals.insert(0, new_approval)
+        appr_data["approvals"] = approvals
+        save_approvals_data(appr_data)
+        _record_audit_log("College Update Submitted", "Approvals", new_approval["id"], f"Submitted update {new_approval['id']} for {college_name}")
+        json_saved = True
+    except Exception as e:
+        logger.error(f"[Approvals JSON Save Error] {e}")
+
+    # Enforce Requirement 10: No False Success if storage completely failed
+    if not db_saved and not json_saved:
+        return jsonify({
+            "success": False,
+            "message": "Database storage error: Failed to save update request to system records. Please try again."
+        }), 500
 
     # Send email notification to official TheCampusNova Gmail
     email_sent = send_college_update_notification(new_approval)
 
     # Invalidate token after successful submission so it cannot be reused
-    del verified_tokens[token]
+    used_tokens.add(token)
+    if token in verified_tokens:
+        del verified_tokens[token]
 
     if email_sent:
-        msg = f"Update details for {college_name} submitted successfully and email notification delivered to official administrator."
+        msg = f"Update details for {college_name} submitted successfully and official email notification delivered to administrative team."
     else:
         msg = f"Update details for {college_name} saved successfully in database and queued for administrative review (email notification pending delivery)."
 
     return jsonify({
         "success": True,
-        "email_sent": email_sent,
+        "email_sent": bool(email_sent),
+        "db_saved": db_saved or json_saved,
         "message": msg,
         "college": college_name
     })
@@ -4272,19 +4393,31 @@ def api_submit_mentor_enquiry():
     }
 
     # 1. Store in PostgreSQL
+    db_saved = False
     if db.is_pg_connected():
         try:
             db.execute_query("""
                 INSERT INTO mentor_enquiries (enquiry_id, mentor_id, mentor_name, user_name, user_email, user_mobile, terms_accepted, enquiry_date, enquiry_time, status, approval_status)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (enquiry_id, mentor_id or None, mentor_name, user_name, user_email, user_mobile, True, now_dt, now_tm, "pending", "Pending"))
+            db_saved = True
         except Exception as e:
             logger.warning(f"[PostgreSQL Mentor Enquiry Save Error] {e}")
 
     # 2. Sync to JSON fallback
-    all_enquiries = load_mentor_enquiries_all()
-    all_enquiries.insert(0, enquiry_record)
-    save_mentor_enquiries_json(all_enquiries)
+    json_saved = False
+    try:
+        all_enquiries = load_mentor_enquiries_all()
+        all_enquiries.insert(0, enquiry_record)
+        json_saved = save_mentor_enquiries_json(all_enquiries)
+    except Exception as e:
+        logger.warning(f"[JSON Mentor Enquiry Save Error] {e}")
+
+    if not db_saved and not json_saved:
+        return jsonify({
+            "success": False,
+            "message": "Database storage error: Failed to record enquiry in system records. Please try again."
+        }), 500
 
     # 3. Record Audit Log
     _record_audit_log("Mentor Enquiry Submitted", "Mentors", enquiry_id, f"Enquiry submitted by {user_name} ({user_email}) for mentor {mentor_name}")
@@ -4292,10 +4425,16 @@ def api_submit_mentor_enquiry():
     # 4. Prepare email notification for official TheCampusNova email
     email_sent = send_mentor_enquiry_notification(enquiry_record)
 
+    if email_sent:
+        msg = "Thank you for sharing your details. Our team has received your enquiry and will connect with you regarding the next steps."
+    else:
+        msg = "Thank you for sharing your details. Your enquiry has been registered in our portal and is queued for advisor review."
+
     return jsonify({
         "success": True,
-        "email_sent": email_sent,
-        "message": "Thank you for sharing your details. Our team has received your enquiry and will connect with you regarding the next steps.",
+        "email_sent": bool(email_sent),
+        "db_saved": db_saved or json_saved,
+        "message": msg,
         "enquiry_id": enquiry_id
     }), 201
 
