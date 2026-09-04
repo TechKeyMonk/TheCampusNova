@@ -19758,6 +19758,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   /* Consistent Global Section Spacing & Side Padding (14px - 18px) */
+  /* Consistent Global Section Spacing & Side Padding (10px - 12px for maximum usable width) */
   .section,
   .hero-section,
   .goal-section,
@@ -19769,8 +19770,8 @@ h1, h2, h3, h4, h5, h6 {
   .site-footer {
     width: 100% !important;
     max-width: 100% !important;
-    padding-left: clamp(14px, 4vw, 18px) !important;
-    padding-right: clamp(14px, 4vw, 18px) !important;
+    padding-left: clamp(10px, 2.8vw, 12px) !important;
+    padding-right: clamp(10px, 2.8vw, 12px) !important;
     box-sizing: border-box !important;
   }
 
@@ -19786,16 +19787,18 @@ h1, h2, h3, h4, h5, h6 {
     display: none !important;
   }
 
-  /* 3. Mobile Navbar - Preserves exact original sizing, spacing & alignment */
+  /* 3. Mobile Navbar - Static logo, single horizontal row for controls, zero overlap */
   .site-header {
     display: flex !important;
     flex-wrap: wrap !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 10px clamp(14px, 4vw, 18px) 12px clamp(14px, 4vw, 18px) !important;
+    padding: 8px clamp(10px, 2.8vw, 12px) 10px clamp(10px, 2.8vw, 12px) !important;
     height: auto !important;
-    min-height: 56px !important;
-    gap: 10px 8px !important;
+    min-height: 52px !important;
+    max-height: none !important;
+    overflow: visible !important;
+    gap: 8px 6px !important;
     background: #FFFFFF !important;
     position: sticky !important;
     top: 0 !important;
@@ -19806,7 +19809,7 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 100vw !important;
   }
 
-  /* Row 1 Left: Brand Logo */
+  /* Row 1 Left: Brand Logo (STATIC in position & appearance) */
   .brand.header-brand {
     order: 1 !important;
     flex: 0 0 auto !important;
@@ -19815,21 +19818,24 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 !important;
   }
   .header-logo-img {
-    height: 34px !important;
+    height: 36px !important;
     width: auto !important;
-    max-width: 130px !important;
+    max-width: 120px !important;
     object-fit: contain !important;
     display: block !important;
   }
 
-  /* Row 1 Right: Explore + EN + Login + Hamburger Menu (Exact Original Spacing & Sizing) */
+  /* Row 1 Right: Explore + EN + Login + Hamburger Menu in ONE neat row */
   .header-right-controls {
     order: 2 !important;
     flex: 0 0 auto !important;
     margin-left: auto !important;
     display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
     align-items: center !important;
-    gap: 8px !important;
+    justify-content: flex-end !important;
+    gap: 7px !important;
   }
 
   /* Hide Desktop-Only Menus from Header Bar */
@@ -19840,19 +19846,19 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   /* ========================================================================
-     EXPLORE BUTTON: COMPACT ALIGNMENT TO THE LEFT OF EN
+     EXPLORE BUTTON: COMPACT ALIGNMENT IN SINGLE ROW
      ======================================================================== */
   .explore-menu {
-    display: block !important;
+    display: inline-block !important;
     position: relative !important;
     flex-shrink: 0 !important;
     margin: 0 !important;
   }
 
   .explore-menu .explore-trigger {
-    height: 36px !important;
-    min-height: 36px !important;
-    padding: 0 8px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 10px !important;
     border-radius: 8px !important;
     background: #FFFFFF !important;
     border: 1.5px solid #93C5FD !important;
@@ -19884,7 +19890,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .explore-menu .explore-trigger .pill-btn-text {
-    font-size: 12px !important;
+    font-size: 12.5px !important;
     font-weight: 700 !important;
     color: #1E293B !important;
     display: inline !important;
@@ -19906,25 +19912,28 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   /* ========================================================================
-     COMPACT EXPLORE DROPDOWN: NO LARGE SCROLLING LANGUAGE-STYLE PANEL
-     Clean, compact floating popup anchored cleanly without covering page
+     16-FIELD EXPLORE DROPDOWN: FULL VIEWPORT VISIBILITY WITHOUT CLIPPING
      ======================================================================== */
   .explore-menu .explore-panel {
     position: fixed !important;
-    top: 56px !important;
-    right: 14px !important;
-    left: auto !important;
-    width: 268px !important;
-    max-width: calc(100vw - 28px) !important;
-    max-height: min(340px, calc(100dvh - 70px)) !important;
+    top: clamp(52px, 10vh, 58px) !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: calc(100vw - 20px) !important;
+    margin: 0 auto !important;
+    max-height: min(440px, calc(100dvh - 75px)) !important;
     background: #FFFFFF !important;
     border: 1.5px solid #CBD5E1 !important;
     border-radius: 12px !important;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16) !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18) !important;
     z-index: 100000 !important;
-    padding: 8px 10px !important;
+    padding: 10px 10px 12px 10px !important;
     display: none !important;
     box-sizing: border-box !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: thin !important;
   }
 
   .explore-menu.open .explore-panel {
@@ -19935,13 +19944,13 @@ h1, h2, h3, h4, h5, h6 {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 2px 4px 6px !important;
-    margin-bottom: 6px !important;
+    padding: 0 4px 8px 4px !important;
+    margin-bottom: 8px !important;
     border-bottom: 1px solid #E2E8F0 !important;
   }
 
   .explore-panel-header span {
-    font-size: 11px !important;
+    font-size: 11.5px !important;
     font-weight: 800 !important;
     letter-spacing: 0.06em !important;
     text-transform: uppercase !important;
@@ -19949,11 +19958,11 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .explore-panel-header small {
-    font-size: 10px !important;
+    font-size: 10.5px !important;
     color: #64748B !important;
     font-weight: 700 !important;
     background: #F1F5F9 !important;
-    padding: 1px 6px !important;
+    padding: 2px 7px !important;
     border-radius: 6px !important;
   }
 
@@ -19961,11 +19970,11 @@ h1, h2, h3, h4, h5, h6 {
     display: none !important;
   }
 
-  /* Compact 2-Column Grid (8 rows of 2, fitting without scrolling) */
+  /* Balanced 2-Column Grid (8 rows of 2, fitting full width comfortably) */
   .explore-grid {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 4px 6px !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px 8px !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
@@ -19973,15 +19982,16 @@ h1, h2, h3, h4, h5, h6 {
   .explore-item {
     display: flex !important;
     align-items: center !important;
-    gap: 6px !important;
-    padding: 5px 6px !important;
-    min-height: 30px !important;
-    border-radius: 6px !important;
+    gap: 7px !important;
+    padding: 7px 8px !important;
+    min-height: 38px !important;
+    border-radius: 8px !important;
     background: #F8FAFC !important;
     border: 1px solid #E2E8F0 !important;
     text-decoration: none !important;
     box-sizing: border-box !important;
     transition: all 0.15s ease !important;
+    overflow: hidden !important;
   }
 
   .explore-item:active {
@@ -19990,11 +20000,11 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .exp-icon {
-    width: 20px !important;
-    height: 20px !important;
-    min-width: 20px !important;
-    font-size: 12px !important;
-    border-radius: 4px !important;
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    font-size: 13px !important;
+    border-radius: 5px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -20007,6 +20017,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex !important;
     flex-direction: column !important;
     min-width: 0 !important;
+    flex: 1 1 auto !important;
     overflow: hidden !important;
   }
 
@@ -20020,44 +20031,57 @@ h1, h2, h3, h4, h5, h6 {
     text-overflow: ellipsis !important;
   }
 
-  /* Remove bulky subtitle on mobile to preserve compact height */
+  /* Compact secondary detail on mobile */
   .exp-text small {
     display: none !important;
   }
 
   /* ========================================================================
-     ORIGINAL LANGUAGE BUTTON (EN) - EXACT PREVIOUS SIZING & STYLING
+     LANGUAGE BUTTON (EN) - COMFORTABLE TAP TARGET & SINGLE ROW ALIGNMENT
      ======================================================================== */
   .language-menu {
-    display: block !important;
+    display: inline-block !important;
     position: relative !important;
     margin: 0 !important;
+    flex-shrink: 0 !important;
   }
   .language-menu .header-pill-btn {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    padding: 0 !important;
+    width: auto !important;
+    min-width: 44px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
     justify-content: center !important;
-    font-size: 11.5px !important;
+    gap: 3px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
     border-radius: 8px !important;
     background: #F8FAFC !important;
     border: 1px solid #CBD5E1 !important;
     box-sizing: border-box !important;
   }
+  .language-menu .pill-btn-text {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #1E293B !important;
+  }
   .language-menu .pill-caret {
-    display: none !important;
+    display: inline-block !important;
+    width: 9px !important;
+    height: 9px !important;
+    color: #64748B !important;
   }
 
   /* Language Dropdown Panel */
   .language-menu .language-panel {
     position: fixed !important;
-    top: 58px !important;
-    right: 14px !important;
+    top: clamp(52px, 10vh, 58px) !important;
+    right: 10px !important;
     left: auto !important;
-    width: min(290px, calc(100vw - 28px)) !important;
-    max-width: calc(100vw - 28px) !important;
+    width: min(290px, calc(100vw - 20px)) !important;
+    max-width: calc(100vw - 20px) !important;
     max-height: calc(100dvh - 80px) !important;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22) !important;
     border: 1.5px solid #CBD5E1 !important;
@@ -20149,10 +20173,17 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   /* ========================================================================
-     ORIGINAL LOGIN BUTTON - EXACT PREVIOUS SIZING & STYLING
+     LOGIN BUTTON: INCREASED USABLE WIDTH & EASY TO TAP
      ======================================================================== */
+  .profile-menu {
+    display: inline-block !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
   .header-login-btn {
-    height: 36px !important;
+    height: 38px !important;
+    min-height: 38px !important;
     padding: 0 14px !important;
     font-size: 12.5px !important;
     font-weight: 700 !important;
@@ -20163,25 +20194,32 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center !important;
     flex-shrink: 0 !important;
     margin: 0 !important;
+    box-sizing: border-box !important;
   }
 
   /* Profile Avatar Button */
   .profile-avatar-btn {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
     border-radius: 50% !important;
     font-size: 13px !important;
     margin: 0 !important;
   }
 
   /* ========================================================================
-     ORIGINAL HAMBURGER MENU BUTTON - EXACT PREVIOUS SIZING & STYLING
+     HAMBURGER MENU BUTTON: COMFORTABLE TOUCH TARGET
      ======================================================================== */
+  .header-menu-wrap {
+    display: inline-block !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
   .header-menu-btn {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
     border-radius: 8px !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -20190,6 +20228,7 @@ h1, h2, h3, h4, h5, h6 {
     background: #F8FAFC !important;
     border: 1px solid #CBD5E1 !important;
     margin: 0 !important;
+    box-sizing: border-box !important;
   }
 
   /* Row 2: Full-Width Dedicated Mobile Search Bar */
@@ -20198,7 +20237,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 100% !important;
     flex: 0 0 100% !important;
     max-width: 100% !important;
-    margin: 0 !important;
+    margin: 4px 0 0 0 !important;
   }
 
   .ai-entry {
@@ -20310,15 +20349,19 @@ h1, h2, h3, h4, h5, h6 {
     color: #15803D !important;
   }
 
-  /* 5. Category Navigation Bar (Pill Carousel) */
+  /* 5. Category Navigation Bar (Pill Carousel) - Starts clearly below navbar */
   .category-nav {
     width: 100% !important;
     max-width: 100vw !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
-    padding: 8px clamp(14px, 4vw, 18px) !important;
+    padding: 8px clamp(10px, 2.8vw, 12px) !important;
     background: #FFFFFF !important;
     border-bottom: 1px solid #E2E8F0 !important;
+    position: relative !important;
+    clear: both !important;
+    z-index: 90 !important;
+    margin-top: 0 !important;
   }
 
   .nav-inner {
@@ -20762,6 +20805,311 @@ h1, h2, h3, h4, h5, h6 {
     padding: 16px !important;
     border-radius: 12px !important;
     box-sizing: border-box !important;
+  }
+
+  /* ========================================================================
+     TOP 20 COLLEGES IN INDIA (MOBILE ONLY: COMPACT HEIGHT & WIDER VIEWPORT)
+     ======================================================================== */
+  .colleges-section,
+  #homeCollegesSection {
+    padding-left: clamp(10px, 2.8vw, 12px) !important;
+    padding-right: clamp(10px, 2.8vw, 12px) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .colleges-section .college-grid,
+  #topCollegeGrid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .top-college-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    border-radius: 12px !important;
+    border: 1px solid #E2E8F0 !important;
+    background: #FFFFFF !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .top-college-card .college-thumb {
+    height: 125px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    width: 100% !important;
+  }
+
+  .top-college-card .college-thumb-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+
+  .top-college-card .top-college-body {
+    padding: 12px 14px 14px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+    box-sizing: border-box !important;
+  }
+
+  .top-college-card .top-college-body h3 {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    color: #0F172A !important;
+    line-height: 1.25 !important;
+    margin: 0 0 2px 0 !important;
+  }
+
+  .top-college-card .top-college-body > small {
+    font-size: 11.5px !important;
+    color: #64748B !important;
+    margin-bottom: 5px !important;
+    display: block !important;
+  }
+
+  .top-college-card .college-rating {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    font-size: 12px !important;
+    color: #334155 !important;
+    margin: 2px 0 4px 0 !important;
+  }
+
+  .top-college-card .college-course,
+  .top-college-card .college-placement {
+    font-size: 12px !important;
+    color: #1E293B !important;
+    margin: 2px 0 !important;
+    line-height: 1.3 !important;
+  }
+
+  .top-college-card .college-view {
+    width: 100% !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-top: 8px !important;
+    background: #65A30D !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    cursor: pointer !important;
+  }
+
+  .top-college-card .further-details-trigger {
+    width: 100% !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-top: 6px !important;
+    background: #F8FAFC !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #334155 !important;
+    cursor: pointer !important;
+  }
+
+  /* ========================================================================
+     PLACEMENT INTELLIGENCE & COMPANY PREP (MOBILE: FULL VISIBILITY & NO CLIPPING)
+     ======================================================================== */
+  .placement-section {
+    padding-left: clamp(10px, 2.8vw, 12px) !important;
+    padding-right: clamp(10px, 2.8vw, 12px) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .placement-toolbar {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px !important;
+    border-radius: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-bottom: 16px !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+  }
+
+  .placement-filter-pills {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  .placement-pill-btn {
+    padding: 5px 10px !important;
+    font-size: 11.5px !important;
+    border-radius: 6px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  .placement-college-select {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+    border-radius: 6px !important;
+  }
+
+  .company-prep-grid,
+  #placementCompanyGrid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .company-prep-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 14px !important;
+    gap: 10px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+  }
+
+  .company-card-head {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .company-title-wrap h3 {
+    font-size: 16px !important;
+    margin: 0 !important;
+    color: #0F172A !important;
+  }
+
+  .company-title-wrap small {
+    font-size: 11.5px !important;
+    color: #64748B !important;
+  }
+
+  .priority-tag {
+    font-size: 10.5px !important;
+    padding: 3px 8px !important;
+    border-radius: 5px !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .company-meta-block strong {
+    font-size: 11px !important;
+    display: block !important;
+    margin-bottom: 3px !important;
+    color: #475569 !important;
+  }
+
+  .company-meta-block span {
+    font-size: 12px !important;
+    word-break: break-word !important;
+    line-height: 1.35 !important;
+    color: #1E293B !important;
+  }
+
+  .company-skill-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 5px !important;
+    width: 100% !important;
+  }
+
+  .company-skill-tag {
+    font-size: 11px !important;
+    padding: 3px 8px !important;
+    border-radius: 5px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    word-break: break-word !important;
+  }
+
+  .quant-priority-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
+    padding: 8px 10px !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+    font-size: 11.5px !important;
+    width: 100% !important;
+  }
+
+  .quant-tag {
+    font-size: 10px !important;
+    padding: 2px 7px !important;
+    border-radius: 4px !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .company-card-actions {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    margin-top: 4px !important;
+    width: 100% !important;
+  }
+
+  .prep-guide-btn {
+    height: 36px !important;
+    padding: 0 12px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    flex: 1 1 auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+  }
+
+  .reaction-btn-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .reaction-pill-btn {
+    height: 34px !important;
+    padding: 0 8px !important;
+    font-size: 11.5px !important;
+    border-radius: 6px !important;
   }
 
   /* 11. Internship / Opportunity Cards */
@@ -21227,10 +21575,32 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 8px !important;
   }
 
-  /* 13. Full Roadmap & 19-Field Detail View */
-  #detailView .inner-page {
+  /* 13. Full Roadmap & 19-Field Detail View - Wider Content Utilization */
+  #detailView .inner-page,
+  #coursesView,
+  #collegesView,
+  #domainsView,
+  #examsView,
+  #materialsView,
+  #reviewsView,
+  #rankingsView,
+  #careersView,
+  #placementsView,
+  #jobsView,
+  #internshipsView,
+  #admissionsView,
+  #scholarshipsView,
+  #facilitiesView,
+  #entrancePrepView,
+  #reviewsCompareView,
+  #mentorsView,
+  #eventsView,
+  #newsView,
+  .inner-page {
     width: 100% !important;
-    padding: 14px clamp(14px, 4vw, 18px) !important;
+    max-width: 100% !important;
+    padding-left: clamp(10px, 2.8vw, 12px) !important;
+    padding-right: clamp(10px, 2.8vw, 12px) !important;
     box-sizing: border-box !important;
   }
 
@@ -21591,7 +21961,7 @@ h1, h2, h3, h4, h5, h6 {
 
   /* 20. Site Footer */
   .site-footer {
-    padding: 28px clamp(14px, 4vw, 18px) 20px clamp(14px, 4vw, 18px) !important;
+    padding: 28px clamp(10px, 2.8vw, 12px) 20px clamp(10px, 2.8vw, 12px) !important;
     box-sizing: border-box !important;
     width: 100% !important;
   }
@@ -21627,18 +21997,18 @@ h1, h2, h3, h4, h5, h6 {
     gap: 6px !important;
   }
   .explore-menu .explore-trigger {
-    padding: 0 7px !important;
+    padding: 0 8px !important;
     gap: 4px !important;
   }
   .header-login-btn {
-    padding: 0 11px !important;
+    padding: 0 12px !important;
   }
 }
 
 @media (max-width: 360px) {
   .header-logo-img {
-    max-width: 95px !important;
-    height: 30px !important;
+    max-width: 100px !important;
+    height: 32px !important;
   }
   .header-right-controls {
     gap: 4px !important;
@@ -21654,9 +22024,38 @@ h1, h2, h3, h4, h5, h6 {
     width: 13px !important;
     height: 13px !important;
   }
+  .language-menu .header-pill-btn {
+    min-width: 38px !important;
+    padding: 0 5px !important;
+    font-size: 11px !important;
+  }
   .header-login-btn {
-    padding: 0 8px !important;
+    padding: 0 9px !important;
     font-size: 11.5px !important;
+  }
+  .header-menu-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+  }
+  .explore-menu .explore-panel {
+    left: 6px !important;
+    right: 6px !important;
+    max-width: calc(100vw - 12px) !important;
+    padding: 8px 6px !important;
+  }
+  .explore-item {
+    padding: 5px 6px !important;
+    min-height: 36px !important;
+    gap: 5px !important;
+  }
+  .exp-icon {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+  }
+  .exp-text strong {
+    font-size: 11px !important;
   }
   .goal-grid {
     grid-template-columns: 1fr !important;
