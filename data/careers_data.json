@@ -6,7 +6,7 @@
       "salary_range": "Rs. 28,00,000",
       "required_skills": "Python, Qiskit",
       "description": "Designs quantum hardware-software stacks.",
-      "id": 28
+      "id": 33
     },
     {
       "career_name": "Test Quantum Systems Architect",
@@ -14,7 +14,7 @@
       "salary_range": "Rs. 28,00,000",
       "required_skills": "Python, Qiskit",
       "description": "Designs quantum hardware-software stacks.",
-      "id": 26
+      "id": 32
     },
     {
       "role": "Cloud DevOps Engineer",

@@ -1,6 +1,54 @@
 {
   "access_logs": [
     {
+      "id": "ACC-107",
+      "college_name": "IISc Bengaluru",
+      "authorized_email": "dean@iisc.ac.in",
+      "aishe_code": "U-0042",
+      "access_date": "2026-09-04",
+      "access_time": "15:25:00",
+      "access_status": "Granted",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Python-urllib/3.11",
+      "created_at": "2026-09-04T15:25:00Z"
+    },
+    {
+      "id": "ACC-106",
+      "college_name": "IISc Bengaluru",
+      "authorized_email": "dean@iisc.ac.in",
+      "aishe_code": "U-0042",
+      "access_date": "2026-09-04",
+      "access_time": "13:38:42",
+      "access_status": "Granted",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Python-urllib/3.11",
+      "created_at": "2026-09-04T13:38:42Z"
+    },
+    {
+      "id": "ACC-105",
+      "college_name": "IISc Bengaluru",
+      "authorized_email": "dean@iisc.ac.in",
+      "aishe_code": "U-0042",
+      "access_date": "2026-09-04",
+      "access_time": "13:10:40",
+      "access_status": "Granted",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Python-urllib/3.11",
+      "created_at": "2026-09-04T13:10:40Z"
+    },
+    {
+      "id": "ACC-104",
+      "college_name": "IISc Bengaluru",
+      "authorized_email": "dean@iisc.ac.in",
+      "aishe_code": "U-0042",
+      "access_date": "2026-09-04",
+      "access_time": "13:09:34",
+      "access_status": "Granted",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Python-urllib/3.11",
+      "created_at": "2026-09-04T13:09:34Z"
+    },
+    {
       "id": "ACC-103",
       "college_name": "Christ University",
       "authorized_email": "adminchrist@gmail.com",

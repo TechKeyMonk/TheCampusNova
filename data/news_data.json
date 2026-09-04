@@ -1,6 +1,62 @@
 {
   "news": [
     {
+      "id": "NWS-032",
+      "db_id": 32,
+      "title": "Test IIT Madras Launches Next-Gen Quantum Centre",
+      "college_name": "IIT Madras",
+      "category": "Research",
+      "published_date": "2026-09-03",
+      "summary": "",
+      "content": "A milestone in national quantum engineering and cryogenic computing.",
+      "source_url": "",
+      "badge": "Official Bulletin",
+      "status": "Published",
+      "created_at": "2026-09-04T15:24:04Z"
+    },
+    {
+      "id": "NWS-031",
+      "db_id": 31,
+      "title": "Test IIT Madras Launches Next-Gen Quantum Centre",
+      "college_name": "IIT Madras",
+      "category": "Research",
+      "published_date": "2026-09-03",
+      "summary": "",
+      "content": "A milestone in national quantum engineering and cryogenic computing.",
+      "source_url": "",
+      "badge": "Official Bulletin",
+      "status": "Published",
+      "created_at": "2026-09-04T13:38:22Z"
+    },
+    {
+      "id": "NWS-030",
+      "db_id": 30,
+      "title": "Test IIT Madras Launches Next-Gen Quantum Centre",
+      "college_name": "IIT Madras",
+      "category": "Research",
+      "published_date": "2026-09-03",
+      "summary": "",
+      "content": "A milestone in national quantum engineering and cryogenic computing.",
+      "source_url": "",
+      "badge": "Official Bulletin",
+      "status": "Published",
+      "created_at": "2026-09-04T13:06:09Z"
+    },
+    {
+      "id": "NWS-029",
+      "db_id": 29,
+      "title": "Test IIT Madras Launches Next-Gen Quantum Centre",
+      "college_name": "IIT Madras",
+      "category": "Research",
+      "published_date": "2026-09-03",
+      "summary": "",
+      "content": "A milestone in national quantum engineering and cryogenic computing.",
+      "source_url": "",
+      "badge": "Official Bulletin",
+      "status": "Published",
+      "created_at": "2026-09-04T12:25:13Z"
+    },
+    {
       "id": "NWS-028",
       "db_id": 28,
       "title": "Test IIT Madras Launches Next-Gen Quantum Centre",

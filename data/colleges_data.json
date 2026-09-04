@@ -1,88 +1,104 @@
 {
-  "total": 52,
+  "total": 60,
   "colleges": [
     {
-      "id": "COL-4214",
+      "id": "COL-4120",
       "rank": 1,
-      "name": "Institution",
-      "short_name": "",
-      "city": "",
-      "district": "",
-      "state": "",
+      "name": "IISc Bengaluru",
+      "short_name": "IISc",
+      "city": "Bengaluru",
+      "district": "Bengaluru Urban",
+      "state": "Karnataka",
       "aishe": "U-0042",
-      "badge": "Premier Higher Education Institution",
-      "type": "Public Institute",
-      "rating": "4.8",
-      "reviews": "1,200+ Reviews",
-      "stream": "Engineering, Sciences & Technology",
-      "courses": [],
-      "placement": "Median CTC: ₹14.0 LPA",
-      "avg_placement": "₹14.0 LPA",
-      "fees": "₹1.5L / yr",
-      "cutoff": "National Entrance Exam Merit",
+      "badge": "Premier Research Institute",
+      "type": "Public Research University",
+      "rating": "4.9",
+      "reviews": "1,420+ Reviews",
+      "stream": "Advanced Science, Computing & Engineering",
+      "courses": [
+        "B.Tech",
+        "B.Sc",
+        "M.Tech",
+        "Ph.D",
+        "Computer Science",
+        "Data Science",
+        "AI & ML",
+        "Electrical / EEE"
+      ],
+      "placement": "Median CTC: ₹32.0 LPA",
+      "avg_placement": "₹32.0 LPA",
+      "fees": "₹28,000 / yr",
+      "cutoff": "JEE Adv Top 250 / GATE 99+ %ile",
       "accreditation": "NAAC A++, UGC Approved",
       "naac_grade": "A++",
-      "recruiters": "Top Global & National Corporations",
-      "internship_support": "Extensive summer internship and industrial training programs.",
+      "recruiters": "Google Research, Microsoft, IBM, Intel, Apple, Qualcomm, ISRO, DRDO",
+      "internship_support": "Premier research fellowships and international laboratory internships.",
       "admissions": "National entrance examination and centralized counseling.",
-      "eligibility": "10+2 with relevant subject combinations and entrance qualifying rank.",
-      "facilities": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
-      "scholarships": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
-      "overview": "",
-      "website": "",
-      "image": "/uploads/colleges/image_campus_v2_1788281406_734550.png",
-      "db_id": null,
-      "college_name": "Institution",
+      "eligibility": "10+2 with PCM for UG / B.Tech or M.Sc for PG programs.",
+      "facilities": "Supercomputing Education Centre, Central Library, Research Laboratories, Hostels, Sports Complex",
+      "scholarships": "Institute Research Fellowships, PMRF, and Government Schemes",
+      "overview": "The Indian Institute of Science is India's premier institution for advanced scientific and technological research and education, consistently ranked NIRF #1 Overall.",
+      "website": "https://iisc.ac.in",
+      "image": "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80",
+      "db_id": 4120,
+      "college_name": "IISc Bengaluru",
       "aishe_code": "U-0042",
       "aishe_codes": [
         "U-0042"
       ],
-      "college_type": "Public Institute",
-      "reviews_count": "1,200+ Reviews",
-      "domains": [],
+      "college_type": "Public Research University",
+      "reviews_count": "1,420+ Reviews",
+      "domains": [
+        "iisc.ac.in"
+      ],
       "nirf_rank": 1,
-      "description": "",
-      "official_url": "",
-      "email": "",
-      "phone": "",
-      "address": "",
-      "image_url": "/uploads/colleges/image_campus_v2_1788281406_734550.png",
+      "description": "The Indian Institute of Science is India's premier institution for advanced scientific and technological research and education, consistently ranked NIRF #1 Overall.\n[Verified Update]: Installed advanced neuromorphic computing clusters.",
+      "official_url": "https://iisc.ac.in",
+      "email": "registrar@iisc.ac.in",
+      "phone": "+91-80-22932001",
+      "address": "CV Raman Rd, Bengaluru, Karnataka 560012",
+      "image_url": "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80",
       "events": [
         {
-          "title": "College Annual Tech Symposium & Hackathon 2026",
+          "title": "IISc Bengaluru Annual Tech Symposium & Hackathon 2026",
           "date": "2026-09-18",
           "type": "Symposium",
           "description": "State-level student innovation summit featuring coding sprints and project presentations.",
-          "link": "https://thecampusnova.com"
+          "link": "https://iisc.ac.in"
         },
         {
           "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
           "date": "2026-10-12",
           "type": "Placement",
           "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
-          "link": "https://thecampusnova.com"
+          "link": "https://iisc.ac.in"
         }
       ],
       "news": [
         {
-          "title": "College Recognized in Top Tier in 2026 Academic Assessment",
+          "title": "IISc Bengaluru Recognized in Top Tier in 2026 Academic Assessment",
           "date": "2026-08-22",
           "category": "Academic",
           "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
-          "link": "https://thecampusnova.com"
+          "link": "https://iisc.ac.in"
         },
         {
           "title": "State-of-the-Art AI & Innovation Center Inaugurated",
           "date": "2026-07-16",
           "category": "Infrastructure",
           "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
-          "link": "https://thecampusnova.com"
+          "link": "https://iisc.ac.in"
         }
       ],
-      "status": "archived",
+      "status": "active",
       "highest_placement": "₹45.0 LPA",
       "video": "",
-      "video_url": ""
+      "video_url": "",
+      "location": "Bengaluru",
+      "highestPlacement": "₹45.0 LPA",
+      "facilities_list": "Supercomputing Education Centre, Central Library, Research Laboratories, Hostels, Sports Complex",
+      "scholarships_info": "Institute Research Fellowships, PMRF, and Government Schemes",
+      "officialLink": "https://iisc.ac.in"
     },
     {
       "id": "COL-002",
@@ -3772,8 +3788,8 @@
       "status": "active"
     },
     {
-      "id": "COL-4257",
-      "db_id": 4257,
+      "id": "COL-4268",
+      "db_id": 4268,
       "rank": 21,
       "nirf_rank": 21,
       "name": "Test Autonomous Institute of Tech",
@@ -3858,6 +3874,748 @@
           "category": "Infrastructure",
           "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
           "link": "https://thecampusnova.com"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4258",
+      "db_id": 4258,
+      "rank": 19,
+      "nirf_rank": 19,
+      "name": "Indian Institute of Technology Patna",
+      "college_name": "Indian Institute of Technology Patna",
+      "short_name": "Indian Institute of Techn",
+      "city": "Patna, Bihar",
+      "location": "Patna, Bihar",
+      "district": "Patna",
+      "state": "Bihar",
+      "aishe": "U-0039",
+      "aishe_code": "U-0039",
+      "aishe_codes": [
+        "U-0039"
+      ],
+      "badge": "Premier Institution",
+      "type": "Public Technical Institute",
+      "college_type": "Public Technical Institute",
+      "rating": "4.7",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Engineering · Computer Science · Artificial Intelligence · Electronics · Mechanical",
+      "courses": [
+        "Engineering · Computer Science · Artificial Intelligence · Electronics · Mechanical"
+      ],
+      "domains": [
+        "www.iitp.ac.in"
+      ],
+      "placement": "₹17L / year",
+      "avg_placement": "₹17L / year",
+      "highest_placement": "₹82L",
+      "highestPlacement": "₹82L",
+      "fees": "₹2.2L / year",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Modern laboratories, central library, hostels, sports facilities, research centres, classrooms, innovation facilities, and student activity areas.",
+      "facilities_list": "Modern laboratories, central library, hostels, sports facilities, research centres, classrooms, innovation facilities, and student activity areas.",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "IIT Patna is a premier technical institute offering engineering and technology education with a strong emphasis on research, innovation, and industry-oriented learning.",
+      "description": "IIT Patna is a premier technical institute offering engineering and technology education with a strong emphasis on research, innovation, and industry-oriented learning.",
+      "website": "https://www.iitp.ac.in/",
+      "official_url": "https://www.iitp.ac.in/",
+      "officialLink": "https://www.iitp.ac.in/",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "/uploads/colleges/image_Screenshot_2026-09-04_120337_1788503642_0232a6.png",
+      "image_url": "/uploads/colleges/image_Screenshot_2026-09-04_120337_1788503642_0232a6.png",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Indian Institute of Technology Patna Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://www.iitp.ac.in/"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://www.iitp.ac.in/"
+        }
+      ],
+      "news": [
+        {
+          "title": "Indian Institute of Technology Patna Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://www.iitp.ac.in/"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://www.iitp.ac.in/"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4262",
+      "db_id": 4262,
+      "rank": 1,
+      "nirf_rank": 1,
+      "name": "Apex Tech Test University 1788509369",
+      "college_name": "Apex Tech Test University 1788509369",
+      "short_name": "Apex Tech Test University",
+      "city": "Chennai",
+      "location": "Chennai",
+      "district": "Chennai",
+      "state": "Tamil Nadu",
+      "aishe": "U-SYNC-1788509369",
+      "aishe_code": "U-SYNC-1788509369",
+      "aishe_codes": [
+        "U-SYNC-1788509369"
+      ],
+      "badge": "Premier Institution",
+      "type": "Public Autonomous Institute",
+      "college_type": "Public Autonomous Institute",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Engineering, Sciences & Technology",
+      "courses": [
+        "Higher Education",
+        "Engineering & Sciences"
+      ],
+      "domains": [
+        "apextech.example.edu"
+      ],
+      "placement": "Median CTC: ₹14.0 LPA",
+      "avg_placement": "Median CTC: ₹14.0 LPA",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹1.5L / yr",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "Premier higher education institution.",
+      "description": "Premier higher education institution.",
+      "website": "https://apextech.example.edu",
+      "official_url": "https://apextech.example.edu",
+      "officialLink": "https://apextech.example.edu",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "",
+      "image_url": "",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Apex Tech Test University 1788509369 Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://apextech.example.edu"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://apextech.example.edu"
+        }
+      ],
+      "news": [
+        {
+          "title": "Apex Tech Test University 1788509369 Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://apextech.example.edu"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://apextech.example.edu"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4263",
+      "db_id": 4263,
+      "rank": 1,
+      "nirf_rank": 1,
+      "name": "Apex Tech Test University 1788509396",
+      "college_name": "Apex Tech Test University 1788509396",
+      "short_name": "Apex Tech Test University",
+      "city": "Chennai",
+      "location": "Chennai",
+      "district": "Chennai",
+      "state": "Tamil Nadu",
+      "aishe": "U-SYNC-1788509396",
+      "aishe_code": "U-SYNC-1788509396",
+      "aishe_codes": [
+        "U-SYNC-1788509396"
+      ],
+      "badge": "Premier Institution",
+      "type": "Public Autonomous Institute",
+      "college_type": "Public Autonomous Institute",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Engineering, Sciences & Technology",
+      "courses": [
+        "Higher Education",
+        "Engineering & Sciences"
+      ],
+      "domains": [
+        "apextech.example.edu"
+      ],
+      "placement": "Median CTC: ₹14.0 LPA",
+      "avg_placement": "Median CTC: ₹14.0 LPA",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹1.5L / yr",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "Premier higher education institution.",
+      "description": "Premier higher education institution.",
+      "website": "https://apextech.example.edu",
+      "official_url": "https://apextech.example.edu",
+      "officialLink": "https://apextech.example.edu",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "",
+      "image_url": "",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Apex Tech Test University 1788509396 Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://apextech.example.edu"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://apextech.example.edu"
+        }
+      ],
+      "news": [
+        {
+          "title": "Apex Tech Test University 1788509396 Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://apextech.example.edu"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://apextech.example.edu"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4264",
+      "db_id": 4264,
+      "rank": 1,
+      "nirf_rank": 1,
+      "name": "Apex Tech Test University 1788509416 (Updated)",
+      "college_name": "Apex Tech Test University 1788509416 (Updated)",
+      "short_name": "Apex Tech Test University",
+      "city": "Chennai",
+      "location": "Chennai",
+      "district": "Chennai",
+      "state": "Tamil Nadu",
+      "aishe": "U-SYNC-1788509416",
+      "aishe_code": "U-SYNC-1788509416",
+      "aishe_codes": [
+        "U-SYNC-1788509416"
+      ],
+      "badge": "Premier Institution",
+      "type": "Public Autonomous Institute",
+      "college_type": "Public Autonomous Institute",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Engineering, Sciences & Technology",
+      "courses": [
+        "Higher Education",
+        "Engineering & Sciences"
+      ],
+      "domains": [
+        "apextech.example.edu"
+      ],
+      "placement": "Median CTC: ₹14.0 LPA",
+      "avg_placement": "Median CTC: ₹14.0 LPA",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹1.5L / yr",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "Premier higher education institution.",
+      "description": "Premier higher education institution.",
+      "website": "https://apextech.example.edu",
+      "official_url": "https://apextech.example.edu",
+      "officialLink": "https://apextech.example.edu",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "",
+      "image_url": "",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Apex Tech Test University 1788509416 (Updated) Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://apextech.example.edu"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://apextech.example.edu"
+        }
+      ],
+      "news": [
+        {
+          "title": "Apex Tech Test University 1788509416 (Updated) Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://apextech.example.edu"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://apextech.example.edu"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4265",
+      "db_id": 4265,
+      "rank": 1,
+      "nirf_rank": 1,
+      "name": "Apex Tech Test University 1788509439 (Updated)",
+      "college_name": "Apex Tech Test University 1788509439 (Updated)",
+      "short_name": "Apex Tech Test University",
+      "city": "Chennai",
+      "location": "Chennai",
+      "district": "Chennai",
+      "state": "Tamil Nadu",
+      "aishe": "U-SYNC-1788509439",
+      "aishe_code": "U-SYNC-1788509439",
+      "aishe_codes": [
+        "U-SYNC-1788509439"
+      ],
+      "badge": "Premier Institution",
+      "type": "Public Autonomous Institute",
+      "college_type": "Public Autonomous Institute",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Engineering, Sciences & Technology",
+      "courses": [
+        "Higher Education",
+        "Engineering & Sciences"
+      ],
+      "domains": [
+        "apextech.example.edu"
+      ],
+      "placement": "Median CTC: ₹14.0 LPA",
+      "avg_placement": "Median CTC: ₹14.0 LPA",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹1.5L / yr",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "Premier higher education institution.",
+      "description": "Premier higher education institution.",
+      "website": "https://apextech.example.edu",
+      "official_url": "https://apextech.example.edu",
+      "officialLink": "https://apextech.example.edu",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "",
+      "image_url": "",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Apex Tech Test University 1788509439 (Updated) Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://apextech.example.edu"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://apextech.example.edu"
+        }
+      ],
+      "news": [
+        {
+          "title": "Apex Tech Test University 1788509439 (Updated) Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://apextech.example.edu"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://apextech.example.edu"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4266",
+      "db_id": 4266,
+      "rank": 100,
+      "nirf_rank": 100,
+      "name": "Birla Institute of Technology and Science, Pilani – Goa Campus",
+      "college_name": "Birla Institute of Technology and Science, Pilani – Goa Campus",
+      "short_name": "Birla Institute of Techno",
+      "city": "Goa",
+      "location": "Goa",
+      "district": "South Goa",
+      "state": "Goa",
+      "aishe": "U-C5F20A6394",
+      "aishe_code": "U-C5F20A6394",
+      "aishe_codes": [
+        "U-C5F20A6394"
+      ],
+      "badge": "Premier Institution",
+      "type": "Private Deemed University / Technical Institute",
+      "college_type": "Private Deemed University / Technical Institute",
+      "rating": "4.7",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Computer Science · Electronics & Communication · Mechanical · Chemical Engineering · Mathematics & Computing",
+      "courses": [
+        "Computer Science · Electronics & Communication · Mechanical · Chemical Engineering · Mathematics & Computing"
+      ],
+      "domains": [
+        "www.bits-pilani.ac.in"
+      ],
+      "placement": "₹20L / year",
+      "avg_placement": "₹20L / year",
+      "highest_placement": "₹60L+",
+      "highestPlacement": "₹60L+",
+      "fees": "₹5.8L / year",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Advanced engineering laboratories, library, hostels, sports facilities, research centres, classrooms, student activity spaces and innovation facilities.",
+      "facilities_list": "Advanced engineering laboratories, library, hostels, sports facilities, research centres, classrooms, student activity spaces and innovation facilities.",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "A leading technical campus in Goa offering undergraduate, postgraduate and research programs with a strong focus on engineering, innovation, research and industry exposure.",
+      "description": "A leading technical campus in Goa offering undergraduate, postgraduate and research programs with a strong focus on engineering, innovation, research and industry exposure.",
+      "website": "https://www.bits-pilani.ac.in/goa/",
+      "official_url": "https://www.bits-pilani.ac.in/goa/",
+      "officialLink": "https://www.bits-pilani.ac.in/goa/",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "/uploads/colleges/image_Screenshot_2026-09-04_135359_1788510276_af0e1b.png",
+      "image_url": "/uploads/colleges/image_Screenshot_2026-09-04_135359_1788510276_af0e1b.png",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Birla Institute of Technology and Science, Pilani – Goa Campus Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://www.bits-pilani.ac.in/goa/"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://www.bits-pilani.ac.in/goa/"
+        }
+      ],
+      "news": [
+        {
+          "title": "Birla Institute of Technology and Science, Pilani – Goa Campus Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://www.bits-pilani.ac.in/goa/"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://www.bits-pilani.ac.in/goa/"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4267",
+      "db_id": 4267,
+      "rank": 1,
+      "nirf_rank": 1,
+      "name": "Apex Tech Test University 1788515580 (Updated)",
+      "college_name": "Apex Tech Test University 1788515580 (Updated)",
+      "short_name": "Apex Tech Test University",
+      "city": "Chennai",
+      "location": "Chennai",
+      "district": "Chennai",
+      "state": "Tamil Nadu",
+      "aishe": "U-SYNC-1788515580",
+      "aishe_code": "U-SYNC-1788515580",
+      "aishe_codes": [
+        "U-SYNC-1788515580"
+      ],
+      "badge": "Premier Institution",
+      "type": "Public Autonomous Institute",
+      "college_type": "Public Autonomous Institute",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Engineering, Sciences & Technology",
+      "courses": [
+        "Higher Education",
+        "Engineering & Sciences"
+      ],
+      "domains": [
+        "apextech.example.edu"
+      ],
+      "placement": "Median CTC: ₹14.0 LPA",
+      "avg_placement": "Median CTC: ₹14.0 LPA",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹1.5L / yr",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "Premier higher education institution.",
+      "description": "Premier higher education institution.",
+      "website": "https://apextech.example.edu",
+      "official_url": "https://apextech.example.edu",
+      "officialLink": "https://apextech.example.edu",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "",
+      "image_url": "",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Apex Tech Test University 1788515580 (Updated) Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://apextech.example.edu"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://apextech.example.edu"
+        }
+      ],
+      "news": [
+        {
+          "title": "Apex Tech Test University 1788515580 (Updated) Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://apextech.example.edu"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://apextech.example.edu"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4269",
+      "db_id": 4269,
+      "rank": 3,
+      "nirf_rank": 3,
+      "name": "Neon Verified Institute of Technology 1788515789 (Updated Global)",
+      "college_name": "Neon Verified Institute of Technology 1788515789 (Updated Global)",
+      "short_name": "Neon Verified Institute o",
+      "city": "Bengaluru",
+      "location": "Bengaluru",
+      "district": "Bengaluru",
+      "state": "Karnataka",
+      "aishe": "U-NEON-1788515789",
+      "aishe_code": "U-NEON-1788515789",
+      "aishe_codes": [
+        "U-NEON-1788515789"
+      ],
+      "badge": "Premier Institution",
+      "type": "Public Autonomous Institute",
+      "college_type": "Public Autonomous Institute",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Engineering, Sciences & Technology",
+      "courses": [
+        "Higher Education",
+        "Engineering & Sciences"
+      ],
+      "domains": [
+        "neon-verified.edu.in"
+      ],
+      "placement": "Median CTC: ₹14.0 LPA",
+      "avg_placement": "Median CTC: ₹14.0 LPA",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹1.5L / yr",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "Premier higher education institution.",
+      "description": "Premier higher education institution.",
+      "website": "https://neon-verified.edu.in",
+      "official_url": "https://neon-verified.edu.in",
+      "officialLink": "https://neon-verified.edu.in",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "",
+      "image_url": "",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Neon Verified Institute of Technology 1788515789 (Updated Global) Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://neon-verified.edu.in"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://neon-verified.edu.in"
+        }
+      ],
+      "news": [
+        {
+          "title": "Neon Verified Institute of Technology 1788515789 (Updated Global) Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://neon-verified.edu.in"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://neon-verified.edu.in"
         }
       ],
       "status": "active"

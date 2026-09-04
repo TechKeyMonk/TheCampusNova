@@ -17,6 +17,28 @@
               "tagline": "Theoretical foundations of computation, algorithms, and full lifecycle software engineering.",
               "programs": [
                 {
+                  "id": "prog-a39844cc",
+                  "name": "QA Test Robotics Vitest_1788517160492 UPDATED",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,90,000",
+                  "annual_tuition_fees": "Rs. 2,90,000",
+                  "fees": "Rs. 2,90,000"
+                },
+                {
+                  "id": "prog-de138435",
+                  "name": "Test Robotics Engineering 2026",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive robotics program.",
+                  "annualTuitionFees": "Rs. 2,50,000",
+                  "annual_tuition_fees": "Rs. 2,50,000",
+                  "fees": "Rs. 2,50,000"
+                },
+                {
                   "id": "prog-616642ce",
                   "name": "QA Test Robotics Vitest_1788444771917 UPDATED",
                   "degreeType": "Undergraduate (UG)",
@@ -95,14 +117,14 @@
                 },
                 {
                   "id": "prog-3ea23976",
-                  "name": "Test Robotics Engineering 2026",
+                  "name": "Test Robotics Engineering 2026 UPDATED",
                   "degreeType": "Undergraduate (UG)",
                   "duration": "4 Years",
                   "eligibility": "10+2 or Equivalent",
-                  "overview": "Comprehensive robotics program.",
-                  "annualTuitionFees": "Rs. 2,50,000",
-                  "annual_tuition_fees": "Rs. 2,50,000",
-                  "fees": "Rs. 2,50,000"
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "Rs. 2,75,000",
+                  "annual_tuition_fees": "Rs. 2,75,000",
+                  "fees": "Rs. 2,75,000"
                 },
                 {
                   "id": "prog-d50053f9",
