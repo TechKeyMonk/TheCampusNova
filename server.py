@@ -1589,7 +1589,7 @@ def _sync_college_to_json_file(college_dict, is_delete=False):
 
             if is_delete:
                 if found_idx != -1:
-                    col_list[found_idx]["status"] = "archived"
+                    del col_list[found_idx]
             else:
                 if found_idx != -1:
                     col_list[found_idx].update(college_dict)
@@ -1879,8 +1879,13 @@ def api_delete_college(college_id):
         return jsonify({"success": False, "message": "Database is unavailable. Institution was not deleted."}), 503
 
     try:
+        col_record = db.query_one("""
+            SELECT id, college_name, aishe_code FROM colleges 
+            WHERE id = %s OR aishe_code = %s OR LOWER(college_name) = LOWER(%s)
+        """, (clean_num_id, target_str, target_str))
+
         db.execute_query("""
-            UPDATE colleges SET status = 'archived', updated_at = CURRENT_TIMESTAMP 
+            DELETE FROM colleges 
             WHERE id = %s OR aishe_code = %s OR LOWER(college_name) = LOWER(%s)
         """, (
             clean_num_id,
@@ -1888,13 +1893,18 @@ def api_delete_college(college_id):
             target_str
         ))
         invalidate_colleges_cache()
-        _sync_college_to_json_file({"id": target_str, "aishe": target_str}, is_delete=True)
+
+        del_id = str(col_record["id"]) if col_record else target_str
+        del_aishe = col_record.get("aishe_code") if col_record else target_str
+        del_name = col_record.get("college_name") if col_record else target_str
+
+        _sync_college_to_json_file({"id": del_id, "aishe": del_aishe, "name": del_name}, is_delete=True)
 
         db.execute_query(
             "INSERT INTO audit_logs (action, module_name, record_id, description) VALUES (%s, %s, %s, %s)",
-            ("Archived College", "colleges", target_str, f"Admin archived college ID {target_str}")
+            ("Permanently Deleted College", "colleges", del_id, f"Admin permanently deleted college ID {del_id} ({del_name})")
         )
-        return jsonify({"success": True, "message": "Institution deleted successfully."})
+        return jsonify({"success": True, "message": "Institution permanently deleted from database."})
     except Exception as e:
         logger.exception("PostgreSQL Delete College Error")
         return jsonify({"success": False, "message": f"Institution deletion failed: {e}"}), 500

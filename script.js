@@ -6,6 +6,50 @@ var _userMentorsCache = window._userMentorsCache;
 var _activeSelectedMentor = window._activeSelectedMentor;
 
 // ============================================================================
+// FRONTEND SECURITY DETERRENCE LAYER (PUBLIC WEBSITE)
+// Lightweight deterrence against easy context-menu & common devtool shortcuts.
+// Note: Deterrence layer only; authoritative security is enforced server-side.
+// ============================================================================
+(function initFrontendSecurityDeterrence() {
+  // 1. Disable browser context menu on public user website (preserve form inputs)
+  document.addEventListener('contextmenu', function (e) {
+    const el = e.target;
+    const tag = el && el.tagName ? el.tagName.toUpperCase() : '';
+    const isInput = el && (el.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT');
+    if (!isInput) {
+      e.preventDefault();
+      return false;
+    }
+  }, { passive: false });
+
+  // 2. Deter common developer-tool shortcuts (F12, Ctrl+Shift+I/J/C, Ctrl+U)
+  document.addEventListener('keydown', function (e) {
+    // F12
+    if (e.key === 'F12' || e.keyCode === 123) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+    const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+    // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+    if (isCtrlOrCmd && e.shiftKey) {
+      const k = (e.key || '').toUpperCase();
+      if (k === 'I' || k === 'J' || k === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    }
+    // Ctrl+U (View Source)
+    if (isCtrlOrCmd && (e.key === 'u' || e.key === 'U' || e.keyCode === 85)) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  }, { passive: false });
+})();
+
+// ============================================================================
 // 1. TOP 20 COLLEGES IN INDIA REGISTRY (LIVE SYNCED WITH BACKEND DATABASE)
 // ============================================================================
 let collegesRegistry = [

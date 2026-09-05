@@ -1,6 +1,86 @@
 {
   "logs": [
     {
+      "id": 179,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Approved",
+      "module": "Mentors",
+      "details": "Admin set enquiry MENQ-4331426B status to Approved (Ref: MENQ-4331426B)",
+      "timestamp": "2026-09-05 16:31:29",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 178,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry submitted by Integration Test Student (test.student@example.com) for mentor Dr. A. Ramanathan (Ref: MENQ-4331426B)",
+      "timestamp": "2026-09-05 16:31:28",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 177,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Approval Deleted",
+      "module": "Approvals",
+      "details": "Deleted approval APP-44 (Ref: APP-44)",
+      "timestamp": "2026-09-05 16:31:27",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 176,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Approval Processed",
+      "module": "Approvals",
+      "details": "Approved update for SoRSPE, Ramakrishna Mission Vivekananda University (Ref: APP-44)",
+      "timestamp": "2026-09-05 16:31:26",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 175,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Approval Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-44 for SoRSPE, Ramakrishna Mission Vivekananda University (Ref: APP-44)",
+      "timestamp": "2026-09-05 16:31:25",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 174,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Deleted Course",
+      "module": "Courses",
+      "details": "Deleted course 112 (Ref: 112)",
+      "timestamp": "2026-09-05 16:29:51",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 173,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1788605976293 UPDATED (Ref: 112)",
+      "timestamp": "2026-09-05 16:29:49",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 172,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1788605976293 (Ref: 112)",
+      "timestamp": "2026-09-05 16:29:41",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
       "id": 171,
       "user_identifier": "Admin (Shyam Ganesh)",
       "action": "Mentor Enquiry Approved",
