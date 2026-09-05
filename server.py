@@ -3817,6 +3817,36 @@ def api_review_content_update(update_id):
             "UPDATE content_updates SET status = %s, reviewed_at = CURRENT_TIMESTAMP WHERE id = %s",
             (new_status, update_id)
         )
+        if new_status == "approved":
+            upd_row = db.query_one("SELECT * FROM content_updates WHERE id = %s", (update_id,))
+            if upd_row and upd_row.get("module_name") == "colleges":
+                raw_nd = upd_row.get("new_data")
+                nd = {}
+                if isinstance(raw_nd, str):
+                    try:
+                        nd = json.loads(raw_nd)
+                    except Exception:
+                        nd = {}
+                elif isinstance(raw_nd, dict):
+                    nd = raw_nd
+                target_col = upd_row.get("record_id") or nd.get("college_name") or nd.get("collegeName")
+                desc_val = nd.get("description") or nd.get("notes")
+                placement_val = nd.get("placement")
+                fees_val = nd.get("fees")
+
+                col_row = db.query_one("SELECT id, description FROM colleges WHERE college_name ILIKE %s OR short_name ILIKE %s OR aishe_code ILIKE %s LIMIT 1", (f"%{target_col}%", f"%{target_col}%", f"%{target_col}%"))
+                if col_row:
+                    cid = col_row["id"]
+                    if placement_val:
+                        db.execute_query("UPDATE colleges SET placement = %s, avg_placement = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (placement_val, placement_val, cid))
+                    if fees_val:
+                        db.execute_query("UPDATE colleges SET fees = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (fees_val, cid))
+                    if desc_val:
+                        cur_d = col_row.get("description") or ""
+                        new_d = f"{cur_d}\n[Verified Update]: {desc_val}".strip() if cur_d else desc_val
+                        db.execute_query("UPDATE colleges SET description = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (new_d, cid))
+                invalidate_colleges_cache()
+
         db.execute_query(
             "INSERT INTO audit_logs (action, module_name, record_id, description) VALUES (%s, %s, %s, %s)",
             (f"Content Update {new_status.capitalize()}", "content_updates", str(update_id), f"Admin marked update as {new_status}")
@@ -4698,11 +4728,11 @@ def load_approvals_data():
                         "date": raw_data.get("date") or dt_str,
                         "time": tm_str,
                         "target_type": "College" if r.get("module_name") == "colleges" else str(r.get("module_name", "Content")).capitalize(),
-                        "target_id": r.get("record_id") or "",
-                        "target_title": raw_data.get("college_name") or raw_data.get("collegeName") or r.get("record_id") or "Institutional Update",
-                        "field": raw_data.get("title") or raw_data.get("category") or "Institutional Updates",
-                        "old_value": "Existing Profile",
-                        "new_value": raw_data.get("description") or raw_data.get("placement") or raw_data.get("fees") or raw_data.get("notes") or "Profile Update",
+                        "target_id": raw_data.get("target_id") or r.get("record_id") or "",
+                        "target_title": raw_data.get("target_title") or raw_data.get("college_name") or raw_data.get("collegeName") or r.get("record_id") or "Institutional Update",
+                        "field": raw_data.get("field") or raw_data.get("title") or raw_data.get("category") or "Institutional Updates",
+                        "old_value": raw_data.get("old_value") or "Existing Profile",
+                        "new_value": raw_data.get("new_value") or raw_data.get("description") or raw_data.get("placement") or raw_data.get("fees") or raw_data.get("notes") or "Profile Update",
                         "submitted_by": raw_data.get("submitted_by") or raw_data.get("submittedBy") or "Authorized Officer",
                         "submitted_by_email": raw_data.get("verified_email") or raw_data.get("email") or "",
                         "status": status_raw,
@@ -4821,11 +4851,13 @@ def api_process_approval(approval_id):
         # Apply approved change to target college / database
         if target_id or target_title:
             col = get_college_record(target_id) or get_college_record(target_title)
+            field = str(target_record.get("field", "")).lower()
+            new_val = target_record.get("new_value", "")
+
             if col:
-                field = str(target_record.get("field", "")).lower()
-                new_val = target_record.get("new_value", "")
                 if "placement" in field:
                     col["placement"] = str(new_val)
+                    col["avg_placement"] = str(new_val)
                 elif "fee" in field:
                     col["fees"] = str(new_val)
                 elif "event" in field or "news" in field:
@@ -4835,16 +4867,41 @@ def api_process_approval(approval_id):
                 else:
                     col["description"] = f"{col.get('description', '')}\n[Verified Update]: {new_val}".strip()
                 _sync_college_to_json_file(col)
-                invalidate_colleges_cache()
-                if db.is_pg_connected():
-                    col_id_int = col.get("id")
-                    if col_id_int and str(col_id_int).isdigit():
-                        if "placement" in field:
-                            db.execute_query("UPDATE colleges SET placement_percentage = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (str(new_val), int(col_id_int)))
-                        elif "fee" in field:
-                            db.execute_query("UPDATE colleges SET fees = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (str(new_val), int(col_id_int)))
-                        elif "description" in field:
-                            db.execute_query("UPDATE colleges SET description = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (col.get("description", ""), int(col_id_int)))
+
+            # Authoritative PostgreSQL Database update
+            if db.is_pg_connected():
+                col_id_int = None
+                if col:
+                    raw_id = col.get("db_id") or col.get("id")
+                    if isinstance(raw_id, int):
+                        col_id_int = raw_id
+                    elif isinstance(raw_id, str):
+                        digits = re.sub(r"\D", "", raw_id)
+                        if digits:
+                            col_id_int = int(digits)
+
+                # If not found from col dict, resolve directly from target_id or target_title in DB
+                if not col_id_int and target_id:
+                    digits = re.sub(r"\D", "", str(target_id))
+                    if digits:
+                        col_id_int = int(digits)
+                if not col_id_int and target_title:
+                    c_row = db.query_one("SELECT id FROM colleges WHERE college_name ILIKE %s OR short_name ILIKE %s LIMIT 1", (f"%{target_title}%", f"%{target_title}%"))
+                    if c_row:
+                        col_id_int = c_row.get("id")
+
+                if col_id_int:
+                    if "placement" in field:
+                        db.execute_query("UPDATE colleges SET placement = %s, avg_placement = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (str(new_val), str(new_val), col_id_int))
+                    elif "fee" in field:
+                        db.execute_query("UPDATE colleges SET fees = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (str(new_val), col_id_int))
+                    elif "description" in field or "note" in field or "detail" in field or "general" in field or "update" in field:
+                        curr_row = db.query_one("SELECT description FROM colleges WHERE id = %s", (col_id_int,))
+                        curr_desc = (curr_row.get("description") or "") if curr_row else ""
+                        new_desc = f"{curr_desc}\n[Verified Update]: {new_val}".strip() if curr_desc else str(new_val)
+                        db.execute_query("UPDATE colleges SET description = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (new_desc, col_id_int))
+
+            invalidate_colleges_cache()
                 
         if db.is_pg_connected():
             if db_id:

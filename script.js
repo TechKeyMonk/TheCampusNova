@@ -656,137 +656,68 @@ function fetchCollegesLive() {
     .then(res => res.json())
     .then(data => {
       if (data && data.success && Array.isArray(data.colleges) && data.colleges.length > 0) {
-        data.colleges.forEach(col => {
-          const colName = col.college_name || col.name || '';
+        const freshList = data.colleges.map((col, idx) => {
+          const colName = col.college_name || col.name || 'Institution';
           const aisheCode = col.aishe_code || col.aishe || '';
-          const colId = col.id ? String(col.id) : '';
-          const colDbId = col.db_id ? String(col.db_id) : '';
-          
-          const existing = collegesRegistry.find(c => 
-            (c.db_id && colDbId && String(c.db_id).trim().toLowerCase() === colDbId.toLowerCase()) ||
-            (c.aishe && aisheCode && c.aishe.toLowerCase() === aisheCode.toLowerCase()) ||
-            (c.id && colId && c.id.toLowerCase() === colId.toLowerCase()) ||
-            (c.name && colName && c.name.toLowerCase() === colName.toLowerCase())
-          );
-
-          if (existing) {
-            if (col.location || col.city) existing.city = col.city || col.location;
-            if (col.district) existing.district = col.district;
-            if (col.state) existing.state = col.state;
-            if (col.rank || col.nirf_rank) existing.rank = col.rank || col.nirf_rank;
-            if (col.website || col.official_url) {
-              existing.website = col.website || col.official_url;
-              existing.officialLink = col.website || col.official_url;
-              existing.official_url = col.website || col.official_url;
-            }
-            if (col.college_type || col.type) {
-              existing.type = col.college_type || col.type;
-              existing.college_type = col.college_type || col.type;
-            }
-            if (aisheCode) {
-              existing.aishe = aisheCode;
-              existing.aishe_code = aisheCode;
-            }
-            if (col.rating) existing.rating = col.rating;
-            if (col.reviews || col.reviews_count) {
-              existing.reviews = col.reviews || col.reviews_count;
-              existing.reviews_count = col.reviews || col.reviews_count;
-            }
-            if (col.stream) existing.stream = col.stream;
-            if (col.courses && col.courses.length > 0) existing.courses = col.courses;
-            if (col.placement) existing.placement = col.placement;
-            if (col.avg_placement) existing.avg_placement = col.avg_placement;
-            if (col.highest_placement || col.highestPlacement) {
-              existing.highest_placement = col.highest_placement || col.highestPlacement;
-              existing.highestPlacement = col.highest_placement || col.highestPlacement;
-            }
-            if (col.fees) existing.fees = col.fees;
-            if (col.cutoff) existing.cutoff = col.cutoff;
-            if (col.admissions) existing.admissions = col.admissions;
-            if (col.eligibility) existing.eligibility = col.eligibility;
-            if (col.facilities || col.facilities_list) {
-              existing.facilities = col.facilities || col.facilities_list;
-              existing.facilities_list = col.facilities || col.facilities_list;
-            }
-            if (col.scholarships || col.scholarships_info) {
-              existing.scholarships = col.scholarships || col.scholarships_info;
-              existing.scholarships_info = col.scholarships || col.scholarships_info;
-            }
-            if (col.recruiters) existing.recruiters = col.recruiters;
-            if (col.internship_support) existing.internship_support = col.internship_support;
-            if (col.overview || col.description) {
-              existing.overview = col.overview || col.description;
-              existing.description = col.overview || col.description;
-            }
-            if (col.image || col.image_url) {
-              existing.image = col.image || col.image_url;
-              existing.image_url = col.image || col.image_url;
-            }
-            if (col.video || col.video_url) {
-              existing.video = col.video || col.video_url;
-              existing.video_url = col.video || col.video_url;
-            }
-            if (col.naac_grade) existing.naac_grade = col.naac_grade;
-            if (col.accreditation) existing.accreditation = col.accreditation;
-            if (col.email) existing.email = col.email;
-            if (col.phone) existing.phone = col.phone;
-            if (col.address) existing.address = col.address;
-            if (col.db_id) existing.db_id = col.db_id;
-            if (col.events) existing.events = col.events;
-            if (col.news) existing.news = col.news;
-          } else if (colName) {
-            collegesRegistry.push({
-              id: colId || (col.db_id ? `COL-${col.db_id}` : `COL-${collegesRegistry.length + 1}`),
-              db_id: col.db_id,
-              rank: col.rank || col.nirf_rank || (collegesRegistry.length + 1),
-              name: colName,
-              college_name: colName,
-              short_name: col.short_name || colName,
-              city: col.city || col.location || col.district || 'India',
-              district: col.district || '',
-              state: col.state || 'India',
-              aishe: aisheCode || 'U-0042',
-              aishe_code: aisheCode || 'U-0042',
-              badge: col.badge || (col.naac_grade ? `NAAC ${col.naac_grade}` : 'Accredited Campus'),
-              type: col.type || col.college_type || 'Higher Education Institute',
-              college_type: col.type || col.college_type || 'Higher Education Institute',
-              rating: col.rating || '4.8',
-              reviews: col.reviews || col.reviews_count || '1,200+ Reviews',
-              reviews_count: col.reviews || col.reviews_count || '1,200+ Reviews',
-              stream: col.stream || 'Higher Education & Research',
-              courses: col.courses || ['B.Tech', 'Degree', 'Specializations'],
-              placement: col.placement || 'Median CTC: ₹14.0 LPA',
-              avg_placement: col.avg_placement || col.placement || '₹14.0 LPA',
-              highest_placement: col.highest_placement || col.highestPlacement || '₹45.0 LPA',
-              highestPlacement: col.highest_placement || col.highestPlacement || '₹45.0 LPA',
-              fees: col.fees || 'Competitive Structure',
-              cutoff: col.cutoff || 'Entrance Qualified',
-              admissions: col.admissions || 'National entrance counseling.',
-              eligibility: col.eligibility || '10+2 qualification with qualifying score.',
-              facilities: col.facilities || col.facilities_list || 'Central Library, Research Labs, Sports Complex',
-              facilities_list: col.facilities || col.facilities_list || 'Central Library, Research Labs, Sports Complex',
-              scholarships: col.scholarships || col.scholarships_info || 'Merit & Government Scholarships',
-              scholarships_info: col.scholarships || col.scholarships_info || 'Merit & Government Scholarships',
-              recruiters: col.recruiters || 'Top Industry Recruiters',
-              internship_support: col.internship_support || 'Campus Internship Training',
-              image: col.image || col.image_url || 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80',
-              image_url: col.image || col.image_url || 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80',
-              video: col.video || col.video_url || '',
-              video_url: col.video || col.video_url || '',
-              overview: col.overview || col.description || colName,
-              description: col.overview || col.description || colName,
-              officialLink: col.website || col.official_url || '',
-              website: col.website || col.official_url || '',
-              email: col.email || '',
-              phone: col.phone || '',
-              address: col.address || '',
-              naac_grade: col.naac_grade || '',
-              accreditation: col.accreditation || '',
-              events: col.events || [],
-              news: col.news || []
-            });
-          }
+          const colId = col.id ? String(col.id) : (col.db_id ? `COL-${col.db_id}` : `COL-${idx + 1}`);
+          const website = col.website || col.official_url || col.officialLink || '';
+          const imageUrl = col.image || col.image_url || col.logo_url || 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80';
+          const videoUrl = col.video || col.video_url || '';
+          return {
+            id: colId,
+            db_id: col.db_id || col.id,
+            rank: col.rank || col.nirf_rank || (idx + 1),
+            nirf_rank: col.rank || col.nirf_rank || (idx + 1),
+            name: colName,
+            college_name: colName,
+            short_name: col.short_name || colName,
+            city: col.city || col.location || col.district || 'India',
+            district: col.district || '',
+            state: col.state || 'Tamil Nadu',
+            aishe: aisheCode,
+            aishe_code: aisheCode,
+            badge: col.badge || (col.naac_grade ? `NAAC ${col.naac_grade}` : 'Accredited Campus'),
+            type: col.type || col.college_type || 'Higher Education Institute',
+            college_type: col.type || col.college_type || 'Higher Education Institute',
+            rating: String(col.rating || '4.8'),
+            reviews: String(col.reviews || col.reviews_count || '1,200+ Reviews'),
+            reviews_count: String(col.reviews || col.reviews_count || '1,200+ Reviews'),
+            stream: col.stream || 'Higher Education & Research',
+            courses: (col.courses && col.courses.length > 0) ? col.courses : ['B.Tech', 'Degree', 'Specializations'],
+            placement: col.placement || 'Median CTC: ₹14.0 LPA',
+            avg_placement: col.avg_placement || col.placement || '₹14.0 LPA',
+            highest_placement: col.highest_placement || col.highestPlacement || '₹45.0 LPA',
+            highestPlacement: col.highest_placement || col.highestPlacement || '₹45.0 LPA',
+            fees: col.fees || 'Competitive Structure',
+            cutoff: col.cutoff || 'Entrance Qualified',
+            admissions: col.admissions || 'National entrance counseling.',
+            eligibility: col.eligibility || '10+2 qualification with qualifying score.',
+            facilities: col.facilities || col.facilities_list || 'Central Library, Research Labs, Sports Complex',
+            facilities_list: col.facilities || col.facilities_list || 'Central Library, Research Labs, Sports Complex',
+            scholarships: col.scholarships || col.scholarships_info || 'Merit & Government Scholarships',
+            scholarships_info: col.scholarships || col.scholarships_info || 'Merit & Government Scholarships',
+            recruiters: col.recruiters || 'Top Industry Recruiters',
+            internship_support: col.internship_support || 'Campus Internship Training',
+            image: imageUrl,
+            image_url: imageUrl,
+            video: videoUrl,
+            video_url: videoUrl,
+            overview: col.overview || col.description || colName,
+            description: col.overview || col.description || colName,
+            officialLink: website,
+            official_url: website,
+            website: website,
+            email: col.email || '',
+            phone: col.phone || '',
+            address: col.address || '',
+            naac_grade: col.naac_grade || '',
+            accreditation: col.accreditation || '',
+            events: col.events || [],
+            news: col.news || []
+          };
         });
+
+        collegesRegistry.splice(0, collegesRegistry.length, ...freshList);
 
         if (typeof renderTopColleges === 'function') renderTopColleges();
         if (typeof renderCollegesView === 'function') renderCollegesView();
@@ -1613,27 +1544,77 @@ function setView(viewOrRoute, updateHash = true) {
   closeMenus();
   closeMobileDrawer();
 
-  if (canonicalRoute === 'courses' && typeof initCoursesDiscovery === 'function') initCoursesDiscovery();
-  if (canonicalRoute === 'colleges' && typeof renderCollegesView === 'function') renderCollegesView();
-  if (canonicalRoute === 'domains' && typeof renderDomainsDiscoveryView === 'function') renderDomainsDiscoveryView();
-  if (canonicalRoute === 'exams' && typeof renderExamsView === 'function') { renderExamsView(); if (typeof renderUserExamRemarksList === 'function') renderUserExamRemarksList(); }
-  if (canonicalRoute === 'materials' && typeof renderStudyMaterialsView === 'function') renderStudyMaterialsView();
-  if (canonicalRoute === 'reviews' && typeof renderReviewsView === 'function') renderReviewsView();
-  if (canonicalRoute === 'rankings' && typeof renderRankingsView === 'function') renderRankingsView();
-  if (canonicalRoute === 'careers' && typeof renderCareersView === 'function') renderCareersView();
-  if (canonicalRoute === 'placements' && typeof renderPlacementsView === 'function') renderPlacementsView();
-  if (canonicalRoute === 'jobs' && typeof renderJobsView === 'function') renderJobsView();
-  if (canonicalRoute === 'internships' && typeof renderInternshipsView === 'function') renderInternshipsView();
-  if (canonicalRoute === 'admissions' && typeof renderAdmissionsView === 'function') renderAdmissionsView();
-  if (canonicalRoute === 'scholarships' && typeof renderScholarshipsView === 'function') renderScholarshipsView();
-  if (canonicalRoute === 'facilities' && typeof renderFacilitiesView === 'function') renderFacilitiesView();
+  if (canonicalRoute === 'courses') {
+    if (typeof initCoursesDiscovery === 'function') initCoursesDiscovery(true);
+  }
+  if (canonicalRoute === 'colleges') {
+    if (typeof fetchCollegesLive === 'function') fetchCollegesLive();
+    if (typeof renderCollegesView === 'function') renderCollegesView();
+  }
+  if (canonicalRoute === 'domains') {
+    _liveDomainsData = null;
+    if (typeof renderDomainsDiscoveryView === 'function') renderDomainsDiscoveryView();
+  }
+  if (canonicalRoute === 'exams') {
+    _liveUserExamsCache = null;
+    if (typeof renderExamsView === 'function') renderExamsView();
+    if (typeof renderUserExamRemarksList === 'function') renderUserExamRemarksList();
+  }
+  if (canonicalRoute === 'materials') {
+    window._cachedStudyMaterialsData = null;
+    if (typeof renderStudyMaterialsView === 'function') renderStudyMaterialsView();
+  }
+  if (canonicalRoute === 'reviews') {
+    _cachedReviewsData = null;
+    if (typeof fetchReviewsLive === 'function') fetchReviewsLive();
+    else if (typeof renderReviewsView === 'function') renderReviewsView();
+  }
+  if (canonicalRoute === 'rankings') {
+    _cachedRankingsData = null;
+    if (typeof renderRankingsView === 'function') renderRankingsView();
+  }
+  if (canonicalRoute === 'careers') {
+    _cachedCareersData = null;
+    if (typeof renderCareersView === 'function') renderCareersView();
+  }
+  if (canonicalRoute === 'placements') {
+    _cachedPlacementsFullData = null;
+    if (typeof renderPlacementsView === 'function') renderPlacementsView();
+  }
+  if (canonicalRoute === 'jobs') {
+    _cachedJobsData = null;
+    if (typeof renderJobsView === 'function') renderJobsView();
+  }
+  if (canonicalRoute === 'internships') {
+    _cachedInternshipsFullData = null;
+    if (typeof renderInternshipsView === 'function') renderInternshipsView();
+  }
+  if (canonicalRoute === 'admissions') {
+    _cachedAdmissionsData = null;
+    if (typeof renderAdmissionsView === 'function') renderAdmissionsView();
+  }
+  if (canonicalRoute === 'scholarships') {
+    _cachedScholarshipsFullData = null;
+    if (typeof renderScholarshipsView === 'function') renderScholarshipsView();
+  }
+  if (canonicalRoute === 'facilities') {
+    _cachedFacilitiesData = null;
+    if (typeof renderFacilitiesView === 'function') renderFacilitiesView();
+  }
   if (canonicalRoute === 'entrance-prep') {
+    _cachedEntranceExamsData = null;
     if (typeof renderEntrancePrepView === 'function') renderEntrancePrepView();
     if (typeof initEntrancePrepBackgroundSlider === 'function') initEntrancePrepBackgroundSlider();
   }
-  if (canonicalRoute === 'reviews-compare' && typeof renderReviewsCompareView === 'function') renderReviewsCompareView();
-  if (canonicalRoute === 'mentors' && typeof renderMentorsView === 'function') renderMentorsView('');
+  if (canonicalRoute === 'reviews-compare') {
+    _cachedComparisonsData = null;
+    if (typeof renderReviewsCompareView === 'function') renderReviewsCompareView();
+  }
+  if (canonicalRoute === 'mentors') {
+    if (typeof renderMentorsView === 'function') renderMentorsView('');
+  }
   if (canonicalRoute === 'home') {
+    if (typeof fetchCollegesLive === 'function') fetchCollegesLive();
     if (typeof initHeroRotatorHeading === 'function') initHeroRotatorHeading();
     if (typeof initHeroBackgroundCarousel === 'function') initHeroBackgroundCarousel();
     if (typeof initHomeBodyBackgroundSlider === 'function') initHomeBodyBackgroundSlider();
@@ -1650,6 +1631,72 @@ function setView(viewOrRoute, updateHash = true) {
   }
 }
 window.setView = setView;
+
+// ============================================================================
+// AUTHORITATIVE POSTGRESQL MULTI-TAB & CROSS-ENVIRONMENT SYNCHRONIZATION
+// ============================================================================
+function invalidateAllExploreCaches() {
+  _cachedReviewsData = null;
+  _cachedRankingsData = null;
+  _cachedCareersData = null;
+  _cachedPlacementsFullData = null;
+  _cachedJobsData = null;
+  _cachedInternshipsFullData = null;
+  _cachedAdmissionsData = null;
+  _cachedScholarshipsFullData = null;
+  _cachedFacilitiesData = null;
+  _cachedEntranceExamsData = null;
+  _cachedComparisonsData = null;
+  _liveDomainsData = null;
+  _liveUserExamsCache = null;
+  window._studyMaterialsFetched = false;
+  window._cachedStudyMaterialsData = null;
+  if (typeof coursesHierarchyState !== 'undefined') {
+    coursesHierarchyState.categories = null;
+  }
+}
+window.invalidateAllExploreCaches = invalidateAllExploreCaches;
+
+function refreshActiveViewLive() {
+  if (typeof fetchCollegesLive === 'function') {
+    fetchCollegesLive();
+  }
+  const currentHash = (window.location.hash || '#home').replace('#', '');
+  const activeRoute = typeof resolveRoute === 'function' ? resolveRoute(currentHash) : currentHash;
+  if (typeof setView === 'function') {
+    setView(activeRoute, false);
+  }
+}
+window.refreshActiveViewLive = refreshActiveViewLive;
+
+// BroadcastChannel synchronization for instant inter-tab communication
+if (typeof BroadcastChannel !== 'undefined') {
+  try {
+    const syncChannel = new BroadcastChannel('campusnova_data_sync');
+    syncChannel.onmessage = () => {
+      invalidateAllExploreCaches();
+      refreshActiveViewLive();
+    };
+  } catch(e) {
+    console.warn('[DataSync Listener Error]', e);
+  }
+}
+
+// Storage event synchronization for multi-tab
+window.addEventListener('storage', (e) => {
+  if (e.key === 'campusnova_sync_tick' || e.key === 'campnova_approved_content_updates') {
+    invalidateAllExploreCaches();
+    refreshActiveViewLive();
+  }
+});
+
+// Visibility change: re-sync immediately when tab is brought to foreground
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    invalidateAllExploreCaches();
+    refreshActiveViewLive();
+  }
+});
 
 // ============================================================================
 // HERO MAIN HEADING FAST ROTATING / MARQUEE ANIMATION
@@ -8722,7 +8769,7 @@ function renderStudyMaterialsView() {
   } catch (e) {}
 
   const storeData = window._cachedStudyMaterialsData || {};
-  let materials = (storeData.materials && storeData.materials.length > 4 ? storeData.materials : [
+  let materials = (storeData.materials && storeData.materials.length > 0 ? storeData.materials : [
     {
         "id": "mat-jee-phys-01",
         "title": "JEE Main & Advanced 15-Year Solved Physics Archive",
@@ -9807,12 +9854,11 @@ function renderStudyMaterialsView() {
   `;
 
   // Fetch live store from backend if not yet fetched
-  if (!window._studyMaterialsFetched) {
-    window._studyMaterialsFetched = true;
+  if (!window._cachedStudyMaterialsData) {
     fetch('/api/study-materials?status=approved')
       .then(res => res.json())
       .then(data => {
-        if (data && data.success) {
+        if (data && data.success && Array.isArray(data.materials)) {
           window._cachedStudyMaterialsData = data;
           renderStudyMaterialsView();
         }

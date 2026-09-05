@@ -37,6 +37,27 @@ function escapeHtml(value) {
   }[character]));
 }
 
+// Cross-environment / Multi-tab Authoritative PostgreSQL Synchronization Dispatcher
+function broadcastAdminDataSync(actionType, moduleName, details) {
+  try {
+    const payload = {
+      type: 'CAMPUSNOVA_DATA_SYNC',
+      action: actionType || 'update',
+      module: moduleName || 'all',
+      details: details || {},
+      timestamp: Date.now()
+    };
+    if (typeof BroadcastChannel !== 'undefined') {
+      const channel = new BroadcastChannel('campusnova_data_sync');
+      channel.postMessage(payload);
+    }
+    localStorage.setItem('campusnova_sync_tick', Date.now().toString());
+  } catch (e) {
+    console.warn('[DataSync Broadcast Warning]', e);
+  }
+}
+window.broadcastAdminDataSync = broadcastAdminDataSync;
+
 // ----------------------------------------------------
 // DOM Elements
 // ----------------------------------------------------
@@ -1698,6 +1719,7 @@ function approveUpdate(index) {
   renderApprovalsTable('all');
   renderQuickApprovalsTable();
   renderDashboardSummary();
+  broadcastAdminDataSync('approve', 'colleges', { name: item.collegeName });
   showAdminToast(`Update approved for ${item.collegeName}! Changes are now live on the user website.`);
 }
 
@@ -3344,6 +3366,7 @@ async function executeSaveContentEdit() {
       saveCollegeHistories(histories);
 
       addAuditLog(`Edited College Profile: ${updatedName}`, `AISHE: ${updatedAishe}, Placement: ${updatedPlacement}${mediaNote}`, 'SUCCESS', 'Content Updates');
+      broadcastAdminDataSync('update', type || 'colleges', { id: targetId, name: updatedName });
       showAdminToast('Changes saved successfully');
 
       if (contentEditModal) contentEditModal.classList.remove('open');
@@ -6188,6 +6211,7 @@ async function executeDeleteCollege(collegeId, collegeName) {
       showAdminToast('Institution deleted successfully.');
       addAuditLog(`Deleted Institution: ${collegeName || collegeId}`, `ID: ${collegeId}`, 'SUCCESS', 'Colleges');
       _adminLiveCollegesCache = null;
+      broadcastAdminDataSync('delete', 'colleges', { id: collegeId, name: collegeName });
       renderCollegesTable();
     } else {
       showAdminToast(data.message || 'Failed to delete institution.');
@@ -6276,6 +6300,7 @@ async function processApproval(approvalId, action) {
     const data = await res.json();
     if (data && data.success) {
       showAdminToast(data.message || `Approval marked as ${action}.`);
+      broadcastAdminDataSync(action, 'approvals', { id: approvalId, action });
       renderApprovalsTable();
       renderCollegesTable();
     } else {
@@ -6798,6 +6823,7 @@ async function saveAdminEnquiryReview(e) {
     if (data.success) {
       showAdminToast(`Enquiry ${status === 'approved' ? 'Approved' : 'Updated'} successfully!`);
       closeAdminEnquiryReviewModal();
+      broadcastAdminDataSync('enquiry_status', 'mentor_enquiries', { id: enquiryId, status });
       loadAdminMentorEnquiries();
     } else {
       showAdminToast(data.message || 'Failed to update enquiry status.');
@@ -8688,6 +8714,7 @@ async function handleUniversalAddSubmit(event) {
       showUniversalToast(isEdit ? `✅ ${recordName} updated successfully in PostgreSQL!` : `✅ ${recordName} added and saved to PostgreSQL!`);
       closeUniversalAddModal();
       _editingRecordId = null;
+      broadcastAdminDataSync(isEdit ? 'update' : 'create', categoryKey, { name: recordName });
 
       // Trigger respective UI reload
       if (categoryKey === 'colleges' && typeof loadColleges === 'function') loadColleges();
@@ -10573,6 +10600,7 @@ async function deleteUniversalRecord(categoryKey, recordId, recordName) {
     const data = await res.json();
     if (data.success) {
       showAdminToast(`Deleted ${recordName || 'record'} successfully from PostgreSQL.`);
+      broadcastAdminDataSync('delete', categoryKey, { id: recordId, name: recordName });
       // Reload UI
       if (categoryKey === 'courses') loadAdminCourses();
       else if (categoryKey === 'domains') loadAdminDomains();

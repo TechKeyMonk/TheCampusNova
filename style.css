@@ -2057,9 +2057,14 @@ html, body, html[data-theme="light"], html[data-theme="dark"], #app, .view {
 .view-bg-overlay ~ * h1,
 .view-bg-overlay ~ * h2,
 .home-body-bg-overlay ~ * h1,
-.home-body-bg-overlay ~ * h2 {
+.home-body-bg-overlay ~ * h2,
+.hero-copy h1,
+.hero-copy .hero-rotator-h1,
+.hero-copy .hero-h1-slide,
+#heroRotatorH1,
+#heroRotatorH1 * {
   color: #FFFFFF !important;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+  text-shadow: none !important;
 }
 
 .view-bg-overlay ~ * h1 em,
@@ -2067,6 +2072,7 @@ html, body, html[data-theme="light"], html[data-theme="dark"], #app, .view {
 .home-body-bg-overlay ~ * h1 em,
 .home-body-bg-overlay ~ * h2 em {
   color: #77AC3B !important;
+  text-shadow: none !important;
 }
 
 /* 6. Carousel Indicators & Active Highlights */
@@ -6941,7 +6947,7 @@ html[data-theme="dark"] .stats-strip strong {
   color: #1E293B;
   font-size: 10.5px;
   z-index: 2;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  text-shadow: none;
 }
 
 .top-college-body {
