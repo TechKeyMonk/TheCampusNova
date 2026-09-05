@@ -3744,6 +3744,20 @@
         display: none !important;
       }
 
+      .dropdown-panel {
+        position: fixed !important;
+        top: 64px !important;
+        left: 12px !important;
+        right: 12px !important;
+        width: auto !important;
+        max-width: calc(100vw - 24px) !important;
+        margin: 0 auto !important;
+        max-height: 82vh !important;
+        overflow-y: auto !important;
+        z-index: 1000 !important;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45) !important;
+      }
+
       .admin-topbar-title {
         font-size: 15px !important;
       }
@@ -5421,6 +5435,8 @@
 
                 <span class="topbar-badge" id="examAlertsHeaderBadge">4 Active</span>
 
+                <button type="button" class="topbar-dropdown-close-btn" onclick="closeAllAdminDropdowns();" style="background:none; border:none; color:var(--admin-muted); font-size:16px; cursor:pointer; padding:2px 8px; margin-left:auto; border-radius:4px; line-height:1;" title="Close" aria-label="Close">✕</button>
+
               </div>
 
               <div class="dropdown-panel-body" id="examAlertsList">
@@ -5449,7 +5465,7 @@
 
             </button>
 
-            <div class="dropdown-panel" id="adminNotesDropdown" style="width:380px;">
+            <div class="dropdown-panel" id="adminNotesDropdown" style="width:min(380px, calc(100vw - 24px)); max-width:92vw;">
 
               <div class="dropdown-panel-header">
 
@@ -5457,9 +5473,11 @@
 
                 <button class="action-btn" style="height:26px; padding:0 8px; font-size:11px;"
 
-                  onclick="switchTab('dashboard'); document.getElementById('adminNotesDropdown').classList.remove('open');">Dashboard
+                  onclick="switchTab('dashboard'); closeAllAdminDropdowns();">Dashboard
 
                   View ➔</button>
+
+                <button type="button" class="topbar-dropdown-close-btn" onclick="closeAllAdminDropdowns();" style="background:none; border:none; color:var(--admin-muted); font-size:16px; cursor:pointer; padding:2px 8px; margin-left:6px; border-radius:4px; line-height:1;" title="Close" aria-label="Close">✕</button>
 
               </div>
 
@@ -12510,7 +12528,7 @@
 
 
 
-  <script src="admin.js?v=admin-auth-fixed-v3"></script>
+  <script src="admin.js?v=20260905-notif-notes-approvals-v4"></script>
 
 </body>
 

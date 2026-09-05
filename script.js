@@ -1588,6 +1588,10 @@ function setView(viewOrRoute, updateHash = true) {
   closeMenus();
   closeMobileDrawer();
 
+  if (canonicalRoute === 'home') {
+    if (typeof loadLiveEventsAndNews === 'function') loadLiveEventsAndNews();
+  }
+
   if (canonicalRoute === 'courses') {
     if (typeof initCoursesDiscovery === 'function') initCoursesDiscovery(true);
   }
@@ -1704,6 +1708,9 @@ window.invalidateAllExploreCaches = invalidateAllExploreCaches;
 function refreshActiveViewLive() {
   if (typeof fetchCollegesLive === 'function') {
     fetchCollegesLive();
+  }
+  if (typeof loadLiveEventsAndNews === 'function') {
+    loadLiveEventsAndNews();
   }
   const currentHash = (window.location.hash || '#home').replace('#', '');
   const activeRoute = typeof resolveRoute === 'function' ? resolveRoute(currentHash) : currentHash;
@@ -16746,6 +16753,7 @@ function initTheCampusNova() {
   try { if (typeof fetchPlacementsLive === 'function') fetchPlacementsLive(); } catch(e) {}
   try { if (typeof fetchInternshipsLive === 'function') fetchInternshipsLive(); } catch(e) {}
   try { if (typeof fetchReviewsLive === 'function') fetchReviewsLive(); } catch(e) {}
+  try { if (typeof loadLiveEventsAndNews === 'function') loadLiveEventsAndNews(); } catch(e) {}
   try { fetch('/api/mentors').then(r => r.json()).then(d => { if (d && d.success && Array.isArray(d.mentors)) _userMentorsCache = d.mentors; }).catch(() => {}); } catch(e) {}
 
   // Initial Route Load
@@ -17670,16 +17678,23 @@ function initExploreBackgroundSlider() {
 window.initExploreBackgroundSlider = initExploreBackgroundSlider;
 
 // Auto-trigger when explore trigger is clicked or on load
-document.addEventListener('DOMContentLoaded', () => {
+function initExploreAndLiveFeeds() {
   initExploreBackgroundSlider();
   const exploreBtn = document.getElementById('exploreTrigger');
-  if (exploreBtn) {
+  if (exploreBtn && !exploreBtn._hasExploreClick) {
+    exploreBtn._hasExploreClick = true;
     exploreBtn.addEventListener('click', () => {
       initExploreBackgroundSlider();
     });
   }
   loadLiveEventsAndNews();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initExploreAndLiveFeeds);
+} else {
+  initExploreAndLiveFeeds();
+}
 
 // ==========================================================================
 // LIVE CAMPUS EVENTS & EDUCATION NEWS CONTROLLER (Synced with Admin Portal)
@@ -17698,7 +17713,11 @@ async function loadLiveEventsAndNews() {
         const countBadge = document.getElementById('homeEventsCountBadge');
         if (countBadge) countBadge.textContent = `${data.events.length} Active`;
         
-        eventsContainer.innerHTML = data.events.map(e => `
+        eventsContainer.innerHTML = data.events.map(e => {
+          const desc = (e.description && e.description.trim())
+            ? e.description.trim()
+            : `Official institutional event and student conclave organized by ${e.college_name || 'the campus'}.`;
+          return `
           <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; transition:transform 0.2s ease, box-shadow 0.2s ease;">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:4px;">
               <strong style="font-size:13.5px; color:#0F172A; line-height:1.4;">${escapeHtml(e.title || '')}</strong>
@@ -17709,9 +17728,10 @@ async function loadLiveEventsAndNews() {
             <div style="font-size:11.5px; color:#64748B; margin-bottom:6px; display:flex; flex-wrap:wrap; gap:8px;">
               <span>🏛️ <strong>${escapeHtml(e.college_name || 'Premier Institution')}</strong></span>
               <span>📅 ${escapeHtml(e.event_date || '')}</span>
+              ${e.time ? `<span>⏰ ${escapeHtml(e.time)}</span>` : ''}
               ${e.venue ? `<span>📍 ${escapeHtml(e.venue)}</span>` : ''}
             </div>
-            <p style="font-size:12px; color:#475569; margin:0 0 8px; line-height:1.5;">${escapeHtml(e.description || '')}</p>
+            <p style="font-size:12px; color:#475569; margin:0 0 8px; line-height:1.5;">${escapeHtml(desc)}</p>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:10.5px; background:#EDF2F7; color:#475569; padding:2px 6px; border-radius:4px; font-weight:600;">
                 ${escapeHtml(e.category || 'Tech Fest')}
@@ -17727,7 +17747,8 @@ async function loadLiveEventsAndNews() {
               `}
             </div>
           </div>
-        `).join('');
+        `;
+        }).join('');
       }
     } catch (err) {
       console.error('Failed to load live events:', err);
@@ -17743,7 +17764,13 @@ async function loadLiveEventsAndNews() {
         const countBadge = document.getElementById('homeNewsCountBadge');
         if (countBadge) countBadge.textContent = `${data.news.length} Bulletins`;
         
-        newsContainer.innerHTML = data.news.map(n => `
+        newsContainer.innerHTML = data.news.map(n => {
+          const summaryText = (n.summary && n.summary.trim())
+            ? n.summary.trim()
+            : ((n.content && n.content.trim())
+              ? n.content.trim()
+              : `Official admission and academic circular announced by ${n.college_name || 'Higher Education Board'}.`);
+          return `
           <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; transition:transform 0.2s ease, box-shadow 0.2s ease;">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:4px;">
               <strong style="font-size:13.5px; color:#0F172A; line-height:1.4;">${escapeHtml(n.title || '')}</strong>
@@ -17757,7 +17784,7 @@ async function loadLiveEventsAndNews() {
               <span>📢 <strong>${escapeHtml(n.college_name || 'Higher Education Authority')}</strong></span>
               <span>📅 ${escapeHtml(n.published_date || '')}</span>
             </div>
-            <p style="font-size:12px; color:#475569; margin:0 0 8px; line-height:1.5;">${escapeHtml(n.summary || '')}</p>
+            <p style="font-size:12px; color:#475569; margin:0 0 8px; line-height:1.5;">${escapeHtml(summaryText)}</p>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:10.5px; background:#EDF2F7; color:#475569; padding:2px 6px; border-radius:4px; font-weight:600;">
                 ${escapeHtml(n.category || 'General')}
@@ -17773,7 +17800,8 @@ async function loadLiveEventsAndNews() {
               `}
             </div>
           </div>
-        `).join('');
+        `;
+        }).join('');
       }
     } catch (err) {
       console.error('Failed to load live news:', err);

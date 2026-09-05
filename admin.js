@@ -58,6 +58,22 @@ function broadcastAdminDataSync(actionType, moduleName, details) {
 }
 window.broadcastAdminDataSync = broadcastAdminDataSync;
 
+// Cross-tab synchronization for Admin Portal
+if (typeof BroadcastChannel !== 'undefined') {
+  try {
+    const adminSyncChannel = new BroadcastChannel('campusnova_data_sync');
+    adminSyncChannel.onmessage = () => {
+      if (typeof updatePendingBadge === 'function') updatePendingBadge();
+    };
+  } catch(e) {}
+}
+
+window.addEventListener('storage', (e) => {
+  if (e.key === 'campusnova_sync_tick' || e.key === 'campnova_approved_content_updates') {
+    if (typeof updatePendingBadge === 'function') updatePendingBadge();
+  }
+});
+
 // ----------------------------------------------------
 // DOM Elements
 // ----------------------------------------------------
@@ -1802,21 +1818,76 @@ if (rejectReasonForm) {
   });
 }
 
-function updatePendingBadge() {
-  const all = getAllApprovals();
-  const pending = all.filter(a => a.status === 'pending-review' || !a.status);
-  const approved = all.filter(a => a.status === 'approved');
-  
+async function updatePendingBadge() {
+  try {
+    const res = await fetch('/api/approvals');
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.success && Array.isArray(data.approvals)) {
+        const pending = data.approvals.filter(a => {
+          const s = (a.status || '').toLowerCase();
+          return s === 'pending' || s === 'pending-review' || s === 'pending review';
+        });
+        const approved = data.approvals.filter(a => (a.status || '').toLowerCase() === 'approved');
+        
+        const count = pending.length;
+        if (pendingBadge) pendingBadge.textContent = count;
+        const detailsBadge = document.getElementById('updateDetailsPendingBadge');
+        if (detailsBadge) detailsBadge.textContent = count;
+        if (kpiPending) kpiPending.textContent = count;
+        if (kpiApproved) kpiApproved.textContent = approved.length;
+        return count;
+      }
+    }
+  } catch (err) {
+    console.warn('[Admin] Approvals live count update error:', err);
+  }
+
+  // Fallback if network offline
+  const all = typeof getAllApprovals === 'function' ? getAllApprovals() : [];
+  const pending = all.filter(a => (a.status || '').toLowerCase() === 'pending-review' || (a.status || '').toLowerCase() === 'pending' || !a.status);
+  const approved = all.filter(a => (a.status || '').toLowerCase() === 'approved');
   if (pendingBadge) pendingBadge.textContent = pending.length;
+  const detailsBadge = document.getElementById('updateDetailsPendingBadge');
+  if (detailsBadge) detailsBadge.textContent = pending.length;
   if (kpiPending) kpiPending.textContent = pending.length;
   if (kpiApproved) kpiApproved.textContent = approved.length;
+  return pending.length;
 }
+window.updatePendingBadge = updatePendingBadge;
 
-function renderQuickApprovalsTable() {
+async function renderQuickApprovalsTable() {
   const tbody = document.getElementById('quickApprovalsTableBody');
   if (!tbody) return;
-  const all = getAllApprovals().slice(0, 5);
 
+  try {
+    const res = await fetch('/api/approvals');
+    if (res.ok) {
+      const data = await res.json();
+      const list = (data && data.success && Array.isArray(data.approvals)) ? data.approvals.slice(0, 5) : [];
+      if (list.length > 0) {
+        tbody.innerHTML = list.map(item => {
+          const isApproved = (item.status || '').toLowerCase() === 'approved';
+          const isRejected = (item.status || '').toLowerCase() === 'rejected';
+          return `
+            <tr>
+              <td><strong>${item.target_title || item.collegeName || 'General College'}</strong></td>
+              <td><span class="status-tag approved">${item.target_type || item.category || 'College'}</span></td>
+              <td><small>${item.submitted_by || item.submittedBy || 'Official'}</small></td>
+              <td><small>${item.date || new Date().toLocaleDateString('en-IN')}</small></td>
+              <td><span class="status-tag ${isApproved ? 'approved' : isRejected ? 'rejected' : 'pending'}">${item.status || 'Pending'}</span></td>
+              <td>
+                <button class="btn-sm edit" onclick="switchTab('approvals')">Inspect ➔</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+        return;
+      }
+    }
+  } catch(e) {}
+
+  const all = typeof getAllApprovals === 'function' ? getAllApprovals().slice(0, 5) : [];
   if (all.length === 0) {
     tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--admin-muted);">No recent submissions.</td></tr>`;
     return;
@@ -1941,29 +2012,70 @@ if (adminNoteForm) {
   });
 }
 
-// Dropdown Toggles
-if (examAlertsToggleBtn && examAlertsDropdown) {
+// Dropdown Controller (Notification, Admin Notes & 19 Modules)
+function closeAllAdminDropdowns() {
+  const dropdownIds = ['examAlertsDropdown', 'adminNotesDropdown', 'sixteenFieldsDropdown'];
+  dropdownIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.remove('open');
+      el.style.display = 'none';
+    }
+  });
+}
+window.closeAllAdminDropdowns = closeAllAdminDropdowns;
+
+function toggleAdminDropdown(targetId, onOpenCallback) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+  const isAlreadyOpen = target.classList.contains('open') && target.style.display !== 'none';
+  
+  closeAllAdminDropdowns();
+
+  if (!isAlreadyOpen) {
+    target.classList.add('open');
+    target.style.display = targetId === 'sixteenFieldsDropdown' ? 'flex' : 'block';
+    if (typeof onOpenCallback === 'function') {
+      onOpenCallback();
+    }
+  }
+}
+window.toggleAdminDropdown = toggleAdminDropdown;
+
+if (examAlertsToggleBtn) {
   examAlertsToggleBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    examAlertsDropdown.classList.toggle('open');
-    if (adminNotesDropdown) adminNotesDropdown.classList.remove('open');
+    e.preventDefault();
+    toggleAdminDropdown('examAlertsDropdown', () => {
+      renderExamAlerts();
+    });
   });
 }
 
-if (adminNotesToggleBtn && adminNotesDropdown) {
+if (adminNotesToggleBtn) {
   adminNotesToggleBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    adminNotesDropdown.classList.toggle('open');
-    if (examAlertsDropdown) examAlertsDropdown.classList.remove('open');
+    e.preventDefault();
+    toggleAdminDropdown('adminNotesDropdown', () => {
+      renderAdminNotes();
+    });
   });
 }
 
 document.addEventListener('click', (e) => {
-  if (examAlertsDropdown && !examAlertsDropdown.contains(e.target) && e.target !== examAlertsToggleBtn) {
-    examAlertsDropdown.classList.remove('open');
+  const wraps = ['examAlertsWrap', 'adminNotesWrap', 'sixteenFieldsWrap'];
+  const clickedInsideAnyWrap = wraps.some(id => {
+    const el = document.getElementById(id);
+    return el && el.contains(e.target);
+  });
+  if (!clickedInsideAnyWrap) {
+    closeAllAdminDropdowns();
   }
-  if (adminNotesDropdown && !adminNotesDropdown.contains(e.target) && e.target !== adminNotesToggleBtn) {
-    adminNotesDropdown.classList.remove('open');
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeAllAdminDropdowns();
   }
 });
 
@@ -6258,6 +6370,7 @@ async function renderApprovalsTable(category = 'all') {
     const res = await fetch('/api/approvals');
     const data = await res.json();
     const approvals = (data && data.success && Array.isArray(data.approvals)) ? data.approvals : [];
+    updatePendingBadge();
 
     const filtered = approvals.filter(item => {
       return category === 'all' || (item.target_type && item.target_type.toLowerCase() === category.toLowerCase());
@@ -6316,8 +6429,10 @@ async function processApproval(approvalId, action) {
     if (data && data.success) {
       showAdminToast(data.message || `Approval marked as ${action}.`);
       broadcastAdminDataSync(action, 'approvals', { id: approvalId, action });
+      await updatePendingBadge();
       renderApprovalsTable();
       renderCollegesTable();
+      if (typeof renderDashboardSummary === 'function') renderDashboardSummary();
     } else {
       showAdminToast(data.message || 'Action failed.');
     }
@@ -10626,19 +10741,18 @@ function initSixteenFieldsDropdown() {
   if (toggleBtn && dropdown) {
     toggleBtn.onclick = (e) => {
       e.stopPropagation();
-      const isOpen = dropdown.classList.contains('open') || dropdown.style.display === 'flex';
-      document.querySelectorAll('.dropdown-panel').forEach(p => {
-        if (p !== dropdown) {
-          p.classList.remove('open');
-          p.style.display = 'none';
-        }
-      });
-      if (!isOpen) {
-        dropdown.classList.add('open');
-        dropdown.style.display = 'flex';
+      e.preventDefault();
+      if (typeof toggleAdminDropdown === 'function') {
+        toggleAdminDropdown('sixteenFieldsDropdown');
       } else {
-        dropdown.classList.remove('open');
-        dropdown.style.display = 'none';
+        const isOpen = dropdown.classList.contains('open') || dropdown.style.display === 'flex';
+        if (!isOpen) {
+          dropdown.classList.add('open');
+          dropdown.style.display = 'flex';
+        } else {
+          dropdown.classList.remove('open');
+          dropdown.style.display = 'none';
+        }
       }
     };
   }
@@ -11137,14 +11251,24 @@ document.addEventListener('click', (e) => {
 });
 
 // Auto-run on load
-document.addEventListener('DOMContentLoaded', () => {
+function initAdminMasterFeeds() {
   if (typeof initSixteenFieldsDropdown === 'function') initSixteenFieldsDropdown();
+  if (typeof updatePendingBadge === 'function') updatePendingBadge();
+  if (typeof renderExamAlerts === 'function') renderExamAlerts();
+  if (typeof renderAdminNotes === 'function') renderAdminNotes();
   setTimeout(() => {
     if (typeof loadAdminCourses === 'function') loadAdminCourses();
     if (typeof loadAdminDomains === 'function') loadAdminDomains();
     if (typeof loadAdminCareers === 'function') loadAdminCareers();
     if (typeof loadAdminJobs === 'function') loadAdminJobs();
     if (typeof loadAdminAdmissions === 'function') loadAdminAdmissions();
+    if (typeof updatePendingBadge === 'function') updatePendingBadge();
   }, 200);
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAdminMasterFeeds);
+} else {
+  initAdminMasterFeeds();
+}
 
