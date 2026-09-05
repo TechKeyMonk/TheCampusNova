@@ -135,7 +135,8 @@ def query_all(sql, params=None):
             rows = cur.fetchall()
             return [dict(r) for r in rows]
     except Exception as e:
-        print(f"[PostgreSQL Query Error] {e} (SQL: {sql[:60]}...)")
+        safe_msg = str(e).encode('ascii', 'replace').decode('ascii')
+        print(f"[PostgreSQL Query Error] {safe_msg} (SQL: {sql[:60]}...)")
         if conn:
             try: conn.rollback()
             except Exception: pass
@@ -187,7 +188,8 @@ def execute_query(sql, params=None):
                 return dict(row) if row else None
             return cur.rowcount
     except Exception as e:
-        print(f"[PostgreSQL Execute Error] {e} (SQL: {sql[:60]}...)")
+        safe_msg = str(e).encode('ascii', 'replace').decode('ascii')
+        print(f"[PostgreSQL Execute Error] {safe_msg} (SQL: {sql[:60]}...)")
         if conn:
             conn.rollback()
         return None

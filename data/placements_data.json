@@ -93,6 +93,24 @@
       "highest_package": "Rs. 65 LPA",
       "placement_percentage": "98%",
       "year": 2026,
+      "id": 48
+    },
+    {
+      "company_name": "Test Nvidia Quantum AI",
+      "college_id": 2,
+      "average_package": "Rs. 24 LPA",
+      "highest_package": "Rs. 65 LPA",
+      "placement_percentage": "98%",
+      "year": 2026,
+      "id": 47
+    },
+    {
+      "company_name": "Test Nvidia Quantum AI",
+      "college_id": 2,
+      "average_package": "Rs. 24 LPA",
+      "highest_package": "Rs. 65 LPA",
+      "placement_percentage": "98%",
+      "year": 2026,
       "id": 43
     },
     {

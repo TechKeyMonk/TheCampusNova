@@ -1086,6 +1086,9 @@ if (document.readyState === 'loading') {
 // 3. NAVIGATION & TAB SWITCHING
 // ----------------------------------------------------
 
+let _adminTabLoadedTime = {};
+const TAB_CACHE_TTL_MS = 60000; // 60s cache TTL for instant tab switching
+
 function switchTab(tabId) {
   navButtons.forEach(btn => {
     btn.classList.toggle('active', btn.dataset.tab === tabId);
@@ -1100,6 +1103,9 @@ function switchTab(tabId) {
     const titleSpan = activeBtn.querySelector('span:nth-child(2)');
     if (titleSpan) currentSectionTitle.textContent = titleSpan.textContent;
   }
+
+  const now = Date.now();
+  const isExpired = !_adminTabLoadedTime[tabId] || (now - _adminTabLoadedTime[tabId] > TAB_CACHE_TTL_MS);
 
   // Trigger relevant renders
   if (tabId === 'dashboard') {
@@ -1131,23 +1137,32 @@ function switchTab(tabId) {
   if (tabId === 'internships') { loadInternships(); }
   if (tabId === 'logs') { 
     renderLogsTable('all'); 
-    loadAdminUpdateAccessLogs();
+    loadAdminUpdateAccessLogs(); 
   }
   if (tabId === 'mentors') { 
     loadAdminMentors(); 
     loadAdminMentorEnquiries();
   }
   if (tabId === 'scholarships') {
-    if (typeof window.loadScholarships === 'function') window.loadScholarships();
-    else if (typeof initAdminScholarships === 'function') initAdminScholarships();
+    if (isExpired || !window._adminScholarshipsCache || window._adminScholarshipsCache.length === 0) {
+      _adminTabLoadedTime[tabId] = now;
+      if (typeof window.loadScholarships === 'function') window.loadScholarships();
+      else if (typeof initAdminScholarships === 'function') initAdminScholarships();
+    }
   }
   if (tabId === 'facilities') {
-    if (typeof window.loadFacilities === 'function') window.loadFacilities();
-    else if (typeof initAdminFacilities === 'function') initAdminFacilities();
+    if (isExpired || !window._adminFacilitiesCache || window._adminFacilitiesCache.length === 0) {
+      _adminTabLoadedTime[tabId] = now;
+      if (typeof window.loadFacilities === 'function') window.loadFacilities();
+      else if (typeof initAdminFacilities === 'function') initAdminFacilities();
+    }
   }
   if (tabId === 'entrance-prep') {
-    if (typeof window.loadEntrancePrep === 'function') window.loadEntrancePrep();
-    else if (typeof initAdminEntrancePrep === 'function') initAdminEntrancePrep();
+    if (isExpired || !window._adminEntrancePrepCache || window._adminEntrancePrepCache.length === 0) {
+      _adminTabLoadedTime[tabId] = now;
+      if (typeof window.loadEntrancePrep === 'function') window.loadEntrancePrep();
+      else if (typeof initAdminEntrancePrep === 'function') initAdminEntrancePrep();
+    }
   }
   if (tabId === 'comparisons') {
     if (typeof loadAdminComparisons === 'function') loadAdminComparisons();
@@ -7046,6 +7061,7 @@ function initAdminScholarships() {
       const res = await fetch(`/api/scholarships/full?state=${encodeURIComponent(state)}&district=${encodeURIComponent(district)}&q=${encodeURIComponent(q)}`);
       const data = await res.json();
       const list = data.scholarships || [];
+      window._adminScholarshipsCache = list;
 
       tableBody.innerHTML = '';
       if (list.length === 0) {
@@ -7068,6 +7084,7 @@ function initAdminScholarships() {
           <td>
             <div style="display:flex; gap:6px;">
               <button class="btn btn-sm btn-secondary edit-sch-btn" data-id="${item.id}" type="button">Edit</button>
+              <button class="btn btn-sm btn-info review-sch-btn" data-id="${item.id}" type="button" style="background:#0284C7; color:#fff; border:none; padding:4px 8px; font-size:11px; border-radius:4px; cursor:pointer;">Review</button>
               <button class="btn btn-sm btn-danger del-sch-btn" data-id="${item.id}" type="button">Delete</button>
             </div>
           </td>
@@ -7080,9 +7097,27 @@ function initAdminScholarships() {
         btn.addEventListener('click', async () => {
           const id = btn.dataset.id;
           if (confirm(`Are you sure you want to remove scholarship ${id}?`)) {
-            await fetch(`/api/scholarships/${id}`, { method: 'DELETE', headers: { 'X-Admin-Role': 'admin' } });
-            if (typeof showToast === 'function') showToast(`Scholarship ${id} removed successfully.`);
-            loadScholarships();
+            const res = await fetch(`/api/scholarships/${encodeURIComponent(id)}`, {
+              method: 'DELETE',
+              headers: { 'X-Admin-Role': 'admin', 'X-Admin-Passkey': 'admin123' }
+            });
+            const d = await res.json();
+            if (d.success) {
+              if (typeof showAdminToast === 'function') showAdminToast(`Scholarship ${id} removed successfully.`);
+              else if (typeof showToast === 'function') showToast(`Scholarship ${id} removed successfully.`);
+              loadScholarships();
+            } else {
+              alert(d.message || 'Failed to delete scholarship');
+            }
+          }
+        });
+      });
+
+      // Bind review
+      tableBody.querySelectorAll('.review-sch-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (typeof openReviewScholarshipModal === 'function') {
+            openReviewScholarshipModal(btn.dataset.id);
           }
         });
       });
@@ -7091,7 +7126,7 @@ function initAdminScholarships() {
       tableBody.querySelectorAll('.edit-sch-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.dataset.id;
-          const target = list.find(s => s.id === id);
+          const target = list.find(s => String(s.id) === String(id));
           if (target && modalBackdrop) {
             document.getElementById('scholarshipModalTitle').textContent = `Edit Scholarship (${id})`;
             document.getElementById('schEditId').value = id;
@@ -7100,7 +7135,8 @@ function initAdminScholarships() {
             document.getElementById('schState').value = target.state || 'Tamil Nadu';
             document.getElementById('schDistrict').value = target.district || 'Coimbatore';
             document.getElementById('schBenefit').value = target.benefit || '';
-            document.getElementById('schEligibility').value = target.eligibility_criteria || '';
+            document.getElementById('schEligibility').value = target.eligibility_criteria || target.eligibility || '';
+            modalBackdrop.style.display = 'flex';
             modalBackdrop.classList.add('open');
           }
         });
@@ -7120,12 +7156,23 @@ function initAdminScholarships() {
       document.getElementById('scholarshipModalTitle').textContent = 'Add New Scholarship Scheme';
       if (form) form.reset();
       document.getElementById('schEditId').value = '';
+      modalBackdrop.style.display = 'flex';
       modalBackdrop.classList.add('open');
     });
   }
 
-  if (closeBtn && modalBackdrop) closeBtn.addEventListener('click', () => modalBackdrop.classList.remove('open'));
-  if (cancelBtn && modalBackdrop) cancelBtn.addEventListener('click', () => modalBackdrop.classList.remove('open'));
+  if (closeBtn && modalBackdrop) {
+    closeBtn.addEventListener('click', () => {
+      modalBackdrop.style.display = 'none';
+      modalBackdrop.classList.remove('open');
+    });
+  }
+  if (cancelBtn && modalBackdrop) {
+    cancelBtn.addEventListener('click', () => {
+      modalBackdrop.style.display = 'none';
+      modalBackdrop.classList.remove('open');
+    });
+  }
 
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -7141,22 +7188,30 @@ function initAdminScholarships() {
       };
 
       try {
+        let res;
         if (editId) {
-          await fetch(`/api/scholarships/${editId}`, {
+          res = await fetch(`/api/scholarships/${encodeURIComponent(editId)}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'X-Admin-Role': 'admin' },
+            headers: { 'Content-Type': 'application/json', 'X-Admin-Role': 'admin', 'X-Admin-Passkey': 'admin123' },
             body: JSON.stringify(payload)
           });
         } else {
-          await fetch('/api/scholarships', {
+          res = await fetch('/api/scholarships', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-Admin-Role': 'admin' },
+            headers: { 'Content-Type': 'application/json', 'X-Admin-Role': 'admin', 'X-Admin-Passkey': 'admin123' },
             body: JSON.stringify(payload)
           });
         }
-        modalBackdrop.classList.remove('open');
-        if (typeof showToast === 'function') showToast('Scholarship saved successfully!');
-        loadScholarships();
+        const data = await res.json();
+        if (data.success || res.ok) {
+          modalBackdrop.style.display = 'none';
+          modalBackdrop.classList.remove('open');
+          if (typeof showAdminToast === 'function') showAdminToast('Scholarship saved successfully!');
+          else if (typeof showToast === 'function') showToast('Scholarship saved successfully!');
+          loadScholarships();
+        } else {
+          alert(data.message || 'Failed to save scholarship');
+        }
       } catch (err) {
         alert('Error saving scholarship: ' + err.message);
       }
@@ -7188,6 +7243,7 @@ function initAdminFacilities() {
       const res = await fetch(`/api/facilities?state=${encodeURIComponent(state)}&district=${encodeURIComponent(district)}`);
       const data = await res.json();
       const list = data.facilities || [];
+      window._adminFacilitiesCache = list;
 
       tableBody.innerHTML = '';
       if (list.length === 0) {
@@ -7196,6 +7252,7 @@ function initAdminFacilities() {
       }
 
       list.forEach(item => {
+        const itemKey = item.id || item.college_id;
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><strong>${item.college_id}</strong></td>
@@ -7206,8 +7263,9 @@ function initAdminFacilities() {
           <td><span style="color:#3A9B8F; font-weight:700;">★ ${item.scores?.labs || 9.2} / 10</span></td>
           <td>
             <div style="display:flex; gap:6px;">
-              <button class="btn btn-sm btn-secondary edit-fac-btn" data-id="${item.college_id}" type="button">Edit</button>
-              <button class="btn btn-sm btn-danger del-fac-btn" data-id="${item.college_id}" type="button">Delete</button>
+              <button class="btn btn-sm btn-secondary edit-fac-btn" data-id="${itemKey}" type="button">Edit</button>
+              <button class="btn btn-sm btn-info review-fac-btn" data-id="${itemKey}" type="button" style="background:#0284C7; color:#fff; border:none; padding:4px 8px; font-size:11px; border-radius:4px; cursor:pointer;">Review</button>
+              <button class="btn btn-sm btn-danger del-fac-btn" data-id="${itemKey}" type="button">Delete</button>
             </div>
           </td>
         `;
@@ -7219,9 +7277,27 @@ function initAdminFacilities() {
         btn.addEventListener('click', async () => {
           const id = btn.dataset.id;
           if (confirm(`Are you sure you want to delete facilities record for ${id}?`)) {
-            await fetch(`/api/facilities/${id}`, { method: 'DELETE', headers: { 'X-Admin-Role': 'admin' } });
-            if (typeof showToast === 'function') showToast(`Facility record ${id} removed.`);
-            loadFacilities();
+            const res = await fetch(`/api/facilities/${encodeURIComponent(id)}`, {
+              method: 'DELETE',
+              headers: { 'X-Admin-Role': 'admin', 'X-Admin-Passkey': 'admin123' }
+            });
+            const d = await res.json();
+            if (d.success) {
+              if (typeof showAdminToast === 'function') showAdminToast(`Facility record ${id} removed.`);
+              else if (typeof showToast === 'function') showToast(`Facility record ${id} removed.`);
+              loadFacilities();
+            } else {
+              alert(d.message || 'Failed to delete facility record');
+            }
+          }
+        });
+      });
+
+      // Bind review
+      tableBody.querySelectorAll('.review-fac-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (typeof openReviewFacilityModal === 'function') {
+            openReviewFacilityModal(btn.dataset.id);
           }
         });
       });
@@ -7230,13 +7306,14 @@ function initAdminFacilities() {
       tableBody.querySelectorAll('.edit-fac-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.dataset.id;
-          const target = list.find(f => f.college_id === id);
+          const target = list.find(f => String(f.id) === String(id) || String(f.college_id) === String(id));
           if (target && modalBackdrop) {
             document.getElementById('facilityModalTitle').textContent = `Edit Facilities (${target.college_name})`;
             document.getElementById('facCollegeId').value = target.college_id || '';
             document.getElementById('facCollegeName').value = target.college_name || '';
             document.getElementById('facLabs').value = target.labs || '';
-            document.getElementById('facSports').value = target.sports_areas || '';
+            document.getElementById('facSports').value = target.sports_areas || target.sports || '';
+            modalBackdrop.style.display = 'flex';
             modalBackdrop.classList.add('open');
           }
         });
@@ -7256,12 +7333,23 @@ function initAdminFacilities() {
     addBtn.addEventListener('click', () => {
       document.getElementById('facilityModalTitle').textContent = 'Add College Facility Record';
       if (form) form.reset();
+      modalBackdrop.style.display = 'flex';
       modalBackdrop.classList.add('open');
     });
   }
 
-  if (closeBtn && modalBackdrop) closeBtn.addEventListener('click', () => modalBackdrop.classList.remove('open'));
-  if (cancelBtn && modalBackdrop) cancelBtn.addEventListener('click', () => modalBackdrop.classList.remove('open'));
+  if (closeBtn && modalBackdrop) {
+    closeBtn.addEventListener('click', () => {
+      modalBackdrop.style.display = 'none';
+      modalBackdrop.classList.remove('open');
+    });
+  }
+  if (cancelBtn && modalBackdrop) {
+    cancelBtn.addEventListener('click', () => {
+      modalBackdrop.style.display = 'none';
+      modalBackdrop.classList.remove('open');
+    });
+  }
 
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -7278,14 +7366,21 @@ function initAdminFacilities() {
       };
 
       try {
-        await fetch(`/api/facilities/${collegeId}`, {
+        const res = await fetch(`/api/facilities/${encodeURIComponent(collegeId)}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json', 'X-Admin-Role': 'admin' },
+          headers: { 'Content-Type': 'application/json', 'X-Admin-Role': 'admin', 'X-Admin-Passkey': 'admin123' },
           body: JSON.stringify(payload)
         });
-        modalBackdrop.classList.remove('open');
-        if (typeof showToast === 'function') showToast('College facility record saved!');
-        loadFacilities();
+        const data = await res.json();
+        if (data.success || res.ok) {
+          modalBackdrop.style.display = 'none';
+          modalBackdrop.classList.remove('open');
+          if (typeof showAdminToast === 'function') showAdminToast('College facility record saved!');
+          else if (typeof showToast === 'function') showToast('College facility record saved!');
+          loadFacilities();
+        } else {
+          alert(data.message || 'Error saving facility record');
+        }
       } catch (err) {
         alert('Error saving facility record: ' + err.message);
       }
@@ -7316,6 +7411,7 @@ function initAdminEntrancePrep() {
       const res = await fetch(`/api/entrance-exams?field=${encodeURIComponent(field)}&q=${encodeURIComponent(q)}`);
       const data = await res.json();
       const list = data.exams || [];
+      window._adminEntrancePrepCache = list;
 
       tableBody.innerHTML = '';
       if (list.length === 0) {
@@ -7325,7 +7421,7 @@ function initAdminEntrancePrep() {
 
       list.forEach(item => {
         const tr = document.createElement('tr');
-        const isApproved = item.status !== 'pending';
+        const isApproved = item.status !== 'pending' && item.status !== 'inactive';
         const statusBadge = isApproved 
           ? '<span class="status-tag approved" style="font-size:10.5px; padding:2px 8px;">Approved</span>' 
           : '<span class="status-tag pending" style="font-size:10.5px; padding:2px 8px;">Pending</span>';
@@ -7349,9 +7445,7 @@ function initAdminEntrancePrep() {
             <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
               <button class="btn btn-sm btn-secondary view-roadmap-btn" data-id="${item.id}" type="button" title="View Stages">Roadmap</button>
               <button class="btn btn-sm btn-secondary edit-prep-btn" data-id="${item.id}" type="button">Edit</button>
-              <button class="btn btn-sm toggle-prep-status-btn ${isApproved ? 'btn-secondary' : 'btn-primary'}" data-id="${item.id}" data-status="${isApproved ? 'pending' : 'approved'}" type="button" title="${isApproved ? 'Set to Pending' : 'Approve Exam'}">
-                ${isApproved ? 'Pending' : 'Approve'}
-              </button>
+              <button class="btn btn-sm btn-info review-prep-btn" data-id="${item.id}" type="button" style="background:#0284C7; color:#fff; border:none; padding:4px 8px; font-size:11px; border-radius:4px; cursor:pointer;" title="Review Exam">Review</button>
               <button class="btn btn-sm btn-danger del-prep-btn" data-id="${item.id}" type="button" title="Delete record">Delete</button>
             </div>
           </td>
@@ -7362,36 +7456,17 @@ function initAdminEntrancePrep() {
       // Bind Roadmap View
       tableBody.querySelectorAll('.view-roadmap-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          const id = btn.dataset.id;
-          const target = list.find(e => e.id === id);
-          if (target) {
-            const stagesText = Array.isArray(target.roadmap) ? target.roadmap.join('\n• ') : (target.stages || target.purpose || 'All stages active');
-            alert(`Roadmap Stages for ${target.name}:\n\n• ${stagesText}`);
+          if (typeof openAdminRoadmapModal === 'function') {
+            openAdminRoadmapModal(btn.dataset.id);
           }
         });
       });
 
-      // Bind Status Toggle (Approve / Pending)
-      tableBody.querySelectorAll('.toggle-prep-status-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const id = btn.dataset.id;
-          const newStatus = btn.dataset.status;
-          try {
-            const res = await fetch(`/api/entrance-exams/${id}`, {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json', 'X-Admin-Role': 'admin' },
-              body: JSON.stringify({ status: newStatus })
-            });
-            const data = await res.json();
-            if (data.success) {
-              if (typeof showToast === 'function') showToast(`Exam ${id} status set to ${newStatus}.`);
-              else if (typeof showAdminToast === 'function') showAdminToast(`Exam ${id} status set to ${newStatus}.`);
-              loadEntrancePrep();
-            } else {
-              alert(data.message || 'Failed to update status');
-            }
-          } catch (err) {
-            alert('Error updating status: ' + err.message);
+      // Bind Review View
+      tableBody.querySelectorAll('.review-prep-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (typeof openReviewEntrancePrepModal === 'function') {
+            openReviewEntrancePrepModal(btn.dataset.id);
           }
         });
       });
@@ -7402,14 +7477,14 @@ function initAdminEntrancePrep() {
           const id = btn.dataset.id;
           if (confirm(`Are you sure you want to delete entrance exam ${id}?`)) {
             try {
-              const res = await fetch(`/api/entrance-exams/${id}`, {
+              const res = await fetch(`/api/entrance-exams/${encodeURIComponent(id)}`, {
                 method: 'DELETE',
-                headers: { 'X-Admin-Role': 'admin' }
+                headers: { 'X-Admin-Role': 'admin', 'X-Admin-Passkey': 'admin123' }
               });
               const data = await res.json();
               if (data.success) {
-                if (typeof showToast === 'function') showToast(`Exam ${id} deleted.`);
-                else if (typeof showAdminToast === 'function') showAdminToast(`Exam ${id} deleted.`);
+                if (typeof showAdminToast === 'function') showAdminToast(`Exam ${id} deleted.`);
+                else if (typeof showToast === 'function') showToast(`Exam ${id} deleted.`);
                 loadEntrancePrep();
               } else {
                 alert(data.message || 'Failed to delete');
@@ -7425,7 +7500,7 @@ function initAdminEntrancePrep() {
       tableBody.querySelectorAll('.edit-prep-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.dataset.id;
-          const target = list.find(e => e.id === id);
+          const target = list.find(e => String(e.id) === String(id));
           if (target && modalBackdrop) {
             document.getElementById('entrancePrepModalTitle').textContent = `Edit Entrance Exam (${id})`;
             document.getElementById('prepExamId').value = id;
@@ -7437,6 +7512,7 @@ function initAdminEntrancePrep() {
             if (document.getElementById('prepRoadmap')) {
               document.getElementById('prepRoadmap').value = Array.isArray(target.roadmap) ? target.roadmap.join(', ') : (target.stages || '');
             }
+            modalBackdrop.style.display = 'flex';
             modalBackdrop.classList.add('open');
           }
         });
@@ -7459,12 +7535,23 @@ function initAdminEntrancePrep() {
       document.getElementById('entrancePrepModalTitle').textContent = 'Add Entrance Exam Record';
       if (form) form.reset();
       document.getElementById('prepExamId').value = '';
+      modalBackdrop.style.display = 'flex';
       modalBackdrop.classList.add('open');
     });
   }
 
-  if (closeBtn && modalBackdrop) closeBtn.addEventListener('click', () => modalBackdrop.classList.remove('open'));
-  if (cancelBtn && modalBackdrop) cancelBtn.addEventListener('click', () => modalBackdrop.classList.remove('open'));
+  if (closeBtn && modalBackdrop) {
+    closeBtn.addEventListener('click', () => {
+      modalBackdrop.style.display = 'none';
+      modalBackdrop.classList.remove('open');
+    });
+  }
+  if (cancelBtn && modalBackdrop) {
+    cancelBtn.addEventListener('click', () => {
+      modalBackdrop.style.display = 'none';
+      modalBackdrop.classList.remove('open');
+    });
+  }
 
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -7487,23 +7574,24 @@ function initAdminEntrancePrep() {
       try {
         let res;
         if (editId) {
-          res = await fetch(`/api/entrance-exams/${editId}`, {
+          res = await fetch(`/api/entrance-exams/${encodeURIComponent(editId)}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'X-Admin-Role': 'admin' },
+            headers: { 'Content-Type': 'application/json', 'X-Admin-Role': 'admin', 'X-Admin-Passkey': 'admin123' },
             body: JSON.stringify(payload)
           });
         } else {
           res = await fetch('/api/entrance-exams', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-Admin-Role': 'admin' },
+            headers: { 'Content-Type': 'application/json', 'X-Admin-Role': 'admin', 'X-Admin-Passkey': 'admin123' },
             body: JSON.stringify(payload)
           });
         }
         const resData = await res.json();
         if (resData.success) {
+          modalBackdrop.style.display = 'none';
           modalBackdrop.classList.remove('open');
-          if (typeof showToast === 'function') showToast('Entrance exam record saved successfully!');
-          else if (typeof showAdminToast === 'function') showAdminToast('Entrance exam record saved successfully!');
+          if (typeof showAdminToast === 'function') showAdminToast('Entrance exam record saved successfully!');
+          else if (typeof showToast === 'function') showToast('Entrance exam record saved successfully!');
           loadEntrancePrep();
         } else {
           alert(resData.message || 'Error saving entrance exam');
@@ -7788,6 +7876,7 @@ function renderAdminEventsTable(events) {
       <td>
         <div style="display:flex; gap:6px;">
           <button type="button" class="action-btn" style="padding:4px 8px; font-size:11px;" onclick="openEditEventModal('${e.id}')">✏️ Edit</button>
+          <button type="button" class="action-btn" style="padding:4px 8px; font-size:11px; background:#F1F5F9; color:#0F172A;" onclick="openReviewEventModal('${e.id}')">👁️ Review</button>
           <button type="button" class="action-btn" style="padding:4px 8px; font-size:11px; color:#DC2626;" onclick="deleteAdminEvent('${e.id}')">🗑️ Delete</button>
         </div>
       </td>
@@ -7978,6 +8067,7 @@ function renderAdminNewsTable(news) {
       <td>
         <div style="display:flex; gap:6px;">
           <button type="button" class="action-btn" style="padding:4px 8px; font-size:11px;" onclick="openEditNewsModal('${n.id}')">✏️ Edit</button>
+          <button type="button" class="action-btn" style="padding:4px 8px; font-size:11px; background:#F1F5F9; color:#0F172A;" onclick="openReviewNewsModal('${n.id}')">👁️ Review</button>
           <button type="button" class="action-btn" style="padding:4px 8px; font-size:11px; color:#DC2626;" onclick="deleteAdminNews('${n.id}')">🗑️ Delete</button>
         </div>
       </td>
@@ -8190,6 +8280,412 @@ async function generateNewsWithAI() {
   }
 }
 window.generateNewsWithAI = generateNewsWithAI;
+
+// ==============================================================================
+// 5-MODULE UNIFIED REVIEW & GOVERNANCE CONTROLLER
+// Modules: Events, News, Entrance Prep, Facilities, Scholarships
+// ==============================================================================
+
+function openReviewEventModal(id) {
+  const e = (_adminEventsCache || []).find(x => String(x.id) === String(id));
+  if (!e) return;
+  const badge = document.getElementById('recordReviewBadge');
+  const title = document.getElementById('recordReviewTitle');
+  const modInput = document.getElementById('recordReviewModule');
+  const idInput = document.getElementById('recordReviewId');
+  const card = document.getElementById('recordReviewSummaryCard');
+  const sel = document.getElementById('recordReviewStatusSelect');
+  const notes = document.getElementById('recordReviewNotes');
+  const backdrop = document.getElementById('adminRecordReviewModalBackdrop');
+
+  if (badge) badge.textContent = 'CAMPUS EVENTS • VERIFICATION AUDIT';
+  if (title) title.textContent = `Review Event: ${e.title || id}`;
+  if (modInput) modInput.value = 'events';
+  if (idInput) idInput.value = id;
+  if (notes) notes.value = '';
+
+  if (card) {
+    card.innerHTML = `
+      <div><strong>Title:</strong> ${escapeHtml(e.title || '')}</div>
+      <div><strong>Institution:</strong> ${escapeHtml(e.college_name || 'N/A')} (${escapeHtml(e.college_id || '')})</div>
+      <div><strong>Category & Date:</strong> ${escapeHtml(e.category || '')} | 📅 ${escapeHtml(e.event_date || '')} ${escapeHtml(e.time || '')}</div>
+      <div><strong>Venue:</strong> ${escapeHtml(e.venue || '')}</div>
+      <div><strong>Current Status:</strong> <span class="status-pill ${e.status === 'Active' || e.status === 'Published' ? 'published' : 'pending'}">${escapeHtml(e.status || 'Upcoming')}</span></div>
+    `;
+  }
+
+  if (sel) {
+    sel.innerHTML = `
+      <option value="Active" ${e.status === 'Active' ? 'selected' : ''}>Active / Approved & Published</option>
+      <option value="Upcoming" ${e.status === 'Upcoming' ? 'selected' : ''}>Upcoming / Scheduled</option>
+      <option value="Pending Review" ${e.status === 'Pending Review' || e.status === 'Pending' ? 'selected' : ''}>Pending Verification</option>
+      <option value="Archived" ${e.status === 'Archived' ? 'selected' : ''}>Archived / Inactive</option>
+    `;
+  }
+
+  if (backdrop) {
+    backdrop.style.display = 'flex';
+    backdrop.classList.add('open');
+  }
+}
+window.openReviewEventModal = openReviewEventModal;
+
+function openReviewNewsModal(id) {
+  const n = (_adminNewsCache || []).find(x => String(x.id) === String(id));
+  if (!n) return;
+  const badge = document.getElementById('recordReviewBadge');
+  const title = document.getElementById('recordReviewTitle');
+  const modInput = document.getElementById('recordReviewModule');
+  const idInput = document.getElementById('recordReviewId');
+  const card = document.getElementById('recordReviewSummaryCard');
+  const sel = document.getElementById('recordReviewStatusSelect');
+  const notes = document.getElementById('recordReviewNotes');
+  const backdrop = document.getElementById('adminRecordReviewModalBackdrop');
+
+  if (badge) badge.textContent = 'NEWS BULLETIN • EDITORIAL AUDIT';
+  if (title) title.textContent = `Review News: ${n.title || id}`;
+  if (modInput) modInput.value = 'news';
+  if (idInput) idInput.value = id;
+  if (notes) notes.value = '';
+
+  if (card) {
+    card.innerHTML = `
+      <div><strong>Headline:</strong> ${escapeHtml(n.title || '')}</div>
+      <div><strong>Authority/College:</strong> ${escapeHtml(n.college_name || 'Higher Education Authority')}</div>
+      <div><strong>Category & Date:</strong> ${escapeHtml(n.category || '')} | 📅 ${escapeHtml(n.published_date || '')}</div>
+      <div><strong>Summary:</strong> ${escapeHtml(n.summary || '')}</div>
+      <div><strong>Current Status:</strong> <span class="status-pill ${n.status === 'Published' ? 'published' : 'pending'}">${escapeHtml(n.status || 'Published')}</span></div>
+    `;
+  }
+
+  if (sel) {
+    sel.innerHTML = `
+      <option value="Published" ${n.status === 'Published' ? 'selected' : ''}>Published / Live on Portal</option>
+      <option value="Verified" ${n.status === 'Verified' ? 'selected' : ''}>Verified & Approved</option>
+      <option value="Pending" ${n.status === 'Pending' ? 'selected' : ''}>Pending Editorial Approval</option>
+      <option value="Draft" ${n.status === 'Draft' ? 'selected' : ''}>Draft / Withdrawn</option>
+    `;
+  }
+
+  if (backdrop) {
+    backdrop.style.display = 'flex';
+    backdrop.classList.add('open');
+  }
+}
+window.openReviewNewsModal = openReviewNewsModal;
+
+function openReviewEntrancePrepModal(id) {
+  const p = (window._adminEntrancePrepCache || []).find(x => String(x.id) === String(id));
+  if (!p) return;
+  const badge = document.getElementById('recordReviewBadge');
+  const title = document.getElementById('recordReviewTitle');
+  const modInput = document.getElementById('recordReviewModule');
+  const idInput = document.getElementById('recordReviewId');
+  const card = document.getElementById('recordReviewSummaryCard');
+  const sel = document.getElementById('recordReviewStatusSelect');
+  const notes = document.getElementById('recordReviewNotes');
+  const backdrop = document.getElementById('adminRecordReviewModalBackdrop');
+
+  if (badge) badge.textContent = 'ENTRANCE EXAMS • ACADEMIC AUDIT';
+  if (title) title.textContent = `Review Entrance Exam: ${p.name || id}`;
+  if (modInput) modInput.value = 'entrance-prep';
+  if (idInput) idInput.value = id;
+  if (notes) notes.value = '';
+
+  if (card) {
+    card.innerHTML = `
+      <div><strong>Exam Name:</strong> ${escapeHtml(p.name || '')} (${escapeHtml(p.id || '')})</div>
+      <div><strong>Conducting Body:</strong> ${escapeHtml(p.conducted_by || 'National Testing Agency')}</div>
+      <div><strong>Field / Domain:</strong> ${escapeHtml(p.field || 'Engineering')}</div>
+      <div><strong>Cutoff / Total Marks:</strong> ${escapeHtml(p.total_marks || p.marks_cutoff || 'N/A')}</div>
+      <div><strong>Roadmap Stages:</strong> ${Array.isArray(p.roadmap) ? p.roadmap.length : 3} defined phases</div>
+    `;
+  }
+
+  const isApproved = p.status !== 'pending' && p.status !== 'inactive';
+  if (sel) {
+    sel.innerHTML = `
+      <option value="active" ${isApproved ? 'selected' : ''}>Active / Approved for Aspirants</option>
+      <option value="verified" ${p.status === 'verified' ? 'selected' : ''}>Verified & Syllabus Validated</option>
+      <option value="pending" ${!isApproved ? 'selected' : ''}>Pending Curriculum Review</option>
+    `;
+  }
+
+  if (backdrop) {
+    backdrop.style.display = 'flex';
+    backdrop.classList.add('open');
+  }
+}
+window.openReviewEntrancePrepModal = openReviewEntrancePrepModal;
+
+function openReviewFacilityModal(id) {
+  const f = (window._adminFacilitiesCache || []).find(x => String(x.id) === String(id) || String(x.college_id) === String(id));
+  if (!f) return;
+  const badge = document.getElementById('recordReviewBadge');
+  const title = document.getElementById('recordReviewTitle');
+  const modInput = document.getElementById('recordReviewModule');
+  const idInput = document.getElementById('recordReviewId');
+  const card = document.getElementById('recordReviewSummaryCard');
+  const sel = document.getElementById('recordReviewStatusSelect');
+  const notes = document.getElementById('recordReviewNotes');
+  const backdrop = document.getElementById('adminRecordReviewModalBackdrop');
+
+  if (badge) badge.textContent = 'CAMPUS FACILITIES • INFRASTRUCTURE AUDIT';
+  if (title) title.textContent = `Review Facilities: ${f.college_name || id}`;
+  if (modInput) modInput.value = 'facilities';
+  if (idInput) idInput.value = id;
+  if (notes) notes.value = '';
+
+  if (card) {
+    card.innerHTML = `
+      <div><strong>Institution:</strong> ${escapeHtml(f.college_name || '')} (${escapeHtml(f.college_id || '')})</div>
+      <div><strong>Location:</strong> ${escapeHtml(f.district || 'Coimbatore')}, ${escapeHtml(f.state || 'Tamil Nadu')}</div>
+      <div><strong>Labs:</strong> ${escapeHtml(f.labs || 'Specialized Labs')}</div>
+      <div><strong>Sports Facilities:</strong> ${escapeHtml(f.sports_areas || f.sports || 'Sports Complex')}</div>
+      <div><strong>Facility Score:</strong> ★ ${f.scores?.labs || 9.2} / 10</div>
+    `;
+  }
+
+  const isVerified = f.status !== 'pending' && f.status !== 'unverified';
+  if (sel) {
+    sel.innerHTML = `
+      <option value="Verified" ${isVerified ? 'selected' : ''}>Verified & Infrastructure Inspected</option>
+      <option value="Pending" ${!isVerified ? 'selected' : ''}>Pending Verification / Audit</option>
+    `;
+  }
+
+  if (backdrop) {
+    backdrop.style.display = 'flex';
+    backdrop.classList.add('open');
+  }
+}
+window.openReviewFacilityModal = openReviewFacilityModal;
+
+function openReviewScholarshipModal(id) {
+  const s = (window._adminScholarshipsCache || []).find(x => String(x.id) === String(id));
+  if (!s) return;
+  const badge = document.getElementById('recordReviewBadge');
+  const title = document.getElementById('recordReviewTitle');
+  const modInput = document.getElementById('recordReviewModule');
+  const idInput = document.getElementById('recordReviewId');
+  const card = document.getElementById('recordReviewSummaryCard');
+  const sel = document.getElementById('recordReviewStatusSelect');
+  const notes = document.getElementById('recordReviewNotes');
+  const backdrop = document.getElementById('adminRecordReviewModalBackdrop');
+
+  if (badge) badge.textContent = 'SCHOLARSHIP AID • DISBURSEMENT AUDIT';
+  if (title) title.textContent = `Review Scheme: ${s.name || id}`;
+  if (modInput) modInput.value = 'scholarships';
+  if (idInput) idInput.value = id;
+  if (notes) notes.value = '';
+
+  if (card) {
+    card.innerHTML = `
+      <div><strong>Scheme Name:</strong> ${escapeHtml(s.name || '')} (${escapeHtml(s.id || '')})</div>
+      <div><strong>Type / Authority:</strong> ${escapeHtml(s.type || 'State Scheme')}</div>
+      <div><strong>Financial Aid:</strong> ${escapeHtml(s.benefit || '')}</div>
+      <div><strong>Target Demographic:</strong> ${escapeHtml(s.eligibility_criteria || s.eligibility || 'All eligible students')}</div>
+      <div><strong>Application Deadline:</strong> ${escapeHtml(s.deadline || 'Ongoing')}</div>
+    `;
+  }
+
+  const isVerified = s.status !== 'pending' && s.status !== 'inactive';
+  if (sel) {
+    sel.innerHTML = `
+      <option value="Verified" ${isVerified ? 'selected' : ''}>Verified / Active for Disbursement</option>
+      <option value="Pending" ${!isVerified ? 'selected' : ''}>Pending Compliance Review</option>
+    `;
+  }
+
+  if (backdrop) {
+    backdrop.style.display = 'flex';
+    backdrop.classList.add('open');
+  }
+}
+window.openReviewScholarshipModal = openReviewScholarshipModal;
+
+function closeAdminRecordReviewModal() {
+  const backdrop = document.getElementById('adminRecordReviewModalBackdrop');
+  if (backdrop) {
+    backdrop.style.display = 'none';
+    backdrop.classList.remove('open');
+  }
+}
+window.closeAdminRecordReviewModal = closeAdminRecordReviewModal;
+
+async function saveAdminRecordReview(e) {
+  if (e) e.preventDefault();
+  const mod = document.getElementById('recordReviewModule').value;
+  const id = document.getElementById('recordReviewId').value;
+  const status = document.getElementById('recordReviewStatusSelect').value;
+  const notes = document.getElementById('recordReviewNotes').value.trim();
+  const btn = document.getElementById('saveRecordReviewBtn');
+
+  if (btn) btn.disabled = true;
+
+  try {
+    let url = '';
+    let payload = { status };
+    if (notes) payload.review_notes = notes;
+
+    if (mod === 'events') {
+      url = `/api/events/${encodeURIComponent(id)}`;
+    } else if (mod === 'news') {
+      url = `/api/news/${encodeURIComponent(id)}`;
+    } else if (mod === 'entrance-prep') {
+      url = `/api/entrance-exams/${encodeURIComponent(id)}`;
+    } else if (mod === 'facilities') {
+      url = `/api/facilities/${encodeURIComponent(id)}`;
+    } else if (mod === 'scholarships') {
+      url = `/api/scholarships/${encodeURIComponent(id)}`;
+    }
+
+    const res = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Role': 'admin',
+        'X-Admin-Passkey': 'admin123'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    if (data.success || res.ok) {
+      if (typeof showAdminToast === 'function') showAdminToast(`Status updated to "${status}" for ${id}.`);
+      else if (typeof showToast === 'function') showToast(`Status updated to "${status}" for ${id}.`);
+      closeAdminRecordReviewModal();
+
+      // Refresh corresponding module list
+      if (mod === 'events') loadAdminEvents();
+      else if (mod === 'news') loadAdminNews();
+      else if (mod === 'entrance-prep') {
+        if (typeof window.loadEntrancePrep === 'function') window.loadEntrancePrep();
+      } else if (mod === 'facilities') {
+        if (typeof window.loadFacilities === 'function') window.loadFacilities();
+      } else if (mod === 'scholarships') {
+        if (typeof window.loadScholarships === 'function') window.loadScholarships();
+      }
+    } else {
+      alert(data.message || 'Failed to update record status');
+    }
+  } catch (err) {
+    alert('Error submitting review status: ' + err.message);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+window.saveAdminRecordReview = saveAdminRecordReview;
+
+// ==============================================================================
+// ENTRANCE EXAM ROADMAP CONTROLLER
+// ==============================================================================
+
+function openAdminRoadmapModal(id) {
+  const p = (window._adminEntrancePrepCache || []).find(x => String(x.id) === String(id));
+  if (!p) return;
+
+  const title = document.getElementById('roadmapModalExamTitle');
+  const idInput = document.getElementById('roadmapExamId');
+  const infoBar = document.getElementById('roadmapExamInfoBar');
+  const stagesContainer = document.getElementById('roadmapStagesContainer');
+  const editor = document.getElementById('roadmapStagesEditor');
+  const backdrop = document.getElementById('adminRoadmapModalBackdrop');
+
+  if (title) title.textContent = `Roadmap Blueprint: ${p.name || id}`;
+  if (idInput) idInput.value = id;
+  if (infoBar) {
+    infoBar.innerHTML = `<strong>${escapeHtml(p.name || '')}</strong> &bull; ${escapeHtml(p.field || 'Engineering')} &bull; Conducted by ${escapeHtml(p.conducted_by || 'National Body')}`;
+  }
+
+  let stages = [];
+  if (Array.isArray(p.roadmap) && p.roadmap.length > 0) {
+    stages = p.roadmap;
+  } else if (typeof p.roadmap === 'string' && p.roadmap.trim()) {
+    stages = p.roadmap.split(',').map(s => s.trim()).filter(Boolean);
+  } else if (p.stages) {
+    stages = String(p.stages).split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+  } else {
+    stages = [
+      'Stage 1: Core Concepts & NCERT Mastery',
+      'Stage 2: Previous Year Questions & Mock Drills',
+      'Stage 3: National Counseling & Choice Filling'
+    ];
+  }
+
+  if (stagesContainer) {
+    stagesContainer.innerHTML = stages.map((st, idx) => `
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:6px; padding:8px 12px; display:flex; align-items:center; gap:10px;">
+        <span style="background:#3A9B8F; color:#fff; font-weight:800; font-size:11px; width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;">${idx + 1}</span>
+        <span style="font-size:12.5px; font-weight:600; color:#1E293B;">${escapeHtml(st)}</span>
+      </div>
+    `).join('');
+  }
+
+  if (editor) {
+    editor.value = stages.join('\n');
+  }
+
+  if (backdrop) {
+    backdrop.style.display = 'flex';
+    backdrop.classList.add('open');
+  }
+}
+window.openAdminRoadmapModal = openAdminRoadmapModal;
+
+function closeAdminRoadmapModal() {
+  const backdrop = document.getElementById('adminRoadmapModalBackdrop');
+  if (backdrop) {
+    backdrop.style.display = 'none';
+    backdrop.classList.remove('open');
+  }
+}
+window.closeAdminRoadmapModal = closeAdminRoadmapModal;
+
+async function saveAdminRoadmapChanges() {
+  const id = document.getElementById('roadmapExamId').value;
+  const editor = document.getElementById('roadmapStagesEditor');
+  const btn = document.getElementById('saveRoadmapBtn');
+  if (!id || !editor) return;
+
+  const rawLines = editor.value.split('\n').map(s => s.trim()).filter(Boolean);
+  if (rawLines.length === 0) {
+    alert('Please enter at least one roadmap stage.');
+    return;
+  }
+
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch(`/api/entrance-exams/${encodeURIComponent(id)}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Role': 'admin',
+        'X-Admin-Passkey': 'admin123'
+      },
+      body: JSON.stringify({
+        roadmap: rawLines,
+        stages: rawLines.join(', ')
+      })
+    });
+
+    const data = await res.json();
+    if (data.success || res.ok) {
+      if (typeof showAdminToast === 'function') showAdminToast(`Roadmap saved (${rawLines.length} stages).`);
+      else if (typeof showToast === 'function') showToast(`Roadmap saved (${rawLines.length} stages).`);
+      closeAdminRoadmapModal();
+      if (typeof window.loadEntrancePrep === 'function') window.loadEntrancePrep();
+    } else {
+      alert(data.message || 'Failed to save roadmap');
+    }
+  } catch (err) {
+    alert('Error saving roadmap: ' + err.message);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+window.saveAdminRoadmapChanges = saveAdminRoadmapChanges;
 
 // =========================================================================
 // UNIVERSAL ADD MODAL & CRUD CONTROLLER FOR ALL 16 EXPLORE FIELDS

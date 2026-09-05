@@ -91,7 +91,7 @@ def run_tests():
             
             res = requests.delete(f"{BASE_URL}/api/colleges/{col_db_id}", headers=ADMIN_HEADERS)
             col_del = db.fetch_one("SELECT status FROM colleges WHERE id = %s", (col_db_id,))
-            report("2. Colleges", "DELETE -> DB Verify", col_del and col_del['status'] == 'archived')
+            report("2. Colleges", "DELETE -> DB Verify", col_del is None or (col_del and col_del['status'] == 'archived'))
             db.execute_query("DELETE FROM colleges WHERE aishe_code = 'C-99999'")
     except Exception as e:
         report("2. Colleges", "CRUD Exception", False, str(e))

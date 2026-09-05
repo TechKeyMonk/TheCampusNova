@@ -407,6 +407,14 @@
       "password_hash": "scrypt:32768:8:1$VgbiNRM9Htx0n51E$2cb991a10da5e175804e688f345b23787a85fa0c55323928b21b8b5055e04727d7859e377b0b0f3b027f517dec036bab17bc925c5ab78164691d429e5d3d0fba",
       "role": "user",
       "created_at": "2026-09-04 15:49:25"
+    },
+    {
+      "id": 1788610907392,
+      "name": "Audit Test Student",
+      "email": "student_1788610903683@testcampusnova.edu",
+      "password_hash": "scrypt:32768:8:1$o0vW4mKimzE87OAd$64a706a2f9428f342e6d914e384137f9bedbf9a091c5ed2082a24b971be67a97b9940ec571c6d43c39f313536b8836ebc34cb8da2293dafc7fbe0a0c3cf7b3ad",
+      "role": "user",
+      "created_at": "2026-09-05 17:51:47"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "total": 46,
+  "total": 45,
   "colleges": [
     {
       "id": "COL-4120",
@@ -102,103 +102,17 @@
     },
     {
       "id": "COL-002",
-      "rank": 2,
-      "name": "SoRSPE, Ramakrishna Mission Vivekananda University",
-      "short_name": "",
-      "city": "Coimbatore",
-      "district": "Coimbatore",
-      "state": "Tamil Nadu",
-      "aishe": "C-35003",
-      "aishe_code": "C-35003",
-      "aishe_codes": [
-        "C-35003"
-      ],
-      "badge": "Premier Higher Education Institution",
-      "type": "Deemed to be University",
-      "rating": "4.8",
-      "reviews": "1,200+ Reviews",
-      "stream": "Engineering, Sciences & Technology",
-      "courses": [],
-      "placement": "Median CTC: ₹14.0 LPA",
-      "avg_placement": "₹14.0 LPA",
-      "fees": "₹3,15,000 / yr (Approved Revision)",
-      "cutoff": "National Entrance Exam Merit",
-      "accreditation": "Recognized under UGC Act; Affiliated with Bharathiar University",
-      "naac_grade": "A++",
-      "recruiters": "Top Global & National Corporations",
-      "internship_support": "Extensive summer internship and industrial training programs.",
-      "admissions": "National entrance examination and centralized counseling.",
-      "eligibility": "10+2 with relevant subject combinations and entrance qualifying rank.",
-      "facilities": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
-      "scholarships": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
-      "overview": "SoRSPE, Ramakrishna Mission Vivekananda University is an undergraduate and postgraduate higher education institution located in Coimbatore District, Tamil Nadu, affiliated with Bharathiar University.",
-      "website": "https://vucbe.org/",
-      "image": "https://vucbe.org/",
-      "db_id": 2,
-      "college_name": "SoRSPE, Ramakrishna Mission Vivekananda University",
-      "college_type": "Deemed to be University",
-      "reviews_count": "1,200+ Reviews",
-      "domains": [
-        "vucbe.org"
-      ],
-      "nirf_rank": 2,
-      "description": "SoRSPE, Ramakrishna Mission Vivekananda University is an undergraduate and postgraduate higher education institution located in Coimbatore District, Tamil Nadu, affiliated with Bharathiar University.",
-      "official_url": "https://vucbe.org/",
-      "email": "office@vucbe.org",
-      "phone": "0422-2697529",
-      "address": "SoRSPE, Ramakrishna Mission Vivekananda University, Coimbatore District, Tamil Nadu",
-      "image_url": "https://vucbe.org/",
-      "events": [
-        {
-          "title": "SoRSPE, Ramakrishna Mission Vivekananda University Annual Tech Symposium & Hackathon 2026",
-          "date": "2026-09-18",
-          "type": "Symposium",
-          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
-          "link": "https://vucbe.org/"
-        },
-        {
-          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
-          "date": "2026-10-12",
-          "type": "Placement",
-          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
-          "link": "https://vucbe.org/"
-        }
-      ],
-      "news": [
-        {
-          "title": "SoRSPE, Ramakrishna Mission Vivekananda University Recognized in Top Tier in 2026 Academic Assessment",
-          "date": "2026-08-22",
-          "category": "Academic",
-          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
-          "link": "https://vucbe.org/"
-        },
-        {
-          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
-          "date": "2026-07-16",
-          "category": "Infrastructure",
-          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
-          "link": "https://vucbe.org/"
-        }
-      ],
-      "status": "active",
-      "location": "Coimbatore",
-      "highest_placement": "₹45.0 LPA",
-      "highestPlacement": "₹45.0 LPA",
-      "facilities_list": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
-      "scholarships_info": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
-      "officialLink": "https://vucbe.org/",
-      "video": "",
-      "video_url": ""
-    },
-    {
-      "id": "COL-003",
-      "rank": "Rank 6 (Agriculture & Allied Sectors, NIRF 2024); Rank 73 (University, NIRF 2024); Rank 88 (Overall, NIRF 2024)",
+      "rank": 6,
       "name": "Tamilnadu Agricultural University, Coimbatore",
       "short_name": "",
       "city": "Coimbatore",
       "district": "Coimbatore",
       "state": "Tamil Nadu",
       "aishe": "U-0485",
+      "aishe_code": "U-0485",
+      "aishe_codes": [
+        "U-0485"
+      ],
       "badge": "Premier Higher Education Institution",
       "type": "University",
       "rating": "4.8",
@@ -213,7 +127,7 @@
       "fees": "₹1L / yr",
       "cutoff": "National Entrance Exam Merit",
       "accreditation": "Recognized under UGC Act; Affiliated with Bharathiar University",
-      "naac_grade": "A+",
+      "naac_grade": "A++",
       "recruiters": "Top Global & National Corporations",
       "internship_support": "Extensive summer internship and industrial training programs.",
       "admissions": "National entrance examination and centralized counseling.",
@@ -222,33 +136,21 @@
       "scholarships": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
       "overview": "Tamilnadu Agricultural University, Coimbatore is an undergraduate and postgraduate higher education institution located in Coimbatore District, Tamil Nadu, affiliated with Bharathiar University.",
       "website": "https://www.tnau.ac.in",
-      "image": "/uploads/colleges/image_ACRI-Coimbatore_1788410417_20aac3.jpg",
-      "db_id": 3,
-      "nirf_rank": "Rank 6 (Agriculture & Allied Sectors, NIRF 2024); Rank 73 (University, NIRF 2024); Rank 88 (Overall, NIRF 2024)",
+      "image": "/uploads/colleges/image_Screenshot_2026-09-05_164459_1788606931_06b3b4.png",
+      "db_id": 2,
       "college_name": "Tamilnadu Agricultural University, Coimbatore",
-      "location": "Coimbatore",
-      "aishe_code": "U-0485",
-      "aishe_codes": [
-        "U-0485"
-      ],
       "college_type": "University",
       "reviews_count": "1,200+ Reviews",
       "domains": [
         "tnau.ac.in"
       ],
-      "highest_placement": "₹48.0 LPA",
-      "highestPlacement": "₹48.0 LPA",
-      "facilities_list": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
-      "scholarships_info": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
+      "nirf_rank": 6,
       "description": "Tamilnadu Agricultural University, Coimbatore is an undergraduate and postgraduate higher education institution located in Coimbatore District, Tamil Nadu, affiliated with Bharathiar University.",
       "official_url": "https://www.tnau.ac.in",
-      "officialLink": "https://www.tnau.ac.in",
-      "email": "registrar@tnau.ac.in",
-      "phone": "0422-6611201",
-      "address": "Tamilnadu Agricultural University, Coimbatore, Coimbatore District, Tamil Nadu",
-      "image_url": "/uploads/colleges/image_ACRI-Coimbatore_1788410417_20aac3.jpg",
-      "video": "",
-      "video_url": "",
+      "email": "office@vucbe.org",
+      "phone": "0422-2697529",
+      "address": "SoRSPE, Ramakrishna Mission Vivekananda University, Coimbatore District, Tamil Nadu",
+      "image_url": "/uploads/colleges/image_Screenshot_2026-09-05_164459_1788606931_06b3b4.png",
       "events": [
         {
           "title": "Tamilnadu Agricultural University, Coimbatore Annual Tech Symposium & Hackathon 2026",
@@ -281,7 +183,15 @@
           "link": "https://www.tnau.ac.in"
         }
       ],
-      "status": "active"
+      "status": "active",
+      "location": "Coimbatore",
+      "highest_placement": "₹50 LPA",
+      "highestPlacement": "₹50 LPA",
+      "facilities_list": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships_info": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
+      "officialLink": "https://www.tnau.ac.in",
+      "video": "",
+      "video_url": ""
     },
     {
       "id": "COL-004",

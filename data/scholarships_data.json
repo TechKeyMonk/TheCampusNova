@@ -37,6 +37,37 @@
       "provider": "Government of Tamil Nadu",
       "amount": "Rs. 1,00,000",
       "eligibility": "Top 1% rank in entrance exam.",
+      "id": 29
+    },
+    {
+      "name": "Test Merit Fellowship Scheme 2026",
+      "provider": "Government of Tamil Nadu",
+      "amount": "Rs. 1,00,000",
+      "eligibility": "Top 1% rank in entrance exam.",
+      "id": 28
+    },
+    {
+      "name": "QA Merit Excellence Tech Fellowship 2026",
+      "type": "Private Merit Trust",
+      "provider": "Tamil Nadu Science & Tech Forum",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "benefit": "₹75,000 / year + Laptop Grant",
+      "amount": "₹75,000 / year",
+      "eligibility_criteria": "Engineering UG students with > 8.5 CGPA and family income < 4 LPA",
+      "deadline": "2026-12-31",
+      "status": "Pending",
+      "id": 26
+    },
+    {
+      "name": "Test",
+      "id": 23
+    },
+    {
+      "name": "Test Merit Fellowship Scheme 2026",
+      "provider": "Government of Tamil Nadu",
+      "amount": "Rs. 1,00,000",
+      "eligibility": "Top 1% rank in entrance exam.",
       "id": 18
     },
     {

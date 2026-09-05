@@ -6685,7 +6685,15 @@ def api_create_scholarship():
     app_end = body.get("application_end") or body.get("deadline", "31 Oct 2026")
     app_url = body.get("application_url") or body.get("portal_url", "https://scholarships.gov.in")
     desc = body.get("description", "Financial support for higher education.")
-    status = body.get("status", "active")
+    raw_status = str(body.get("status", "active")).strip().lower()
+    if raw_status in ["verified", "approved", "active", "published"]:
+        status = "active"
+    elif raw_status in ["pending", "upcoming"]:
+        status = "upcoming"
+    elif raw_status in ["closed", "inactive", "archived", "rejected"]:
+        status = "closed"
+    else:
+        status = "active"
 
     if db.is_pg_connected():
         new_row = db.execute_query("""
@@ -6711,27 +6719,44 @@ def api_create_scholarship():
 def api_update_scholarship(sch_id):
     body = request.get_json(force=True, silent=True) or {}
     name = body.get("name") or body.get("scholarship_name")
-    provider = body.get("provider")
+    provider = body.get("provider") or body.get("type")
     amount = body.get("amount") or body.get("benefit")
-    elig = body.get("eligibility")
-    status = body.get("status")
+    elig = body.get("eligibility") or body.get("eligibility_criteria")
+    raw_status = body.get("status")
+    if raw_status is not None:
+        norm_status = str(raw_status).strip().lower()
+        if norm_status in ["verified", "approved", "active", "published"]:
+            status = "active"
+        elif norm_status in ["pending", "upcoming"]:
+            status = "upcoming"
+        elif norm_status in ["closed", "inactive", "archived", "rejected"]:
+            status = "closed"
+        else:
+            status = "active"
+    else:
+        status = None
+    desc = body.get("description")
+    app_end = body.get("application_end") or body.get("deadline")
 
-    if db.is_pg_connected() and str(sch_id).isdigit():
+    clean_id = re.sub(r'^[^\d]+', '', str(sch_id))
+    if db.is_pg_connected() and clean_id.isdigit():
         db.execute_query("""
             UPDATE scholarships
             SET scholarship_name = COALESCE(%s, scholarship_name),
                 provider = COALESCE(%s, provider),
                 amount = COALESCE(%s, amount),
                 eligibility = COALESCE(%s, eligibility),
+                description = COALESCE(%s, description),
+                application_end = COALESCE(%s, application_end),
                 status = COALESCE(%s, status),
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = %s
-        """, (name, provider, amount, elig, status, int(sch_id)))
+        """, (name, provider, amount, elig, desc, app_end, status, int(clean_id)))
         _record_audit_log("Scholarship Updated", "Scholarships", str(sch_id), f"Updated scholarship {sch_id}")
 
     data = _load_json_data(SCHOLARSHIPS_DATA_FILE, {"scholarships": []})
     for idx, s in enumerate(data.get("scholarships", [])):
-        if str(s.get("id")) == str(sch_id):
+        if str(s.get("id")) == str(sch_id) or (clean_id.isdigit() and re.sub(r'^[^\d]+', '', str(s.get("id"))) == clean_id):
             data["scholarships"][idx].update(body)
             break
     _save_json_data(SCHOLARSHIPS_DATA_FILE, data)
@@ -6741,12 +6766,13 @@ def api_update_scholarship(sch_id):
 @app.route("/api/scholarships/full/<sch_id>", methods=["DELETE"], endpoint="api_delete_scholarship_full")
 @require_admin_auth
 def api_delete_scholarship(sch_id):
-    if db.is_pg_connected() and str(sch_id).isdigit():
-        db.execute_query("DELETE FROM scholarships WHERE id = %s", (int(sch_id),))
+    clean_id = re.sub(r'^[^\d]+', '', str(sch_id))
+    if db.is_pg_connected() and clean_id.isdigit():
+        db.execute_query("DELETE FROM scholarships WHERE id = %s", (int(clean_id),))
         _record_audit_log("Scholarship Deleted", "Scholarships", str(sch_id), f"Deleted scholarship {sch_id}")
 
     data = _load_json_data(SCHOLARSHIPS_DATA_FILE, {"scholarships": []})
-    data["scholarships"] = [s for s in data.get("scholarships", []) if str(s.get("id")) != str(sch_id)]
+    data["scholarships"] = [s for s in data.get("scholarships", []) if str(s.get("id")) != str(sch_id) and (not clean_id.isdigit() or re.sub(r'^[^\d]+', '', str(s.get("id"))) != clean_id)]
     _save_json_data(SCHOLARSHIPS_DATA_FILE, data)
     return jsonify({"success": True, "message": "Scholarship deleted successfully from PostgreSQL"})
 
@@ -6780,6 +6806,12 @@ def api_get_facilities():
         if rows:
             for r in rows:
                 col_key = f"COL-{r.get('college_id', 1):04d}"
+                r["college_id"] = col_key
+                r["sports_areas"] = r.get("sports") or "Standard athletic grounds, indoor sports arena, and fitness centers."
+                r["labs"] = r.get("labs") or r.get("facility_name") or "Advanced research laboratories and specialized computing centers."
+                r["status"] = r.get("status") or ("Verified" if r.get("available") is not False else "Pending")
+                r["scores"] = {"labs": float(r.get("score") or 9.3), "sports": 9.1, "maintenance": 9.2}
+
                 # Search if already in facilities_by_college
                 for k, v in facilities_by_college.items():
                     if (v.get("college_name") or "").lower() == (r.get("college_name") or "").lower():
@@ -6793,15 +6825,16 @@ def api_get_facilities():
                         "state": r.get("state") or "Tamil Nadu",
                         "district": r.get("district") or "Coimbatore",
                         "scores": {"labs": 9.5, "sports": 9.5, "classrooms": 9.5, "canteen": 9.5, "placement_infra": 9.5, "maintenance": 9.5},
-                        "labs": r.get("labs") or r.get("facility_name") or "Advanced research laboratories and specialized computing centers.",
-                        "sports_areas": r.get("sports") or "Standard athletic grounds, indoor sports arena, and fitness centers.",
+                        "labs": r["labs"],
+                        "sports_areas": r["sports_areas"],
                         "departments": "Engineering, Computer Science, Technology & Applied Sciences.",
                         "classrooms": r.get("smart_classes") or "Smart interactive multimedia lecture halls.",
                         "grounds": "Expansive eco-friendly campus grounds.",
                         "canteen": r.get("canteen") or "Hygienic multi-cuisine dining cafeteria.",
                         "placement_facilities": "Dedicated corporate interview suites and assessment centers.",
                         "library": r.get("library") or "Central automated library with international digital journal access.",
-                        "hostel": r.get("hostel") or "Separate well-maintained residential hostels for boys and girls."
+                        "hostel": r.get("hostel") or "Separate well-maintained residential hostels for boys and girls.",
+                        "status": r["status"]
                     }
                 else:
                     if r.get("labs"): facilities_by_college[col_key]["labs"] = r["labs"]
@@ -6810,6 +6843,7 @@ def api_get_facilities():
                     if r.get("library"): facilities_by_college[col_key]["library"] = r["library"]
                     if r.get("hostel"): facilities_by_college[col_key]["hostel"] = r["hostel"]
                     if r.get("canteen"): facilities_by_college[col_key]["canteen"] = r["canteen"]
+                    if r.get("status"): facilities_by_college[col_key]["status"] = r["status"]
 
     return jsonify({
         "success": True,
@@ -6835,18 +6869,20 @@ def api_create_facility():
     hostel = body.get("hostel", "")
     canteen = body.get("canteen", "")
     score = body.get("score", "9.5")
+    status = body.get("status", "Verified")
 
     if db.is_pg_connected():
         if body.get("college_name"):
             col_row = db.query_one("SELECT id FROM colleges WHERE college_name ILIKE %s LIMIT 1", (f"%{body['college_name'].strip()}%",))
             if col_row: college_id = col_row["id"]
-        if not str(college_id).isdigit(): college_id = 1
+        clean_cid = re.sub(r'^[^\d]+', '', str(college_id))
+        college_id = int(clean_cid) if clean_cid.isdigit() else 1
         
         new_row = db.execute_query("""
-            INSERT INTO facilities (college_id, facility_name, description, available, labs, sports, smart_classes, library, hostel, canteen, score)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO facilities (college_id, facility_name, description, available, labs, sports, smart_classes, library, hostel, canteen, score, status)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING id
-        """, (int(college_id), fname, desc, avail, labs, sports, smart_classes, library, hostel, canteen, score))
+        """, (int(college_id), fname, desc, avail, labs, sports, smart_classes, library, hostel, canteen, score, status))
         new_id = new_row["id"] if new_row and "id" in new_row else 1
         body["id"] = new_id
         _record_audit_log("Facility Created", "Facilities", str(new_id), f"Created facility {fname} for college {college_id}")
@@ -6865,7 +6901,8 @@ def api_create_facility():
         "classrooms": smart_classes or "Smart multimedia classrooms.",
         "library": library or "Comprehensive digital and print library.",
         "hostel": hostel or "Modern residential facilities.",
-        "canteen": canteen or "Hygienic campus food courts."
+        "canteen": canteen or "Hygienic campus food courts.",
+        "status": status
     }
     _save_json_data(FACILITIES_DATA_FILE, data)
 
@@ -6879,15 +6916,17 @@ def api_update_facility(fac_id):
     desc = body.get("description")
     avail = body.get("available")
     labs = body.get("labs")
-    sports = body.get("sports")
+    sports = body.get("sports") or body.get("sports_areas")
     smart_classes = body.get("smart_classes")
     library = body.get("library")
     hostel = body.get("hostel")
     canteen = body.get("canteen")
     score = body.get("score")
+    status = body.get("status")
 
-    if db.is_pg_connected() and str(fac_id).isdigit():
-        db.execute_query("""
+    clean_id = re.sub(r'^[^\d]+', '', str(fac_id))
+    if db.is_pg_connected() and clean_id.isdigit():
+        updated_row = db.execute_query("""
             UPDATE facilities
             SET facility_name = COALESCE(%s, facility_name),
                 description = COALESCE(%s, description),
@@ -6899,19 +6938,47 @@ def api_update_facility(fac_id):
                 hostel = COALESCE(%s, hostel),
                 canteen = COALESCE(%s, canteen),
                 score = COALESCE(%s, score),
+                status = COALESCE(%s, status),
                 updated_at = CURRENT_TIMESTAMP
-            WHERE id = %s
-        """, (fname, desc, avail, labs, sports, smart_classes, library, hostel, canteen, score, int(fac_id)))
+            WHERE id = %s OR college_id = %s
+            RETURNING id
+        """, (fname, desc, avail, labs, sports, smart_classes, library, hostel, canteen, score, status, int(clean_id), int(clean_id)))
+        
+        if not updated_row:
+            col_exists = db.query_one("SELECT id FROM colleges WHERE id = %s", (int(clean_id),))
+            cid = col_exists["id"] if col_exists else 1
+            db.execute_query("""
+                INSERT INTO facilities (college_id, facility_name, description, available, labs, sports, smart_classes, library, hostel, canteen, score, status)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (int(cid), fname or "Campus Labs & High-Tech Facilities", desc or "Modern campus infrastructure", avail if avail is not None else True, labs or "", sports or "", smart_classes or "", library or "", hostel or "", canteen or "", score or "9.0", status or "Verified"))
+
         _record_audit_log("Facility Updated", "Facilities", str(fac_id), f"Updated facility {fac_id}")
+
+    data = _load_json_data(FACILITIES_DATA_FILE, {"facilities_by_college": {}})
+    col_code = f"COL-{int(clean_id):04d}" if clean_id.isdigit() else str(fac_id)
+    if col_code in data.get("facilities_by_college", {}):
+        target = data["facilities_by_college"][col_code]
+        if labs: target["labs"] = labs
+        if sports: target["sports_areas"] = sports
+        if status: target["status"] = status
+        _save_json_data(FACILITIES_DATA_FILE, data)
 
     return jsonify({"success": True, "message": "Facility updated successfully in PostgreSQL"})
 
 @app.route("/api/facilities/<fac_id>", methods=["DELETE"])
 @require_admin_auth
 def api_delete_facility(fac_id):
-    if db.is_pg_connected() and str(fac_id).isdigit():
-        db.execute_query("DELETE FROM facilities WHERE id = %s", (int(fac_id),))
+    clean_id = re.sub(r'^[^\d]+', '', str(fac_id))
+    if db.is_pg_connected() and clean_id.isdigit():
+        db.execute_query("DELETE FROM facilities WHERE id = %s OR college_id = %s", (int(clean_id), int(clean_id)))
         _record_audit_log("Facility Deleted", "Facilities", str(fac_id), f"Deleted facility {fac_id}")
+
+    data = _load_json_data(FACILITIES_DATA_FILE, {"facilities_by_college": {}})
+    col_code = f"COL-{int(clean_id):04d}" if clean_id.isdigit() else str(fac_id)
+    if col_code in data.get("facilities_by_college", {}):
+        del data["facilities_by_college"][col_code]
+        _save_json_data(FACILITIES_DATA_FILE, data)
+
     return jsonify({"success": True, "message": "Facility deleted successfully from PostgreSQL"})
 
 # ----------------------------------------------------
@@ -7006,22 +7073,40 @@ def api_update_entrance_exam(exam_id):
     cbody = body.get("conducted_by") or body.get("conducting_body")
     status = body.get("status")
     purpose = body.get("purpose") or body.get("description")
+    field = body.get("field") or body.get("exam_type")
 
-    if db.is_pg_connected() and str(exam_id).isdigit():
+    clean_id = re.sub(r'^[^\d]+', '', str(exam_id))
+    if db.is_pg_connected() and clean_id.isdigit():
         db.execute_query("""
             UPDATE exams
             SET exam_name = COALESCE(%s, exam_name),
                 conducting_body = COALESCE(%s, conducting_body),
+                exam_type = COALESCE(%s, exam_type),
                 status = COALESCE(%s, status),
                 description = COALESCE(%s, description),
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = %s
-        """, (name, cbody, status, purpose, int(exam_id)))
+        """, (name, cbody, field, status, purpose, int(clean_id)))
+        
+        # Update exam_preparation roadmap stages & cutoff if provided
+        if body.get("roadmap") or body.get("stages") or body.get("marks_cutoff") or body.get("total_marks"):
+            roadmap_val = body.get("roadmap")
+            roadmap_str = ", ".join(roadmap_val) if isinstance(roadmap_val, list) else (body.get("stages") or "")
+            cutoff_str = body.get("marks_cutoff") or body.get("total_marks")
+            tips_str = f"Cutoff: {cutoff_str}" if cutoff_str else None
+            db.execute_query("""
+                UPDATE exam_preparation
+                SET study_plan = COALESCE(%s, study_plan),
+                    preparation_tips = COALESCE(%s, preparation_tips),
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE exam_id = %s
+            """, (roadmap_str if roadmap_str else None, tips_str, int(clean_id)))
+            
         _record_audit_log("Entrance Exam Updated", "Entrance Prep", str(exam_id), f"Updated exam {exam_id}")
 
     data = _load_json_data(ENTRANCE_EXAMS_DATA_FILE, {"exams": []})
     for idx, e in enumerate(data.get("exams", [])):
-        if str(e.get("id")) == str(exam_id):
+        if str(e.get("id")) == str(exam_id) or (clean_id.isdigit() and re.sub(r'^[^\d]+', '', str(e.get("id"))) == clean_id):
             data["exams"][idx].update(body)
             break
     _save_json_data(ENTRANCE_EXAMS_DATA_FILE, data)
@@ -7030,13 +7115,14 @@ def api_update_entrance_exam(exam_id):
 @app.route("/api/entrance-exams/<exam_id>", methods=["DELETE"])
 @require_admin_auth
 def api_delete_entrance_exam(exam_id):
-    if db.is_pg_connected() and str(exam_id).isdigit():
-        db.execute_query("DELETE FROM exam_preparation WHERE exam_id = %s", (int(exam_id),))
-        db.execute_query("DELETE FROM exams WHERE id = %s", (int(exam_id),))
+    clean_id = re.sub(r'^[^\d]+', '', str(exam_id))
+    if db.is_pg_connected() and clean_id.isdigit():
+        db.execute_query("DELETE FROM exam_preparation WHERE exam_id = %s", (int(clean_id),))
+        db.execute_query("DELETE FROM exams WHERE id = %s", (int(clean_id),))
         _record_audit_log("Entrance Exam Deleted", "Entrance Prep", str(exam_id), f"Deleted exam {exam_id}")
 
     data = _load_json_data(ENTRANCE_EXAMS_DATA_FILE, {"exams": []})
-    data["exams"] = [e for e in data.get("exams", []) if str(e.get("id")) != str(exam_id)]
+    data["exams"] = [e for e in data.get("exams", []) if str(e.get("id")) != str(exam_id) and (not clean_id.isdigit() or re.sub(r'^[^\d]+', '', str(e.get("id"))) != clean_id)]
     _save_json_data(ENTRANCE_EXAMS_DATA_FILE, data)
     return jsonify({"success": True, "message": "Entrance exam deleted successfully from PostgreSQL"})
 

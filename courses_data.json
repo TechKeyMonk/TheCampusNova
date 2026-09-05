@@ -17,6 +17,17 @@
               "tagline": "Theoretical foundations of computation, algorithms, and full lifecycle software engineering.",
               "programs": [
                 {
+                  "id": "prog-b4a909a8",
+                  "name": "Test Robotics Engineering 2026",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive robotics program.",
+                  "annualTuitionFees": "Rs. 2,50,000",
+                  "annual_tuition_fees": "Rs. 2,50,000",
+                  "fees": "Rs. 2,50,000"
+                },
+                {
                   "id": "prog-bb4f61c4",
                   "name": "B.Sc. Artificial Intelligence & Machine Learning",
                   "degreeType": "Undergraduate (UG)",

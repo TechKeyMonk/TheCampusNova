@@ -4994,31 +4994,35 @@
 
 
     .modal-backdrop {
-
+      display: none;
+      position: fixed;
+      inset: 0;
+      align-items: center;
+      justify-content: center;
       background: rgba(15, 23, 42, 0.65) !important;
-
       backdrop-filter: none !important;
-
       -webkit-backdrop-filter: none !important;
-
       filter: none !important;
-
       border: none !important;
-
       border-radius: 0 !important;
-
       box-shadow: none !important;
-
       padding: 16px !important;
-
       z-index: 99999 !important;
-
     }
 
+    .modal-backdrop.open {
+      display: flex !important;
+    }
 
+    .modal-backdrop .admin-modal,
+    .modal-backdrop .modal-box {
+      display: block !important;
+      position: relative !important;
+      inset: auto !important;
+      z-index: auto !important;
+    }
 
     /* Inner modal box must NEVER inherit blur */
-
     .admin-modal {
 
       backdrop-filter: none !important;
@@ -10965,7 +10969,7 @@
 
   <div class="modal-backdrop" id="scholarshipModalBackdrop">
 
-    <div class="admin-modal" style="max-width:680px;">
+    <div class="modal-box" style="max-width:680px; width:100%; background:#fff; border-radius:12px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.2); overflow:hidden;">
 
       <div class="modal-header">
 
@@ -11097,7 +11101,7 @@
 
   <div class="modal-backdrop" id="facilityModalBackdrop">
 
-    <div class="admin-modal" style="max-width:680px;">
+    <div class="modal-box" style="max-width:680px; width:100%; background:#fff; border-radius:12px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.2); overflow:hidden;">
 
       <div class="modal-header">
 
@@ -11189,7 +11193,7 @@
 
   <div class="modal-backdrop" id="entrancePrepModalBackdrop">
 
-    <div class="admin-modal" style="max-width:680px;">
+    <div class="modal-box" style="max-width:680px; width:100%; background:#fff; border-radius:12px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.2); overflow:hidden;">
 
       <div class="modal-header">
 
@@ -11337,7 +11341,7 @@
 
     style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.6); z-index:9999; align-items:center; justify-content:center; padding:16px;">
 
-    <div class="admin-modal"
+    <div class="modal-box"
 
       style="max-width:700px; width:100%; background:#fff; border-radius:12px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.2); overflow:hidden;">
 
@@ -11539,7 +11543,7 @@
 
     style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.6); z-index:9999; align-items:center; justify-content:center; padding:16px;">
 
-    <div class="admin-modal"
+    <div class="modal-box"
 
       style="max-width:700px; width:100%; background:#fff; border-radius:12px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.2); overflow:hidden;">
 
@@ -12142,8 +12146,94 @@
 
       </form>
 
-    </div>
+  </div>
 
+  <!-- ADMIN 5-MODULE UNIFIED REVIEW MODAL -->
+  <div class="modal-backdrop" id="adminRecordReviewModalBackdrop"
+    style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.65); z-index:99999; align-items:center; justify-content:center; padding:16px;">
+    <div class="modal-box"
+      style="max-width:580px; width:100%; background:#FFFFFF; border-radius:12px; box-shadow:0 20px 30px -10px rgba(0,0,0,0.25); overflow:hidden; display:flex; flex-direction:column; max-height:90vh; border:1px solid #CBD5E1;">
+      <div class="modal-header"
+        style="display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid var(--admin-border); background:#FAFAFA;">
+        <div>
+          <span id="recordReviewBadge" style="font-size:11px; font-weight:800; color:#77AC3B; text-transform:uppercase; letter-spacing:0.06em;">GOVERNANCE &bull; VERIFICATION</span>
+          <h3 id="recordReviewTitle" style="margin:2px 0 0; font-size:17px; font-weight:800; color:#0F172A;">Review Record</h3>
+        </div>
+        <button class="modal-close-btn" type="button" onclick="closeAdminRecordReviewModal()"
+          style="background:transparent; border:0; font-size:24px; cursor:pointer; color:#64748B;">&times;</button>
+      </div>
+      <form id="adminRecordReviewForm" onsubmit="saveAdminRecordReview(event)"
+        style="padding:20px; display:flex; flex-direction:column; gap:14px; overflow-y:auto;">
+        <input type="hidden" id="recordReviewModule" value="" />
+        <input type="hidden" id="recordReviewId" value="" />
+
+        <!-- Record Details Summary Card -->
+        <div id="recordReviewSummaryCard"
+          style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:14px; font-size:12.5px; display:flex; flex-direction:column; gap:8px;">
+        </div>
+
+        <div>
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--admin-muted); margin-bottom:4px;">VERIFICATION &amp; APPROVAL STATUS *</label>
+          <select id="recordReviewStatusSelect" required
+            style="width:100%; height:38px; padding:0 10px; border:1px solid var(--admin-border); border-radius:6px; font-size:13px; font-weight:600;">
+          </select>
+        </div>
+
+        <div>
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--admin-muted); margin-bottom:4px;">ADMINISTRATIVE AUDIT NOTES / REMARKS</label>
+          <textarea id="recordReviewNotes" rows="3" placeholder="Enter administrative verification remarks or review notes..."
+            style="width:100%; padding:8px 10px; border:1px solid var(--admin-border); border-radius:6px; font-family:inherit; font-size:12.5px;"></textarea>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:6px;">
+          <button type="button" class="btn btn-secondary" onclick="closeAdminRecordReviewModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveRecordReviewBtn"
+            style="background:#77AC3B; border-color:#77AC3B; color:#fff; font-weight:700;">Save &amp; Apply Status</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ENTRANCE EXAM PREPARATION ROADMAP MODAL -->
+  <div class="modal-backdrop" id="adminRoadmapModalBackdrop"
+    style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.65); z-index:99999; align-items:center; justify-content:center; padding:16px;">
+    <div class="modal-box"
+      style="max-width:640px; width:100%; background:#FFFFFF; border-radius:12px; box-shadow:0 20px 30px -10px rgba(0,0,0,0.25); overflow:hidden; display:flex; flex-direction:column; max-height:90vh; border:1px solid #CBD5E1;">
+      <div class="modal-header"
+        style="display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid var(--admin-border); background:#FAFAFA;">
+        <div>
+          <span style="font-size:11px; font-weight:800; color:#3A9B8F; text-transform:uppercase; letter-spacing:0.06em;">PREPARATION BLUEPRINT &bull; ROADMAP</span>
+          <h3 id="roadmapModalExamTitle" style="margin:2px 0 0; font-size:17px; font-weight:800; color:#0F172A;">Exam Preparation Roadmap</h3>
+        </div>
+        <button class="modal-close-btn" type="button" onclick="closeAdminRoadmapModal()"
+          style="background:transparent; border:0; font-size:24px; cursor:pointer; color:#64748B;">&times;</button>
+      </div>
+      <div style="padding:20px; display:flex; flex-direction:column; gap:14px; overflow-y:auto;">
+        <input type="hidden" id="roadmapExamId" value="" />
+        
+        <div id="roadmapExamInfoBar" style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:10px 14px; font-size:12px; color:#166534; font-weight:600;">
+        </div>
+
+        <div>
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--admin-muted); margin-bottom:6px;">ACTIVE PREPARATION PHASES / STAGES</label>
+          <div id="roadmapStagesContainer" style="display:flex; flex-direction:column; gap:8px;">
+          </div>
+        </div>
+
+        <div>
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--admin-muted); margin-bottom:4px;">EDIT ROADMAP STAGES (COMMA-SEPARATED OR LINE-BY-LINE)</label>
+          <textarea id="roadmapStagesEditor" rows="4" placeholder="Stage 1: Syllabus Mastery&#10;Stage 2: Timed Mock Tests &amp; PYQs&#10;Stage 3: Counseling &amp; Choice Filling"
+            style="width:100%; padding:8px 10px; border:1px solid var(--admin-border); border-radius:6px; font-family:inherit; font-size:12.5px;"></textarea>
+          <small style="color:var(--admin-muted); font-size:11px; display:block; margin-top:3px;">Each line or comma represents a distinct preparation stage displayed to aspiring students.</small>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:6px;">
+          <button type="button" class="btn btn-secondary" onclick="closeAdminRoadmapModal()">Close</button>
+          <button type="button" class="btn btn-primary" id="saveRoadmapBtn" onclick="saveAdminRoadmapChanges()"
+            style="background:#3A9B8F; border-color:#3A9B8F; color:#fff; font-weight:700;">Save Roadmap Changes</button>
+        </div>
+      </div>
+    </div>
   </div>
 
 
