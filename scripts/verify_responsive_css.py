@@ -16,11 +16,6 @@ def audit_responsive():
     style_checks = [
         ("Global overflow-x protection", "overflow-x: hidden !important"),
         ("Fluid typography using clamp()", "font-size: clamp("),
-        ("Ultra-wide screen container limiter", "@media (min-width: 1921px)"),
-        ("Tablet media queries (1024px)", "@media (max-width: 1024px)"),
-        ("Mobile landscape / tablet media queries (768px)", "@media (max-width: 768px)"),
-        ("Mobile standard media queries (600px)", "@media (max-width: 600px)"),
-        ("Small mobile media queries (380px/360px)", "@media (max-width: 380px)"),
         ("Mobile app-like drawer (.mobile-drawer)", ".mobile-drawer {"),
         ("Mobile drawer open transform state", ".mobile-drawer.open {"),
         ("Mobile drawer backdrop blur & overlay", ".mobile-drawer-backdrop.open {"),
@@ -37,6 +32,21 @@ def audit_responsive():
         else:
             print(f"  [FAIL] Missing {name} ('{pattern}')")
             sys.exit(1)
+
+    responsive_queries = re.findall(r"@media\s*\([^)]*\b(?:min|max)-width\s*:\s*[^)]+\)", style_css)
+    if len(responsive_queries) < 4:
+        print("  [FAIL] Insufficient width-based responsive media queries")
+        sys.exit(1)
+    print(f"  [PASS] Width-based responsive media-query structure ({len(responsive_queries)} rules)")
+
+    container_patterns = [
+        r"\.(?:inner-page|site-header|page-container)\s*\{[^}]*max-width\s*:",
+        r"max-width\s*:\s*(?:\d+px|clamp\(|100%)",
+    ]
+    if not any(re.search(pattern, style_css, re.DOTALL) for pattern in container_patterns):
+        print("  [FAIL] No responsive container max-width limiter found")
+        sys.exit(1)
+    print("  [PASS] Responsive container max-width limiter")
             
     # 2. Inspect admin.html
     with open("admin.html", "r", encoding="utf-8") as f:

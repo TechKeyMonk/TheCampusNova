@@ -1,6 +1,7 @@
 import urllib.request
 import json
 import sys
+import re
 
 print("==================================================")
 print("TEST SUITE: MENTOR EMAIL PRIVACY & MASKING WITH STARS")
@@ -66,9 +67,10 @@ print("  [PASS] script.js contains maskEmailPublic and uses it in openMentorDeta
 with open("index.html", "r", encoding="utf-8") as f:
     html = f.read()
 
-assert "m*****r@campusnova.in" in html, "m*****r@campusnova.in placeholder missing in index.html"
+assert re.search(r'id=["\']modalMentorEmail["\']', html), "modalMentorEmail element missing in index.html"
+assert "maskEmailPublic(mentor.email)" in js, "Mentor email is not populated through maskEmailPublic"
 assert "shya***@gmail.com" not in html, "Obsolete shya***@gmail.com placeholder still found in index.html"
-print("  [PASS] index.html modal placeholders updated to secure stars format")
+print("  [PASS] Mentor email modal is dynamically populated through maskEmailPublic")
 
 print("\n==================================================")
 print("ALL MENTOR EMAIL MASKING CHECKS PASSED!")

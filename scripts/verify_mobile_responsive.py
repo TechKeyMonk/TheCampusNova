@@ -26,22 +26,53 @@ def verify_mobile_responsive_css():
     print("[PASS] Verified breakpoint isolation: @media (max-width: 767px) is present.")
 
     # 2. Check Navbar & Language Dropdown Critical Fix (Section 3-7)
-    lang_rules = [
-        '.language-menu .language-panel',
-        'position: fixed !important',
-        'right: 14px !important',
-        'width: min(290px, calc(100vw - 28px)) !important',
-        'max-width: calc(100vw - 28px) !important',
+    panel_match = re.search(
+        r'\.language-menu\s+\.language-panel\s*\{(?P<body>.*?)\n\s*\}',
+        mobile_block,
+        re.DOTALL,
+    )
+    if not panel_match:
+        print("[FAIL] Mobile language panel rule is missing")
+        sys.exit(1)
+
+    panel_css = panel_match.group("body")
+    if "position: fixed !important" not in panel_css:
+        print("[FAIL] Mobile language panel is not fixed to the viewport")
+        sys.exit(1)
+
+    right_match = re.search(r'right:\s*(\d+)px\s*!important', panel_css)
+    width_match = re.search(
+        r'width:\s*min\(\s*290px\s*,\s*calc\(100vw\s*-\s*(\d+)px\)\)\s*!important',
+        panel_css,
+    )
+    max_width_match = re.search(
+        r'max-width:\s*calc\(100vw\s*-\s*(\d+)px\)\s*!important',
+        panel_css,
+    )
+    if not right_match or not width_match or not max_width_match:
+        print("[FAIL] Mobile language panel lacks viewport-safe width and side margin rules")
+        sys.exit(1)
+
+    right_margin = int(right_match.group(1))
+    width_margin = int(width_match.group(1))
+    max_width_margin = int(max_width_match.group(1))
+    if right_margin < 8 or width_margin < right_margin * 2 or max_width_margin != width_margin:
+        print("[FAIL] Mobile language panel spacing is not safely contained within the viewport")
+        sys.exit(1)
+
+    required_panel_rules = [
         'max-height: calc(100dvh - 80px) !important',
         '.language-panel-scroll',
         '.lang-item',
-        '.language-others-btn'
+        '.language-others-btn',
     ]
-    for rule in lang_rules:
-        if rule not in mobile_block:
-            print(f"[FAIL] Required language dropdown rule '{rule}' missing from mobile block!")
-            sys.exit(1)
-    print("[PASS] Verified Language Dropdown Mobile Overhaul (fixed viewport positioning, zero left cutoff, internal scroll).")
+    if any(rule not in mobile_block for rule in required_panel_rules):
+        print("[FAIL] Mobile language panel is missing scrolling or item layout rules")
+        sys.exit(1)
+    if 'overflow-x: hidden !important' not in mobile_block:
+        print("[FAIL] Mobile block lacks horizontal overflow protection")
+        sys.exit(1)
+    print("[PASS] Verified Language Dropdown Mobile Overhaul (fixed positioning, safe viewport margins, internal scroll).")
 
     # 2b. Check Explore Button & Dropdown Overhaul (Matching Reference Image)
     explore_rules = [

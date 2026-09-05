@@ -1,6 +1,16 @@
 {
   "logs": [
     {
+      "id": 202,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Passkey Authentication",
+      "module": "Authentication",
+      "details": "Passkey Authentication: Administrator Gate (SUCCESS) (Ref: Administrator Gate)",
+      "timestamp": "2026-09-04 18:13:02",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
       "id": 201,
       "user_identifier": "Admin (Shyam Ganesh)",
       "action": "Deleted Course",
