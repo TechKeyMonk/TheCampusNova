@@ -1,5 +1,5 @@
 {
-  "total": 69,
+  "total": 73,
   "colleges": [
     {
       "id": "COL-4120",
@@ -5424,6 +5424,378 @@
       "news": [
         {
           "title": "Sync Cross-Env Test 1788593920 Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://thecampusnova.com"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://thecampusnova.com"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4282",
+      "db_id": 4282,
+      "rank": 151,
+      "nirf_rank": 151,
+      "name": "Shri Mata Vaishno Devi University",
+      "college_name": "Shri Mata Vaishno Devi University",
+      "short_name": "Shri Mata Vaishno Devi Un",
+      "city": "Katra, Jammu and Kashmir",
+      "location": "Katra, Jammu and Kashmir",
+      "district": "Reasi",
+      "state": "Jammu and Kashmir",
+      "aishe": "U-0201",
+      "aishe_code": "U-0201",
+      "aishe_codes": [
+        "U-0201"
+      ],
+      "badge": "Premier Institution",
+      "type": "State University",
+      "college_type": "State University",
+      "rating": "4.2",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Computer Science & Engineering, Mathematics & Computing, Electronics & Communication Engineering, Electrical Engineering, Mechanical Engineering, Civil Engineering, Biotechnology, Architecture",
+      "courses": [
+        "Computer Science & Engineering",
+        "Mathematics & Computing",
+        "Electronics & Communication Engineering",
+        "Electrical Engineering",
+        "Mechanical Engineering",
+        "Civil Engineering",
+        "Biotechnology",
+        "Architecture"
+      ],
+      "domains": [
+        "smvdu.ac.in"
+      ],
+      "placement": "₹4.67 LPA",
+      "avg_placement": "₹4.67 LPA",
+      "highest_placement": "₹18 LPA",
+      "highestPlacement": "₹18 LPA",
+      "fees": "1.41L/yr",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Residential campus, hostels, academic blocks, laboratories, library, sports facilities, student activity spaces, and campus support services.",
+      "facilities_list": "Residential campus, hostels, academic blocks, laboratories, library, sports facilities, student activity spaces, and campus support services.",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "A residential state university located at Kakryal, near Katra, Jammu and Kashmir, offering undergraduate, postgraduate and doctoral programmes with an engineering and technology focus.",
+      "description": "A residential state university located at Kakryal, near Katra, Jammu and Kashmir, offering undergraduate, postgraduate and doctoral programmes with an engineering and technology focus.",
+      "website": "https://smvdu.ac.in/",
+      "official_url": "https://smvdu.ac.in/",
+      "officialLink": "https://smvdu.ac.in/",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "/uploads/colleges/image_Screenshot_2026-09-05_140216_1788597152_cdd097.png",
+      "image_url": "/uploads/colleges/image_Screenshot_2026-09-05_140216_1788597152_cdd097.png",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Shri Mata Vaishno Devi University Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://smvdu.ac.in/"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://smvdu.ac.in/"
+        }
+      ],
+      "news": [
+        {
+          "title": "Shri Mata Vaishno Devi University Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://smvdu.ac.in/"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://smvdu.ac.in/"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4283",
+      "db_id": 4283,
+      "rank": 21,
+      "nirf_rank": 21,
+      "name": "Verif Test Institute 1788604643",
+      "college_name": "Verif Test Institute 1788604643",
+      "short_name": "Verif Test Institute 1788",
+      "city": "Coimbatore",
+      "location": "Coimbatore",
+      "district": "Coimbatore",
+      "state": "Tamil Nadu",
+      "aishe": "U-VERIF4643",
+      "aishe_code": "U-VERIF4643",
+      "aishe_codes": [
+        "U-VERIF4643"
+      ],
+      "badge": "Premier Institution",
+      "type": "Public Autonomous Institute",
+      "college_type": "Public Autonomous Institute",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Computer Science & AI",
+      "courses": [
+        "Higher Education",
+        "Engineering & Sciences"
+      ],
+      "domains": [],
+      "placement": "₹19.2 LPA (Updated)",
+      "avg_placement": "₹19.2 LPA (Updated)",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹2,25,000 / yr (Updated)",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "Updated verified description in Neon DB.",
+      "description": "Updated verified description in Neon DB.",
+      "website": "",
+      "official_url": "",
+      "officialLink": "",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "",
+      "image_url": "",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Verif Test Institute 1788604643 Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://thecampusnova.com"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://thecampusnova.com"
+        }
+      ],
+      "news": [
+        {
+          "title": "Verif Test Institute 1788604643 Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://thecampusnova.com"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://thecampusnova.com"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4284",
+      "db_id": 4284,
+      "rank": 21,
+      "nirf_rank": 21,
+      "name": "Verif Test Institute 1788604698",
+      "college_name": "Verif Test Institute 1788604698",
+      "short_name": "Verif Test Institute 1788",
+      "city": "Coimbatore",
+      "location": "Coimbatore",
+      "district": "Coimbatore",
+      "state": "Tamil Nadu",
+      "aishe": "U-VERIF4698",
+      "aishe_code": "U-VERIF4698",
+      "aishe_codes": [
+        "U-VERIF4698"
+      ],
+      "badge": "Premier Institution",
+      "type": "Public Autonomous Institute",
+      "college_type": "Public Autonomous Institute",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Computer Science & AI",
+      "courses": [
+        "Higher Education",
+        "Engineering & Sciences"
+      ],
+      "domains": [],
+      "placement": "₹19.2 LPA (Updated)",
+      "avg_placement": "₹19.2 LPA (Updated)",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹2,25,000 / yr (Updated)",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "Updated verified description in Neon DB.",
+      "description": "Updated verified description in Neon DB.",
+      "website": "",
+      "official_url": "",
+      "officialLink": "",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "",
+      "image_url": "",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Verif Test Institute 1788604698 Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://thecampusnova.com"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://thecampusnova.com"
+        }
+      ],
+      "news": [
+        {
+          "title": "Verif Test Institute 1788604698 Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://thecampusnova.com"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://thecampusnova.com"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4285",
+      "db_id": 4285,
+      "rank": 21,
+      "nirf_rank": 21,
+      "name": "Verif Test Institute 1788604740",
+      "college_name": "Verif Test Institute 1788604740",
+      "short_name": "Verif Test Institute 1788",
+      "city": "Coimbatore",
+      "location": "Coimbatore",
+      "district": "Coimbatore",
+      "state": "Tamil Nadu",
+      "aishe": "U-VERIF4740",
+      "aishe_code": "U-VERIF4740",
+      "aishe_codes": [
+        "U-VERIF4740"
+      ],
+      "badge": "Premier Institution",
+      "type": "Public Autonomous Institute",
+      "college_type": "Public Autonomous Institute",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Computer Science & AI",
+      "courses": [
+        "Higher Education",
+        "Engineering & Sciences"
+      ],
+      "domains": [],
+      "placement": "₹16.5 LPA",
+      "avg_placement": "₹16.5 LPA",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹1,85,000 / yr",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Research Labs, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "State-of-the-art verification campus for Neon DB integration.",
+      "description": "State-of-the-art verification campus for Neon DB integration.",
+      "website": "",
+      "official_url": "",
+      "officialLink": "",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "",
+      "image_url": "",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Verif Test Institute 1788604740 Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://thecampusnova.com"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://thecampusnova.com"
+        }
+      ],
+      "news": [
+        {
+          "title": "Verif Test Institute 1788604740 Recognized in Top Tier in 2026 Academic Assessment",
           "date": "2026-08-22",
           "category": "Academic",
           "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",

@@ -2455,7 +2455,7 @@ const CampNovaTranslationEngine = {
     if (this.currentLanguageCode === 'EN') return;
     if (this._scheduleTimer) clearTimeout(this._scheduleTimer);
     this._scheduleTimer = setTimeout(() => {
-      const rootToTranslate = targetRoot || document.querySelector('.view.active') || document.body;
+      const rootToTranslate = targetRoot || document.body;
       this.translateTree(rootToTranslate);
     }, delay);
   },
@@ -2682,52 +2682,58 @@ const CampNovaTranslationEngine = {
       const targetLang = this.currentLanguageCode;
       if (targetLang === 'EN' || textsToFetch.length === 0) return;
 
-      try {
-        const response = await fetch('/api/translate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            texts: textsToFetch,
-            target: targetLang,
-            source: 'en'
-          })
-        });
-
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
-
-        if (data && data.translations) {
-          if (!this.cache[targetLang]) this.cache[targetLang] = {};
-          Object.assign(this.cache[targetLang], data.translations);
-
-          try {
-            sessionStorage.setItem('campnova_translations_cache', JSON.stringify(this.cache));
-          } catch (e) {}
-
-          // Apply translations to pending elements
-          this.isTranslating = true;
-          nodesToUpdate.forEach(item => {
-            const translated = data.translations[item.originalText];
-            if (!translated) return;
-
-            if (item.type === 'text' && item.node && item.node.isConnected) {
-              const orig = item.node.__cn_orig || item.node.nodeValue;
-              const leadingSpace = (orig && orig.match(/^\s*/)) ? orig.match(/^\s*/)[0] : '';
-              const trailingSpace = (orig && orig.match(/\s*$/)) ? orig.match(/\s*$/)[0] : '';
-              item.node.nodeValue = leadingSpace + translated + trailingSpace;
-            } else if (item.type === 'attr' && item.el && item.el.isConnected) {
-              item.el.setAttribute(item.attr, translated);
-            } else if (item.type === 'value' && item.el && item.el.isConnected) {
-              item.el.value = translated;
-            }
+      const CHUNK_SIZE = 25;
+      for (let i = 0; i < textsToFetch.length; i += CHUNK_SIZE) {
+        const chunk = textsToFetch.slice(i, i + CHUNK_SIZE);
+        try {
+          const response = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              texts: chunk,
+              target: targetLang,
+              source: 'en'
+            })
           });
-          this.isTranslating = false;
 
-          // Perform sweep to ensure all newly populated phrases are updated
-          this.translateTree(document.body);
+          if (response.ok) {
+            const data = await response.json();
+            if (data && data.translations) {
+              if (!this.cache[targetLang]) this.cache[targetLang] = {};
+              Object.assign(this.cache[targetLang], data.translations);
+
+              try {
+                sessionStorage.setItem('campnova_translations_cache', JSON.stringify(this.cache));
+              } catch (e) {}
+
+              // Apply translations to matching nodes
+              this.isTranslating = true;
+              nodesToUpdate.forEach(item => {
+                const translated = data.translations[item.originalText];
+                if (!translated) return;
+
+                if (item.type === 'text' && item.node && item.node.isConnected) {
+                  const orig = item.node.__cn_orig || item.node.nodeValue;
+                  const leadingSpace = (orig && orig.match(/^\s*/)) ? orig.match(/^\s*/)[0] : '';
+                  const trailingSpace = (orig && orig.match(/\s*$/)) ? orig.match(/\s*$/)[0] : '';
+                  item.node.nodeValue = leadingSpace + translated + trailingSpace;
+                } else if (item.type === 'attr' && item.el && item.el.isConnected) {
+                  item.el.setAttribute(item.attr, translated);
+                } else if (item.type === 'value' && item.el && item.el.isConnected) {
+                  item.el.value = translated;
+                }
+              });
+              this.isTranslating = false;
+            }
+          }
+        } catch (chunkErr) {
+          console.warn('[CampNovaLang] Chunk translation network error:', chunkErr);
         }
-      } catch (err) {
-        console.warn('[CampNovaLang] Batch translation network error:', err);
+      }
+
+      // Sweep tree to apply newly resolved translations to remaining nodes
+      if (this.currentLanguageCode === targetLang) {
+        this.translateTree(document.body);
       }
     }, 30);
   },

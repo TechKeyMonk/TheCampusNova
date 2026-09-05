@@ -563,4 +563,18 @@ CREATE TABLE IF NOT EXISTS comparisons (
 CREATE INDEX IF NOT EXISTS idx_comparisons_c1 ON comparisons(college_1);
 CREATE INDEX IF NOT EXISTS idx_comparisons_c2 ON comparisons(college_2);
 
+-- ------------------------------------------------------------------------------
+-- 27. UPLOADED_MEDIA TABLE (Persistent Media Storage)
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS uploaded_media (
+    id SERIAL PRIMARY KEY,
+    filename VARCHAR(255) UNIQUE NOT NULL,
+    media_type VARCHAR(50) NOT NULL,
+    mime_type VARCHAR(100) NOT NULL,
+    file_data TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_uploaded_media_filename ON uploaded_media(filename);
+
 

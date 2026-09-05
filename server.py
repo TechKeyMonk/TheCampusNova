@@ -2166,10 +2166,46 @@ def api_save_course(course_id=None):
 @app.route("/api/courses/<course_id>", methods=["DELETE"])
 @require_admin_auth
 def api_delete_course(course_id):
+    target_ids = {f"prog-{course_id}".lower(), str(course_id).lower()}
+    target_names = set()
+
     if db.is_pg_connected() and str(course_id).isdigit():
+        row = db.query_one("SELECT course_code, course_name FROM courses WHERE id = %s", (int(course_id),))
+        if row:
+            if row.get("course_code"):
+                target_ids.add(str(row["course_code"]).lower())
+            if row.get("course_name"):
+                target_names.add(str(row["course_name"]).lower().strip())
         db.execute_query("DELETE FROM courses WHERE id = %s", (int(course_id),))
         _record_audit_log("Deleted Course", "Courses", str(course_id), f"Deleted course {course_id}")
-    return jsonify({"success": True, "message": "Course record deleted successfully from PostgreSQL."})
+
+    # Synchronously remove from JSON stores if present
+    for filepath in [COURSES_DATA_FILE, os.path.join(os.path.dirname(__file__), "courses_data.json")]:
+        if not os.path.exists(filepath):
+            continue
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                c_store = json.load(f)
+            changed = False
+            for cat in c_store.get("categories", []):
+                for grp in cat.get("groups", []):
+                    for sub in grp.get("subfields", []):
+                        orig_len = len(sub.get("programs", []))
+                        sub["programs"] = [
+                            p for p in sub.get("programs", [])
+                            if str(p.get("id", "")).lower() not in target_ids
+                            and str(p.get("course_code", "")).lower() not in target_ids
+                            and str(p.get("name", "")).lower().strip() not in target_names
+                        ]
+                        if len(sub["programs"]) != orig_len:
+                            changed = True
+            if changed:
+                with open(filepath, "w", encoding="utf-8") as f:
+                    json.dump(c_store, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            logger.warning(f"[JSON Course Delete Error] {e}")
+
+    return jsonify({"success": True, "message": "Course record deleted successfully."})
 
 # ----------------------------------------------------
 # 4. DOMAINS REST API (CRUD)
@@ -2491,7 +2527,7 @@ def api_get_study_materials():
 def api_upload_study_material_file():
     """
     Handles PDF and educational resource file uploads from Admin Portal.
-    Saves file to uploads/study-materials/ with secure filename.
+    Persists file data into shared Neon PostgreSQL uploaded_media table and saves to disk when writable.
     """
     if "file" not in request.files:
         return jsonify({"success": False, "message": "No file provided in request."}), 400
@@ -2504,12 +2540,36 @@ def api_upload_study_material_file():
     clean_filename = re.sub(r"[^a-zA-Z0-9_.-]", "", filename)
     if not clean_filename:
         clean_filename = f"resource_{secrets.token_hex(4)}.pdf"
-        
-    upload_folder = os.path.join(os.path.dirname(__file__), "uploads", "study-materials")
-    os.makedirs(upload_folder, exist_ok=True)
-    
-    file_path = os.path.join(upload_folder, clean_filename)
-    f.save(file_path)
+
+    ext = os.path.splitext(clean_filename)[1].lower()
+    mime_type = "application/pdf" if ext == ".pdf" else "application/octet-stream"
+
+    f.stream.seek(0)
+    file_bytes = f.read()
+    file_b64 = base64.b64encode(file_bytes).decode("ascii")
+
+    # 1. Authoritative persistence in Neon PostgreSQL
+    if db.is_pg_connected():
+        try:
+            db.execute_query("""
+                INSERT INTO uploaded_media (filename, media_type, mime_type, file_data)
+                VALUES (%s, %s, %s, %s)
+                ON CONFLICT (filename) DO UPDATE SET
+                    file_data = EXCLUDED.file_data,
+                    mime_type = EXCLUDED.mime_type
+            """, (clean_filename, "document", mime_type, file_b64))
+        except Exception as e:
+            logger.error(f"[PostgreSQL Study Material Upload Error] {e}")
+
+    # 2. Local filesystem write (safe in read-only serverless)
+    try:
+        upload_folder = os.path.join(os.path.dirname(__file__), "uploads", "study-materials")
+        os.makedirs(upload_folder, exist_ok=True)
+        file_path = os.path.join(upload_folder, clean_filename)
+        with open(file_path, "wb") as out_f:
+            out_f.write(file_bytes)
+    except Exception as e:
+        logger.info(f"[Filesystem Save Skipped in Serverless Environment] {e}")
     
     file_url = f"/uploads/study-materials/{clean_filename}"
     return jsonify({
@@ -2524,7 +2584,7 @@ def api_upload_study_material_file():
 def api_upload_media():
     """
     Handles Image and Video uploads from Admin Portal for Colleges & Educational Records.
-    Validates file extensions and saves securely into uploads/colleges/.
+    Persists file data into shared Neon PostgreSQL uploaded_media table and saves to disk when writable.
     """
     if "file" not in request.files:
         return jsonify({"success": False, "message": "No file provided in upload request."}), 400
@@ -2550,12 +2610,22 @@ def api_upload_media():
             "message": "Unsupported file type. Please upload a JPG, JPEG, PNG, or WEBP image."
         }), 400
 
-    try:
-        f.stream.seek(0, os.SEEK_END)
-        file_size = f.stream.tell()
-        f.stream.seek(0)
-    except Exception:
-        file_size = 0
+    mime_map = {
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".webp": "image/webp",
+        ".mp4": "video/mp4",
+        ".webm": "video/webm",
+        ".mov": "video/quicktime",
+        ".m4v": "video/x-m4v",
+        ".ogg": "video/ogg"
+    }
+    mime_type = mime_map.get(ext, "application/octet-stream")
+
+    f.stream.seek(0)
+    file_bytes = f.read()
+    file_size = len(file_bytes)
 
     if media_type == "image" and file_size > 40 * 1024 * 1024:
         return jsonify({
@@ -2566,11 +2636,30 @@ def api_upload_media():
     clean_base = re.sub(r"[^a-zA-Z0-9_.-]", "_", os.path.splitext(orig_name)[0])[:40]
     unique_filename = f"{media_type}_{clean_base}_{int(time.time())}_{secrets.token_hex(3)}{ext}"
 
-    upload_folder = os.path.join(os.path.dirname(__file__), "uploads", "colleges")
-    os.makedirs(upload_folder, exist_ok=True)
+    file_b64 = base64.b64encode(file_bytes).decode("ascii")
 
-    file_path = os.path.join(upload_folder, unique_filename)
-    f.save(file_path)
+    # 1. Authoritative persistence in Neon PostgreSQL
+    if db.is_pg_connected():
+        try:
+            db.execute_query("""
+                INSERT INTO uploaded_media (filename, media_type, mime_type, file_data)
+                VALUES (%s, %s, %s, %s)
+                ON CONFLICT (filename) DO UPDATE SET
+                    file_data = EXCLUDED.file_data,
+                    mime_type = EXCLUDED.mime_type
+            """, (unique_filename, media_type, mime_type, file_b64))
+        except Exception as e:
+            logger.error(f"[PostgreSQL Upload Media Save Error] {e}")
+
+    # 2. Local filesystem write (safe in read-only serverless)
+    try:
+        upload_folder = os.path.join(os.path.dirname(__file__), "uploads", "colleges")
+        os.makedirs(upload_folder, exist_ok=True)
+        file_path = os.path.join(upload_folder, unique_filename)
+        with open(file_path, "wb") as out_f:
+            out_f.write(file_bytes)
+    except Exception as e:
+        logger.info(f"[Filesystem Save Skipped in Serverless Environment] {e}")
 
     file_url = f"/uploads/colleges/{unique_filename}"
     return jsonify({
@@ -2580,13 +2669,38 @@ def api_upload_media():
         "file_url": file_url,
         "filename": unique_filename,
         "mediaType": media_type,
-        "size": os.path.getsize(file_path) if os.path.exists(file_path) else 0
+        "size": file_size
     }), 201
 
 @app.route("/uploads/<path:filename>")
 def serve_uploads(filename):
     uploads_dir = os.path.join(os.path.dirname(__file__), "uploads")
-    return send_from_directory(uploads_dir, filename)
+    full_path = os.path.join(uploads_dir, filename)
+
+    # 1. If exists on disk, serve directly
+    if os.path.exists(full_path) and os.path.isfile(full_path):
+        return send_from_directory(uploads_dir, filename)
+
+    # 2. If not on disk (e.g. Vercel serverless), query shared Neon PostgreSQL
+    if db.is_pg_connected():
+        clean_name = os.path.basename(filename)
+        row = db.query_one("SELECT mime_type, file_data FROM uploaded_media WHERE filename = %s", (clean_name,))
+        if row and row.get("file_data"):
+            try:
+                decoded_bytes = base64.b64decode(row["file_data"])
+                from flask import Response
+                return Response(
+                    decoded_bytes,
+                    mimetype=row.get("mime_type", "application/octet-stream"),
+                    headers={
+                        "Cache-Control": "public, max-age=86400",
+                        "Content-Length": str(len(decoded_bytes))
+                    }
+                )
+            except Exception as e:
+                logger.error(f"[DB Uploaded Media Decode Error] {e}")
+
+    return jsonify({"success": False, "message": "Uploaded file not found"}), 404
 
 @app.route("/api/study-materials", methods=["POST"])
 @app.route("/api/study-materials/<mat_id>", methods=["PUT"])

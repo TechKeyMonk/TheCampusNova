@@ -1,37 +1,6 @@
 {
   "approvals": [
     {
-      "id": "APP-137",
-      "date": "2026-09-05",
-      "time": "13:10:45",
-      "target_type": "College",
-      "target_id": "U-0436",
-      "target_title": "Amrita Vishwa Vidyapeetham, Coimbatore",
-      "field": "AI & Robotics Lab Expansion 2026",
-      "old_value": "Existing Profile",
-      "new_value": "Inaugurated 500-seat high-performance GPU cluster for generative AI research.",
-      "submitted_by": "admin@cb.amrita.edu (Dr. K. Sivaraman (Dean))",
-      "submitted_by_email": "admin@cb.amrita.edu",
-      "status": "Pending",
-      "notes": "Inaugurated 500-seat high-performance GPU cluster for generative AI research."
-    },
-    {
-      "id": "APP-40",
-      "db_id": 40,
-      "date": "2026-09-05",
-      "time": "07:40:44",
-      "target_type": "College",
-      "target_id": "Amrita Vishwa Vidyapeetham, Coimbatore",
-      "target_title": "Amrita Vishwa Vidyapeetham, Coimbatore",
-      "field": "AI & Robotics Lab Expansion 2026",
-      "old_value": "Existing Profile",
-      "new_value": "Inaugurated 500-seat high-performance GPU cluster for generative AI research.",
-      "submitted_by": "Dr. K. Sivaraman (Dean)",
-      "submitted_by_email": "admin@cb.amrita.edu",
-      "status": "Pending",
-      "notes": "Inaugurated 500-seat high-performance GPU cluster for generative AI research."
-    },
-    {
       "id": "APP-36",
       "db_id": 36,
       "date": "2026-09-05",

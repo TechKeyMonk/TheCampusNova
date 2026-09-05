@@ -2057,13 +2057,28 @@ html, body, html[data-theme="light"], html[data-theme="dark"], #app, .view {
 .view-bg-overlay ~ * h1,
 .view-bg-overlay ~ * h2,
 .home-body-bg-overlay ~ * h1,
-.home-body-bg-overlay ~ * h2,
+.home-body-bg-overlay ~ * h2 {
+  color: #FFFFFF !important;
+  text-shadow: none !important;
+}
+
 .hero-copy h1,
 .hero-copy .hero-rotator-h1,
 .hero-copy .hero-h1-slide,
 #heroRotatorH1,
-#heroRotatorH1 * {
-  color: #FFFFFF !important;
+#heroRotatorH1 .hero-h1-slide {
+  color: #0F172A !important;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+}
+
+.hero-copy h1 em,
+.hero-copy .hero-rotator-h1 em,
+.hero-copy .hero-h1-slide em,
+#heroRotatorH1 em,
+#heroRotatorH1 * em {
+  color: #77AC3B !important;
+  font-style: italic !important;
   text-shadow: none !important;
 }
 
