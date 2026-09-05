@@ -415,6 +415,30 @@
       "password_hash": "scrypt:32768:8:1$o0vW4mKimzE87OAd$64a706a2f9428f342e6d914e384137f9bedbf9a091c5ed2082a24b971be67a97b9940ec571c6d43c39f313536b8836ebc34cb8da2293dafc7fbe0a0c3cf7b3ad",
       "role": "user",
       "created_at": "2026-09-05 17:51:47"
+    },
+    {
+      "id": 1788623549963,
+      "name": "Audit Test Student",
+      "email": "student_1788623545221@testcampusnova.edu",
+      "password_hash": "scrypt:32768:8:1$gnIIoOqODdRgk6Op$c06ff1788efa07a9229b28b5c808f5e9a6ab4e4423d611c915abec656e8f2efdf900f2f0029d4601c57d3e48cda4007127c3bbeabfc836eeb2e32eeec08dcf76",
+      "role": "user",
+      "created_at": "2026-09-05 21:22:29"
+    },
+    {
+      "id": 1788625594259,
+      "name": "Audit Test Student",
+      "email": "student_1788625590546@testcampusnova.edu",
+      "password_hash": "scrypt:32768:8:1$sOdXJBxLlhYc1w14$1469c79a75b04850d1ec1e89a43cdd890354666e72e05778f858954e0df98ad452e1172d85aebfbdbb85e8b8daaf859fc8c54a5ed2d29c6da0bf11fad5ce851d",
+      "role": "user",
+      "created_at": "2026-09-05 21:56:34"
+    },
+    {
+      "id": 1788627854779,
+      "name": "Audit Test Student",
+      "email": "student_1788627850694@testcampusnova.edu",
+      "password_hash": "scrypt:32768:8:1$YvPjiWLxzKSteJ7Y$5de4faea017495395695bce703fa814173b867491141d34d5613fff489dc15fec111a10e79dc31c1f7a808140e69ba546c126230897fee5d7d7fed5f14778aa6",
+      "role": "user",
+      "created_at": "2026-09-05 22:34:14"
     }
   ]
 }

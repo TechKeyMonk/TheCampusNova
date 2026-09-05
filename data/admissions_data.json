@@ -45,7 +45,16 @@
       "application_end": "2026-06-30",
       "eligibility": "10+2 with 75% in PCM",
       "status": "active",
-      "id": 50
+      "id": 53
+    },
+    {
+      "college_id": 2,
+      "admission_type": "Direct Merit Entrance 2026",
+      "application_start": "2026-04-01",
+      "application_end": "2026-06-30",
+      "eligibility": "10+2 with 75% in PCM",
+      "status": "active",
+      "id": 52
     },
     {
       "college_id": 2,

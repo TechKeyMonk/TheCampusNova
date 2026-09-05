@@ -2438,6 +2438,103 @@
     </section>
   </div>
 
+  <!-- Event Details Modal (Live Upcoming Campus Events) -->
+  <div class="further-details-modal" id="eventDetailsModal" aria-hidden="true">
+    <div class="further-details-backdrop" data-close-modal="eventDetailsModal" onclick="closeEventDetailsModal()"></div>
+    <section class="further-details-dialog" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle" style="max-width: 680px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; background: #FFFFFF; color: #0F172A; border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); border: 1px solid #CBD5E1;">
+      <div class="placement-modal-header" style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; padding: 20px 24px; display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+          <span id="eventModalBadge" class="pathway-badge teal" style="margin-bottom: 6px; display: inline-block; font-size: 11px; font-weight: 800; background: rgba(21,128,61,0.12); color: #15803D; padding: 3px 10px; border-radius: 999px;">CAMPUS EVENT</span>
+          <h2 style="margin: 4px 0 0; font-size: 22px; font-weight: 800; color: #0F172A;" id="eventModalTitle">Event Details</h2>
+          <div id="eventModalSubtitle" style="font-size: 13px; color: #64748B; margin-top: 4px; font-weight: 600;">Premier Educational Institution</div>
+        </div>
+        <button class="further-details-close" id="closeEventDetailsModalBtn" type="button" aria-label="Close" onclick="closeEventDetailsModal()" style="font-size: 22px; color: #64748B; background: transparent; border: none; cursor: pointer; padding: 4px 8px; border-radius: 6px;">✕</button>
+      </div>
+
+      <div class="placement-modal-body" id="eventModalBody" style="padding: 24px; overflow-y: auto; flex: 1; color: #334155; line-height: 1.6; font-size: 13.5px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 14px 16px;">
+          <div>
+            <span style="display: block; font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">📅 Event Date</span>
+            <strong id="eventModalDate" style="font-size: 13.5px; color: #0F172A;">—</strong>
+          </div>
+          <div>
+            <span style="display: block; font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">⏰ Time</span>
+            <strong id="eventModalTime" style="font-size: 13.5px; color: #0F172A;">—</strong>
+          </div>
+          <div>
+            <span style="display: block; font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">📍 Venue / Campus</span>
+            <strong id="eventModalVenue" style="font-size: 13.5px; color: #0F172A;">—</strong>
+          </div>
+          <div>
+            <span style="display: block; font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">🏷️ Category</span>
+            <strong id="eventModalCategory" style="font-size: 13.5px; color: #0F172A;">—</strong>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 18px;">
+          <h4 style="font-size: 15px; font-weight: 800; color: #0F172A; margin: 0 0 8px;">Event Overview</h4>
+          <p id="eventModalDescription" style="margin: 0; color: #475569; font-size: 13.5px; line-height: 1.65; white-space: pre-wrap;"></p>
+        </div>
+
+        <div id="eventModalExtraSection"></div>
+      </div>
+
+      <div class="further-details-actions" style="margin-top: 0; padding: 14px 24px; border-top: 1px solid #E2E8F0; background: #F8FAFC; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <span id="eventModalFootnote" style="font-size: 12px; color: #64748B;">Official Verified Campus Conclave</span>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button type="button" class="colleges-filter-clear-btn" style="height: 38px; padding: 0 16px; font-size: 13px; font-weight: 700; border-radius: 8px;" onclick="closeEventDetailsModal()">Close</button>
+          <button type="button" id="eventModalFurtherDetailsBtn" class="primary-button" style="padding: 10px 18px; font-size: 13px; font-weight: 700;">Further Details ↗</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- News Details Modal (Live Higher Education & Admission Bulletins) -->
+  <div class="further-details-modal" id="newsDetailsModal" aria-hidden="true">
+    <div class="further-details-backdrop" data-close-modal="newsDetailsModal" onclick="closeNewsDetailsModal()"></div>
+    <section class="further-details-dialog" role="dialog" aria-modal="true" aria-labelledby="newsModalTitle" style="max-width: 680px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; background: #FFFFFF; color: #0F172A; border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); border: 1px solid #CBD5E1;">
+      <div class="placement-modal-header" style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; padding: 20px 24px; display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+          <span id="newsModalBadge" class="pathway-badge coral" style="margin-bottom: 6px; display: inline-block; font-size: 11px; font-weight: 800; background: rgba(30,64,175,0.1); color: #1E40AF; padding: 3px 10px; border-radius: 999px;">OFFICIAL BULLETIN</span>
+          <h2 style="margin: 4px 0 0; font-size: 22px; font-weight: 800; color: #0F172A;" id="newsModalTitle">News Bulletin</h2>
+          <div id="newsModalSubtitle" style="font-size: 13px; color: #64748B; margin-top: 4px; font-weight: 600;">Higher Education Authority</div>
+        </div>
+        <button class="further-details-close" id="closeNewsDetailsModalBtn" type="button" aria-label="Close" onclick="closeNewsDetailsModal()" style="font-size: 22px; color: #64748B; background: transparent; border: none; cursor: pointer; padding: 4px 8px; border-radius: 6px;">✕</button>
+      </div>
+
+      <div class="placement-modal-body" id="newsModalBody" style="padding: 24px; overflow-y: auto; flex: 1; color: #334155; line-height: 1.6; font-size: 13.5px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 16px;">
+          <div>
+            <span style="display: block; font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">📅 Published Date</span>
+            <strong id="newsModalDate" style="font-size: 13px; color: #0F172A;">—</strong>
+          </div>
+          <div>
+            <span style="display: block; font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">🏷️ Category</span>
+            <strong id="newsModalCategory" style="font-size: 13px; color: #0F172A;">—</strong>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <h4 style="font-size: 15px; font-weight: 800; color: #0F172A; margin: 0 0 8px;">Summary</h4>
+          <p id="newsModalSummary" style="margin: 0; color: #334155; font-size: 13.5px; line-height: 1.65; font-weight: 500;"></p>
+        </div>
+
+        <div id="newsModalContentWrap" style="margin-bottom: 16px;">
+          <h4 style="font-size: 15px; font-weight: 800; color: #0F172A; margin: 0 0 8px;">Detailed Bulletin Content</h4>
+          <div id="newsModalContent" style="color: #475569; font-size: 13.5px; line-height: 1.65; white-space: pre-wrap;"></div>
+        </div>
+      </div>
+
+      <div class="further-details-actions" style="margin-top: 0; padding: 14px 24px; border-top: 1px solid #E2E8F0; background: #F8FAFC; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <span id="newsModalFootnote" style="font-size: 12px; color: #64748B;">Official Verified TheCampusNova Circular</span>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button type="button" class="colleges-filter-clear-btn" style="height: 38px; padding: 0 16px; font-size: 13px; font-weight: 700; border-radius: 8px;" onclick="closeNewsDetailsModal()">Close</button>
+          <button type="button" id="newsModalOfficialSourceBtn" class="primary-button" style="padding: 10px 18px; font-size: 13px; font-weight: 700;">Official Source ↗</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
 
   <!-- Floating Upcoming Exam Date Corner Notification -->
   <div id="examFloatingNotification" class="exam-floating-notification" style="display:none;" role="status" aria-live="polite">
@@ -2478,6 +2575,6 @@
   </aside>
 
   <div class="toast" id="toast">This is a visual prototype. Live actions arrive in the next build.</div>
-  <script src="script.js?v=20260905-events-news-live-v3"></script>
+  <script src="script.js?v=20260905-events-news-live-v4"></script>
 </body>
 </html>

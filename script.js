@@ -4,6 +4,7 @@ window._userMentorsCache = window._userMentorsCache || [];
 window._activeSelectedMentor = window._activeSelectedMentor || null;
 var _userMentorsCache = window._userMentorsCache;
 var _activeSelectedMentor = window._activeSelectedMentor;
+var _isLoadingLiveEventsAndNews = false;
 
 // ============================================================================
 // FRONTEND SECURITY DETERRENCE LAYER (PUBLIC WEBSITE)
@@ -870,6 +871,10 @@ async function openCollegeDetailsModal(collegeIdentifier) {
   currentModalCollege = col;
   currentSelectedCollege = col;
   window._authSelectedCollege = col;
+
+  if (typeof recordUserActivity === 'function') {
+    recordUserActivity('view', 'colleges', (col.aishe_code || col.aishe || col.id || ''), (col.name || col.college_name || ''));
+  }
 
   const rankDisplay = col.rank ? `#${col.rank}` : (col.nirf_rank ? `#${col.nirf_rank}` : 'NIRF Ranked');
   const badgeText = col.badge || col.type || col.college_type || 'PREMIER INSTITUTION';
@@ -1909,6 +1914,10 @@ async function openSearch(query) {
   if (headerSearch) headerSearch.value = cleanQ;
   if (mobileDrawerSearch) mobileDrawerSearch.value = cleanQ;
   if (resultSearch) resultSearch.value = cleanQ;
+
+  if (cleanQ && typeof recordUserActivity === 'function') {
+    recordUserActivity('search', 'global', '', cleanQ);
+  }
 
   await renderSearchResults(cleanQ, 'all');
 }
@@ -5162,6 +5171,14 @@ function renderCollegesView() {
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       collegesFilterState.search = e.target.value;
+      if (e.target.value && e.target.value.trim().length >= 2) {
+        clearTimeout(window._collegeSearchLogTimer);
+        window._collegeSearchLogTimer = setTimeout(() => {
+          if (typeof recordUserActivity === 'function') {
+            recordUserActivity('search', 'colleges', '', e.target.value.trim());
+          }
+        }, 600);
+      }
       renderCollegesView();
       // Keep focus and cursor
       const newInp = document.getElementById('collegesGlobalSearchInput');
@@ -8413,6 +8430,10 @@ function openExamHowToPrepareModal(examId) {
   const exams = getExamsRegistry();
   const exam = exams.find(e => e.id === examId) || exams[0];
   if (!exam) return;
+
+  if (typeof recordUserActivity === 'function') {
+    recordUserActivity('view', 'exams', exam.id || examId, exam.name || '');
+  }
 
   const modal = document.getElementById('examPrepModal');
   const catBadge = document.getElementById('modalExamPrepCategory');
@@ -13920,6 +13941,17 @@ function handleCompareCollege2Search(val) {
 }
 window.handleCompareCollege2Search = handleCompareCollege2Search;
 
+function executeReviewsComparison() {
+  reviewsCompareFilterState.activeCompare = true;
+  if (typeof recordUserActivity === 'function') {
+    const c1 = reviewsCompareFilterState.college1 || '';
+    const c2 = reviewsCompareFilterState.college2 || '';
+    recordUserActivity('compare', 'reviews-compare', c1 + '_vs_' + c2, c1 + ' vs ' + c2);
+  }
+  renderReviewsCompareView();
+}
+window.executeReviewsComparison = executeReviewsComparison;
+
 async function renderReviewsCompareView() {
   const container = document.getElementById('reviewsComparePageContent');
   if (!container) return;
@@ -14128,7 +14160,7 @@ async function renderReviewsCompareView() {
               class="primary-button" 
               style="height:46px; padding:0 36px; font-size:14px; font-weight:800; display:inline-flex; align-items:center; gap:8px;"
               ${(!c1Id || !c2Id) ? 'disabled style="opacity:0.6; cursor:not-allowed;"' : ''}
-              onclick="reviewsCompareFilterState.activeCompare = true; renderReviewsCompareView();"
+              onclick="executeReviewsComparison()"
             >
               <span>Compare Both Colleges ➔</span>
             </button>
@@ -15000,6 +15032,10 @@ function openCourseDetailsModal(programIdOrName) {
         topColleges: ['IIT Madras', 'IIT Delhi', 'IIT Bombay', 'BITS Pilani', 'IISc Bengaluru']
       };
     }
+  }
+
+  if (typeof recordUserActivity === 'function') {
+    recordUserActivity('view', 'courses', (prog && prog.id) || '', (prog && prog.name) || '');
   }
 
   const annualFee = getProgramAnnualTuitionFee(prog);
@@ -16749,11 +16785,11 @@ function initTheCampusNova() {
   try { initPlacementAndInternshipFilters(); } catch (e) { console.warn('[Init] PlacementFilters error:', e); }
 
   // Live Real-Time Database Synchronization
+  try { if (typeof loadLiveEventsAndNews === 'function') loadLiveEventsAndNews(); } catch(e) {}
   try { if (typeof fetchCollegesLive === 'function') fetchCollegesLive(); } catch(e) {}
   try { if (typeof fetchPlacementsLive === 'function') fetchPlacementsLive(); } catch(e) {}
   try { if (typeof fetchInternshipsLive === 'function') fetchInternshipsLive(); } catch(e) {}
   try { if (typeof fetchReviewsLive === 'function') fetchReviewsLive(); } catch(e) {}
-  try { if (typeof loadLiveEventsAndNews === 'function') loadLiveEventsAndNews(); } catch(e) {}
   try { fetch('/api/mentors').then(r => r.json()).then(d => { if (d && d.success && Array.isArray(d.mentors)) _userMentorsCache = d.mentors; }).catch(() => {}); } catch(e) {}
 
   // Initial Route Load
@@ -17155,6 +17191,8 @@ function closeAllModals() {
     '#authorityModal',
     '#emailVerificationModal',
     '#collegeUpdateModal',
+    '#eventDetailsModal',
+    '#newsDetailsModal',
     '.custom-modal',
     '.further-details-modal'
   ];
@@ -17213,6 +17251,20 @@ function closeAuthorityModal() {
   document.body.style.overflow = '';
 }
 window.closeAuthorityModal = closeAuthorityModal;
+
+function closeEmailVerificationModal() {
+  const m = document.getElementById('verifyAuthorityModal') || document.getElementById('emailVerificationModal');
+  if (m) { m.classList.remove('open', 'active'); m.style.display = 'none'; }
+  document.body.style.overflow = '';
+}
+window.closeEmailVerificationModal = closeEmailVerificationModal;
+
+function closeCollegeUpdateModal() {
+  const m = document.getElementById('collegeUpdateModal');
+  if (m) { m.classList.remove('open', 'active'); m.style.display = 'none'; }
+  document.body.style.overflow = '';
+}
+window.closeCollegeUpdateModal = closeCollegeUpdateModal;
 
 // Export all global helpers to window
 window.openSearch = openSearch;
@@ -17700,9 +17752,151 @@ if (document.readyState === 'loading') {
 // LIVE CAMPUS EVENTS & EDUCATION NEWS CONTROLLER (Synced with Admin Portal)
 // ==========================================================================
 
+// Cache for live events and news data
+window._liveEventsCache = [];
+window._liveNewsCache = [];
+
+function openEventDetailsModal(eventId) {
+  const cache = window._liveEventsCache || [];
+  const ev = cache.find(x => String(x.id) === String(eventId) || String(x.db_id) === String(eventId));
+  const modal = document.getElementById('eventDetailsModal');
+  if (!modal) {
+    showToast('Event details view');
+    return;
+  }
+
+  const titleEl = document.getElementById('eventModalTitle');
+  const subEl = document.getElementById('eventModalSubtitle');
+  const badgeEl = document.getElementById('eventModalBadge');
+  const dateEl = document.getElementById('eventModalDate');
+  const timeEl = document.getElementById('eventModalTime');
+  const venueEl = document.getElementById('eventModalVenue');
+  const catEl = document.getElementById('eventModalCategory');
+  const descEl = document.getElementById('eventModalDescription');
+  const extraEl = document.getElementById('eventModalExtraSection');
+  const linkBtn = document.getElementById('eventModalFurtherDetailsBtn');
+
+  if (ev) {
+    if (titleEl) titleEl.textContent = ev.title || 'Campus Conclave';
+    if (subEl) subEl.textContent = ev.college_name || 'Premier Educational Institution';
+    if (badgeEl) badgeEl.textContent = (ev.status || 'CAMPUS EVENT').toUpperCase();
+    if (dateEl) dateEl.textContent = ev.event_date || 'Upcoming';
+    if (timeEl) timeEl.textContent = ev.time || 'Schedule to be confirmed';
+    if (venueEl) venueEl.textContent = ev.venue || 'Main Campus Auditorium';
+    if (catEl) catEl.textContent = ev.category || 'Conclave & Fest';
+    if (descEl) descEl.textContent = ev.description || 'Official institutional conclave and student symposium organized by campus faculty and departments.';
+    
+    if (extraEl) {
+      extraEl.innerHTML = `
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; font-size:12.5px; color:#475569;">
+          <div>🏛️ <strong>Organizing Body:</strong> ${escapeHtml(ev.college_name || 'Campus Academic Department')}</div>
+          ${ev.badge ? `<div style="margin-top:4px;">🎖️ <strong>Event Distinction:</strong> ${escapeHtml(ev.badge)}</div>` : ''}
+        </div>
+      `;
+    }
+
+    const targetUrl = ev.official_website || ev.website || ev.registration_link || '';
+    if (linkBtn) {
+      linkBtn.onclick = () => {
+        if (targetUrl && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://'))) {
+          window.open(targetUrl, '_blank', 'noopener,noreferrer');
+        } else if (targetUrl && targetUrl.trim()) {
+          window.open('https://' + targetUrl.replace(/^\/+/, ''), '_blank', 'noopener,noreferrer');
+        } else {
+          showToast('No official website or registration link currently registered for this event.', 'info');
+        }
+      };
+    }
+
+    if (typeof recordUserActivity === 'function') {
+      recordUserActivity('view', 'events', ev.id || eventId, ev.title || '');
+    }
+  }
+
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+window.openEventDetailsModal = openEventDetailsModal;
+
+function closeEventDetailsModal() {
+  const modal = document.getElementById('eventDetailsModal');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+  document.body.style.overflow = '';
+}
+window.closeEventDetailsModal = closeEventDetailsModal;
+
+function openNewsDetailsModal(newsId) {
+  const cache = window._liveNewsCache || [];
+  const nw = cache.find(x => String(x.id) === String(newsId) || String(x.db_id) === String(newsId));
+  const modal = document.getElementById('newsDetailsModal');
+  if (!modal) {
+    showToast('News details view');
+    return;
+  }
+
+  const titleEl = document.getElementById('newsModalTitle');
+  const subEl = document.getElementById('newsModalSubtitle');
+  const badgeEl = document.getElementById('newsModalBadge');
+  const dateEl = document.getElementById('newsModalDate');
+  const catEl = document.getElementById('newsModalCategory');
+  const summaryEl = document.getElementById('newsModalSummary');
+  const contentEl = document.getElementById('newsModalContent');
+  const linkBtn = document.getElementById('newsModalOfficialSourceBtn');
+
+  if (nw) {
+    if (titleEl) titleEl.textContent = nw.title || 'Campus News Bulletin';
+    if (subEl) subEl.textContent = nw.college_name || 'Higher Education Authority';
+    if (badgeEl) badgeEl.textContent = (nw.badge || 'OFFICIAL BULLETIN').toUpperCase();
+    if (dateEl) dateEl.textContent = nw.published_date || 'Recent';
+    if (catEl) catEl.textContent = nw.category || 'General';
+    if (summaryEl) summaryEl.textContent = nw.summary || nw.content || 'Official higher education circular and academic notification.';
+    if (contentEl) contentEl.textContent = nw.content || nw.summary || 'Detailed notification text dispatched from institutional administrative office.';
+
+    const targetUrl = nw.source_url || '';
+    if (linkBtn) {
+      if (targetUrl && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://') || targetUrl.includes('.'))) {
+        linkBtn.style.display = 'inline-flex';
+        linkBtn.onclick = () => {
+          const finalUrl = (targetUrl.startsWith('http://') || targetUrl.startsWith('https://')) ? targetUrl : ('https://' + targetUrl);
+          window.open(finalUrl, '_blank', 'noopener,noreferrer');
+        };
+      } else {
+        linkBtn.style.display = 'none';
+      }
+    }
+
+    if (typeof recordUserActivity === 'function') {
+      recordUserActivity('view', 'news', nw.id || newsId, nw.title || '');
+    }
+  }
+
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+window.openNewsDetailsModal = openNewsDetailsModal;
+
+function closeNewsDetailsModal() {
+  const modal = document.getElementById('newsDetailsModal');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+  document.body.style.overflow = '';
+}
+window.closeNewsDetailsModal = closeNewsDetailsModal;
+
+var _isLoadingLiveEventsAndNews = false;
 async function loadLiveEventsAndNews() {
-  const eventsContainer = document.getElementById('homeEventsFeedContainer');
-  const newsContainer = document.getElementById('homeNewsFeedContainer');
+  if (_isLoadingLiveEventsAndNews) return;
+  _isLoadingLiveEventsAndNews = true;
+  try {
+    const eventsContainer = document.getElementById('homeEventsFeedContainer');
+    const newsContainer = document.getElementById('homeNewsFeedContainer');
 
   // Load Events
   if (eventsContainer) {
@@ -17710,6 +17904,7 @@ async function loadLiveEventsAndNews() {
       const res = await fetch('/api/events');
       const data = await res.json();
       if (data.success && Array.isArray(data.events)) {
+        window._liveEventsCache = data.events;
         const countBadge = document.getElementById('homeEventsCountBadge');
         if (countBadge) countBadge.textContent = `${data.events.length} Active`;
         
@@ -17717,6 +17912,7 @@ async function loadLiveEventsAndNews() {
           const desc = (e.description && e.description.trim())
             ? e.description.trim()
             : `Official institutional event and student conclave organized by ${e.college_name || 'the campus'}.`;
+          const eventIdentifier = String(e.id || e.db_id || '');
           return `
           <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; transition:transform 0.2s ease, box-shadow 0.2s ease;">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:4px;">
@@ -17736,15 +17932,9 @@ async function loadLiveEventsAndNews() {
               <span style="font-size:10.5px; background:#EDF2F7; color:#475569; padding:2px 6px; border-radius:4px; font-weight:600;">
                 ${escapeHtml(e.category || 'Tech Fest')}
               </span>
-              ${e.registration_link ? `
-                <a href="${escapeHtml(e.registration_link)}" target="_blank" rel="noopener noreferrer" style="font-size:11.5px; font-weight:700; color:#15803D; text-decoration:none; display:inline-flex; align-items:center; gap:3px;">
-                  Register / Explore ↗
-                </a>
-              ` : `
-                <span style="font-size:11.5px; font-weight:700; color:#15803D; cursor:pointer;" onclick="showToast('Event details registered in Campus Nova schedule.', 'info')">
-                  View Info ↗
-                </span>
-              `}
+              <button type="button" class="action-btn-link" style="background:none; border:none; padding:0; font-size:11.5px; font-weight:700; color:#15803D; cursor:pointer; display:inline-flex; align-items:center; gap:3px;" onclick="openEventDetailsModal('${escapeHtml(eventIdentifier)}')">
+                View Info ↗
+              </button>
             </div>
           </div>
         `;
@@ -17761,6 +17951,7 @@ async function loadLiveEventsAndNews() {
       const res = await fetch('/api/news');
       const data = await res.json();
       if (data.success && Array.isArray(data.news)) {
+        window._liveNewsCache = data.news;
         const countBadge = document.getElementById('homeNewsCountBadge');
         if (countBadge) countBadge.textContent = `${data.news.length} Bulletins`;
         
@@ -17770,6 +17961,7 @@ async function loadLiveEventsAndNews() {
             : ((n.content && n.content.trim())
               ? n.content.trim()
               : `Official admission and academic circular announced by ${n.college_name || 'Higher Education Board'}.`);
+          const newsIdentifier = String(n.id || n.db_id || '');
           return `
           <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; transition:transform 0.2s ease, box-shadow 0.2s ease;">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:4px;">
@@ -17789,15 +17981,9 @@ async function loadLiveEventsAndNews() {
               <span style="font-size:10.5px; background:#EDF2F7; color:#475569; padding:2px 6px; border-radius:4px; font-weight:600;">
                 ${escapeHtml(n.category || 'General')}
               </span>
-              ${n.source_url ? `
-                <a href="${escapeHtml(n.source_url)}" target="_blank" rel="noopener noreferrer" style="font-size:11.5px; font-weight:700; color:#1D4ED8; text-decoration:none; display:inline-flex; align-items:center; gap:3px;">
-                  Official Source ↗
-                </a>
-              ` : `
-                <span style="font-size:11.5px; font-weight:700; color:#1D4ED8; cursor:pointer;" onclick="showToast('Official notification logged on Campus Nova.', 'info')">
-                  Read More ↗
-                </span>
-              `}
+              <button type="button" class="action-btn-link" style="background:none; border:none; padding:0; font-size:11.5px; font-weight:700; color:#1D4ED8; cursor:pointer; display:inline-flex; align-items:center; gap:3px;" onclick="openNewsDetailsModal('${escapeHtml(newsIdentifier)}')">
+                Read More ↗
+              </button>
             </div>
           </div>
         `;
@@ -17806,6 +17992,9 @@ async function loadLiveEventsAndNews() {
     } catch (err) {
       console.error('Failed to load live news:', err);
     }
+  }
+  } finally {
+    _isLoadingLiveEventsAndNews = false;
   }
 }
 window.loadLiveEventsAndNews = loadLiveEventsAndNews;

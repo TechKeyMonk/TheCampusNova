@@ -5101,12 +5101,36 @@
 
 
 
-    #adminAuthWrapper {
-
-      background: var(--main-background) !important;
-
+    /* Admin Portal Intended Contrast Fix for Dark Headers & Modals */
+    .fif-portal-header,
+    #tab-institution-fields [style*="background:linear-gradient"],
+    #fifQuickActionModal [style*="background:linear-gradient"],
+    #fifUnifiedModal [style*="background:linear-gradient"] {
+      color: #FFFFFF !important;
     }
-
+    .fif-portal-header h3,
+    #tab-institution-fields [style*="background:linear-gradient"] h3,
+    #fifQuickActionModal [style*="background:linear-gradient"] h3,
+    #fifUnifiedModal [style*="background:linear-gradient"] h3 {
+      color: #FFFFFF !important;
+    }
+    .fif-portal-header p,
+    #tab-institution-fields [style*="background:linear-gradient"] p,
+    #fifQuickActionModal [style*="background:linear-gradient"] p,
+    #fifUnifiedModal [style*="background:linear-gradient"] p {
+      color: #94A3B8 !important;
+    }
+    .fif-portal-header strong,
+    #tab-institution-fields [style*="background:linear-gradient"] strong,
+    #fifQuickActionModal [style*="background:linear-gradient"] strong,
+    #fifUnifiedModal [style*="background:linear-gradient"] strong {
+      color: #F8FAFC !important;
+    }
+    .fif-portal-header span:not([style*="background"]),
+    #tab-institution-fields [style*="background:linear-gradient"] span:not([style*="background"]),
+    #fifUnifiedModal [style*="background:linear-gradient"] span:not([style*="background"]) {
+      color: #FFFFFF !important;
+    }
   </style>
 
 
@@ -5597,9 +5621,9 @@
 
               </div>
 
-              <div class="kpi-value" id="kpiTotalSearches">142,850</div>
+              <div class="kpi-value" id="kpiTotalSearches">0</div>
 
-              <div class="kpi-trend">↗ +18.4% this week</div>
+              <div class="kpi-trend" id="kpiTotalSearchesSub">Recorded user searches</div>
 
             </div>
 
@@ -5609,9 +5633,9 @@
 
                   class="kpi-icon">🧭</span></div>
 
-              <div class="kpi-value" id="kpiTotalExplores">89,420</div>
+              <div class="kpi-value" id="kpiTotalExplores">0</div>
 
-              <div class="kpi-trend">↗ 15 Categories active</div>
+              <div class="kpi-trend" id="kpiTotalExploresSub">Recorded explore actions</div>
 
             </div>
 
@@ -5621,9 +5645,9 @@
 
                   class="kpi-icon">🏛️</span></div>
 
-              <div class="kpi-value" style="font-size:18px; line-height:1.2;">IIT Madras</div>
+              <div class="kpi-value" id="kpiMostSearchedCollege" style="font-size:18px; line-height:1.2;">—</div>
 
-              <div class="kpi-trend">★ 36.8k direct searches</div>
+              <div class="kpi-trend" id="kpiMostSearchedCollegeSub">Direct search queries</div>
 
             </div>
 
@@ -5633,9 +5657,9 @@
 
                   class="kpi-icon">📖</span></div>
 
-              <div class="kpi-value" style="font-size:18px; line-height:1.2;">B.Sc CS</div>
+              <div class="kpi-value" id="kpiMostSearchedCourse" style="font-size:18px; line-height:1.2;">—</div>
 
-              <div class="kpi-trend">★ 14.2k pathway clicks</div>
+              <div class="kpi-trend" id="kpiMostSearchedCourseSub">Pathway explores</div>
 
             </div>
 
@@ -5645,9 +5669,9 @@
 
               </div>
 
-              <div class="kpi-value" style="font-size:18px; line-height:1.2;">Artificial Intel</div>
+              <div class="kpi-value" id="kpiTopDomain" style="font-size:18px; line-height:1.2;">—</div>
 
-              <div class="kpi-trend">↗ 41% interest share</div>
+              <div class="kpi-trend" id="kpiTopDomainSub">Domain interest share</div>
 
             </div>
 
@@ -5657,9 +5681,9 @@
 
               </div>
 
-              <div class="kpi-value" style="font-size:18px; line-height:1.2;">JEE Main 2026</div>
+              <div class="kpi-value" id="kpiMostViewedExam" style="font-size:18px; line-height:1.2;">—</div>
 
-              <div class="kpi-trend">★ 49.4k lookups</div>
+              <div class="kpi-trend" id="kpiMostViewedExamSub">Verified lookups</div>
 
             </div>
 
@@ -6101,9 +6125,9 @@
 
                   class="kpi-icon">👁️</span></div>
 
-              <div class="kpi-value">482,900</div>
+              <div class="kpi-value" id="kpiTotalCollegeViews">0</div>
 
-              <div class="kpi-trend">↗ +21.4% this month</div>
+              <div class="kpi-trend" id="kpiTotalCollegeViewsSub">Database view events</div>
 
             </div>
 
@@ -6113,9 +6137,9 @@
 
                   class="kpi-icon">🔍</span></div>
 
-              <div class="kpi-value">128,450</div>
+              <div class="kpi-value" id="kpiDirectCollegeSearches">0</div>
 
-              <div class="kpi-trend">★ Top: IIT Madras</div>
+              <div class="kpi-trend" id="kpiDirectCollegeSearchesSub">Direct search queries</div>
 
             </div>
 
@@ -6125,9 +6149,9 @@
 
               </div>
 
-              <div class="kpi-value">34,120</div>
+              <div class="kpi-value" id="kpiComparisonQueries">0</div>
 
-              <div class="kpi-trend">Top: IIT Delhi vs IITB</div>
+              <div class="kpi-trend" id="kpiComparisonQueriesSub">Comparison events</div>
 
             </div>
 
@@ -6137,9 +6161,9 @@
 
               </div>
 
-              <div class="kpi-value">94,300</div>
+              <div class="kpi-value" id="kpiPlacementInquiries">0</div>
 
-              <div class="kpi-trend">Avg. CTC ₹19.2L+</div>
+              <div class="kpi-trend" id="kpiPlacementInquiriesSub">Tracked interactions</div>
 
             </div>
 
@@ -6239,9 +6263,9 @@
 
                   class="kpi-icon">👥</span></div>
 
-              <div class="kpi-value">1,420</div>
+              <div class="kpi-value" id="kpiActiveUserSessions">1</div>
 
-              <div class="kpi-trend">● Live across India</div>
+              <div class="kpi-trend" id="kpiActiveUserSessionsSub">Database-backed sessions</div>
 
             </div>
 
@@ -6251,9 +6275,9 @@
 
                   class="kpi-icon">🔍</span></div>
 
-              <div class="kpi-value">6.8</div>
+              <div class="kpi-value" id="kpiAvgQueriesPerSession">0.0</div>
 
-              <div class="kpi-trend">↗ +1.4 vs benchmark</div>
+              <div class="kpi-trend" id="kpiAvgQueriesPerSessionSub">Recorded session ratio</div>
 
             </div>
 
@@ -6261,9 +6285,9 @@
 
               <div class="kpi-header"><span class="kpi-title">Explore Depth</span><span class="kpi-icon">🧭</span></div>
 
-              <div class="kpi-value">4.2 Pages</div>
+              <div class="kpi-value" id="kpiExploreDepth">1.0 Actions</div>
 
-              <div class="kpi-trend">Cutoffs &bull; Fees &bull; Placements</div>
+              <div class="kpi-trend" id="kpiExploreDepthSub">Navigation per session</div>
 
             </div>
 
@@ -9629,7 +9653,7 @@
 
             <!-- Portal Header -->
 
-            <div
+            <div class="fif-portal-header"
 
               style="padding:22px 24px; background:linear-gradient(135deg, #1E293B 0%, #0F172A 100%); color:#fff; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
 
@@ -12528,7 +12552,7 @@
 
 
 
-  <script src="admin.js?v=20260905-notif-notes-approvals-v4"></script>
+  <script src="admin.js?v=20260905-notif-notes-approvals-v5"></script>
 
 </body>
 

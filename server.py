@@ -3845,6 +3845,21 @@ def api_admin_analytics():
         nirf_ranked = [c for c in matching_colleges if str(c.get("nirf_rank") or "").isdigit() and int(str(c.get("nirf_rank"))) < 500]
         nirf_ranked.sort(key=lambda x: int(x["nirf_rank"]))
 
+        # District / regional real activity metrics
+        total_col_views = 0
+        direct_col_searches = 0
+        comp_queries = 0
+        place_inq = 0
+        if db.is_pg_connected():
+            cv_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module = 'colleges' AND action_type IN ('view', 'explore')")
+            total_col_views = cv_row["c"] if cv_row else 0
+            cs_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module = 'colleges' AND action_type = 'search'")
+            direct_col_searches = cs_row["c"] if cs_row else 0
+            cq_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module IN ('comparison', 'reviews-compare') OR action_type = 'compare'")
+            comp_queries = cq_row["c"] if cq_row else 0
+            pi_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module IN ('placements', 'internships', 'jobs')")
+            place_inq = pi_row["c"] if pi_row else 0
+
         return jsonify({
             "success": True,
             "district": district_filter or "All Districts",
@@ -3857,45 +3872,151 @@ def api_admin_analytics():
                 "naacAPlusCount": naac_a_plus if naac_a_plus > 0 else (total_match // 3),
                 "naacACount": naac_a if naac_a > 0 else (total_match // 2),
                 "naacBCount": naac_b,
-                "topNIRFColleges": [{"name": c.get("name"), "rank": c.get("nirf_rank"), "city": c.get("city")} for c in nirf_ranked[:10]],
+                "topNIRFColleges": [{"name": c.get("name") or c.get("college_name"), "rank": c.get("nirf_rank"), "city": c.get("city") or c.get("district")} for c in nirf_ranked[:10]],
                 "averageRating": "4.6 / 5.0" if total_match > 0 else "0.0",
-                "totalMonitoredDatabase": len(colleges)
+                "totalMonitoredDatabase": len(colleges),
+                "totalCollegeViews": total_col_views,
+                "directCollegeSearches": direct_col_searches,
+                "comparisonQueries": comp_queries,
+                "placementInquiries": place_inq
             }
         })
 
-    # Default General / User Analytics
+    # Default General / User Analytics (Real PostgreSQL Data)
+    if db.is_pg_connected():
+        s_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE action_type IN ('search', 'search_query')")
+        total_searches = s_row["c"] if s_row else 0
+
+        e_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE action_type IN ('explore', 'view', 'navigate')")
+        total_explores = e_row["c"] if e_row else 0
+
+        c_top = db.query_one("SELECT search_query, count(*) as c FROM user_activity WHERE (module = 'colleges' OR action_type = 'search') AND search_query != '' GROUP BY search_query ORDER BY c DESC LIMIT 1")
+        most_searched_col = c_top["search_query"] if c_top else "PSG College of Technology"
+        most_searched_col_count = c_top["c"] if c_top else 0
+
+        crs_top = db.query_one("SELECT search_query, count(*) as c FROM user_activity WHERE module = 'courses' AND search_query != '' GROUP BY search_query ORDER BY c DESC LIMIT 1")
+        most_searched_course = crs_top["search_query"] if crs_top else "B.Tech Computer Science & Engineering"
+        most_searched_course_count = crs_top["c"] if crs_top else 0
+
+        dom_top = db.query_one("SELECT record_id, count(*) as c FROM user_activity WHERE module = 'domains' AND record_id != '' GROUP BY record_id ORDER BY c DESC LIMIT 1")
+        top_domain = dom_top["record_id"].replace('-', ' ').title() if dom_top else "Artificial Intelligence & Data Science"
+
+        exm_top = db.query_one("SELECT record_id, count(*) as c FROM user_activity WHERE module IN ('exams', 'entrance-prep') AND record_id != '' GROUP BY record_id ORDER BY c DESC LIMIT 1")
+        most_viewed_exam = exm_top["record_id"].replace('-', ' ').upper() if exm_top else "JEE Main 2026"
+
+        col_views_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module = 'colleges' AND action_type IN ('view', 'explore')")
+        total_college_views = col_views_row["c"] if col_views_row else 0
+
+        col_search_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module = 'colleges' AND action_type = 'search'")
+        direct_college_searches = col_search_row["c"] if col_search_row else 0
+
+        comp_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module IN ('comparison', 'reviews-compare') OR action_type = 'compare'")
+        comparison_queries = comp_row["c"] if comp_row else 0
+
+        place_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module IN ('placements', 'internships', 'jobs')")
+        placement_inquiries = place_row["c"] if place_row else 0
+
+        sess_row = db.query_one("SELECT count(DISTINCT coalesce(user_id::text, date_trunc('hour', created_at)::text)) as c FROM user_activity")
+        active_sessions = max(sess_row["c"] if sess_row else 1, 1)
+
+        avg_queries = round(total_searches / active_sessions, 1)
+        explore_depth = round(total_explores / active_sessions, 1)
+
+        pen_row = db.query_one("SELECT count(*) as c FROM content_updates WHERE status = 'pending'")
+        app_row = db.query_one("SELECT count(*) as c FROM content_updates WHERE status = 'approved'")
+        pending_appr = pen_row["c"] if pen_row else 0
+        approved_appr = app_row["c"] if app_row else 0
+
+        u_row = db.query_one("SELECT count(*) as c FROM users")
+        total_users = u_row["c"] if u_row else len(load_users_data().get("users", []))
+
+        rec_rows = db.query_all("SELECT action_type, module, search_query, created_at FROM user_activity ORDER BY id DESC LIMIT 5")
+        recent_interactions = []
+        for r in (rec_rows or []):
+            action_desc = f"{r.get('module', 'General').title()} {r.get('action_type', 'Activity').title()}"
+            detail_desc = r.get('search_query') or f"{r.get('module', 'portal')} exploration"
+            time_str = "Recently"
+            if r.get("created_at") and hasattr(r["created_at"], "strftime"):
+                time_str = r["created_at"].strftime("%H:%M")
+            recent_interactions.append({
+                "action": action_desc,
+                "detail": detail_desc,
+                "time": time_str
+            })
+
+        return jsonify({
+            "success": True,
+            "analytics": {
+                "totalUsers": total_users,
+                "totalSearches": total_searches,
+                "totalExplores": total_explores,
+                "mostSearchedCollege": most_searched_col,
+                "mostSearchedCollegeCount": most_searched_col_count,
+                "mostSearchedCourse": most_searched_course,
+                "mostSearchedCourseCount": most_searched_course_count,
+                "topDomain": top_domain,
+                "mostViewedExam": most_viewed_exam,
+                "pendingApprovals": pending_appr,
+                "approvedUpdates": approved_appr,
+                "totalCollegeViews": total_college_views,
+                "directCollegeSearches": direct_college_searches,
+                "comparisonQueries": comparison_queries,
+                "placementInquiries": placement_inquiries,
+                "activeUserSessions": active_sessions,
+                "avgQueriesPerSession": avg_queries,
+                "exploreDepth": f"{explore_depth} Actions",
+                "userActivity": {
+                    "searches": total_searches,
+                    "collegeViews": total_college_views,
+                    "courseExplores": total_explores,
+                    "domainExplores": 0,
+                    "examPrepViews": 0,
+                    "studyMaterialsUsed": 0,
+                    "reviewsSubmitted": 0,
+                    "mentorInteractions": 0
+                },
+                "recentInteractions": recent_interactions
+            }
+        })
+
+    # Fallback to local files if DB disconnected
     approvals_data = load_approvals_data().get("approvals", [])
     pending_appr = len([a for a in approvals_data if a.get("status") == "Pending"])
     approved_appr = len([a for a in approvals_data if a.get("status") == "Approved"])
+    users_data = load_users_data().get("users", [])
 
     return jsonify({
         "success": True,
         "analytics": {
-            "totalUsers": 2450,
-            "totalSearches": 18450,
-            "totalExplores": 9320,
+            "totalUsers": len(users_data),
+            "totalSearches": 0,
+            "totalExplores": 0,
             "mostSearchedCollege": "PSG College of Technology",
-            "mostSearchedCourse": "B.Tech Computer Science & AI",
-            "topDomain": "Artificial Intelligence & ML",
+            "mostSearchedCollegeCount": 0,
+            "mostSearchedCourse": "B.Tech Computer Science & Engineering",
+            "mostSearchedCourseCount": 0,
+            "topDomain": "Artificial Intelligence",
+            "mostViewedExam": "JEE Main 2026",
             "pendingApprovals": pending_appr,
             "approvedUpdates": approved_appr,
+            "totalCollegeViews": 0,
+            "directCollegeSearches": 0,
+            "comparisonQueries": 0,
+            "placementInquiries": 0,
+            "activeUserSessions": 1,
+            "avgQueriesPerSession": 0.0,
+            "exploreDepth": "0.0 Actions",
             "userActivity": {
-                "searches": 18450,
-                "collegeViews": 24900,
-                "courseExplores": 12100,
-                "domainExplores": 8450,
-                "examPrepViews": 6700,
-                "studyMaterialsUsed": 5300,
-                "reviewsSubmitted": 240,
-                "mentorInteractions": 1850
+                "searches": 0,
+                "collegeViews": 0,
+                "courseExplores": 0,
+                "domainExplores": 0,
+                "examPrepViews": 0,
+                "studyMaterialsUsed": 0,
+                "reviewsSubmitted": 0,
+                "mentorInteractions": 0
             },
-            "recentInteractions": [
-                {"action": "College Explored", "detail": "PSG College of Technology, Coimbatore", "time": "2 mins ago"},
-                {"action": "Search Query", "detail": "Top Engineering Colleges in Coimbatore", "time": "5 mins ago"},
-                {"action": "Mentor Session", "detail": "Booked roadmap guidance with Dr. Aravind Sundaram", "time": "12 mins ago"},
-                {"action": "Review Submitted", "detail": "CEG Anna University (5 Stars)", "time": "25 mins ago"},
-                {"action": "Study Material Download", "detail": "DSA in Python Reference Cheat Sheet", "time": "40 mins ago"}
-            ]
+            "recentInteractions": []
         }
     })
 
@@ -5119,25 +5240,44 @@ def api_get_events():
     status = request.args.get("status", "").strip().lower()
 
     if db.is_pg_connected():
-        sql = "SELECT * FROM events WHERE status != 'archived' AND status != 'deleted'"
+        sql = "SELECT e.* FROM events e WHERE e.status != 'archived' AND e.status != 'deleted'"
         params = []
         if category and category != "all":
-            sql += " AND LOWER(category) LIKE %s"
+            sql += " AND LOWER(e.category) LIKE %s"
             params.append(f"%{category}%")
         if college and college != "all":
-            sql += " AND (LOWER(college_name) LIKE %s OR LOWER(COALESCE(college_id, '')) LIKE %s)"
+            sql += " AND (LOWER(e.college_name) LIKE %s OR LOWER(COALESCE(e.college_id, '')) LIKE %s)"
             params.extend([f"%{college}%", f"%{college}%"])
         if status and status != "all":
-            sql += " AND LOWER(status) = %s"
+            sql += " AND LOWER(e.status) = %s"
             params.append(status)
         if q:
-            sql += " AND (LOWER(title) LIKE %s OR LOWER(college_name) LIKE %s OR LOWER(COALESCE(description, '')) LIKE %s)"
+            sql += " AND (LOWER(e.title) LIKE %s OR LOWER(e.college_name) LIKE %s OR LOWER(COALESCE(e.description, '')) LIKE %s)"
             params.extend([f"%{q}%", f"%{q}%", f"%{q}%"])
-        sql += " ORDER BY id DESC"
+        sql += " ORDER BY e.id DESC"
         rows = db.query_all(sql, params)
         if rows:
+            # Efficiently map college websites for matching institutions
+            c_names = list({r.get("college_name", "").strip().lower() for r in rows if r.get("college_name")})
+            site_map = {}
+            if c_names:
+                try:
+                    q_marks = ", ".join(["%s"] * len(c_names))
+                    col_rows = db.query_all(
+                        f"SELECT LOWER(college_name) as cname, website FROM colleges WHERE LOWER(college_name) IN ({q_marks}) AND website IS NOT NULL AND website != ''",
+                        c_names
+                    )
+                    for cr in (col_rows or []):
+                        cn = cr.get("cname")
+                        wb = cr.get("website")
+                        if cn and wb and cn not in site_map:
+                            site_map[cn] = wb
+                except Exception as ex:
+                    logger.warning(f"Failed to fetch college websites for events: {ex}")
+
             events_list = []
             for r in rows:
+                c_norm = (r.get("college_name") or "").strip().lower()
                 events_list.append({
                     "id": r.get("event_id") or f"EVT-{r.get('id'):03d}",
                     "db_id": r.get("id"),
@@ -5150,6 +5290,7 @@ def api_get_events():
                     "venue": r.get("venue") or "",
                     "description": r.get("description") or "",
                     "registration_link": r.get("registration_link") or "",
+                    "official_website": site_map.get(c_norm, ""),
                     "status": r.get("status") or "Upcoming",
                     "badge": r.get("badge") or "Official Event"
                 })

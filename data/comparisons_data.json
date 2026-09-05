@@ -48,6 +48,28 @@
       "category": "Engineering",
       "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
       "status": "active",
+      "id": "CMP-027",
+      "college1": "IIT Madras",
+      "college2": "NIT Trichy",
+      "db_id": 27
+    },
+    {
+      "college_1": "IIT Madras",
+      "college_2": "NIT Trichy",
+      "category": "Engineering",
+      "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
+      "status": "active",
+      "id": "CMP-026",
+      "college1": "IIT Madras",
+      "college2": "NIT Trichy",
+      "db_id": 26
+    },
+    {
+      "college_1": "IIT Madras",
+      "college_2": "NIT Trichy",
+      "category": "Engineering",
+      "verdict": "IIT Madras leads in deep research, while NIT Trichy offers top ROI.",
+      "status": "active",
       "id": "CMP-024",
       "college1": "IIT Madras",
       "college2": "NIT Trichy",

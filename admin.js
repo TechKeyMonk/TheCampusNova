@@ -1588,7 +1588,7 @@ function getAllApprovals() {
   return list;
 }
 
-function renderApprovalsTable(category = 'all') {
+function renderApprovalsTableLocal(category = 'all') {
   const tbody = document.getElementById('approvalsTableBody');
   if (!tbody) return;
   const allSubmissions = getAllApprovals();
@@ -4665,7 +4665,7 @@ function renderStreamAuditCards() {
 // 12. COLLEGE ANALYTICS & USER SEARCH TRENDS
 // ----------------------------------------------------
 
-function renderCollegeAnalyticsTable(searchQuery = '') {
+function renderCollegeAnalyticsTableLegacy(searchQuery = '') {
   const tbody = document.getElementById('collegeAnalyticsTableBody');
   if (!tbody) return;
 
@@ -4734,6 +4734,22 @@ function renderUserAnalytics(cat = 'all') {
     </tr>
   `).join('');
 
+  const countEl = document.getElementById('kpiFilteredUserActivityCount');
+  if (countEl) countEl.textContent = list.length;
+
+  fetch('/api/admin/analytics').then(r => r.json()).then(data => {
+    if (data && data.analytics) {
+      const a = data.analytics;
+      const sessEl = document.getElementById('kpiActiveUserSessions');
+      const avgEl = document.getElementById('kpiAvgQueriesPerSession');
+      const depthEl = document.getElementById('kpiExploreDepth');
+
+      if (sessEl) sessEl.textContent = a.activeUserSessions || 1;
+      if (avgEl) avgEl.textContent = a.avgQueriesPerSession !== undefined ? a.avgQueriesPerSession : '0.0';
+      if (depthEl) depthEl.textContent = a.exploreDepth || '1.0 Actions';
+    }
+  }).catch(() => {});
+
   if (shareContainer) {
     shareContainer.innerHTML = `
       <div class="stream-stat-item">
@@ -4763,7 +4779,8 @@ function renderUserAnalytics(cat = 'all') {
 async function renderDashboardSummary() {
   updatePendingBadge();
   const exams = getExams();
-  if (kpiUpcomingExams) kpiUpcomingExams.textContent = `${exams.length} Active`;
+  const kpiUpcomingExamsEl = document.getElementById('kpiUpcomingExams');
+  if (kpiUpcomingExamsEl) kpiUpcomingExamsEl.textContent = `${exams.length} Active`;
 
   try {
     const res = await fetch('/api/admin/analytics');
@@ -4771,8 +4788,33 @@ async function renderDashboardSummary() {
       const data = await res.json();
       if (data && data.analytics) {
         const a = data.analytics;
-        if (kpiPending) kpiPending.textContent = a.pendingApprovals;
-        if (kpiApproved) kpiApproved.textContent = a.approvedUpdates;
+        const totalSearchesEl = document.getElementById('kpiTotalSearches');
+        const totalExploresEl = document.getElementById('kpiTotalExplores');
+        const mostSearchedColEl = document.getElementById('kpiMostSearchedCollege');
+        const mostSearchedColSubEl = document.getElementById('kpiMostSearchedCollegeSub');
+        const mostSearchedCourseEl = document.getElementById('kpiMostSearchedCourse');
+        const mostSearchedCourseSubEl = document.getElementById('kpiMostSearchedCourseSub');
+        const topDomainEl = document.getElementById('kpiTopDomain');
+        const topDomainSubEl = document.getElementById('kpiTopDomainSub');
+        const mostViewedExamEl = document.getElementById('kpiMostViewedExam');
+        const mostViewedExamSubEl = document.getElementById('kpiMostViewedExamSub');
+        const kpiPendingEl = document.getElementById('kpiPending');
+        const kpiApprovedEl = document.getElementById('kpiApproved');
+
+        if (totalSearchesEl) totalSearchesEl.textContent = Number(a.totalSearches || 0).toLocaleString();
+        if (totalExploresEl) totalExploresEl.textContent = Number(a.totalExplores || 0).toLocaleString();
+        if (mostSearchedColEl) mostSearchedColEl.textContent = a.mostSearchedCollege || '—';
+        if (mostSearchedColSubEl && a.mostSearchedCollegeCount !== undefined) {
+          mostSearchedColSubEl.textContent = `${a.mostSearchedCollegeCount} search queries`;
+        }
+        if (mostSearchedCourseEl) mostSearchedCourseEl.textContent = a.mostSearchedCourse || '—';
+        if (mostSearchedCourseSubEl && a.mostSearchedCourseCount !== undefined) {
+          mostSearchedCourseSubEl.textContent = `${a.mostSearchedCourseCount} pathway explores`;
+        }
+        if (topDomainEl) topDomainEl.textContent = a.topDomain || '—';
+        if (mostViewedExamEl) mostViewedExamEl.textContent = a.mostViewedExam || '—';
+        if (kpiPendingEl) kpiPendingEl.textContent = a.pendingApprovals !== undefined ? a.pendingApprovals : 0;
+        if (kpiApprovedEl) kpiApprovedEl.textContent = a.approvedUpdates !== undefined ? a.approvedUpdates : 0;
       }
     }
   } catch (e) {
@@ -4848,7 +4890,7 @@ let currentLogCategory = 'all';
 let _adminLiveLogsCache = null;
 let _adminLogsLoading = false;
 
-function renderLogsTable(category = 'all', searchQuery = '') {
+function renderLogsTableLegacy(category = 'all', searchQuery = '') {
   currentLogCategory = category;
   const tbody = document.getElementById('logsTableBody');
   if (!tbody) return;
@@ -5392,7 +5434,7 @@ if (openAddCompanyPlaybookBtn2) {
 let _adminRankingsLive = [];
 let _adminRankingsFetching = false;
 
-async function renderCollegeAnalyticsTable(searchQuery = '') {
+async function renderRankingsTableLegacy(searchQuery = '') {
   const tbody = document.getElementById('collegeAnalyticsTableBody');
   if (!tbody) return;
 
@@ -5455,16 +5497,7 @@ function editRankingRecord(id) {
   }
 }
 window.editRankingRecord = editRankingRecord;
-window.renderCollegeAnalyticsTable = renderCollegeAnalyticsTable;
-window.loadCollegeAnalytics = renderCollegeAnalyticsTable;
-window.loadAdminRankings = renderCollegeAnalyticsTable;
-
-const collegeAnalyticsSearchInput2 = document.getElementById('collegeAnalyticsSearchInput');
-if (collegeAnalyticsSearchInput2) {
-  collegeAnalyticsSearchInput2.addEventListener('input', (e) => {
-    renderCollegeAnalyticsTable(e.target.value);
-  });
-}
+window.loadAdminRankings = renderRankingsTableLegacy;
 
 // ----------------------------------------------------
 // 15. INITIALIZATION
@@ -6246,6 +6279,16 @@ async function renderCollegeAnalyticsTable(searchQuery = '') {
       if (kpiNirf) kpiNirf.textContent = Array.isArray(a.topNIRFColleges) ? a.topNIRFColleges.length : 12;
       if (kpiTrend) kpiTrend.textContent = `${selectedDistrict} Regional Database`;
       if (scopeSpan) scopeSpan.textContent = `Analyzing ${a.totalColleges || 0} Higher Education Institutions in ${selectedDistrict}`;
+
+      const kpiViews = document.getElementById('kpiTotalCollegeViews');
+      const kpiSearches = document.getElementById('kpiDirectCollegeSearches');
+      const kpiComp = document.getElementById('kpiComparisonQueries');
+      const kpiPlace = document.getElementById('kpiPlacementInquiries');
+
+      if (kpiViews) kpiViews.textContent = Number(a.totalCollegeViews || 0).toLocaleString();
+      if (kpiSearches) kpiSearches.textContent = Number(a.directCollegeSearches || 0).toLocaleString();
+      if (kpiComp) kpiComp.textContent = Number(a.comparisonQueries || 0).toLocaleString();
+      if (kpiPlace) kpiPlace.textContent = Number(a.placementInquiries || 0).toLocaleString();
     }
 
     // 2. Fetch Colleges in District
@@ -6350,10 +6393,6 @@ async function executeDeleteCollege(collegeId, collegeName) {
 }
 window.executeDeleteCollege = executeDeleteCollege;
 
-async function deleteCollege(collegeId) {
-  const col = await findCollegeByIdentifier(collegeId);
-  openDeleteCollegeConfirm(collegeId, col ? (col.name || col.college_name) : collegeId);
-}
 window.deleteCollege = deleteCollege;
 
 // ----------------------------------------------------

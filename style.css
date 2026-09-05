@@ -22020,6 +22020,123 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center !important;
     padding: 14px 0 0 0 !important;
   }
+
+  /* 21. UNIFIED 16-FIELD MOBILE WIDTH & CARD CONTAINER CONSISTENCY */
+  #coursesView > .inner-page,
+  #collegesView > .inner-page,
+  #domainsView > .inner-page,
+  #examsView > .inner-page,
+  #materialsView > .inner-page,
+  #reviewsView > .inner-page,
+  #rankingsView > .inner-page,
+  #careersView > .inner-page,
+  #placementsView > .inner-page,
+  #jobsView > .inner-page,
+  #internshipsView > .inner-page,
+  #admissionsView > .inner-page,
+  #scholarshipsView > .inner-page,
+  #facilitiesView > .inner-page,
+  #entrancePrepView > .inner-page,
+  #reviewsCompareView > .inner-page,
+  #searchView > .inner-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Unified Grid Containers across 16 Fields */
+  .courses-discovery-container,
+  .colleges-cards-grid,
+  .college-grid,
+  .domains-cards-grid,
+  .exams-cards-grid,
+  .materials-cards-grid,
+  .reviews-grid,
+  .rankings-grid,
+  .careers-grid,
+  .placements-grid,
+  .jobs-grid,
+  .internships-grid,
+  .admissions-grid,
+  .scholarships-grid,
+  .facilities-grid,
+  .prep-cards-grid,
+  .compare-cards-grid,
+  .survey-split-layout {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  /* Unified Cards across all 16 Fields */
+  .category-card-block,
+  .colleges-discovery-filter-card,
+  .college-card,
+  .domain-card,
+  .exam-card,
+  .material-card,
+  .review-card,
+  .ranking-card,
+  .career-card,
+  .placement-card,
+  .job-card,
+  .internship-card,
+  .admission-card,
+  .scholarship-card,
+  .facility-card,
+  .prep-card,
+  .compare-card,
+  .cn-roadmap-block,
+  .detail-block,
+  .survey-left-col,
+  .survey-right-col {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Header triggers & expandable contents inside cards */
+  .category-header-trigger {
+    padding: 16px 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .category-body-container {
+    padding: 0 14px 16px 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Prevent any horizontal overflow from badges, tag pills, action rows */
+  .category-programs-list,
+  .program-subcard-item,
+  .program-header-row,
+  .course-badges-wrap,
+  .internship-meta-row,
+  .card-tags-row,
+  .filter-pills-row,
+  .action-buttons-group {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-wrap: wrap !important;
+    box-sizing: border-box !important;
+  }
+
+  .program-header-row > div {
+    max-width: 100% !important;
+    word-break: break-word !important;
+  }
 }
 
 /* ==========================================================================
