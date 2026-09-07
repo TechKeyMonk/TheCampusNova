@@ -2,6 +2,7 @@ import os
 import re
 import json
 import time
+import datetime
 import secrets
 import hashlib
 import hmac
@@ -15,6 +16,8 @@ from flask import Flask, request, jsonify, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 import db
 import translation_service
+import io
+import bulk_excel_service
 
 logger = logging.getLogger(__name__)
 
@@ -1945,6 +1948,168 @@ def api_delete_college(college_id):
 
 
 # ----------------------------------------------------
+# 2.1 BULK EXCEL UPDATE APIS
+# ----------------------------------------------------
+@app.route("/api/admin/colleges/bulk-validate", methods=["POST"])
+@require_admin_auth
+def api_admin_colleges_bulk_validate():
+    """
+    Validates uploaded Excel file for Bulk Update Progress:
+    - Supports both 7-field base update and Individual College Details mode
+    - Enforces 100 MB max size limit & .xlsx format
+    - Detects header row dynamically
+    - Returns full preview payload
+    """
+    mode = (
+        request.form.get("mode") or
+        request.args.get("mode") or
+        ((request.get_json(silent=True) or {}).get("mode") if request.is_json else None) or
+        "7_fields"
+    )
+
+    if "file" not in request.files:
+        data = request.get_json(silent=True) or {}
+        rows = data.get("rows")
+        if rows and isinstance(rows, list):
+            res = bulk_excel_service.validate_rows_data(rows)
+            return jsonify(res)
+        file_path = data.get("file_path")
+        if file_path and os.path.exists(file_path):
+            size = os.path.getsize(file_path)
+            if mode == "individual":
+                res = bulk_excel_service.parse_and_validate_individual_excel(file_path, file_size=size)
+            else:
+                res = bulk_excel_service.parse_and_validate_excel(file_path, file_size=size)
+            return jsonify(res)
+        return jsonify({"success": False, "message": "No file uploaded. Please upload a .xlsx Excel file."}), 400
+
+    uploaded_file = request.files["file"]
+    if not uploaded_file.filename:
+        return jsonify({"success": False, "message": "No file selected."}), 400
+
+    if not uploaded_file.filename.lower().endswith(".xlsx"):
+        return jsonify({"success": False, "message": "Invalid file format. Only Excel (.xlsx) files are supported."}), 400
+
+    # Read content and enforce 100 MB limit
+    uploaded_file.seek(0, os.SEEK_END)
+    file_size = uploaded_file.tell()
+    uploaded_file.seek(0)
+
+    if file_size > 100 * 1024 * 1024:
+        return jsonify({
+            "success": False,
+            "message": f"File size ({round(file_size / (1024*1024), 2)} MB) exceeds maximum allowed limit of 100 MB."
+        }), 400
+
+    file_bytes = uploaded_file.read()
+    if mode == "individual":
+        res = bulk_excel_service.parse_and_validate_individual_excel(io.BytesIO(file_bytes), file_size=file_size)
+    else:
+        res = bulk_excel_service.parse_and_validate_excel(io.BytesIO(file_bytes), file_size=file_size)
+    return jsonify(res)
+
+
+@app.route("/api/admin/colleges/bulk-update", methods=["POST"])
+@require_admin_auth
+def api_admin_colleges_bulk_update():
+    """
+    Executes transactional bulk update for validated matched colleges.
+    Supports both 7-field base update and Individual College Details mode.
+    Strictly Non-Destructive:
+    Blank or missing Excel cells NEVER overwrite existing DB values with NULL (COALESCE).
+    Rolls back completely on database error.
+    Updates PostgreSQL, invalidates cache, syncs JSON backup, and writes audit log.
+    """
+    data = request.get_json(silent=True) or {}
+    rows_to_update = data.get("rows")
+    mode = (
+        data.get("mode") or
+        request.form.get("mode") or
+        request.args.get("mode") or
+        "7_fields"
+    )
+
+    # If rows weren't sent in JSON, check if a file was uploaded directly for instant processing
+    if not rows_to_update and "file" in request.files:
+        uploaded_file = request.files["file"]
+        uploaded_file.seek(0, os.SEEK_END)
+        file_size = uploaded_file.tell()
+        uploaded_file.seek(0)
+        if file_size > 100 * 1024 * 1024:
+            return jsonify({"success": False, "message": "File exceeds 100 MB limit."}), 400
+        file_bytes = uploaded_file.read()
+        if mode == "individual":
+            parsed = bulk_excel_service.parse_and_validate_individual_excel(io.BytesIO(file_bytes), file_size=file_size)
+        else:
+            parsed = bulk_excel_service.parse_and_validate_excel(io.BytesIO(file_bytes), file_size=file_size)
+        if not parsed.get("success"):
+            return jsonify(parsed), 400
+        rows_to_update = parsed.get("rows", [])
+
+    if not rows_to_update:
+        return jsonify({"success": False, "message": "No colleges provided for update."}), 400
+
+    # Filter only rows that are eligible for update (valid or confirmed mismatch)
+    matched_rows = [
+        r for r in rows_to_update
+        if r.get("is_savable") is True or r.get("status") in ("valid", "mismatch") or (r.get("match_status") == "matched" and r.get("is_valid_base", True))
+    ]
+    if not matched_rows:
+        return jsonify({
+            "success": False,
+            "message": "No valid matched colleges eligible for update. Ensure base fields are valid and colleges exist in database."
+        }), 400
+
+    try:
+        if mode == "individual":
+            result = bulk_excel_service.execute_individual_details_bulk_update(matched_rows)
+        else:
+            result = bulk_excel_service.execute_bulk_update_transaction(matched_rows)
+
+        updated_count = result["updated_count"]
+        updated_colleges = result["updated_colleges"]
+
+        # Invalidate memory cache so public website & admin portal immediately reflect updates
+        invalidate_colleges_cache()
+
+        # Safely sync updated colleges to JSON backup
+        for uc in updated_colleges:
+            _sync_college_to_json_file({
+                "id": uc["id"],
+                "aishe": uc["aishe_code"],
+                "name": uc["college_name"],
+                "state": uc["state"],
+                "district": uc["district"],
+                "city": uc["location"],
+                "location": uc["location"],
+                "website": uc["website"],
+                "established_year": uc.get("established_year")
+            })
+
+        # Insert audit log
+        db.execute_query(
+            "INSERT INTO audit_logs (action, module_name, record_id, description) VALUES (%s, %s, %s, %s)",
+            (
+                "Bulk Update Colleges (Individual Details)" if mode == "individual" else "Bulk Update Colleges",
+                "colleges",
+                f"count:{updated_count}",
+                f"Admin performed bulk update on {updated_count} colleges via Excel upload ({mode})"
+            )
+        )
+
+        return jsonify({
+            "success": True,
+            "message": f"Bulk Upload: {updated_count} colleges updated",
+            "updated_count": updated_count,
+            "colleges": updated_colleges
+        })
+
+    except Exception as e:
+        logger.exception("[Bulk Update API Error]")
+        return jsonify({"success": False, "message": f"Bulk update transaction failed: {str(e)}"}), 500
+
+
+# ----------------------------------------------------
 # 3. COURSES REST API (CRUD)
 # ----------------------------------------------------
 def load_courses_data():
@@ -2350,11 +2515,129 @@ def _row_to_exam_dict(r):
         "status": r.get("status") or "active"
     }
 
+# ----------------------------------------------------
+# DATE LIFECYCLE HELPERS (Asia/Kolkata IST)
+# ----------------------------------------------------
+IST_TIMEZONE = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
+
+def get_ist_today():
+    """Returns today's date in Asia/Kolkata (IST)."""
+    return datetime.datetime.now(IST_TIMEZONE).date()
+
+def parse_date_safely(date_val):
+    """Parses various date representations into a datetime.date object."""
+    if not date_val:
+        return None
+    if isinstance(date_val, datetime.date):
+        return date_val
+    if isinstance(date_val, datetime.datetime):
+        return date_val.date()
+
+    val_str = str(date_val).strip()
+    if not val_str:
+        return None
+
+    # Try ISO YYYY-MM-DD
+    m_iso = re.search(r'(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})', val_str)
+    if m_iso:
+        try:
+            return datetime.date(int(m_iso.group(1)), int(m_iso.group(2)), int(m_iso.group(3)))
+        except ValueError:
+            pass
+
+    # Try DD-MM-YYYY
+    m_dmy = re.search(r'(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})', val_str)
+    if m_dmy:
+        try:
+            return datetime.date(int(m_dmy.group(3)), int(m_dmy.group(2)), int(m_dmy.group(1)))
+        except ValueError:
+            pass
+
+    # Try Month DD, YYYY / ranges
+    month_names = {
+        'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6,
+        'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12
+    }
+    m_word = re.search(r'(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\b.*?\b(\d{1,2})(?:st|nd|rd|th)?(?:\s*-\s*(\d{1,2}))?.*?\b(\d{4})', val_str, re.I)
+    if m_word:
+        try:
+            mon_prefix = m_word.group(1).lower()[:3]
+            month_num = month_names.get(mon_prefix)
+            day_num = int(m_word.group(3) or m_word.group(2))
+            year_num = int(m_word.group(4))
+            if month_num and 1 <= day_num <= 31 and year_num > 1900:
+                return datetime.date(year_num, month_num, day_num)
+        except Exception:
+            pass
+
+    # Fallback to year only if present (assume end of that year)
+    m_yr = re.search(r'\b(20\d{2})\b', val_str)
+    if m_yr:
+        try:
+            return datetime.date(int(m_yr.group(1)), 12, 31)
+        except ValueError:
+            pass
+
+    return None
+
+def compute_date_lifecycle(target_date_val, today_ist=None):
+    """
+    Computes News/Exam date lifecycle according to strict rules:
+      - Today or future (diff_days <= 0): 'active' (Normal display)
+      - Next day (diff_days == 1): 'dimmed' (Visible + Dimmed + "Finished/Expired")
+      - Following day (diff_days >= 2): 'hidden' (Automatically hidden from user website)
+    """
+    if today_ist is None:
+        today_ist = get_ist_today()
+
+    parsed_date = parse_date_safely(target_date_val)
+    if not parsed_date:
+        return {
+            "lifecycle": "active",
+            "is_dimmed": False,
+            "is_hidden": False,
+            "diff_days": 0,
+            "lifecycle_label": "Active"
+        }
+
+    diff_days = (today_ist - parsed_date).days
+
+    if diff_days <= 0:
+        return {
+            "lifecycle": "active",
+            "is_dimmed": False,
+            "is_hidden": False,
+            "diff_days": diff_days,
+            "lifecycle_label": "Active"
+        }
+    elif diff_days == 1:
+        return {
+            "lifecycle": "dimmed",
+            "is_dimmed": True,
+            "is_hidden": False,
+            "diff_days": diff_days,
+            "lifecycle_label": "Finished / Expired"
+        }
+    else:
+        return {
+            "lifecycle": "hidden",
+            "is_dimmed": True,
+            "is_hidden": True,
+            "diff_days": diff_days,
+            "lifecycle_label": "Expired (Hidden from Site)"
+        }
+
 @app.route("/api/exams", methods=["GET"])
 def api_get_exams():
     global _in_memory_exams
     q = request.args.get("search", "").strip().lower()
+    is_admin = (
+        request.args.get("admin") == "true" or
+        request.headers.get("X-Admin-Role") == "admin" or
+        bool(request.headers.get("X-Admin-Passkey"))
+    )
 
+    mapped_exams = []
     if db.is_pg_connected():
         sql = "SELECT * FROM exams WHERE status != 'archived' AND status != 'deleted'"
         params = []
@@ -2365,15 +2648,35 @@ def api_get_exams():
         exams = db.query_all(sql, params)
         if exams is not None:
             mapped_exams = [_row_to_exam_dict(e) for e in exams]
-            return jsonify({"success": True, "total": len(mapped_exams), "exams": mapped_exams})
 
-    if _in_memory_exams is None:
-        _in_memory_exams = [
-            {"id": 1, "name": "JEE Main & JEE Advanced 2026", "stream": "Engineering", "conductingBody": "National Testing Agency (NTA) & IIT Madras", "examDate": "Session 1: Jan / Session 2: Apr 2026", "eligibility": "10+2 with PCM (75% aggregate)", "status": "Upcoming"},
-            {"id": 2, "name": "NEET UG 2026", "stream": "Medical", "conductingBody": "National Testing Agency (NTA)", "examDate": "May 3, 2026", "eligibility": "10+2 with PCB (50% aggregate)", "status": "Registration Open"},
-            {"id": 3, "name": "CAT 2026", "stream": "Management", "conductingBody": "IIM Ahmedabad", "examDate": "November 29, 2026", "eligibility": "Bachelor's Degree (50% min)", "status": "Upcoming"}
-        ]
-    return jsonify({"success": True, "total": len(_in_memory_exams), "exams": _in_memory_exams})
+    if not mapped_exams:
+        if _in_memory_exams is None:
+            _in_memory_exams = [
+                {"id": 1, "name": "JEE Main & JEE Advanced 2026", "stream": "Engineering", "conductingBody": "National Testing Agency (NTA) & IIT Madras", "examDate": "Session 1: Jan / Session 2: Apr 2026", "eligibility": "10+2 with PCM (75% aggregate)", "status": "Upcoming"},
+                {"id": 2, "name": "NEET UG 2026", "stream": "Medical", "conductingBody": "National Testing Agency (NTA)", "examDate": "May 3, 2026", "eligibility": "10+2 with PCB (50% aggregate)", "status": "Registration Open"},
+                {"id": 3, "name": "CAT 2026", "stream": "Management", "conductingBody": "IIM Ahmedabad", "examDate": "November 29, 2026", "eligibility": "Bachelor's Degree (50% min)", "status": "Upcoming"}
+            ]
+        mapped_exams = _in_memory_exams
+
+    # Apply date lifecycle:
+    # Today -> Normal display
+    # Next day -> Visible + Dimmed + "Finished/Expired"
+    # Following day -> Automatically hidden from user website (kept in Admin/history)
+    today_ist = get_ist_today()
+    final_exams = []
+    for ex in mapped_exams:
+        exam_d = ex.get("exam_date") or ex.get("examDate")
+        lc = compute_date_lifecycle(exam_d, today_ist=today_ist)
+        ex["lifecycle"] = lc["lifecycle"]
+        ex["lifecycle_label"] = lc["lifecycle_label"]
+        ex["is_expired"] = lc["is_dimmed"]
+        ex["is_hidden"] = lc["is_hidden"]
+
+        if not is_admin and lc["is_hidden"]:
+            continue
+        final_exams.append(ex)
+
+    return jsonify({"success": True, "total": len(final_exams), "exams": final_exams})
 
 @app.route("/api/exams", methods=["POST"])
 @app.route("/api/exams/<exam_id>", methods=["PUT"])
@@ -5730,6 +6033,12 @@ def api_get_news():
     q = request.args.get("q", "").strip().lower()
     category = request.args.get("category", "").strip().lower()
     status = request.args.get("status", "").strip().lower()
+    is_admin = (
+        request.args.get("admin") == "true" or
+        request.headers.get("X-Admin-Role") == "admin" or
+        bool(request.headers.get("X-Admin-Passkey"))
+    )
+    today_ist = get_ist_today()
 
     if db.is_pg_connected():
         sql = "SELECT * FROM news WHERE status != 'archived' AND status != 'deleted'"
@@ -5748,18 +6057,26 @@ def api_get_news():
         if rows:
             news_list = []
             for r in rows:
+                p_date = r.get("published_date") or time.strftime("%Y-%m-%d")
+                lc = compute_date_lifecycle(p_date, today_ist=today_ist)
+                if not is_admin and lc["is_hidden"]:
+                    continue
                 news_list.append({
                     "id": r.get("news_id") or f"NWS-{r.get('id'):03d}",
                     "db_id": r.get("id"),
                     "title": r.get("title"),
                     "college_name": r.get("college_name") or "Higher Education Authority",
                     "category": r.get("category") or "General Update",
-                    "published_date": r.get("published_date") or time.strftime("%Y-%m-%d"),
+                    "published_date": p_date,
                     "summary": r.get("summary") or "",
                     "content": r.get("content") or r.get("summary") or "",
                     "source_url": r.get("source_url") or "",
                     "badge": r.get("badge") or "Official Bulletin",
-                    "status": r.get("status") or "Published"
+                    "status": r.get("status") or "Published",
+                    "lifecycle": lc["lifecycle"],
+                    "lifecycle_label": lc["lifecycle_label"],
+                    "is_expired": lc["is_dimmed"],
+                    "is_hidden": lc["is_hidden"]
                 })
             return jsonify({"success": True, "total": len(news_list), "news": news_list})
 
@@ -5773,7 +6090,20 @@ def api_get_news():
     if q:
         news_items = [n for n in news_items if q in str(n.get("title", "")).lower() or q in str(n.get("summary", "")).lower() or q in str(n.get("college_name", "")).lower()]
 
-    return jsonify({"success": True, "total": len(news_items), "news": news_items})
+    final_news = []
+    for n in news_items:
+        p_date = n.get("published_date") or time.strftime("%Y-%m-%d")
+        lc = compute_date_lifecycle(p_date, today_ist=today_ist)
+        if not is_admin and lc["is_hidden"]:
+            continue
+        n_copy = dict(n)
+        n_copy["lifecycle"] = lc["lifecycle"]
+        n_copy["lifecycle_label"] = lc["lifecycle_label"]
+        n_copy["is_expired"] = lc["is_dimmed"]
+        n_copy["is_hidden"] = lc["is_hidden"]
+        final_news.append(n_copy)
+
+    return jsonify({"success": True, "total": len(final_news), "news": final_news})
 
 @app.route("/api/news", methods=["POST"])
 @require_admin_auth
@@ -7747,6 +8077,7 @@ if __name__ == "__main__":
     db.run_migration_file("005_extend_college_profile_fields.sql")
     db.run_migration_file("006_mentors_and_access_logs.sql")
     db.run_migration_file("007_mentor_social_links.sql")
+    db.run_migration_file("009_seed_14_kerala_colleges.sql")
     port = int(os.environ.get("PORT", 8000))
     host = os.environ.get("HOST", "0.0.0.0")
     print(f"Starting TheCampusNova server on http://localhost:{port}...")

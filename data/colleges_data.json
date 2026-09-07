@@ -1,5 +1,5 @@
 {
-  "total": 45,
+  "total": 85,
   "colleges": [
     {
       "id": "COL-4120",
@@ -101,7 +101,7 @@
       "officialLink": "https://iisc.ac.in"
     },
     {
-      "id": "COL-002",
+      "id": 2,
       "rank": 6,
       "name": "Tamilnadu Agricultural University, Coimbatore",
       "short_name": "",
@@ -191,7 +191,8 @@
       "scholarships_info": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
       "officialLink": "https://www.tnau.ac.in",
       "video": "",
-      "video_url": ""
+      "video_url": "",
+      "established_year": 1980
     },
     {
       "id": "COL-004",
@@ -3503,6 +3504,527 @@
         }
       ],
       "status": "active"
+    },
+    {
+      "id": "COL-4296",
+      "db_id": 4296,
+      "rank": 52,
+      "nirf_rank": 52,
+      "name": "Government College Arki",
+      "college_name": "Government College Arki",
+      "short_name": "Government College Arki",
+      "city": "Arki, Himachal Pradesh",
+      "location": "Arki, Himachal Pradesh",
+      "district": "Solan",
+      "state": "Himachal Pradesh",
+      "aishe": "C-11475",
+      "aishe_code": "C-11475",
+      "aishe_codes": [
+        "C-11475"
+      ],
+      "badge": "Premier Institution",
+      "type": "State Government, Affiliated College",
+      "college_type": "State Government, Affiliated College",
+      "rating": "4.7",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "B.A. B.Sc. Medical B.Sc. Non-Medical B.Com. BCA M.A. English M.A. History PGDCA Computer Application add-on courses",
+      "courses": [
+        "B.A. B.Sc. Medical B.Sc. Non-Medical B.Com. BCA M.A. English M.A. History PGDCA Computer Application add-on courses"
+      ],
+      "domains": [
+        "gcarki.hp.gov.in"
+      ],
+      "placement": "-",
+      "avg_placement": "-",
+      "highest_placement": "-",
+      "highestPlacement": "-",
+      "fees": "60k/yr",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "The campus includes separate Arts, Science and Administrative Blocks, classrooms, laboratories, library, computer laboratory with Wi-Fi, playground, gymnasium, girls' hostel, canteen, gardens and sports facilities. The college also has laboratories for Physics, Chemistry, Botany, Zoology and Geography, along with campus-wide wireless internet connectivity",
+      "facilities_list": "The campus includes separate Arts, Science and Administrative Blocks, classrooms, laboratories, library, computer laboratory with Wi-Fi, playground, gymnasium, girls' hostel, canteen, gardens and sports facilities. The college also has laboratories for Physics, Chemistry, Botany, Zoology and Geography, along with campus-wide wireless internet connectivity",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "Government College Arki was established in 1994 and is located at Batal Ghatti, around 4 km from Arki, in Solan district. The college is affiliated with Himachal Pradesh University, Shimla, and offers undergraduate, postgraduate and self-financing programmes. From the 2026-27 session, the college is adopting the NEP 2020 model.",
+      "description": "Government College Arki was established in 1994 and is located at Batal Ghatti, around 4 km from Arki, in Solan district. The college is affiliated with Himachal Pradesh University, Shimla, and offers undergraduate, postgraduate and self-financing programmes. From the 2026-27 session, the college is adopting the NEP 2020 model.",
+      "website": "https://gcarki.hp.gov.in/?utm_source=chatgpt.com",
+      "official_url": "https://gcarki.hp.gov.in/?utm_source=chatgpt.com",
+      "officialLink": "https://gcarki.hp.gov.in/?utm_source=chatgpt.com",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "/uploads/colleges/image_Screenshot_2026-09-07_082328_1788749627_ddec0d.png",
+      "image_url": "/uploads/colleges/image_Screenshot_2026-09-07_082328_1788749627_ddec0d.png",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "Government College Arki Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://gcarki.hp.gov.in/?utm_source=chatgpt.com"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://gcarki.hp.gov.in/?utm_source=chatgpt.com"
+        }
+      ],
+      "news": [
+        {
+          "title": "Government College Arki Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://gcarki.hp.gov.in/?utm_source=chatgpt.com"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://gcarki.hp.gov.in/?utm_source=chatgpt.com"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": 4297,
+      "aishe": "U-0786",
+      "name": "A P J ABDUL KALAM TECHNOLOGICAL UNIVERSITY",
+      "state": "Kerala",
+      "district": "Thiruvananthapuram",
+      "city": "Urban",
+      "website": "https://www.ktu.edu.in",
+      "location": "Urban",
+      "established_year": 2014
+    },
+    {
+      "id": 4298,
+      "aishe": "U-0253",
+      "name": "Cochin University of Science & Technology, Kochi",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "Urban",
+      "website": "https://www.cusat.ac.in",
+      "location": "Urban",
+      "established_year": 1971
+    },
+    {
+      "id": 4299,
+      "aishe": "U-0256",
+      "name": "Kannur University, Kannur",
+      "state": "Kerala",
+      "district": "Kannur",
+      "city": "Rural",
+      "website": "https://www.kannuruniversity.ac.in",
+      "location": "Rural",
+      "established_year": 1996
+    },
+    {
+      "id": 4300,
+      "aishe": "U-0257",
+      "name": "Kerala Agricultural University, Thrissur",
+      "state": "Kerala",
+      "district": "Thrissur",
+      "city": "Rural",
+      "website": "https://kau.in/",
+      "location": "Rural",
+      "established_year": 1972
+    },
+    {
+      "id": 4301,
+      "aishe": "U-1154",
+      "name": "KERALA UNIVERSITY OF DIGITAL SCIENCES INNOVATION AND TECHNOLOGY",
+      "state": "Kerala",
+      "district": "Thiruvananthapuram",
+      "city": "Rural",
+      "website": "https://www.duk.ac.in",
+      "location": "Rural",
+      "established_year": 2020
+    },
+    {
+      "id": 4302,
+      "aishe": "U-0259",
+      "name": "Kerala University of Fisheries & Ocean Studies, Kochi",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "Rural",
+      "website": "https://www.kufos.ac.in",
+      "location": "Rural",
+      "established_year": 2010
+    },
+    {
+      "id": 4303,
+      "aishe": "U-0630",
+      "name": "KERALA UNIVERSITY OF HEALTH SCIENCES",
+      "state": "Kerala",
+      "district": "Thrissur",
+      "city": "Rural",
+      "website": "http://kuhs.ac.in",
+      "location": "Rural",
+      "established_year": 2009
+    },
+    {
+      "id": 4304,
+      "aishe": "U-0261",
+      "name": "Kerala Veterinary & Animal Science University, Wayanad",
+      "state": "Kerala",
+      "district": "Wayanad",
+      "city": "Rural",
+      "website": "https://www.kvasu.ac.in",
+      "location": "Rural",
+      "established_year": 2010
+    },
+    {
+      "id": 4305,
+      "aishe": "U-0262",
+      "name": "Mahatma Gandhi University, Kottayam",
+      "state": "Kerala",
+      "district": "Kottayam",
+      "city": "Rural",
+      "website": "https://www.mgu.ac.in",
+      "location": "Rural",
+      "established_year": 1983
+    },
+    {
+      "id": 4306,
+      "aishe": "U-0264",
+      "name": "National University of Advanced Legal Studies, Kochi",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "Urban",
+      "website": "https://www.nuals.ac.in",
+      "location": "Urban",
+      "established_year": 2002
+    },
+    {
+      "id": 4307,
+      "aishe": "U-0265",
+      "name": "Sree Sankaracharya University of Sanskrit, Kalady",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "Rural",
+      "website": "https://ssus.ac.in",
+      "location": "Rural",
+      "established_year": 1993
+    },
+    {
+      "id": 4308,
+      "aishe": "U-0716",
+      "name": "THUNCHATH EZHUTHACHAN MALAYALAM UNIVERSITY, TIRUR",
+      "state": "Kerala",
+      "district": "Malappuram",
+      "city": "Rural",
+      "website": "https://www.malayalamuniversity.edu.in",
+      "location": "Rural",
+      "established_year": 2012
+    },
+    {
+      "id": 4309,
+      "aishe": "U-0251",
+      "name": "UNIVERSITY OF CALICUT, MALAPPURAM",
+      "state": "Kerala",
+      "district": "Malappuram",
+      "city": "Rural",
+      "website": "https://www.uoc.ac.in",
+      "location": "Rural",
+      "established_year": 1968
+    },
+    {
+      "id": 4310,
+      "aishe": "U-0260",
+      "name": "University of Kerala, Thiruvananthapuram",
+      "state": "Kerala",
+      "district": "Thiruvananthapuram",
+      "city": "Urban",
+      "website": "https://www.keralauniversity.ac.in",
+      "location": "Urban",
+      "established_year": 1937
+    },
+    {
+      "id": 9,
+      "aishe": "C-37053",
+      "name": "Adithya Institute of Technology",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "city": "Kurumbapalayam, Coimbatore",
+      "location": "Kurumbapalayam, Coimbatore",
+      "website": "https://adithyatech.edu.in/updated-bulk-test",
+      "established_year": 2008
+    },
+    {
+      "id": 4409,
+      "aishe": "C-NOVA-9999",
+      "name": "CampusNova Advanced Research Institute",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "city": "Chennai, Tamil Nadu",
+      "location": "Chennai, Tamil Nadu",
+      "website": "https://campusnovaresearch.edu.in",
+      "established_year": 2022
+    },
+    {
+      "id": 4410,
+      "aishe": "C-22861",
+      "name": "Aligarh Muslim University, Malappuram Centre.",
+      "state": "Kerala",
+      "district": "Malappuram",
+      "city": "Urban",
+      "location": "Urban",
+      "website": "https://amu.ac.in/amucentres/amu-malappuram-centre-kerala",
+      "established_year": 2010
+    },
+    {
+      "id": 4411,
+      "aishe": "C-7027",
+      "name": "Amrita Centre for Nanomedical Sciences, Kochi",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "-",
+      "location": "-",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4412,
+      "aishe": "C-7028",
+      "name": "Amrita College of Nursing, Kochi",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "-",
+      "location": "-",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4413,
+      "aishe": "C-7031",
+      "name": "Amrita School of Arts and Sciences, Amritapuri, Kollam",
+      "state": "Kerala",
+      "district": "Kollam",
+      "city": "-",
+      "location": "-",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4415,
+      "aishe": "C-7030",
+      "name": "Amrita School of Arts and Sciences, Kochi",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "-",
+      "location": "-",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4416,
+      "aishe": "C-7026",
+      "name": "Amrita School of Ayurveda, Amritapuri, Kollam",
+      "state": "Kerala",
+      "district": "Kollam",
+      "city": "-",
+      "location": "-",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4417,
+      "aishe": "C-7025",
+      "name": "Amrita School of Biotechnology, Amritapuri, Kollam",
+      "state": "Kerala",
+      "district": "Kollam",
+      "city": "-",
+      "location": "-",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4418,
+      "aishe": "C-7019",
+      "name": "Amrita School of Dentistry, Kochi",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "-",
+      "location": "-",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4419,
+      "aishe": "C-7036",
+      "name": "Amrita School of Engineering, Amritapuri, Kollam",
+      "state": "Kerala",
+      "district": "Kollam",
+      "city": "-",
+      "location": "-",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4420,
+      "aishe": "C-7017",
+      "name": "Amrita School of Medicine, Kochi",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "-",
+      "location": "-",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4421,
+      "aishe": "C-7018",
+      "name": "Amrita School of Pharmacy, Kochi",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "-",
+      "location": "-",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4422,
+      "aishe": "C-67209",
+      "name": "CALICUT UNIVERSITY REGIONAL CENTRE PERAMBRA",
+      "state": "Kerala",
+      "district": "Kozhikode",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://www.uoc.ac.in/index.php/the-university/departments/university-centers/14-sample-data-articles/812-calicut-university-regional-centre-perambra",
+      "established_year": 2021
+    },
+    {
+      "id": 4423,
+      "aishe": "C-64955",
+      "name": "CENTER FOR COMPUTER SCIENCE AND INFORMATION TECHNOLOGY PULLUT",
+      "state": "Kerala",
+      "district": "Thrissur",
+      "city": "Urban",
+      "location": "Urban",
+      "website": "https://www.universityofcalicut.info",
+      "established_year": 2000
+    },
+    {
+      "id": 4424,
+      "aishe": "C-61891",
+      "name": "Centre for Computer Science and Information Technology",
+      "state": "Kerala",
+      "district": "Palakkad",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4425,
+      "aishe": "C-7020",
+      "name": "Department of Management, Amritapuri, Kollam",
+      "state": "Kerala",
+      "district": "Kollam",
+      "city": "-",
+      "location": "-",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4426,
+      "aishe": "C-7022",
+      "name": "Department of Management, Kochi",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "-",
+      "location": "-",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4427,
+      "aishe": "C-27025",
+      "name": "GURUVAYOOR CAMPUS",
+      "state": "Kerala",
+      "district": "Thrissur",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://www.csu-guruvayoor.edu.in",
+      "established_year": 2002
+    },
+    {
+      "id": 4428,
+      "aishe": "C-58308",
+      "name": "KANNUR UNIVERSITY TEACHER EDUCATION CENTER KASARAGOD",
+      "state": "Kerala",
+      "district": "Kasaragod",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://-",
+      "established_year": null
+    },
+    {
+      "id": 4429,
+      "aishe": "C-47475",
+      "name": "NATIONAL INSTITUTE OF FASHION TECHNOLOGY, KANNUR",
+      "state": "Kerala",
+      "district": "Kannur",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://www.nift.ac.in",
+      "established_year": 2008
+    },
+    {
+      "id": 4430,
+      "aishe": "C-64193",
+      "name": "SCHOOL OF MANAGEMENT STIUDIES VATAKARA",
+      "state": "Kerala",
+      "district": "Kozhikode",
+      "city": "Urban",
+      "location": "Urban",
+      "website": "https://smsvatakara.org",
+      "established_year": 2001
+    },
+    {
+      "id": 4431,
+      "aishe": "C-62229",
+      "name": "School of Management Studies, Kuttippuram",
+      "state": "Kerala",
+      "district": "Malappuram",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://-",
+      "established_year": 2010
+    },
+    {
+      "id": 4460,
+      "aishe": "C-C4BF3327",
+      "name": "National Institute of Technology Trichy",
+      "state": null,
+      "district": null,
+      "city": null,
+      "location": null,
+      "website": null,
+      "established_year": null
+    },
+    {
+      "id": 7,
+      "aishe": "U-1471",
+      "name": "Rathinam Global University",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "city": "Coimbatore",
+      "location": "Coimbatore",
+      "website": "https://rathinamglobal.edu.in",
+      "established_year": 2024
     }
   ]
 }

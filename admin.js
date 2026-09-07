@@ -11316,3 +11316,1474 @@ if (document.readyState === 'loading') {
   initAdminMasterFeeds();
 }
 
+
+/* ==============================================================================
+   BULK UPDATE PROGRESS - TWO-STEP MODAL CONTROLLER (COLLEGES ONLY)
+   Flow:
+     1. Click "Bulk Update Progress" -> Open Excel Upload Popup
+     2. Upload .xlsx file (Max: 100 MB) -> Click "Submit"
+     3. Open Validation Popup checking ONLY the 7 bulk-identification fields:
+        (AISHE Code, Name, State, District, Website, Year Of Establishment, Location)
+     4. Report only problems found (Missing field, Identifying mismatch, College not found, Invalid data)
+     5. Preview valid/mismatched/missing records -> Confirm & Save to PostgreSQL
+   ============================================================================== */
+
+let bulkSelectedFile = null;
+let bulkValidationResult = null;
+
+try {
+  Object.defineProperty(window, 'bulkValidationResult', {
+    get: () => bulkValidationResult,
+    set: (val) => { bulkValidationResult = val; },
+    configurable: true
+  });
+} catch (e) {
+  window.bulkValidationResult = bulkValidationResult;
+}
+let bulkCurrentFilter = 'all';
+let bulkFilterQuery = '';
+
+// Helper to format bytes
+function formatBulkBytes(bytes, decimals = 2) {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+/* ----------------------------------------------------
+   STEP 1: POPUP 1 - UPLOAD MODAL
+   ---------------------------------------------------- */
+window._bulkUploadMode = '7_fields';
+
+function setBulkUploadMode(mode) {
+  window._bulkUploadMode = mode;
+  const btn7 = document.getElementById('bulkMode7FieldsBtn');
+  const btnInd = document.getElementById('bulkModeIndividualBtn');
+  const reqNote = document.getElementById('bulkUploadReqNote');
+  const label = document.getElementById('bulkUploadProgressLabel');
+
+  if (mode === 'individual') {
+    if (btnInd) {
+      btnInd.style.background = '#FFFFFF';
+      btnInd.style.color = '#065F46';
+      btnInd.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+    }
+    if (btn7) {
+      btn7.style.background = 'transparent';
+      btn7.style.color = '#64748B';
+      btn7.style.boxShadow = 'none';
+    }
+    if (reqNote) {
+      reqNote.textContent = 'Upload individual college details (NIRF, Fees, Placement, Description, Facilities, etc.) matched by AISHE Code or College Name. Blank Excel cells will not overwrite existing database values.';
+    }
+    if (label) {
+      label.textContent = 'Uploading and validating individual college details...';
+    }
+  } else {
+    if (btn7) {
+      btn7.style.background = '#FFFFFF';
+      btn7.style.color = '#065F46';
+      btn7.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+    }
+    if (btnInd) {
+      btnInd.style.background = 'transparent';
+      btnInd.style.color = '#64748B';
+      btnInd.style.boxShadow = 'none';
+    }
+    if (reqNote) {
+      reqNote.textContent = 'File must include the 7 bulk-identification fields (AISHE Code, Name, State, District, Website, Year Of Establishment, Location).';
+    }
+    if (label) {
+      label.textContent = 'Uploading and validating 7 bulk fields...';
+    }
+  }
+}
+window.setBulkUploadMode = setBulkUploadMode;
+
+function openBulkUploadModal() {
+  console.log('[BulkUpdate] openBulkUploadModal triggered');
+  const uploadModal = document.getElementById('bulkUploadModal');
+  const valModal = document.getElementById('bulkValidationModal');
+  if (valModal) {
+    valModal.classList.remove('open');
+    valModal.style.setProperty('display', 'none', 'important');
+  }
+  if (!uploadModal) {
+    console.error('[BulkUpdate] #bulkUploadModal not found in DOM');
+    return;
+  }
+  uploadModal.classList.add('open');
+  uploadModal.style.setProperty('display', 'flex', 'important');
+
+  // Reset if no file currently selected
+  if (!bulkSelectedFile) {
+    resetBulkUploadState();
+  }
+}
+
+function closeBulkUploadModal() {
+  const uploadModal = document.getElementById('bulkUploadModal');
+  if (uploadModal) {
+    uploadModal.classList.remove('open');
+    uploadModal.style.setProperty('display', 'none', 'important');
+  }
+}
+
+function resetBulkUploadState() {
+  bulkSelectedFile = null;
+  bulkRowEdits = {};
+  if (window.bulkExpandedRows && window.bulkExpandedRows.clear) {
+    window.bulkExpandedRows.clear();
+  }
+
+  const fileInput = document.getElementById('bulkUploadFileInput');
+  if (fileInput) fileInput.value = '';
+
+  const fileCard = document.getElementById('bulkUploadSelectedFileCard');
+  if (fileCard) fileCard.style.display = 'none';
+
+  const errBanner = document.getElementById('bulkUploadErrorBanner');
+  if (errBanner) {
+    errBanner.style.display = 'none';
+    errBanner.textContent = '';
+  }
+
+  const progressWrap = document.getElementById('bulkUploadProgressWrap');
+  if (progressWrap) progressWrap.style.display = 'none';
+
+  const submitBtn = document.getElementById('bulkUploadSubmitBtn');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.setAttribute('disabled', 'true');
+    submitBtn.style.opacity = '0.6';
+    submitBtn.style.cursor = 'not-allowed';
+    submitBtn.innerHTML = '<span>Submit</span> <span>➔</span>';
+  }
+}
+
+function showBulkUploadError(msg) {
+  const errBanner = document.getElementById('bulkUploadErrorBanner');
+  if (!errBanner) return;
+  errBanner.style.display = 'block';
+  errBanner.innerHTML = msg;
+
+  const submitBtn = document.getElementById('bulkUploadSubmitBtn');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.setAttribute('disabled', 'true');
+    submitBtn.style.opacity = '0.6';
+    submitBtn.style.cursor = 'not-allowed';
+  }
+}
+
+function handleBulkFileChoice(file) {
+  console.log('[BulkUpdate] handleBulkFileChoice called with file:', file ? file.name : 'null');
+  if (!file) return;
+
+  const MAX_LIMIT = 100 * 1024 * 1024; // 100 MB
+  const isXlsx = file.name.toLowerCase().endsWith('.xlsx');
+
+  const errBanner = document.getElementById('bulkUploadErrorBanner');
+  if (errBanner) {
+    errBanner.style.display = 'none';
+    errBanner.textContent = '';
+  }
+
+  if (!isXlsx) {
+    showBulkUploadError('<strong>Invalid format:</strong> Please select an Excel workbook file (<strong>.xlsx</strong> only).');
+    return;
+  }
+
+  if (file.size > MAX_LIMIT) {
+    showBulkUploadError(`<strong>File exceeds 100 MB limit:</strong> Selected file is <strong>${formatBulkBytes(file.size)}</strong>. Maximum allowed size is 100 MB.`);
+    return;
+  }
+
+  bulkSelectedFile = file;
+
+  // Show file card
+  const fileCard = document.getElementById('bulkUploadSelectedFileCard');
+  const nameEl = document.getElementById('bulkUploadSelectedFileName');
+  const sizeEl = document.getElementById('bulkUploadSelectedFileSize');
+
+  if (nameEl) nameEl.textContent = file.name;
+  if (sizeEl) sizeEl.innerHTML = `${formatBulkBytes(file.size)} &bull; Ready to submit`;
+  if (fileCard) fileCard.style.display = 'flex';
+
+  // Enable Submit button
+  const submitBtn = document.getElementById('bulkUploadSubmitBtn');
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.removeAttribute('disabled');
+    submitBtn.style.opacity = '1';
+    submitBtn.style.cursor = 'pointer';
+  }
+}
+
+/* ----------------------------------------------------
+   STEP 2: SUBMIT & OPEN POPUP 2 - VALIDATION MODAL
+   ---------------------------------------------------- */
+async function submitBulkUploadFile() {
+  console.log('[BulkUpdate] submitBulkUploadFile triggered');
+
+  if (window._isBulkUploading) {
+    console.warn('[BulkUpdate] Bulk upload already in progress.');
+    return;
+  }
+
+  // Fallback to file input if state variable is unset
+  if (!bulkSelectedFile) {
+    const fileInput = document.getElementById('bulkUploadFileInput');
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      handleBulkFileChoice(fileInput.files[0]);
+    }
+  }
+
+  if (!bulkSelectedFile) {
+    showBulkUploadError('Please choose an Excel file (.xlsx) first.');
+    return;
+  }
+
+  window._isBulkUploading = true;
+  const submitBtn = document.getElementById('bulkUploadSubmitBtn');
+  const progressWrap = document.getElementById('bulkUploadProgressWrap');
+  const progressBar = document.getElementById('bulkUploadProgressBar');
+  const progressPercent = document.getElementById('bulkUploadProgressPercent');
+  const progressLabel = document.getElementById('bulkUploadProgressLabel');
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.7';
+    submitBtn.style.cursor = 'wait';
+    submitBtn.innerHTML = '<span>Validating...</span> <span>⏳</span>';
+  }
+
+  if (progressWrap) progressWrap.style.display = 'block';
+  if (progressBar) progressBar.style.width = '30%';
+  if (progressPercent) progressPercent.textContent = '30%';
+  if (progressLabel) progressLabel.textContent = (window._bulkUploadMode === 'individual') ? 'Uploading and validating individual college details...' : 'Uploading and validating 7 bulk fields...';
+
+  try {
+    const formData = new FormData();
+    formData.append('file', bulkSelectedFile);
+    formData.append('mode', window._bulkUploadMode || '7_fields');
+
+    if (progressBar) progressBar.style.width = '65%';
+    if (progressPercent) progressPercent.textContent = '65%';
+
+    const res = await fetch('/api/admin/colleges/bulk-validate', {
+      method: 'POST',
+      headers: {
+        'X-Admin-Role': 'admin',
+        'X-Admin-Passkey': localStorage.getItem('campusnova_admin_passkey') || 'admin123'
+      },
+      body: formData
+    });
+
+    if (progressBar) progressBar.style.width = '100%';
+    if (progressPercent) progressPercent.textContent = '100%';
+
+    let data;
+    try {
+      data = await res.json();
+    } catch (jsonErr) {
+      throw new Error(`Server returned HTTP ${res.status}: ${res.statusText}`);
+    }
+
+    console.log('[BulkUpdate] bulk-validate response:', data);
+
+    if (!data.success) {
+      if (progressWrap) progressWrap.style.display = 'none';
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.removeAttribute('disabled');
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
+        submitBtn.innerHTML = '<span>Submit</span> <span>➔</span>';
+      }
+      showBulkUploadError(`<strong>Validation failed:</strong> ${data.message || 'Error parsing Excel sheet.'}`);
+      return;
+    }
+
+    // Validation succeeded -> Close Popup 1 and open Popup 2!
+    bulkValidationResult = data;
+    closeBulkUploadModal();
+    openBulkValidationModal(data);
+
+  } catch (err) {
+    console.error('[BulkUpdate] submitBulkUploadFile error:', err);
+    if (progressWrap) progressWrap.style.display = 'none';
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.removeAttribute('disabled');
+      submitBtn.style.opacity = '1';
+      submitBtn.style.cursor = 'pointer';
+      submitBtn.innerHTML = '<span>Submit</span> <span>➔</span>';
+    }
+    showBulkUploadError(`<strong>Error:</strong> ${err.message}`);
+  } finally {
+    window._isBulkUploading = false;
+  }
+}
+
+/* ----------------------------------------------------
+   POPUP 2: VALIDATION & PREVIEW MODAL
+   ---------------------------------------------------- */
+function openBulkValidationModal(data) {
+  console.log('[BulkUpdate] openBulkValidationModal triggered');
+  if (data) {
+    bulkValidationResult = data;
+    window.bulkValidationResult = data;
+  }
+  const uploadModal = document.getElementById('bulkUploadModal');
+  if (uploadModal) {
+    uploadModal.classList.remove('open');
+    uploadModal.style.setProperty('display', 'none', 'important');
+  }
+
+  const modal = document.getElementById('bulkValidationModal');
+  if (!modal) {
+    console.error('[BulkUpdate] #bulkValidationModal not found in DOM');
+    return;
+  }
+  modal.classList.add('open');
+  modal.style.setProperty('display', 'flex', 'important');
+
+  bulkCurrentFilter = 'all';
+  bulkFilterQuery = '';
+
+  const searchInput = document.getElementById('bulkValSearchInput');
+  if (searchInput) searchInput.value = '';
+
+  const statusFilter = document.getElementById('bulkValStatusFilter');
+  if (statusFilter) statusFilter.value = 'all';
+
+  renderBulkValidationView(data || bulkValidationResult);
+}
+
+function closeBulkValidationModal() {
+  const modal = document.getElementById('bulkValidationModal');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.style.setProperty('display', 'none', 'important');
+  }
+}
+
+function renderBulkValidationView(data) {
+  if (!data) return;
+
+  const isIndividualMode = (data.mode === 'individual' || window._bulkUploadMode === 'individual');
+  const summary = data.summary || {};
+  const fieldStatus = data.field_header_status || {};
+  const isAllHeadersValid = isIndividualMode ? true : Boolean(data.base_fields_valid);
+  const problems = data.problems || {
+    missing_fields: [],
+    identifying_mismatches: [],
+    colleges_not_found: [],
+    invalid_data: []
+  };
+
+  // Header and Title updates
+  const headerTag = document.getElementById('bulkValHeaderTag');
+  const headerSubtitle = document.getElementById('bulkValHeaderSubtitle');
+  const fieldsTitle = document.getElementById('bulkValFieldsTitle');
+  const tableTitle = document.getElementById('bulkValTableTitle');
+
+  if (isIndividualMode) {
+    if (headerTag) {
+      headerTag.textContent = 'INDIVIDUAL DETAILS';
+      headerTag.style.background = '#3B82F6';
+      headerTag.style.color = '#EFF6FF';
+    }
+    if (headerSubtitle) {
+      headerSubtitle.textContent = 'Review individual college details, structure validation, and preview before saving to database.';
+    }
+    if (fieldsTitle) {
+      fieldsTitle.textContent = 'Checking Individual College Fields & Sub-Field Structure:';
+    }
+    if (tableTitle) {
+      tableTitle.textContent = 'Preview (Individual College Details)';
+    }
+  } else {
+    if (headerTag) {
+      headerTag.textContent = '7 BULK FIELDS ONLY';
+      headerTag.style.background = '#10B981';
+      headerTag.style.color = '#064E3B';
+    }
+    if (headerSubtitle) {
+      headerSubtitle.textContent = 'Review 7 bulk-identification fields, identified mismatches, and problems before saving to database.';
+    }
+    if (fieldsTitle) {
+      fieldsTitle.textContent = 'Checking 7 Bulk-Identification Fields:';
+    }
+    if (tableTitle) {
+      tableTitle.textContent = 'Preview (7 Bulk Fields Only)';
+    }
+  }
+
+  // 1. Bulk Fields Status Bar
+  const overallBadge = document.getElementById('bulkValOverallBadge');
+  const pillsContainer = document.getElementById('bulkVal7FieldsPills');
+
+  if (isIndividualMode) {
+    if (overallBadge) {
+      overallBadge.style.background = '#DCFCE7';
+      overallBadge.style.color = '#166534';
+      overallBadge.textContent = '✓ Individual College Details Sheet';
+    }
+    if (pillsContainer) {
+      pillsContainer.innerHTML = '';
+      const detectedLabels = data.detected_field_labels || ['AISHE Code / College Name', 'College Details'];
+      detectedLabels.forEach(lbl => {
+        const pill = document.createElement('div');
+        pill.style.cssText = `
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          padding: 4px 10px;
+          border-radius: 6px;
+          font-size: 11.5px;
+          font-weight: 700;
+          background: #F0FDF4;
+          color: #15803D;
+          border: 1px solid #BBF7D0;
+        `;
+        pill.innerHTML = `<span>✓</span> <span>${lbl}</span>`;
+        pillsContainer.appendChild(pill);
+      });
+    }
+  } else {
+    if (overallBadge) {
+      if (isAllHeadersValid) {
+        overallBadge.style.background = '#DCFCE7';
+        overallBadge.style.color = '#166534';
+        overallBadge.textContent = '✓ All 7 Bulk Fields Present';
+      } else {
+        overallBadge.style.background = '#FEE2E2';
+        overallBadge.style.color = '#991B1B';
+        overallBadge.textContent = '✗ Missing Required Bulk Field Header';
+      }
+    }
+    if (pillsContainer) {
+      pillsContainer.innerHTML = '';
+      const sevenDefs = [
+        { key: 'aishe_code', label: 'AISHE Code' },
+        { key: 'college_name', label: 'Name' },
+        { key: 'state', label: 'State' },
+        { key: 'district', label: 'District' },
+        { key: 'website', label: 'Website' },
+        { key: 'established_year', label: 'Year Of Establishment' },
+        { key: 'location', label: 'Location' }
+      ];
+
+      sevenDefs.forEach(f => {
+        const isPresent = fieldStatus[f.key] ? fieldStatus[f.key].present : false;
+        const pill = document.createElement('div');
+        pill.style.cssText = `
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          padding: 4px 10px;
+          border-radius: 6px;
+          font-size: 11.5px;
+          font-weight: 700;
+          background: ${isPresent ? '#F0FDF4' : '#FEF2F2'};
+          color: ${isPresent ? '#15803D' : '#DC2626'};
+          border: 1px solid ${isPresent ? '#BBF7D0' : '#FECACA'};
+        `;
+        pill.innerHTML = `<span>${isPresent ? '✓' : '✗'}</span> <span>${f.label}</span>`;
+        pillsContainer.appendChild(pill);
+      });
+    }
+  }
+
+  // 2. Metric Counters
+  const totalEl = document.getElementById('valSummaryTotal');
+  const validEl = document.getElementById('valSummaryValid');
+  const mismatchEl = document.getElementById('valSummaryMismatch');
+  const notFoundEl = document.getElementById('valSummaryNotFound');
+  const errorsEl = document.getElementById('valSummaryErrors');
+
+  if (totalEl) totalEl.textContent = summary.total_rows || 0;
+  if (validEl) validEl.textContent = summary.valid_count || 0;
+  if (mismatchEl) mismatchEl.textContent = summary.mismatch_count || 0;
+  if (notFoundEl) notFoundEl.textContent = summary.not_found_count || 0;
+  if (errorsEl) errorsEl.textContent = summary.missing_or_invalid_count || 0;
+
+  // 3. Problems Found Report (Clearly show ONLY the problems found)
+  const problemsListEl = document.getElementById('bulkProblemsList');
+  const problemsBadgeEl = document.getElementById('bulkProblemsTotalBadge');
+
+  const totalProblems =
+    (problems.missing_fields ? problems.missing_fields.length : 0) +
+    (problems.identifying_mismatches ? problems.identifying_mismatches.length : 0) +
+    (problems.colleges_not_found ? problems.colleges_not_found.length : 0) +
+    (problems.invalid_data ? problems.invalid_data.length : 0);
+
+  if (problemsBadgeEl) {
+    problemsBadgeEl.textContent = `${totalProblems} Problem${totalProblems === 1 ? '' : 's'}`;
+    problemsBadgeEl.style.background = totalProblems > 0 ? '#FEE2E2' : '#DCFCE7';
+    problemsBadgeEl.style.color = totalProblems > 0 ? '#991B1B' : '#166534';
+  }
+
+  if (problemsListEl) {
+    if (totalProblems === 0) {
+      problemsListEl.innerHTML = `
+        <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:6px; padding:10px 14px; color:#166534; font-weight:600; display:flex; align-items:center; gap:8px;">
+          <span style="font-size:16px;">✓</span>
+          <span>All required fields/sub-fields are present and correctly structured. Ready to save.</span>
+        </div>
+      `;
+    } else {
+      let html = '<div style="display:flex; flex-direction:column; gap:8px;">';
+
+      // 3.1 Missing field
+      if (problems.missing_fields && problems.missing_fields.length > 0) {
+        html += `
+          <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:6px; padding:8px 12px;">
+            <strong style="color:#991B1B; font-size:12px;">✗ Missing field (${problems.missing_fields.length}):</strong>
+            <ul style="margin:4px 0 0 18px; padding:0; color:#B91C1C; font-size:11.5px;">
+              ${problems.missing_fields.slice(0, 8).map(m => `<li>${m}</li>`).join('')}
+              ${problems.missing_fields.length > 8 ? `<li>...and ${problems.missing_fields.length - 8} more</li>` : ''}
+            </ul>
+          </div>
+        `;
+      }
+
+      // 3.2 Identifying mismatch
+      if (problems.identifying_mismatches && problems.identifying_mismatches.length > 0) {
+        html += `
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:6px; padding:8px 12px;">
+            <strong style="color:#92400E; font-size:12px;">⚠️ Identifying mismatch (${problems.identifying_mismatches.length}):</strong>
+            <ul style="margin:4px 0 0 18px; padding:0; color:#B45309; font-size:11.5px;">
+              ${problems.identifying_mismatches.slice(0, 8).map(m => `<li>${m}</li>`).join('')}
+              ${problems.identifying_mismatches.length > 8 ? `<li>...and ${problems.identifying_mismatches.length - 8} more</li>` : ''}
+            </ul>
+          </div>
+        `;
+      }
+
+      // 3.3 College not found
+      if (problems.colleges_not_found && problems.colleges_not_found.length > 0) {
+        html += `
+          <div style="background:#FFF7ED; border:1px solid #FFEDD5; border-radius:6px; padding:8px 12px;">
+            <strong style="color:#9A3412; font-size:12px;">🔍 College not found (${problems.colleges_not_found.length}):</strong>
+            <ul style="margin:4px 0 0 18px; padding:0; color:#C2410C; font-size:11.5px;">
+              ${problems.colleges_not_found.slice(0, 8).map(m => `<li>${m}</li>`).join('')}
+              ${problems.colleges_not_found.length > 8 ? `<li>...and ${problems.colleges_not_found.length - 8} more</li>` : ''}
+            </ul>
+          </div>
+        `;
+      }
+
+      // 3.4 Invalid data
+      if (problems.invalid_data && problems.invalid_data.length > 0) {
+        html += `
+          <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:6px; padding:8px 12px;">
+            <strong style="color:#991B1B; font-size:12px;">❌ Invalid data (${problems.invalid_data.length}):</strong>
+            <ul style="margin:4px 0 0 18px; padding:0; color:#B91C1C; font-size:11.5px;">
+              ${problems.invalid_data.slice(0, 8).map(m => `<li>${m}</li>`).join('')}
+              ${problems.invalid_data.length > 8 ? `<li>...and ${problems.invalid_data.length - 8} more</li>` : ''}
+            </ul>
+          </div>
+        `;
+      }
+
+      html += '</div>';
+      problemsListEl.innerHTML = html;
+    }
+  }
+
+  // 3.5 "Edit Excel Data" option below problems report (Statically displayed)
+  const editOptionWrap = document.getElementById('bulkEditExcelDataOptionWrap');
+  if (editOptionWrap) {
+    editOptionWrap.style.display = 'flex';
+  }
+
+  // 4. Render Table
+  renderBulkValTable();
+
+  // 5. Confirm & Save Button
+  const saveBtn = document.getElementById('bulkValConfirmSaveBtn');
+  const saveBtnText = document.getElementById('bulkValConfirmSaveBtnText');
+  const footerNotice = document.getElementById('bulkValFooterNotice');
+
+  const savableCount = summary.total_savable || 0;
+  const canSave = summary.can_save && savableCount > 0 && (isIndividualMode || isAllHeadersValid);
+
+  if (saveBtn) {
+    saveBtn.disabled = !canSave;
+    saveBtn.style.opacity = canSave ? '1' : '0.6';
+    saveBtn.style.cursor = canSave ? 'pointer' : 'not-allowed';
+  }
+  if (saveBtnText) {
+    saveBtnText.textContent = canSave ? `Confirm & Save Bulk Data (${savableCount} Colleges)` : 'Cannot Save (Resolve Issues)';
+  }
+  if (footerNotice) {
+    if (!isIndividualMode && !isAllHeadersValid) {
+      footerNotice.innerHTML = '<span style="color:#DC2626; font-weight:700;">✗ Missing required 7 bulk field header(s) in sheet.</span>';
+    } else if (savableCount === 0) {
+      footerNotice.innerHTML = '<span style="color:#DC2626; font-weight:700;">✗ No valid matched colleges to save.</span>';
+    } else {
+      footerNotice.innerHTML = `<span><strong>${savableCount}</strong> college records ready to save into PostgreSQL. Blank cells will not overwrite existing values.</span>`;
+    }
+  }
+}
+
+function renderBulkValTable() {
+  if (!bulkValidationResult || !bulkValidationResult.rows) return;
+
+  const tbody = document.getElementById('bulkValTableBody');
+  const countEl = document.getElementById('bulkTableFilterCount');
+  if (!tbody) return;
+
+  const rows = bulkValidationResult.rows;
+  const q = (bulkFilterQuery || '').trim().toLowerCase();
+  const filter = bulkCurrentFilter;
+
+  const filtered = rows.filter(r => {
+    // Filter
+    if (filter === 'valid' && r.status !== 'valid') return false;
+    if (filter === 'mismatch' && r.status !== 'mismatch') return false;
+    if (filter === 'problems' && r.status === 'valid') return false;
+
+    // Search
+    if (q) {
+      const mAishe = (r.aishe_code || '').toLowerCase().includes(q);
+      const mName = (r.college_name || '').toLowerCase().includes(q);
+      const mState = (r.state || '').toLowerCase().includes(q);
+      const mDist = (r.district || '').toLowerCase().includes(q);
+      return mAishe || mName || mState || mDist;
+    }
+    return true;
+  });
+
+  if (countEl) countEl.textContent = `${filtered.length} of ${rows.length} Rows`;
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="9" style="padding:24px; text-align:center; color:#64748B; font-size:12px;">
+          No records match the current filter.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((r, idx) => {
+    let badge = '';
+    if (r.status === 'valid') {
+      badge = `<span style="background:#DCFCE7; color:#166534; padding:2px 7px; border-radius:4px; font-weight:700; font-size:11px; white-space:nowrap;">✓ Valid</span>`;
+    } else if (r.status === 'mismatch') {
+      badge = `<span style="background:#FEF3C7; color:#B45309; padding:2px 7px; border-radius:4px; font-weight:700; font-size:11px; white-space:nowrap;">⚠️ Mismatch</span>`;
+    } else if (r.status === 'not_found') {
+      badge = `<span style="background:#FFEDD5; color:#C2410C; padding:2px 7px; border-radius:4px; font-weight:700; font-size:11px; white-space:nowrap;">🔍 Not In DB</span>`;
+    } else {
+      badge = `<span style="background:#FEE2E2; color:#DC2626; padding:2px 7px; border-radius:4px; font-weight:700; font-size:11px; white-space:nowrap;">✗ Error</span>`;
+    }
+
+    const websiteDisplay = r.website
+      ? `<a href="${r.website}" target="_blank" style="color:#059669; text-decoration:none; max-width:130px; display:inline-block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${r.website}">${r.website.replace(/^https?:\/\//, '')}</a>`
+      : `<span style="color:#CBD5E1;">–</span>`;
+
+    const mismatchNote = r.mismatches && r.mismatches.length > 0
+      ? `<div style="font-size:10.5px; color:#B45309; margin-top:2px;">⚠️ ${r.mismatches.join('; ')}</div>`
+      : '';
+
+    const issuesNote = r.issues && r.issues.length > 0 && r.status !== 'valid' && r.status !== 'mismatch'
+      ? `<div style="font-size:10.5px; color:#DC2626; margin-top:2px;">${r.issues.map(i => i.message).join('; ')}</div>`
+      : '';
+
+    let extraDetails = '';
+    if (bulkValidationResult && bulkValidationResult.mode === 'individual') {
+      const parts = [];
+      const fieldLabels = {
+        nirf_rank: 'NIRF',
+        rating: 'Rating',
+        fees: 'Fees',
+        placement: 'Placement',
+        highest_placement: 'Highest Placement',
+        college_type: 'Type',
+        university: 'University',
+        short_name: 'Short Name',
+        accreditation: 'Accreditation',
+        naac_grade: 'NAAC',
+        cutoff: 'Cutoff',
+        facilities_list: 'Facilities',
+        courses_list: 'Courses',
+        description: 'Overview',
+        email: 'Email',
+        phone: 'Phone',
+        address: 'Address',
+        recruiters: 'Recruiters',
+        internship_support: 'Internship',
+        scholarships_info: 'Scholarships',
+        stream: 'Stream',
+        badge: 'Badge',
+        reviews_count: 'Reviews'
+      };
+      for (const [k, lbl] of Object.entries(fieldLabels)) {
+        if (r[k]) {
+          parts.push(`<strong>${lbl}:</strong> ${r[k]}`);
+        }
+      }
+      if (parts.length > 0) {
+        extraDetails = `<div style="font-size:11px; color:#0369A1; background:#F0F9FF; border:1px solid #BAE6FD; border-radius:4px; padding:4px 8px; margin-top:5px; line-height:1.5; display:flex; flex-wrap:wrap; gap:6px;">${parts.map(p => `<span>${p}</span>`).join(' &bull; ')}</div>`;
+      }
+    }
+
+    return `
+      <tr style="border-bottom:1px solid #F1F5F9;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background='transparent'">
+        <td style="padding:7px 10px; color:#64748B; font-weight:600;">${r.row_number || (idx + 1)}</td>
+        <td style="padding:7px 10px;">${badge}</td>
+        <td style="padding:7px 10px; font-weight:700; color:#0F172A; font-family:monospace;">${r.aishe_code || '–'}</td>
+        <td style="padding:7px 10px;">
+          <div style="font-weight:700; color:#1E293B;">${r.college_name || '–'}</div>
+          ${mismatchNote}
+          ${issuesNote}
+          ${extraDetails}
+        </td>
+        <td style="padding:7px 10px; color:#475569;">${r.state || '–'}</td>
+        <td style="padding:7px 10px; color:#475569;">${r.district || '–'}</td>
+        <td style="padding:7px 10px;">${websiteDisplay}</td>
+        <td style="padding:7px 10px; text-align:center; color:#475569; font-weight:600;">${r.established_year || '–'}</td>
+        <td style="padding:7px 10px; color:#475569;">${r.location || '–'}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+/* ----------------------------------------------------
+   CONFIRM & SAVE ACTION
+   ---------------------------------------------------- */
+async function confirmAndSaveBulkData() {
+  if (window._isBulkSaving) {
+    console.warn('[BulkUpdate] Bulk save already in progress.');
+    return;
+  }
+  if (!bulkValidationResult || !bulkValidationResult.rows) return;
+
+  const savableRows = bulkValidationResult.rows.filter(r => r.is_savable);
+  if (savableRows.length === 0) {
+    alert('No valid college records eligible to save.');
+    return;
+  }
+
+  const isInd = (bulkValidationResult.mode === 'individual' || window._bulkUploadMode === 'individual');
+  const confirmPrompt = isInd
+    ? `Save individual college details for ${savableRows.length} colleges into PostgreSQL?\n\n• Individual college details will be updated.\n• Blank Excel cells will NOT overwrite existing values.\n• Changes reflect immediately across website and portal.`
+    : `Save bulk data for ${savableRows.length} colleges into PostgreSQL?\n\n• Only the 7 bulk fields will be updated.\n• Existing values will NOT be overwritten by blank cells.\n• Changes reflect immediately across localhost and all domains.`;
+  if (!confirm(confirmPrompt)) return;
+
+  window._isBulkSaving = true;
+  const saveBtn = document.getElementById('bulkValConfirmSaveBtn');
+  const saveBtnText = document.getElementById('bulkValConfirmSaveBtnText');
+  const footerNotice = document.getElementById('bulkValFooterNotice');
+
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.style.opacity = '0.7';
+    saveBtn.style.cursor = 'wait';
+  }
+  if (saveBtnText) saveBtnText.textContent = 'Saving to Database...';
+  if (footerNotice) footerNotice.textContent = 'Committing transactional update to Neon PostgreSQL...';
+
+  try {
+    const res = await fetch('/api/admin/colleges/bulk-update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Role': 'admin',
+        'X-Admin-Passkey': localStorage.getItem('campusnova_admin_passkey') || 'admin123'
+      },
+      body: JSON.stringify({
+        rows: bulkValidationResult.rows,
+        mode: bulkValidationResult.mode || window._bulkUploadMode || '7_fields'
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      const successCount = Number(data.updated_count !== undefined ? data.updated_count : (bulkValidationResult.rows ? bulkValidationResult.rows.length : 0));
+      const successMsg = `Bulk Upload: ${successCount} colleges updated`;
+      if (typeof showAdminToast === 'function') {
+        showAdminToast(successMsg);
+      } else {
+        alert(successMsg);
+      }
+
+      // Close modal
+      closeBulkValidationModal();
+      resetBulkUploadState();
+
+      // Refresh existing colleges table
+      if (typeof renderCollegesTable === 'function') {
+        renderCollegesTable();
+      }
+      if (typeof loadColleges === 'function') {
+        loadColleges();
+      }
+    } else {
+      alert(`Save failed: ${data.message || 'Database error'}`);
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.style.opacity = '1';
+        saveBtn.style.cursor = 'pointer';
+      }
+      if (saveBtnText) saveBtnText.textContent = 'Retry Save';
+      if (footerNotice) footerNotice.textContent = 'Failed to commit updates.';
+    }
+  } catch (err) {
+    alert(`Network error saving bulk data: ${err.message}`);
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.style.opacity = '1';
+      saveBtn.style.cursor = 'pointer';
+    }
+    if (saveBtnText) saveBtnText.textContent = 'Retry Save';
+    if (footerNotice) footerNotice.textContent = 'Network error.';
+  } finally {
+    window._isBulkSaving = false;
+  }
+}
+
+/* ----------------------------------------------------
+   EVENT LISTENERS INITIALIZATION
+   ---------------------------------------------------- */
+function initBulkFeatureListeners() {
+  // 1. Button in toolbar to open Popup 1
+  const openBtn = document.getElementById('openBulkUpdateModalBtn');
+  if (openBtn) {
+    openBtn.removeEventListener('click', openBulkUploadModal);
+    openBtn.addEventListener('click', openBulkUploadModal);
+  }
+
+  // 2. Popup 1: Close buttons
+  const closeUploadBtn = document.getElementById('closeBulkUploadModalBtn');
+  if (closeUploadBtn) closeUploadBtn.addEventListener('click', closeBulkUploadModal);
+
+  const cancelUploadBtn = document.getElementById('bulkUploadCancelBtn');
+  if (cancelUploadBtn) cancelUploadBtn.addEventListener('click', closeBulkUploadModal);
+
+  // 3. Popup 1: Dropzone & File Input
+  const dropzone = document.getElementById('bulkUploadDropzone');
+  const fileInput = document.getElementById('bulkUploadFileInput');
+
+  if (dropzone && fileInput) {
+    dropzone.addEventListener('click', (e) => {
+      if (e.target.id === 'bulkUploadRemoveFileBtn' || e.target.closest('#bulkUploadRemoveFileBtn')) return;
+      fileInput.click();
+    });
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.style.borderColor = '#059669';
+      dropzone.style.background = '#ECFDF5';
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.style.borderColor = '#94A3B8';
+      dropzone.style.background = '#FFFFFF';
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.style.borderColor = '#94A3B8';
+      dropzone.style.background = '#FFFFFF';
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        handleBulkFileChoice(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        handleBulkFileChoice(e.target.files[0]);
+      }
+    });
+  }
+
+  // 4. Popup 1: Remove File
+  const removeFileBtn = document.getElementById('bulkUploadRemoveFileBtn');
+  if (removeFileBtn) {
+    removeFileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      resetBulkUploadState();
+    });
+  }
+
+  // 5. Popup 1: Submit Button (Opens Popup 2 on validation)
+  const submitBtn = document.getElementById('bulkUploadSubmitBtn');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', submitBulkUploadFile);
+  }
+
+  // 6. Popup 2: Close & Back Buttons
+  const closeValBtn = document.getElementById('closeBulkValidationModalBtn');
+  if (closeValBtn) closeValBtn.addEventListener('click', closeBulkValidationModal);
+
+  const cancelValBtn = document.getElementById('bulkValCancelBtn');
+  if (cancelValBtn) cancelValBtn.addEventListener('click', closeBulkValidationModal);
+
+  const backBtn = document.getElementById('bulkValBackBtn');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      closeBulkValidationModal();
+      openBulkUploadModal();
+    });
+  }
+
+  // 7. Popup 2: Filter & Search
+  const searchInput = document.getElementById('bulkValSearchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      bulkFilterQuery = e.target.value;
+      renderBulkValTable();
+    });
+  }
+
+  const statusFilter = document.getElementById('bulkValStatusFilter');
+  if (statusFilter) {
+    statusFilter.addEventListener('change', (e) => {
+      bulkCurrentFilter = e.target.value;
+      renderBulkValTable();
+    });
+  }
+
+  // 8. Popup 2: Confirm & Save Button
+  const confirmSaveBtn = document.getElementById('bulkValConfirmSaveBtn');
+  if (confirmSaveBtn) {
+    confirmSaveBtn.addEventListener('click', confirmAndSaveBulkData);
+  }
+}
+
+// =================================================================
+// BULK EDIT EXCEL DATA: STATE & FUNCTIONS (FIELD-WISE CORRECTIONS)
+// =================================================================
+let bulkRowEdits = {}; // { [row_number]: { [field_key]: value } }
+let bulkEditSearchQuery = '';
+let bulkEditIssueFilter = 'all';
+let bulkEditCurrentPage = 1;
+const bulkEditPageSize = 10;
+let bulkExpandedRows = new Set();
+
+window.bulkRowEdits = bulkRowEdits;
+window.bulkExpandedRows = bulkExpandedRows;
+
+const BULK_7_FIELDS_MAP = {
+  aishe_code: 'AISHE Code',
+  college_name: 'Name',
+  state: 'State',
+  district: 'District',
+  location: 'Location',
+  website: 'Website',
+  established_year: 'Year Of Establishment'
+};
+
+function getProblematicFieldsForRow(r) {
+  const problemsMap = new Map(); // fieldKey -> { label, message, type }
+
+  // 1. If college not found in DB, AISHE Code is the primary problematic identifier
+  if (r.status === 'not_found') {
+    problemsMap.set('aishe_code', {
+      label: 'AISHE Code',
+      message: 'College not found in database registry. Verify or correct AISHE Code.',
+      type: 'not_found'
+    });
+  }
+
+  // 2. Process issues (missing_field, invalid_data)
+  if (Array.isArray(r.issues)) {
+    r.issues.forEach(iss => {
+      const fieldText = (iss.field || '').toLowerCase();
+      let key = null;
+      if (fieldText.includes('aishe')) key = 'aishe_code';
+      else if (fieldText.includes('name')) key = 'college_name';
+      else if (fieldText.includes('state')) key = 'state';
+      else if (fieldText.includes('district')) key = 'district';
+      else if (fieldText.includes('location')) key = 'location';
+      else if (fieldText.includes('website')) key = 'website';
+      else if (fieldText.includes('year')) key = 'established_year';
+      else if (fieldText.includes('rating')) key = 'rating';
+      else if (fieldText.includes('highest')) key = 'highest_placement';
+      else if (fieldText.includes('avg')) key = 'avg_placement';
+      else if (fieldText.includes('fee')) key = 'annual_tuition_fees';
+      else if (fieldText.includes('infrastructure')) key = 'infrastructure_highlights';
+      else if (fieldText.includes('course') || fieldText.includes('stream')) key = 'primary_courses';
+      else if (fieldText.includes('type')) key = 'institution_type';
+      else if (fieldText.includes('nirf')) key = 'nirf_rank';
+      else {
+        key = Object.keys(r).find(k => k.toLowerCase() === fieldText.replace(/\s+/g, '_'));
+      }
+
+      if (key) {
+        problemsMap.set(key, {
+          label: BULK_7_FIELDS_MAP[key] || iss.field || key,
+          message: iss.message,
+          type: iss.type || 'error'
+        });
+      }
+    });
+  }
+
+  // 3. Process mismatches
+  if (Array.isArray(r.mismatches)) {
+    r.mismatches.forEach(m => {
+      const mLow = m.toLowerCase();
+      let key = null;
+      let label = '';
+      if (mLow.includes('name')) { key = 'college_name'; label = 'Name'; }
+      else if (mLow.includes('state')) { key = 'state'; label = 'State'; }
+      else if (mLow.includes('district')) { key = 'district'; label = 'District'; }
+      if (key) {
+        problemsMap.set(key, {
+          label: label,
+          message: m,
+          type: 'mismatch'
+        });
+      }
+    });
+  }
+
+  // Fallback: if not valid but no specific field was resolved, default to AISHE Code
+  if (problemsMap.size === 0 && r.status !== 'valid') {
+    problemsMap.set('aishe_code', {
+      label: 'AISHE Code',
+      message: 'Problematic identifier. Verify code against database.',
+      type: 'warning'
+    });
+  }
+
+  return problemsMap;
+}
+
+function openBulkEditDataModal() {
+  const modal = document.getElementById('bulkEditDataModal');
+  if (!modal) return;
+
+  bulkEditCurrentPage = 1;
+  bulkEditSearchQuery = '';
+  bulkEditIssueFilter = 'all';
+
+  const searchInput = document.getElementById('bulkEditSearchInput');
+  if (searchInput) searchInput.value = '';
+
+  const filterSelect = document.getElementById('bulkEditFilterSelect');
+  if (filterSelect) filterSelect.value = 'all';
+
+  renderBulkEditCards();
+
+  modal.classList.add('open');
+  modal.style.setProperty('display', 'flex', 'important');
+}
+
+function closeBulkEditDataModal() {
+  const modal = document.getElementById('bulkEditDataModal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.style.setProperty('display', 'none', 'important');
+}
+
+function renderBulkEditCards() {
+  const container = document.getElementById('bulkEditCardsContainer');
+  const countSummary = document.getElementById('bulkEditCountSummary');
+  const badgeTotal = document.getElementById('bulkEditBadgeTotal');
+  const pageIndicator = document.getElementById('bulkEditPageIndicator');
+  const prevBtn = document.getElementById('bulkEditPrevPageBtn');
+  const nextBtn = document.getElementById('bulkEditNextPageBtn');
+  const pendingBadge = document.getElementById('bulkEditPendingBadge');
+
+  if (!container || !bulkValidationResult || !bulkValidationResult.rows) return;
+
+  const rows = bulkValidationResult.rows;
+  const q = (bulkEditSearchQuery || '').trim().toLowerCase();
+  const filter = bulkEditIssueFilter || 'all';
+
+  const displayedRows = rows.filter(r => {
+    if (filter === 'problems' && r.status === 'valid') return false;
+    if (filter === 'not_found' && r.status !== 'not_found') return false;
+    if (filter === 'mismatch' && r.status !== 'mismatch') return false;
+    if (filter === 'missing') {
+      const hasMissing = r.issues && r.issues.some(i => i.type === 'missing_field');
+      if (!hasMissing) return false;
+    }
+    if (filter === 'invalid') {
+      const hasInvalid = r.issues && r.issues.some(i => i.type === 'invalid_data');
+      if (!hasInvalid) return false;
+    }
+
+    if (q) {
+      const mAishe = (r.aishe_code || '').toLowerCase().includes(q);
+      const mName = (r.college_name || '').toLowerCase().includes(q);
+      const mRow = String(r.row_number || '').includes(q);
+      return mAishe || mName || mRow;
+    }
+
+    return true;
+  });
+
+  const totalCount = displayedRows.length;
+  const problemsCount = rows.filter(r => r.status !== 'valid').length;
+
+  if (badgeTotal) {
+    if (problemsCount > 0) {
+      badgeTotal.textContent = `${totalCount} Record${totalCount === 1 ? '' : 's'} (${problemsCount} Problematic)`;
+      badgeTotal.style.background = '#FEE2E2';
+      badgeTotal.style.color = '#DC2626';
+    } else {
+      badgeTotal.textContent = `${totalCount} Record${totalCount === 1 ? '' : 's'} (Ready to Edit / Save)`;
+      badgeTotal.style.background = '#DCFCE7';
+      badgeTotal.style.color = '#166534';
+    }
+  }
+
+  const totalEditsCount = Object.keys(bulkRowEdits).length;
+  if (pendingBadge) {
+    if (totalEditsCount > 0) {
+      pendingBadge.style.display = 'inline-block';
+      pendingBadge.textContent = `${totalEditsCount} record${totalEditsCount === 1 ? '' : 's'} modified`;
+    } else {
+      pendingBadge.style.display = 'none';
+    }
+  }
+
+  if (totalCount === 0) {
+    container.innerHTML = `
+      <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:32px 20px; text-align:center; color:#64748B;">
+        <div style="font-size:32px; margin-bottom:8px;">✓</div>
+        <strong style="color:#1E293B; font-size:14px;">No records found matching current criteria.</strong>
+        <p style="font-size:12px; margin:4px 0 0 0;">Try clearing your search query or selecting 'All Records'.</p>
+      </div>
+    `;
+    if (countSummary) countSummary.textContent = 'Showing 0 records';
+    if (pageIndicator) pageIndicator.textContent = 'Page 1 of 1';
+    if (prevBtn) prevBtn.disabled = true;
+    if (nextBtn) nextBtn.disabled = true;
+    return;
+  }
+
+  const totalPages = Math.ceil(totalCount / bulkEditPageSize);
+  if (bulkEditCurrentPage > totalPages) bulkEditCurrentPage = totalPages;
+  if (bulkEditCurrentPage < 1) bulkEditCurrentPage = 1;
+
+  const startIdx = (bulkEditCurrentPage - 1) * bulkEditPageSize;
+  const endIdx = Math.min(startIdx + bulkEditPageSize, totalCount);
+  const pagedRows = displayedRows.slice(startIdx, endIdx);
+
+  if (countSummary) {
+    countSummary.textContent = `Showing ${startIdx + 1} - ${endIdx} of ${totalCount} records`;
+  }
+  if (pageIndicator) {
+    pageIndicator.textContent = `Page ${bulkEditCurrentPage} of ${totalPages}`;
+  }
+  if (prevBtn) {
+    prevBtn.disabled = bulkEditCurrentPage <= 1;
+    prevBtn.style.opacity = bulkEditCurrentPage <= 1 ? '0.5' : '1';
+    prevBtn.style.cursor = bulkEditCurrentPage <= 1 ? 'not-allowed' : 'pointer';
+  }
+  if (nextBtn) {
+    nextBtn.disabled = bulkEditCurrentPage >= totalPages;
+    nextBtn.style.opacity = bulkEditCurrentPage >= totalPages ? '0.5' : '1';
+    nextBtn.style.cursor = bulkEditCurrentPage >= totalPages ? 'not-allowed' : 'pointer';
+  }
+
+  container.innerHTML = pagedRows.map(r => {
+    const rowNum = r.row_number;
+    const rowEdits = bulkRowEdits[rowNum] || {};
+    const isModified = Object.keys(rowEdits).length > 0;
+    const isExpanded = bulkExpandedRows.has(rowNum);
+
+    const currentName = rowEdits.college_name !== undefined ? rowEdits.college_name : (r.college_name || 'Unnamed College');
+    const currentAishe = rowEdits.aishe_code !== undefined ? rowEdits.aishe_code : (r.aishe_code || 'No AISHE Code');
+
+    let statusBadgeHtml = '';
+    if (r.status === 'not_found') {
+      statusBadgeHtml = `<span style="background:#FFEDD5; color:#C2410C; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px;">🔍 College Not Found</span>`;
+    } else if (r.status === 'mismatch') {
+      statusBadgeHtml = `<span style="background:#FEF3C7; color:#B45309; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px;">⚠️ Identifying Mismatch</span>`;
+    } else if (r.status === 'valid') {
+      statusBadgeHtml = `<span style="background:#DCFCE7; color:#166534; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px;">✓ Valid</span>`;
+    } else {
+      statusBadgeHtml = `<span style="background:#FEE2E2; color:#DC2626; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px;">✗ Missing / Invalid</span>`;
+    }
+
+    const modifiedBadgeHtml = isModified
+      ? `<span style="background:#E0F2FE; color:#0369A1; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:4px;">Modified</span>`
+      : '';
+
+    const probMap = getProblematicFieldsForRow(r);
+    const probKeys = Array.from(probMap.keys());
+
+    let fieldsHtml = '';
+    if (probMap.size > 0) {
+      probMap.forEach((prob, key) => {
+        const val = rowEdits[key] !== undefined ? rowEdits[key] : (r[key] !== undefined && r[key] !== null ? r[key] : '');
+        const isFieldEdited = rowEdits[key] !== undefined;
+
+        fieldsHtml += `
+          <div style="margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:8px;">
+              <label style="font-size:12px; font-weight:700; color:#991B1B; display:flex; align-items:center; gap:5px;">
+                <span>✗</span> <span>${escapeHtml(prob.label)}:</span>
+              </label>
+              <span style="font-size:11px; color:#DC2626; text-align:right;">${escapeHtml(prob.message || '')}</span>
+            </div>
+            <div>
+              <input type="text"
+                value="${escapeHtml(String(val))}"
+                placeholder="Edit ${escapeHtml(prob.label)}..."
+                oninput="recordBulkFieldEdit(${rowNum}, '${key}', this.value)"
+                style="width:100%; box-sizing:border-box; font-size:12.5px; padding:7px 11px; border:${isFieldEdited ? '2px solid #0284C7' : '1.5px solid #FCA5A5'}; border-radius:6px; background:${isFieldEdited ? '#F0F9FF' : '#FFF5F5'}; outline:none; font-weight:500; color:#1E293B;" />
+            </div>
+          </div>
+        `;
+      });
+    } else {
+      // Direct 7-field editable grid for clean rows
+      fieldsHtml = `
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px;">
+          ${Object.keys(BULK_7_FIELDS_MAP).map(k => {
+            const val = rowEdits[k] !== undefined ? rowEdits[k] : (r[k] !== undefined && r[k] !== null ? r[k] : '');
+            const isFieldEdited = rowEdits[k] !== undefined;
+            return `
+              <div>
+                <label style="font-size:11px; font-weight:700; color:#334155; display:block; margin-bottom:3px;">
+                  ${BULK_7_FIELDS_MAP[k]}:
+                </label>
+                <input type="text"
+                  value="${escapeHtml(String(val))}"
+                  oninput="recordBulkFieldEdit(${rowNum}, '${k}', this.value)"
+                  style="width:100%; box-sizing:border-box; font-size:12px; padding:6px 9px; border:${isFieldEdited ? '2px solid #0284C7' : '1px solid #CBD5E1'}; border-radius:5px; background:${isFieldEdited ? '#F0F9FF' : '#FFFFFF'}; outline:none;" />
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    const other7Keys = Object.keys(BULK_7_FIELDS_MAP).filter(k => !probKeys.includes(k));
+    let otherFieldsHtml = '';
+    if (probMap.size > 0 && isExpanded) {
+      otherFieldsHtml = `
+        <div style="margin-top:12px; padding-top:10px; border-top:1px dashed #CBD5E1; background:#F8FAFC; padding:10px; border-radius:6px;">
+          <div style="font-size:11.5px; font-weight:700; color:#475569; margin-bottom:8px;">All 7 Bulk Identification Fields:</div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px;">
+            ${other7Keys.map(k => {
+              const oVal = rowEdits[k] !== undefined ? rowEdits[k] : (r[k] !== undefined && r[k] !== null ? r[k] : '');
+              const oEdited = rowEdits[k] !== undefined;
+              return `
+                <div>
+                  <label style="font-size:11px; font-weight:600; color:#475569; display:block; margin-bottom:3px;">
+                    ${BULK_7_FIELDS_MAP[k]}:
+                  </label>
+                  <input type="text"
+                    value="${escapeHtml(String(oVal))}"
+                    oninput="recordBulkFieldEdit(${rowNum}, '${k}', this.value)"
+                    style="width:100%; box-sizing:border-box; font-size:12px; padding:5px 9px; border:${oEdited ? '2px solid #0284C7' : '1px solid #CBD5E1'}; border-radius:5px; background:${oEdited ? '#F0F9FF' : '#FFFFFF'}; outline:none;" />
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="bulk-edit-card" style="background:#FFFFFF; border:${isModified ? '2px solid #0284C7' : '1px solid #E2E8F0'}; border-radius:10px; padding:14px 16px; box-shadow:0 1px 3px rgba(0,0,0,0.05); transition:border 0.2s;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:11px; font-weight:700; color:#64748B; background:#F1F5F9; padding:2px 7px; border-radius:4px;">Row ${rowNum}</span>
+              <strong style="font-size:13.5px; color:#0F172A;">${escapeHtml(currentName)}</strong>
+              ${modifiedBadgeHtml}
+            </div>
+            <div style="font-size:11.5px; color:#64748B; margin-top:2px;">
+              <span>AISHE: <strong>${escapeHtml(currentAishe)}</strong></span>
+              ${r.state ? `<span style="margin:0 6px;">&bull;</span><span>${escapeHtml(r.state)}</span>` : ''}
+              ${r.district ? `<span style="margin:0 6px;">&bull;</span><span>${escapeHtml(r.district)}</span>` : ''}
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            ${statusBadgeHtml}
+          </div>
+        </div>
+
+        <div style="background:${probMap.size > 0 ? '#FFFBFB' : '#F8FAFC'}; border:1px solid ${probMap.size > 0 ? '#FEE2E2' : '#E2E8F0'}; border-radius:8px; padding:12px 14px;">
+          ${fieldsHtml}
+        </div>
+
+        ${otherFieldsHtml}
+
+        <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+          ${probMap.size > 0 ? `
+            <button type="button" onclick="toggleShowAllFieldsForRow(${rowNum})"
+              style="background:none; border:none; color:#0284C7; font-size:11.5px; font-weight:600; cursor:pointer; padding:0; text-decoration:underline;">
+              ${isExpanded ? '▲ Hide other fields' : '+ Show all 7 fields for this row'}
+            </button>
+          ` : `<div></div>`}
+          ${isModified ? `
+            <button type="button" onclick="resetEditsForRow(${rowNum})"
+              style="background:none; border:none; color:#94A3B8; font-size:11px; cursor:pointer; padding:0; text-decoration:underline;">
+              Discard row edits
+            </button>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function navigateBulkEditPage(delta) {
+  bulkEditCurrentPage = (bulkEditCurrentPage || 1) + delta;
+  renderBulkEditCards();
+}
+
+function recordBulkFieldEdit(rowNum, fieldKey, val) {
+  if (!bulkRowEdits[rowNum]) bulkRowEdits[rowNum] = {};
+  bulkRowEdits[rowNum][fieldKey] = val;
+
+  const pendingBadge = document.getElementById('bulkEditPendingBadge');
+  const totalEditsCount = Object.keys(bulkRowEdits).length;
+  if (pendingBadge) {
+    if (totalEditsCount > 0) {
+      pendingBadge.style.display = 'inline-block';
+      pendingBadge.textContent = `${totalEditsCount} record${totalEditsCount === 1 ? '' : 's'} modified`;
+    } else {
+      pendingBadge.style.display = 'none';
+    }
+  }
+}
+
+function toggleShowAllFieldsForRow(rowNum) {
+  if (bulkExpandedRows.has(rowNum)) {
+    bulkExpandedRows.delete(rowNum);
+  } else {
+    bulkExpandedRows.add(rowNum);
+  }
+  renderBulkEditCards();
+}
+
+function resetEditsForRow(rowNum) {
+  if (bulkRowEdits && bulkRowEdits[rowNum]) {
+    delete bulkRowEdits[rowNum];
+    renderBulkEditCards();
+  }
+}
+
+async function applyBulkEditsAndRevalidate() {
+  const applyBtn = document.getElementById('bulkEditApplyBtn');
+  const applyBtnText = document.getElementById('bulkEditApplyBtnText');
+
+  if (!bulkValidationResult || !bulkValidationResult.rows) {
+    alert('No validation data found to apply edits to.');
+    return;
+  }
+
+  const editsCount = Object.keys(bulkRowEdits || {}).length;
+  if (editsCount === 0) {
+    alert('No changes have been made yet. Please edit the required fields before submitting.');
+    return;
+  }
+
+  const rows = bulkValidationResult.rows;
+  for (let r of rows) {
+    const rowNum = r.row_number;
+    if (bulkRowEdits[rowNum]) {
+      Object.assign(r, bulkRowEdits[rowNum]);
+    }
+  }
+
+  if (applyBtn) {
+    applyBtn.disabled = true;
+    applyBtn.style.opacity = '0.7';
+    applyBtn.style.cursor = 'wait';
+  }
+  if (applyBtnText) {
+    applyBtnText.textContent = 'Applying & Re-validating...';
+  }
+
+  try {
+    const res = await fetch('/api/admin/colleges/bulk-validate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Role': 'admin',
+        'X-Admin-Passkey': localStorage.getItem('campusnova_admin_passkey') || 'admin123'
+      },
+      body: JSON.stringify({ rows: rows })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.success === false) {
+      alert('Re-validation failed: ' + (data.message || 'Unknown server error'));
+      return;
+    }
+
+    bulkValidationResult = data;
+    bulkRowEdits = {};
+    bulkExpandedRows.clear();
+
+    closeBulkEditDataModal();
+    renderBulkValidationView(bulkValidationResult);
+
+    const validCount = data.summary ? data.summary.valid_count : 0;
+    const savableCount = data.summary ? data.summary.total_savable : 0;
+    const notFoundCount = data.summary ? data.summary.not_found_count : 0;
+    const errorCount = data.summary ? data.summary.missing_or_invalid_count : 0;
+    const remainingProblems = notFoundCount + errorCount;
+
+    if (remainingProblems === 0) {
+      alert(`✓ Success! All records are now valid (${savableCount} savable). You can now click 'Confirm & Save Bulk Data' to save.`);
+    } else {
+      alert(`✓ Changes applied and re-validated! Now ${savableCount} savable records (${validCount} valid), with ${remainingProblems} remaining problems.`);
+    }
+
+  } catch (err) {
+    console.error('[Bulk Re-validate Error]', err);
+    alert('Network error while re-validating: ' + err.message);
+  } finally {
+    if (applyBtn) {
+      applyBtn.disabled = false;
+      applyBtn.style.opacity = '1';
+      applyBtn.style.cursor = 'pointer';
+    }
+    if (applyBtnText) {
+      applyBtnText.textContent = 'Submit / Apply Changes';
+    }
+  }
+}
+
+// Expose all modal functions globally to window for HTML onclick handlers
+window.openBulkUploadModal = openBulkUploadModal;
+window.closeBulkUploadModal = closeBulkUploadModal;
+window.resetBulkUploadState = resetBulkUploadState;
+window.showBulkUploadError = showBulkUploadError;
+window.handleBulkFileChoice = handleBulkFileChoice;
+window.submitBulkUploadFile = submitBulkUploadFile;
+window.openBulkValidationModal = openBulkValidationModal;
+window.closeBulkValidationModal = closeBulkValidationModal;
+window.renderBulkValidationView = renderBulkValidationView;
+window.renderBulkValTable = renderBulkValTable;
+window.confirmAndSaveBulkData = confirmAndSaveBulkData;
+
+// Expose Bulk Edit functions
+window.openBulkEditDataModal = openBulkEditDataModal;
+window.closeBulkEditDataModal = closeBulkEditDataModal;
+window.renderBulkEditCards = renderBulkEditCards;
+window.navigateBulkEditPage = navigateBulkEditPage;
+window.recordBulkFieldEdit = recordBulkFieldEdit;
+window.toggleShowAllFieldsForRow = toggleShowAllFieldsForRow;
+window.resetEditsForRow = resetEditsForRow;
+window.applyBulkEditsAndRevalidate = applyBulkEditsAndRevalidate;
+
+// Auto-register listeners
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initBulkFeatureListeners);
+} else {
+  initBulkFeatureListeners();
+}

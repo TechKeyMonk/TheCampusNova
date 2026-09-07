@@ -6753,7 +6753,11 @@
 
               </div>
 
-              <div class="table-actions">
+              <div class="table-actions" style="display:flex; align-items:center; gap:8px;">
+
+                <button type="button" class="action-btn primary" id="openBulkUpdateModalBtn" onclick="openBulkUploadModal()">
+                  <span>📊</span> <span>Bulk Update Progress</span>
+                </button>
 
                 <button class="action-btn primary" id="openAddCollegeModalBtn"><span>+</span> Add Institution</button>
 
@@ -12188,6 +12192,8 @@
 
       </form>
 
+    </div>
+
   </div>
 
   <!-- ADMIN 5-MODULE UNIFIED REVIEW MODAL -->
@@ -12518,8 +12524,6 @@
 
         </div>
 
-
-
         <div style="display:flex; gap:8px;">
 
           <!-- 5. Delete / Clear -->
@@ -12532,8 +12536,6 @@
 
           </button>
 
-
-
           <!-- Close Modal -->
 
           <button type="button" class="btn btn-secondary" onclick="closeFifModal()"
@@ -12544,15 +12546,396 @@
 
       </div>
 
-
-
     </div>
 
   </div>
 
+  <!-- ============================================================
+       POPUP 1: BULK UPDATE PROGRESS - EXCEL UPLOAD
+       ============================================================ -->
+  <div class="admin-modal" id="bulkUploadModal"
+    style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.75); backdrop-filter:blur(4px); z-index:999999; align-items:center; justify-content:center; padding:16px;">
+    <div class="admin-modal-box"
+      style="max-width:580px; width:100%; background:#FFFFFF; border-radius:14px; box-shadow:0 25px 60px -15px rgba(0,0,0,0.35); overflow:hidden; display:flex; flex-direction:column; border:1px solid #E2E8F0;">
+
+      <!-- Modal Header -->
+      <div
+        style="padding:18px 24px; background:linear-gradient(135deg, #064E3B 0%, #065F46 50%, #047857 100%); color:#FFFFFF; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #059669;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:38px; height:38px; border-radius:10px; background:rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; font-size:20px;">
+            📊
+          </div>
+          <div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <h3 style="margin:0; font-size:17px; font-weight:800; color:#FFFFFF; font-family:'Manrope',sans-serif;">Bulk Update Progress</h3>
+              <span style="background:#10B981; color:#064E3B; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:0.04em;">COLLEGES ONLY</span>
+            </div>
+            <p style="margin:2px 0 0; font-size:12px; color:#A7F3D0;">
+              Upload an Excel file (.xlsx) containing college records.
+            </p>
+          </div>
+        </div>
+        <button type="button" id="closeBulkUploadModalBtn" onclick="closeBulkUploadModal()"
+          style="background:rgba(255,255,255,0.1); border:none; color:#FFFFFF; font-size:22px; width:32px; height:32px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.2s;">
+          &times;
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div style="padding:22px 24px; display:flex; flex-direction:column; gap:16px; background:#F8FAFC;">
+
+        <!-- Mode Switcher: 7-Fields Base vs Individual College Details -->
+        <div style="display:flex; background:#E2E8F0; padding:4px; border-radius:8px; gap:4px;">
+          <button type="button" id="bulkMode7FieldsBtn" onclick="setBulkUploadMode('7_fields')"
+            style="flex:1; padding:8px 12px; font-size:12.5px; font-weight:700; border:none; border-radius:6px; cursor:pointer; background:#FFFFFF; color:#065F46; box-shadow:0 1px 3px rgba(0,0,0,0.1); transition:all 0.2s;">
+            📋 Base 7-Fields Bulk Update
+          </button>
+          <button type="button" id="bulkModeIndividualBtn" onclick="setBulkUploadMode('individual')"
+            style="flex:1; padding:8px 12px; font-size:12.5px; font-weight:700; border:none; border-radius:6px; cursor:pointer; background:transparent; color:#64748B; transition:all 0.2s;">
+            🏛️ Individual College Details
+          </button>
+        </div>
+
+        <!-- File Requirements Banner -->
+        <div id="bulkUploadReqBanner" style="background:#EFF6FF; border:1px solid #BFDBFE; border-radius:8px; padding:10px 14px; font-size:12.5px; color:#1E40AF; display:flex; align-items:center; gap:8px;">
+          <span style="font-size:18px;">ℹ️</span>
+          <div>
+            <strong>Maximum file size: 100 MB</strong> &bull; Allowed formats: <strong>.xlsx only</strong><br/>
+            <span id="bulkUploadReqNote" style="font-size:11.5px; color:#3B82F6;">File must include the 7 bulk-identification fields (AISHE Code, Name, State, District, Website, Year Of Establishment, Location).</span>
+          </div>
+        </div>
+
+        <!-- Dropzone & File Selector -->
+        <div id="bulkUploadDropzone" onclick="document.getElementById('bulkUploadFileInput').click()"
+          style="background:#FFFFFF; border:2px dashed #94A3B8; border-radius:12px; padding:28px 20px; text-align:center; cursor:pointer; transition:all 0.2s ease;">
+          <input type="file" id="bulkUploadFileInput" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display:none;" onchange="if(this.files && this.files.length) handleBulkFileChoice(this.files[0])" />
+          <div style="font-size:40px; margin-bottom:8px;">📁</div>
+          <h4 style="margin:0 0 6px 0; font-size:14.5px; font-weight:700; color:#1E293B;">
+            Click to browse or drag &amp; drop your Excel file here
+          </h4>
+          <p style="margin:0; font-size:12px; color:#64748B;">
+            Supports .xlsx files up to 100 MB
+          </p>
+
+          <!-- Selected File Card -->
+          <div id="bulkUploadSelectedFileCard"
+            style="display:none; margin-top:14px; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:10px 14px; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:10px; text-align:left;">
+              <span style="font-size:22px;">📊</span>
+              <div>
+                <div id="bulkUploadSelectedFileName" style="font-size:13px; font-weight:700; color:#166534;">filename.xlsx</div>
+                <div id="bulkUploadSelectedFileSize" style="font-size:11px; color:#15803D;">0 KB</div>
+              </div>
+            </div>
+            <button type="button" id="bulkUploadRemoveFileBtn" onclick="event.stopPropagation(); resetBulkUploadState();"
+              style="background:transparent; border:none; color:#DC2626; font-size:12px; font-weight:700; cursor:pointer; padding:4px 8px;">
+              ✕ Change
+            </button>
+          </div>
+        </div>
+
+        <!-- Alert / Error Banner -->
+        <div id="bulkUploadErrorBanner"
+          style="display:none; padding:10px 14px; border-radius:8px; font-size:12.5px; font-weight:600; background:#FEF2F2; border:1px solid #FECACA; color:#991B1B;">
+        </div>
+
+        <!-- Uploading / Validating Progress Bar -->
+        <div id="bulkUploadProgressWrap" style="display:none;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:12px; font-weight:700; color:#334155;">
+            <span id="bulkUploadProgressLabel">Uploading &amp; validating 7 bulk fields...</span>
+            <span id="bulkUploadProgressPercent">0%</span>
+          </div>
+          <div style="width:100%; height:8px; background:#E2E8F0; border-radius:4px; overflow:hidden;">
+            <div id="bulkUploadProgressBar"
+              style="width:0%; height:100%; background:linear-gradient(90deg, #10B981, #059669); transition:width 0.3s ease;"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer Action Bar -->
+      <div
+        style="padding:14px 24px; background:#F8FAFC; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+        <span style="font-size:12px; color:#64748B;">Step 1 of 2: Upload File</span>
+        <div style="display:flex; gap:10px;">
+          <button type="button" id="bulkUploadCancelBtn" class="btn btn-secondary" onclick="closeBulkUploadModal()"
+            style="font-size:12.5px; padding:8px 16px; border-radius:6px; cursor:pointer; background:#FFFFFF; border:1px solid #CBD5E1; color:#334155; font-weight:600;">
+            Cancel
+          </button>
+          <button type="button" id="bulkUploadSubmitBtn" class="btn btn-primary" disabled onclick="submitBulkUploadFile()"
+            style="background:#10B981; border:1px solid #059669; color:#FFFFFF; font-weight:700; font-size:12.5px; padding:8px 22px; border-radius:6px; cursor:not-allowed; display:inline-flex; align-items:center; gap:8px; opacity:0.6;">
+            <span>Submit</span> <span>➔</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 
-  <script src="admin.js?v=20260905-notif-notes-approvals-v5"></script>
+  <!-- ============================================================
+       POPUP 2: BULK UPDATE PROGRESS - VALIDATION & PREVIEW
+       ============================================================ -->
+  <div class="admin-modal" id="bulkValidationModal"
+    style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.75); backdrop-filter:blur(4px); z-index:999999; align-items:center; justify-content:center; padding:16px;">
+    <div class="admin-modal-box"
+      style="max-width:1100px; width:100%; background:#FFFFFF; border-radius:14px; box-shadow:0 25px 60px -15px rgba(0,0,0,0.35); overflow:hidden; display:flex; flex-direction:column; max-height:92vh; border:1px solid #E2E8F0;">
+
+      <!-- Modal Header -->
+      <div
+        style="padding:18px 24px; background:linear-gradient(135deg, #064E3B 0%, #065F46 50%, #047857 100%); color:#FFFFFF; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #059669;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:38px; height:38px; border-radius:10px; background:rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; font-size:20px;">
+            🔍
+          </div>
+          <div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <h3 style="margin:0; font-size:17px; font-weight:800; color:#FFFFFF; font-family:'Manrope',sans-serif;">Bulk Update Progress &bull; Validation &amp; Preview</h3>
+              <span id="bulkValHeaderTag" style="background:#10B981; color:#064E3B; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:0.04em;">7 BULK FIELDS ONLY</span>
+            </div>
+            <p id="bulkValHeaderSubtitle" style="margin:2px 0 0; font-size:12px; color:#A7F3D0;">
+              Review 7 bulk-identification fields, identified mismatches, and problems before saving to database.
+            </p>
+          </div>
+        </div>
+        <button type="button" id="closeBulkValidationModalBtn" onclick="closeBulkValidationModal()"
+          style="background:rgba(255,255,255,0.1); border:none; color:#FFFFFF; font-size:22px; width:32px; height:32px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.2s;">
+          &times;
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div style="padding:20px 24px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:16px; background:#F8FAFC;">
+
+        <!-- 7 Bulk Fields Status Bar -->
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:14px 16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:15px;">🛡️</span>
+              <strong id="bulkValFieldsTitle" style="font-size:13px; color:#0F172A;">Checking 7 Bulk-Identification Fields:</strong>
+            </div>
+            <span id="bulkValOverallBadge"
+              style="padding:3px 10px; border-radius:12px; font-size:11px; font-weight:800; background:#DCFCE7; color:#166534;">
+              ✓ All 7 Fields Verified
+            </span>
+          </div>
+          <!-- The 7 pills -->
+          <div id="bulkVal7FieldsPills" style="display:flex; flex-wrap:wrap; gap:8px;">
+            <!-- Populated dynamically: AISHE Code, Name, State, District, Website, Year Of Establishment, Location -->
+          </div>
+        </div>
+
+        <!-- Metric Summary Cards -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:10px;">
+          <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:10px 12px; text-align:center;">
+            <div style="font-size:11px; font-weight:700; color:#64748B; text-transform:uppercase;">Total In File</div>
+            <div id="valSummaryTotal" style="font-size:20px; font-weight:800; color:#0F172A; margin-top:3px;">0</div>
+          </div>
+          <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:10px 12px; text-align:center;">
+            <div style="font-size:11px; font-weight:700; color:#166534; text-transform:uppercase;">✓ Valid Records</div>
+            <div id="valSummaryValid" style="font-size:20px; font-weight:800; color:#15803D; margin-top:3px;">0</div>
+          </div>
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:8px; padding:10px 12px; text-align:center;">
+            <div style="font-size:11px; font-weight:700; color:#92400E; text-transform:uppercase;">⚠️ Mismatches</div>
+            <div id="valSummaryMismatch" style="font-size:20px; font-weight:800; color:#B45309; margin-top:3px;">0</div>
+          </div>
+          <div style="background:#FFF7ED; border:1px solid #FFEDD5; border-radius:8px; padding:10px 12px; text-align:center;">
+            <div style="font-size:11px; font-weight:700; color:#9A3412; text-transform:uppercase;">🔍 Not In DB</div>
+            <div id="valSummaryNotFound" style="font-size:20px; font-weight:800; color:#C2410C; margin-top:3px;">0</div>
+          </div>
+          <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:8px; padding:10px 12px; text-align:center;">
+            <div style="font-size:11px; font-weight:700; color:#991B1B; text-transform:uppercase;">✗ Missing / Invalid</div>
+            <div id="valSummaryErrors" style="font-size:20px; font-weight:800; color:#DC2626; margin-top:3px;">0</div>
+          </div>
+        </div>
+
+        <!-- Problems Found Section (Explicitly highlights only problems found) -->
+        <div id="bulkProblemsSection"
+          style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:14px 16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="font-size:13px; color:#1E293B; display:flex; align-items:center; gap:6px;">
+              <span>⚠️</span> <span>Problems Found Report:</span>
+            </strong>
+            <span id="bulkProblemsTotalBadge" style="font-size:11px; font-weight:700; color:#64748B; background:#F1F5F9; padding:2px 8px; border-radius:6px;">0 Problems</span>
+          </div>
+          <div id="bulkProblemsList" style="font-size:12px; color:#334155; line-height:1.5;">
+            <!-- Populated dynamically with specific problem cards or all clean message -->
+          </div>
+
+          <!-- Edit Excel Data Action Option (Static) -->
+          <div id="bulkEditExcelDataOptionWrap" style="display:flex; margin-top:14px; padding-top:12px; border-top:1px dashed #CBD5E1; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+            <div style="font-size:12px; color:#475569;">
+              <span style="font-weight:700; color:#1E293B;">Need to adjust values?</span> You can edit college fields field-wise directly before saving without re-uploading your file.
+            </div>
+            <button type="button" id="openBulkEditDataModalBtn" onclick="openBulkEditDataModal()"
+              style="background:#0284C7; border:1px solid #0369A1; color:#FFFFFF; font-weight:700; font-size:12.5px; padding:7px 18px; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1); transition:background 0.2s;">
+              <span>✏️</span> <span>Edit Excel Data</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Preview Table with Filter -->
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; overflow:hidden;">
+          <div style="padding:10px 16px; background:#F1F5F9; border-bottom:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <strong id="bulkValTableTitle" style="font-size:12.5px; color:#1E293B;">Preview (7 Bulk Fields Only)</strong>
+              <span id="bulkTableFilterCount" style="font-size:11px; color:#64748B; background:#E2E8F0; padding:2px 8px; border-radius:8px;">0 Rows</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <input type="text" id="bulkValSearchInput" placeholder="Filter rows..." oninput="window.bulkFilterQuery = this.value; renderBulkValTable();"
+                style="font-size:12px; padding:5px 10px; border:1px solid #CBD5E1; border-radius:6px; width:180px; outline:none;" />
+              <select id="bulkValStatusFilter" onchange="window.bulkCurrentFilter = this.value; renderBulkValTable();"
+                style="font-size:12px; padding:5px 10px; border:1px solid #CBD5E1; border-radius:6px; background:#FFFFFF; outline:none; cursor:pointer;">
+                <option value="all">All Records</option>
+                <option value="valid">✓ Valid Only</option>
+                <option value="mismatch">⚠️ Mismatches Only</option>
+                <option value="problems">❌ Problems / Errors Only</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="max-height:280px; overflow-y:auto; overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; font-size:11.5px; text-align:left;">
+              <thead style="background:#F8FAFC; border-bottom:2px solid #E2E8F0; position:sticky; top:0; z-index:2;">
+                <tr>
+                  <th style="padding:8px 10px; font-weight:700; color:#475569; width:40px;">#</th>
+                  <th style="padding:8px 10px; font-weight:700; color:#475569; width:130px;">Status</th>
+                  <th style="padding:8px 10px; font-weight:700; color:#475569; width:95px;">AISHE Code</th>
+                  <th style="padding:8px 10px; font-weight:700; color:#475569;">Name</th>
+                  <th style="padding:8px 10px; font-weight:700; color:#475569; width:90px;">State</th>
+                  <th style="padding:8px 10px; font-weight:700; color:#475569; width:95px;">District</th>
+                  <th style="padding:8px 10px; font-weight:700; color:#475569;">Website</th>
+                  <th style="padding:8px 10px; font-weight:700; color:#475569; width:70px; text-align:center;">Year</th>
+                  <th style="padding:8px 10px; font-weight:700; color:#475569; width:90px;">Location</th>
+                </tr>
+              </thead>
+              <tbody id="bulkValTableBody">
+                <!-- Rows injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div
+        style="padding:14px 24px; background:#F8FAFC; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button type="button" id="bulkValBackBtn" class="btn" onclick="closeBulkValidationModal(); openBulkUploadModal();"
+            style="font-size:12px; padding:7px 14px; border-radius:6px; cursor:pointer; background:#FFFFFF; border:1px solid #CBD5E1; color:#334155; font-weight:600;">
+            ← Back to Upload
+          </button>
+          <span id="bulkValFooterNotice" style="font-size:12px; color:#64748B;">
+            Existing DB data is preserved; blank cells will not overwrite.
+          </span>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button type="button" id="bulkValCancelBtn" class="btn btn-secondary" onclick="closeBulkValidationModal()"
+            style="font-size:12.5px; padding:8px 16px; border-radius:6px; cursor:pointer; background:#FFFFFF; border:1px solid #CBD5E1; color:#334155; font-weight:600;">
+            Cancel
+          </button>
+          <button type="button" id="bulkValConfirmSaveBtn" class="btn btn-primary" disabled onclick="confirmAndSaveBulkData()"
+            style="background:#10B981; border:1px solid #059669; color:#FFFFFF; font-weight:700; font-size:12.5px; padding:8px 22px; border-radius:6px; cursor:not-allowed; display:inline-flex; align-items:center; gap:8px; opacity:0.6;">
+            <span>💾</span> <span id="bulkValConfirmSaveBtnText">Confirm &amp; Save Bulk Data</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- MODAL 3: BULK EDIT EXCEL DATA (FIELD-WISE CORRECTIONS POPUP)       -->
+  <!-- ================================================================= -->
+  <div id="bulkEditDataModal" class="admin-modal"
+    style="display:none; position:fixed; inset:0; z-index:999999; background:rgba(15,23,42,0.65); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:16px;">
+    <div class="admin-modal-content"
+      style="background:#FFFFFF; border-radius:12px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.1); width:100%; max-width:880px; max-height:90vh; display:flex; flex-direction:column; overflow:hidden; border:1px solid #E2E8F0;">
+
+      <!-- Modal Header -->
+      <div style="padding:16px 22px; background:#F8FAFC; border-bottom:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <h3 style="margin:0; font-size:16px; font-weight:700; color:#0F172A; display:flex; align-items:center; gap:8px;">
+              <span>✏️</span> <span>Edit Excel Data &bull; Field-Wise Corrections</span>
+            </h3>
+            <span id="bulkEditBadgeTotal" style="font-size:11.5px; font-weight:700; color:#DC2626; background:#FEE2E2; padding:2px 9px; border-radius:6px;">0 Problematic Records</span>
+          </div>
+          <p style="margin:4px 0 0 0; font-size:12px; color:#64748B;">
+            Correct problematic fields below. When finished, apply changes to re-validate against the database.
+          </p>
+        </div>
+        <button type="button" onclick="closeBulkEditDataModal()"
+          style="background:none; border:none; font-size:22px; line-height:1; color:#94A3B8; cursor:pointer; padding:4px 8px; border-radius:4px;"
+          title="Close">&times;</button>
+      </div>
+
+      <!-- Filter & Search Toolbar -->
+      <div style="padding:10px 20px; background:#F1F5F9; border-bottom:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:240px;">
+          <input type="text" id="bulkEditSearchInput" placeholder="Search college name or AISHE code..."
+            oninput="window.bulkEditSearchQuery = this.value; window.bulkEditCurrentPage = 1; renderBulkEditCards();"
+            style="font-size:12px; padding:6px 12px; border:1px solid #CBD5E1; border-radius:6px; width:100%; max-width:320px; outline:none; background:#FFFFFF;" />
+          <select id="bulkEditFilterSelect"
+            onchange="window.bulkEditIssueFilter = this.value; window.bulkEditCurrentPage = 1; renderBulkEditCards();"
+            style="font-size:12px; padding:6px 10px; border:1px solid #CBD5E1; border-radius:6px; background:#FFFFFF; outline:none; cursor:pointer;">
+            <option value="all">All Records</option>
+            <option value="problems">⚠️ Problems Only</option>
+            <option value="not_found">🔍 College Not Found Only</option>
+            <option value="missing">✗ Missing Fields Only</option>
+            <option value="invalid">❌ Invalid Data Only</option>
+            <option value="mismatch">⚠️ Mismatches Only</option>
+          </select>
+        </div>
+        <div id="bulkEditCountSummary" style="font-size:11.5px; font-weight:600; color:#64748B;">
+          Showing 0 records
+        </div>
+      </div>
+
+      <!-- Scrollable Problematic Records Container -->
+      <div id="bulkEditCardsContainer"
+        style="flex:1; overflow-y:auto; padding:16px 20px; background:#F8FAFC; display:flex; flex-direction:column; gap:14px;">
+        <!-- Dynamically rendered field-wise edit cards -->
+      </div>
+
+      <!-- Modal Footer with Pagination & Action Buttons -->
+      <div style="padding:14px 22px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <!-- Pagination controls -->
+        <div id="bulkEditPaginationWrap" style="display:flex; align-items:center; gap:8px;">
+          <button type="button" id="bulkEditPrevPageBtn" onclick="navigateBulkEditPage(-1)"
+            style="font-size:12px; padding:5px 12px; border-radius:6px; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; font-weight:600;">
+            &larr; Previous
+          </button>
+          <span id="bulkEditPageIndicator" style="font-size:12px; color:#475569; font-weight:600; padding:0 4px;">
+            Page 1 of 1
+          </span>
+          <button type="button" id="bulkEditNextPageBtn" onclick="navigateBulkEditPage(1)"
+            style="font-size:12px; padding:5px 12px; border-radius:6px; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; font-weight:600;">
+            Next &rarr;
+          </button>
+        </div>
+
+        <!-- Action buttons -->
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span id="bulkEditPendingBadge" style="display:none; font-size:11.5px; font-weight:700; color:#0284C7; background:#E0F2FE; padding:4px 10px; border-radius:6px;">
+            0 changes pending
+          </span>
+          <button type="button" onclick="closeBulkEditDataModal()"
+            style="font-size:12.5px; padding:8px 16px; border-radius:6px; cursor:pointer; background:#FFFFFF; border:1px solid #CBD5E1; color:#334155; font-weight:600;">
+            Cancel
+          </button>
+          <button type="button" id="bulkEditApplyBtn" onclick="applyBulkEditsAndRevalidate()"
+            style="background:#0284C7; border:1px solid #0369A1; color:#FFFFFF; font-weight:700; font-size:12.5px; padding:8px 20px; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+            <span>✓</span> <span id="bulkEditApplyBtnText">Submit / Apply Changes</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="admin.js?v=20260907-bulk-update-v9"></script>
 
 </body>
 

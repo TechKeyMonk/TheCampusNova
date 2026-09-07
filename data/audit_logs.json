@@ -3,6 +3,236 @@
     {
       "id": 201,
       "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Deleted Course",
+      "module": "Courses",
+      "details": "Deleted course 127 (Ref: 127)",
+      "timestamp": "2026-09-07 18:52:30",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1788787329055 UPDATED (Ref: 127)",
+      "timestamp": "2026-09-07 18:52:25",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1788787329055 (Ref: 127)",
+      "timestamp": "2026-09-07 18:52:15",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Exam",
+      "module": "exams",
+      "details": "Admin saved exam Lifecycle Test Exam Two Days Ago (Ref: 78)",
+      "timestamp": "2026-09-07 17:49:21",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Exam",
+      "module": "exams",
+      "details": "Admin saved exam Lifecycle Test Exam Yesterday (Ref: 77)",
+      "timestamp": "2026-09-07 17:49:21",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Exam",
+      "module": "exams",
+      "details": "Admin saved exam Lifecycle Test Exam Today (Ref: 76)",
+      "timestamp": "2026-09-07 17:49:21",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Automated Lifecycle Test Two Days Ago' (Ref: NWS-058)",
+      "timestamp": "2026-09-07 17:49:20",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Automated Lifecycle Test Yesterday' (Ref: NWS-057)",
+      "timestamp": "2026-09-07 17:49:19",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Automated Lifecycle Test Today' (Ref: NWS-056)",
+      "timestamp": "2026-09-07 17:49:18",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Exam",
+      "module": "exams",
+      "details": "Admin saved exam Lifecycle Test Exam Two Days Ago (Ref: 75)",
+      "timestamp": "2026-09-07 17:48:01",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Exam",
+      "module": "exams",
+      "details": "Admin saved exam Lifecycle Test Exam Yesterday (Ref: 74)",
+      "timestamp": "2026-09-07 17:48:01",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Exam",
+      "module": "exams",
+      "details": "Admin saved exam Lifecycle Test Exam Today (Ref: 73)",
+      "timestamp": "2026-09-07 17:48:01",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Automated Lifecycle Test Two Days Ago' (Ref: NWS-055)",
+      "timestamp": "2026-09-07 17:48:00",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Automated Lifecycle Test Yesterday' (Ref: NWS-054)",
+      "timestamp": "2026-09-07 17:47:59",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Automated Lifecycle Test Today' (Ref: NWS-053)",
+      "timestamp": "2026-09-07 17:47:58",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Automated Lifecycle Test Two Days Ago' (Ref: NWS-052)",
+      "timestamp": "2026-09-07 17:47:11",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Automated Lifecycle Test Yesterday' (Ref: NWS-051)",
+      "timestamp": "2026-09-07 17:47:11",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Automated Lifecycle Test Today' (Ref: NWS-050)",
+      "timestamp": "2026-09-07 17:47:10",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Automated Lifecycle Test Two Days Ago' (Ref: NWS-049)",
+      "timestamp": "2026-09-07 17:33:06",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Automated Lifecycle Test Yesterday' (Ref: NWS-048)",
+      "timestamp": "2026-09-07 17:33:04",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Automated Lifecycle Test Today' (Ref: NWS-047)",
+      "timestamp": "2026-09-07 17:33:02",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Exported System Dataset CSV",
+      "module": "Admin Actions",
+      "details": "Exported System Dataset CSV: All Modules Database (SUCCESS) (Ref: All Modules Database)",
+      "timestamp": "2026-09-07 15:04:14",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Added Institution: Government College Arki",
+      "module": "Admin Actions",
+      "details": "Added Institution: Government College Arki: AISHE: C-11475 (SUCCESS) (Ref: AISHE: C-11475)",
+      "timestamp": "2026-09-07 08:23:49",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
       "action": "College Update Submitted",
       "module": "Approvals",
       "details": "Submitted update APP-137 for ADITHYA COLLEGE OF ARTS AND SCIENCE (Ref: APP-137)",
@@ -1767,236 +1997,6 @@
       "module": "Events",
       "details": "Created campus event 'Test National Hackathon & Summit 2026' for IIT Madras (Ref: EVT-044)",
       "timestamp": "2026-09-05 17:54:39",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Mentor Deleted",
-      "module": "Mentors",
-      "details": "Admin deleted mentor profile MEN-010 (Ref: MEN-010)",
-      "timestamp": "2026-09-05 17:54:38",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Mentor Updated",
-      "module": "Mentors",
-      "details": "Admin updated mentor profile MEN-010 (Ref: MEN-010)",
-      "timestamp": "2026-09-05 17:54:37",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Mentor Created",
-      "module": "Mentors",
-      "details": "Admin added mentor profile for Dr. Test Mentor Scientist (CampNova Research) (Ref: MEN-010)",
-      "timestamp": "2026-09-05 17:54:37",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Comparison Deleted",
-      "module": "Comparisons",
-      "details": "Deleted comparison 22 (Ref: 22)",
-      "timestamp": "2026-09-05 17:54:36",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Comparison Model Created",
-      "module": "Comparisons",
-      "details": "Created comparison IIT Madras vs NIT Trichy (Ref: CMP-024)",
-      "timestamp": "2026-09-05 17:54:35",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Entrance Exam Deleted",
-      "module": "Entrance Prep",
-      "details": "Deleted exam 64 (Ref: 64)",
-      "timestamp": "2026-09-05 17:54:34",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Entrance Exam Updated",
-      "module": "Entrance Prep",
-      "details": "Updated exam 64 (Ref: 64)",
-      "timestamp": "2026-09-05 17:54:33",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Entrance Exam Created",
-      "module": "Entrance Prep",
-      "details": "Created exam Test Advanced Engineering Entrance Prep (Ref: 64)",
-      "timestamp": "2026-09-05 17:54:32",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Facility Deleted",
-      "module": "Facilities",
-      "details": "Deleted facility 48 (Ref: 48)",
-      "timestamp": "2026-09-05 17:54:32",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Facility Updated",
-      "module": "Facilities",
-      "details": "Updated facility 48 (Ref: 48)",
-      "timestamp": "2026-09-05 17:54:31",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Facility Created",
-      "module": "Facilities",
-      "details": "Created facility Test High-Performance Computing Cluster for college 2 (Ref: 48)",
-      "timestamp": "2026-09-05 17:54:30",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Scholarship Deleted",
-      "module": "Scholarships",
-      "details": "Deleted scholarship 20 (Ref: 20)",
-      "timestamp": "2026-09-05 17:54:30",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Scholarship Updated",
-      "module": "Scholarships",
-      "details": "Updated scholarship 20 (Ref: 20)",
-      "timestamp": "2026-09-05 17:54:29",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Scholarship Created",
-      "module": "Scholarships",
-      "details": "Created scholarship Test Merit Fellowship Scheme 2026 (Ref: 29)",
-      "timestamp": "2026-09-05 17:54:29",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Admission Deleted",
-      "module": "Admissions",
-      "details": "Deleted admission 48 (Ref: 48)",
-      "timestamp": "2026-09-05 17:54:28",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Admission Updated",
-      "module": "Admissions",
-      "details": "Updated admission 48 (Ref: 48)",
-      "timestamp": "2026-09-05 17:54:27",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Admission Created",
-      "module": "Admissions",
-      "details": "Created admission for college 2 (Ref: 50)",
-      "timestamp": "2026-09-05 17:54:27",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Internship Deleted",
-      "module": "Internships",
-      "details": "Deleted internship 45 (Ref: 45)",
-      "timestamp": "2026-09-05 17:54:26",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Internship Updated",
-      "module": "Internships",
-      "details": "Updated internship 45 (Ref: 45)",
-      "timestamp": "2026-09-05 17:54:26",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Internship Created",
-      "module": "Internships",
-      "details": "Created internship for Test DeepMind Research (Ref: 47)",
-      "timestamp": "2026-09-05 17:54:25",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Job Posting Deleted",
-      "module": "Jobs",
-      "details": "Deleted job 42 (Ref: 42)",
-      "timestamp": "2026-09-05 17:54:24",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Job Posting Updated",
-      "module": "Jobs",
-      "details": "Updated job 42 (Ref: 42)",
-      "timestamp": "2026-09-05 17:54:24",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Job Posting Created",
-      "module": "Jobs",
-      "details": "Created job Test Lead AI Compiler Engineer at Test Global Tech (Ref: 44)",
-      "timestamp": "2026-09-05 17:54:23",
       "ip_address": "127.0.0.1",
       "status": "Success"
     }

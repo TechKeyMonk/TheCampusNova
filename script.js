@@ -7831,7 +7831,11 @@ async function syncLiveExams() {
             level: pe.level || matchedBase.level || 'National Level',
             eligibility: pe.eligibility || matchedBase.eligibility || 'Standard Criteria Apply',
             syllabus: pe.syllabus || matchedBase.syllabus || 'Standard Pattern',
-            scope: pe.description || matchedBase.scope || 'Gateway to premier institutions across India.'
+            scope: pe.description || matchedBase.scope || 'Gateway to premier institutions across India.',
+            lifecycle: pe.lifecycle,
+            lifecycle_label: pe.lifecycle_label,
+            is_expired: pe.is_expired,
+            is_hidden: pe.is_hidden
           };
         });
         _liveUserExamsCache = mapped;
@@ -7969,12 +7973,17 @@ function renderExamsView() {
         ` : filteredExams.map(ex => {
           const locParts = [ex.college, ex.district, ex.state].filter(Boolean).filter(s => s && s.toLowerCase() !== 'undefined');
           const locText = locParts.length > 0 ? locParts.join(', ') : 'All Recognized Institutions';
+          const isDimmed = ex.lifecycle === 'dimmed' || ex.is_expired;
+          const dimmedCardStyle = isDimmed ? 'opacity:0.68; filter:grayscale(25%); background:#F8FAFC; border:1px dashed #CBD5E1;' : '';
           return `
-          <article class="exam-info-card">
+          <article class="exam-info-card" style="${dimmedCardStyle}">
             <div class="exam-card-top">
               <div class="exam-card-badge-row">
                 <span class="exam-level-pill">${escapeHtml(ex.level || 'National Level')}</span>
                 <span class="exam-stream-tag">📌 ${escapeHtml(ex.stream || 'All Streams')}</span>
+                ${isDimmed ? `
+                  <span style="font-size:10.5px; background:#FEE2E2; color:#B91C1C; border:1px solid #FECACA; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap;">Finished / Expired</span>
+                ` : ''}
               </div>
 
               <h3 class="exam-card-title">
@@ -16961,15 +16970,24 @@ function renderLiveNews(newsList) {
         ? n.content.trim()
         : `Official admission and academic circular announced by ${n.college_name || 'Higher Education Board'}.`);
     const newsIdentifier = String(n.id || n.db_id || '');
+    const isDimmed = n.lifecycle === 'dimmed' || n.is_expired;
+    const cardStyle = isDimmed
+      ? 'background:#F8FAFC; border:1px dashed #CBD5E1; opacity:0.68; filter:grayscale(25%); border-radius:10px; padding:12px 14px; transition:transform 0.2s ease, box-shadow 0.2s ease;'
+      : 'background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; transition:transform 0.2s ease, box-shadow 0.2s ease;';
     return `
-    <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; transition:transform 0.2s ease, box-shadow 0.2s ease;">
+    <div style="${cardStyle}">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:4px;">
         <strong style="font-size:13.5px; color:#0F172A; line-height:1.4;">${escapeHtml(n.title || '')}</strong>
-        ${n.badge ? `
-          <span style="font-size:10.5px; background:rgba(30,64,175,0.1); color:#1E40AF; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap;">
-            ${escapeHtml(n.badge)}
-          </span>
-        ` : ''}
+        <div style="display:flex; gap:6px; align-items:center;">
+          ${isDimmed ? `
+            <span style="font-size:10.5px; background:#FEE2E2; color:#B91C1C; border:1px solid #FECACA; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap;">Finished / Expired</span>
+          ` : ''}
+          ${n.badge ? `
+            <span style="font-size:10.5px; background:rgba(30,64,175,0.1); color:#1E40AF; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap;">
+              ${escapeHtml(n.badge)}
+            </span>
+          ` : ''}
+        </div>
       </div>
       <div style="font-size:11.5px; color:#64748B; margin-bottom:6px; display:flex; flex-wrap:wrap; gap:8px;">
         <span>📢 <strong>${escapeHtml(n.college_name || 'Higher Education Authority')}</strong></span>
