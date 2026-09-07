@@ -1,6 +1,30 @@
 {
   "access_logs": [
     {
+      "id": "ACC-111",
+      "college_name": "ADITHYA COLLEGE OF ARTS AND SCIENCE",
+      "authorized_email": "adminadithya@gmail.com",
+      "aishe_code": "C-64359",
+      "access_date": "2026-09-07",
+      "access_time": "08:02:40",
+      "access_status": "Granted",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "created_at": "2026-09-07T08:02:41Z"
+    },
+    {
+      "id": "ACC-110",
+      "college_name": "Karunya Institute of Technology and Sciences, Coimbatore",
+      "authorized_email": "adminkarunya@gmail.com",
+      "aishe_code": "U-0460",
+      "access_date": "2026-09-06",
+      "access_time": "14:02:42",
+      "access_status": "Granted",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "created_at": "2026-09-06T14:02:42Z"
+    },
+    {
       "id": "ACC-109",
       "college_name": "SoRSPE, Ramakrishna Mission Vivekananda University",
       "authorized_email": "admin@sorspe.edu.in",

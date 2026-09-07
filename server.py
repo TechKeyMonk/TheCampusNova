@@ -727,7 +727,7 @@ def load_colleges_data():
     """Loads complete college registry from PostgreSQL as single source of truth, with seamless caching."""
     global _cached_colleges_registry, _cached_colleges_timestamp
     now = time.time()
-    if _cached_colleges_registry is not None and (now - _cached_colleges_timestamp < 1):
+    if _cached_colleges_registry is not None and (now - _cached_colleges_timestamp < 60):
         return _cached_colleges_registry
 
     # 1. PostgreSQL is the primary Single Source of Truth
@@ -1339,10 +1339,11 @@ def api_logout():
     return jsonify({"success": True, "message": "Logged out successfully."})
 
 
-def send_college_update_notification(approval_data):
+def send_college_update_notification(approval_data, is_test_mode=False):
     """
     Dispatches backend email notification to official TheCampusNova Gmail
     regarding new College Update submissions using Gmail API service.
+    Enforces strict test isolation so automated tests and QA records never dispatch live mail.
     """
     official_email = os.environ.get("GMAIL_USER", "thecampusnova@gmail.com")
     req_id = approval_data.get("id") or "APP-NEW"
@@ -1351,6 +1352,37 @@ def send_college_update_notification(approval_data):
     auth_email = approval_data.get("submitted_by_email") or approval_data.get("verified_email") or ""
     now_dt = approval_data.get("date") or time.strftime("%Y-%m-%d")
     now_tm = approval_data.get("time") or time.strftime("%H:%M:%S")
+    req_field = approval_data.get("field") or "Profile Updates"
+    submitted_val = approval_data.get("new_value") or approval_data.get("description") or "Submitted profile update"
+
+    # Isolation Check: Never allow automated tests, QA entries, or test email domains to flood production Gmail
+    test_env = os.environ.get("CAMPNOVA_TEST_MODE") == "1" or os.environ.get("CI") == "true"
+    test_header = False
+    try:
+        from flask import has_request_context, request
+        if has_request_context():
+            test_header = (
+                request.headers.get("X-Test-Mode") == "true" or 
+                request.headers.get("X-Automated-Test") == "true" or
+                request.args.get("test_mode") == "true"
+            )
+    except Exception:
+        pass
+
+    auth_lower = str(auth_email).strip().lower()
+    col_lower = str(college_name).strip().lower()
+    aishe_upper = str(aishe_code).strip().upper()
+    is_test_data = (
+        is_test_mode or test_env or test_header or
+        auth_lower.endswith("@example.com") or auth_lower.endswith("@example.edu") or
+        auth_lower.startswith("test") or "test" in auth_lower or
+        "test college" in col_lower or col_lower.startswith("test") or
+        aishe_upper.startswith("TEST") or aishe_upper == "TEST-123"
+    )
+
+    if is_test_data:
+        logger.info(f"[GMAIL TEST ISOLATION] Suppressed live email for test College Update: {req_id} - {college_name} ({auth_email})")
+        return True
 
     subject = f"[TheCampusNova] College Update Request ({req_id}) - {college_name}"
     body = f"""TheCampusNova Institutional Portal - College Update Request
@@ -1359,9 +1391,11 @@ Request / Approval ID: {req_id}
 College Name: {college_name}
 Original AISHE Code: {aishe_code}
 Authorized Email: {auth_email}
+Requested Category / Field: {req_field}
+Submitted Values: {submitted_val}
 Submitted Date: {now_dt}
 Submitted Time: {now_tm}
-Status: Pending Administrative Review
+Current Status: Pending Administrative Review
 
 An authorized representative has submitted a college profile update and the request is pending administrative review. Please review this submission in the Admin Portal under Update Approvals.
 """
@@ -3821,116 +3855,212 @@ def api_record_activity():
 @app.route("/api/admin/analytics", methods=["GET"])
 def api_admin_analytics():
     analytics_type = request.args.get("type", "").strip().lower()
-    district_filter = request.args.get("district", "").strip().lower()
-    state_filter = request.args.get("state", "").strip().lower()
+    district_filter = request.args.get("district", "").strip()
+    state_filter = request.args.get("state", "").strip()
 
-    colleges = load_colleges_data()
-
+    # 1. District / Regional College Analytics
     if analytics_type == "colleges" or district_filter or state_filter:
-        matching_colleges = colleges
-        if state_filter and state_filter != "all":
-            matching_colleges = [c for c in matching_colleges if str(c.get("state") or "").lower() == state_filter]
-        if district_filter and district_filter != "all":
-            matching_colleges = [c for c in matching_colleges if district_filter in str(c.get("district") or "").lower() or district_filter in str(c.get("city") or "").lower()]
+        clean_dist = district_filter if district_filter and district_filter.lower() != "all" else None
+        clean_state = state_filter if state_filter and state_filter.lower() != "all" else None
 
-        total_match = len(matching_colleges)
-        autonomous = len([c for c in matching_colleges if "autonomous" in str(c.get("type") or "").lower() or "autonomous" in str(c.get("badge") or "").lower()])
-        affiliated = len([c for c in matching_colleges if "affiliated" in str(c.get("type") or "").lower() or "public" in str(c.get("type") or "").lower()])
-        deemed = total_match - autonomous - affiliated if (total_match - autonomous - affiliated) >= 0 else 0
-
-        naac_a_plus = len([c for c in matching_colleges if "A+" in str(c.get("naac_grade") or "") or "A++" in str(c.get("naac_grade") or "")])
-        naac_a = len([c for c in matching_colleges if str(c.get("naac_grade") or "") == "A"])
-        naac_b = total_match - naac_a_plus - naac_a if (total_match - naac_a_plus - naac_a) >= 0 else 0
-
-        nirf_ranked = [c for c in matching_colleges if str(c.get("nirf_rank") or "").isdigit() and int(str(c.get("nirf_rank"))) < 500]
-        nirf_ranked.sort(key=lambda x: int(x["nirf_rank"]))
-
-        # District / regional real activity metrics
-        total_col_views = 0
-        direct_col_searches = 0
-        comp_queries = 0
-        place_inq = 0
         if db.is_pg_connected():
-            cv_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module = 'colleges' AND action_type IN ('view', 'explore')")
-            total_col_views = cv_row["c"] if cv_row else 0
-            cs_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module = 'colleges' AND action_type = 'search'")
-            direct_col_searches = cs_row["c"] if cs_row else 0
-            cq_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module IN ('comparison', 'reviews-compare') OR action_type = 'compare'")
-            comp_queries = cq_row["c"] if cq_row else 0
-            pi_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module IN ('placements', 'internships', 'jobs')")
-            place_inq = pi_row["c"] if pi_row else 0
+            where_clauses = ["status != 'archived'"]
+            params = []
+            if clean_state:
+                where_clauses.append("LOWER(state) = %s")
+                params.append(clean_state.lower())
+            if clean_dist:
+                where_clauses.append("(LOWER(COALESCE(district, '')) = %s OR LOWER(COALESCE(location, '')) = %s)")
+                params.extend([clean_dist.lower(), clean_dist.lower()])
 
-        return jsonify({
-            "success": True,
-            "district": district_filter or "All Districts",
-            "state": state_filter or "Tamil Nadu",
-            "analytics": {
-                "totalColleges": total_match,
-                "autonomousCount": autonomous if autonomous > 0 else (total_match // 4),
-                "affiliatedCount": affiliated if affiliated > 0 else (total_match * 3 // 4),
-                "deemedCount": deemed,
-                "naacAPlusCount": naac_a_plus if naac_a_plus > 0 else (total_match // 3),
-                "naacACount": naac_a if naac_a > 0 else (total_match // 2),
-                "naacBCount": naac_b,
-                "topNIRFColleges": [{"name": c.get("name") or c.get("college_name"), "rank": c.get("nirf_rank"), "city": c.get("city") or c.get("district")} for c in nirf_ranked[:10]],
-                "averageRating": "4.6 / 5.0" if total_match > 0 else "0.0",
-                "totalMonitoredDatabase": len(colleges),
-                "totalCollegeViews": total_col_views,
-                "directCollegeSearches": direct_col_searches,
-                "comparisonQueries": comp_queries,
-                "placementInquiries": place_inq
-            }
-        })
+            where_str = " AND ".join(where_clauses)
+            
+            stats_sql = f"""
+                SELECT 
+                    count(*) as total_match,
+                    count(*) filter (where lower(coalesce(college_type, '')) like '%%autonomous%%' or lower(coalesce(badge, '')) like '%%autonomous%%' or lower(coalesce(college_name, '')) like '%%autonomous%%') as autonomous,
+                    count(*) filter (where lower(coalesce(college_type, '')) like '%%affiliated%%' or lower(coalesce(college_type, '')) like '%%public%%') as affiliated,
+                    count(*) filter (where upper(coalesce(naac_grade, '')) in ('A+', 'A++') or upper(coalesce(accreditation, '')) like '%%A+%%') as naac_a_plus,
+                    count(*) filter (where upper(coalesce(naac_grade, '')) = 'A' or (upper(coalesce(accreditation, '')) like '%%NAAC A%%' and upper(coalesce(accreditation, '')) not like '%%A+%%')) as naac_a,
+                    (SELECT count(*) FROM colleges WHERE status != 'archived') as total_monitored
+                FROM colleges
+                WHERE {where_str};
+            """
+            st = db.query_one(stats_sql, tuple(params)) or {}
+            total_match = st.get("total_match", 0)
+            autonomous = st.get("autonomous", 0)
+            affiliated = st.get("affiliated", 0)
+            deemed = max(0, total_match - autonomous - affiliated)
+            naac_a_plus = st.get("naac_a_plus", 0)
+            naac_a = st.get("naac_a", 0)
+            naac_b = max(0, total_match - naac_a_plus - naac_a)
+            total_monitored = st.get("total_monitored", total_match)
 
-    # Default General / User Analytics (Real PostgreSQL Data)
+            nirf_sql = f"""
+                SELECT COALESCE(short_name, college_name) as name, nirf_rank as rank, COALESCE(location, district) as city
+                FROM colleges
+                WHERE {where_str} AND nirf_rank IS NOT NULL AND nirf_rank != '' AND nirf_rank != 'NULL'
+                ORDER BY CASE WHEN nirf_rank ~ '^[0-9]+$' THEN nirf_rank::int ELSE 9999 END ASC
+                LIMIT 10;
+            """
+            top_nirf = db.query_all(nirf_sql, tuple(params)) or []
+
+            act_sql = """
+                SELECT 
+                    count(*) filter (where module = 'colleges' and action_type in ('view', 'explore')) as total_col_views,
+                    count(*) filter (where module = 'colleges' and action_type = 'search') as direct_col_searches,
+                    count(*) filter (where module in ('comparison', 'reviews-compare') or action_type = 'compare') as comp_queries,
+                    count(*) filter (where module in ('placements', 'internships', 'jobs')) as place_inq
+                FROM user_activity;
+            """
+            act = db.query_one(act_sql) or {}
+
+            return jsonify({
+                "success": True,
+                "district": district_filter or "All Districts",
+                "state": state_filter or "Tamil Nadu",
+                "analytics": {
+                    "totalColleges": total_match,
+                    "autonomousCount": autonomous,
+                    "affiliatedCount": affiliated,
+                    "deemedCount": deemed,
+                    "naacAPlusCount": naac_a_plus,
+                    "naacACount": naac_a,
+                    "naacBCount": naac_b,
+                    "topNIRFColleges": top_nirf,
+                    "averageRating": "4.6 / 5.0" if total_match > 0 else "0.0",
+                    "totalMonitoredDatabase": total_monitored,
+                    "totalCollegeViews": act.get("total_col_views", 0),
+                    "directCollegeSearches": act.get("direct_col_searches", 0),
+                    "comparisonQueries": act.get("comp_queries", 0),
+                    "placementInquiries": act.get("place_inq", 0)
+                }
+            })
+        else:
+            colleges = load_colleges_data()
+            matching_colleges = colleges
+            if clean_state:
+                matching_colleges = [c for c in matching_colleges if str(c.get("state") or "").lower() == clean_state.lower()]
+            if clean_dist:
+                matching_colleges = [c for c in matching_colleges if clean_dist.lower() in str(c.get("district") or "").lower() or clean_dist.lower() in str(c.get("city") or "").lower()]
+            total_match = len(matching_colleges)
+            autonomous = len([c for c in matching_colleges if "autonomous" in str(c.get("type") or "").lower() or "autonomous" in str(c.get("badge") or "").lower()])
+            affiliated = len([c for c in matching_colleges if "affiliated" in str(c.get("type") or "").lower() or "public" in str(c.get("type") or "").lower()])
+            deemed = max(0, total_match - autonomous - affiliated)
+            naac_a_plus = len([c for c in matching_colleges if "A+" in str(c.get("naac_grade") or "") or "A++" in str(c.get("naac_grade") or "")])
+            naac_a = len([c for c in matching_colleges if str(c.get("naac_grade") or "") == "A"])
+            naac_b = max(0, total_match - naac_a_plus - naac_a)
+            nirf_ranked = [c for c in matching_colleges if str(c.get("nirf_rank") or "").isdigit() and int(str(c.get("nirf_rank"))) < 500]
+            nirf_ranked.sort(key=lambda x: int(x["nirf_rank"]))
+            return jsonify({
+                "success": True,
+                "district": district_filter or "All Districts",
+                "state": state_filter or "Tamil Nadu",
+                "analytics": {
+                    "totalColleges": total_match,
+                    "autonomousCount": autonomous,
+                    "affiliatedCount": affiliated,
+                    "deemedCount": deemed,
+                    "naacAPlusCount": naac_a_plus,
+                    "naacACount": naac_a,
+                    "naacBCount": naac_b,
+                    "topNIRFColleges": [{"name": c.get("name") or c.get("college_name"), "rank": c.get("nirf_rank"), "city": c.get("city") or c.get("district")} for c in nirf_ranked[:10]],
+                    "averageRating": "4.6 / 5.0" if total_match > 0 else "0.0",
+                    "totalMonitoredDatabase": len(colleges),
+                    "totalCollegeViews": 0,
+                    "directCollegeSearches": 0,
+                    "comparisonQueries": 0,
+                    "placementInquiries": 0
+                }
+            })
+
+    # 2. General / User Analytics (Consolidated Real PostgreSQL Data)
     if db.is_pg_connected():
-        s_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE action_type IN ('search', 'search_query')")
-        total_searches = s_row["c"] if s_row else 0
-
-        e_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE action_type IN ('explore', 'view', 'navigate')")
-        total_explores = e_row["c"] if e_row else 0
-
-        c_top = db.query_one("SELECT search_query, count(*) as c FROM user_activity WHERE (module = 'colleges' OR action_type = 'search') AND search_query != '' GROUP BY search_query ORDER BY c DESC LIMIT 1")
-        most_searched_col = c_top["search_query"] if c_top else "PSG College of Technology"
-        most_searched_col_count = c_top["c"] if c_top else 0
-
-        crs_top = db.query_one("SELECT search_query, count(*) as c FROM user_activity WHERE module = 'courses' AND search_query != '' GROUP BY search_query ORDER BY c DESC LIMIT 1")
-        most_searched_course = crs_top["search_query"] if crs_top else "B.Tech Computer Science & Engineering"
-        most_searched_course_count = crs_top["c"] if crs_top else 0
-
-        dom_top = db.query_one("SELECT record_id, count(*) as c FROM user_activity WHERE module = 'domains' AND record_id != '' GROUP BY record_id ORDER BY c DESC LIMIT 1")
-        top_domain = dom_top["record_id"].replace('-', ' ').title() if dom_top else "Artificial Intelligence & Data Science"
-
-        exm_top = db.query_one("SELECT record_id, count(*) as c FROM user_activity WHERE module IN ('exams', 'entrance-prep') AND record_id != '' GROUP BY record_id ORDER BY c DESC LIMIT 1")
-        most_viewed_exam = exm_top["record_id"].replace('-', ' ').upper() if exm_top else "JEE Main 2026"
-
-        col_views_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module = 'colleges' AND action_type IN ('view', 'explore')")
-        total_college_views = col_views_row["c"] if col_views_row else 0
-
-        col_search_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module = 'colleges' AND action_type = 'search'")
-        direct_college_searches = col_search_row["c"] if col_search_row else 0
-
-        comp_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module IN ('comparison', 'reviews-compare') OR action_type = 'compare'")
-        comparison_queries = comp_row["c"] if comp_row else 0
-
-        place_row = db.query_one("SELECT count(*) as c FROM user_activity WHERE module IN ('placements', 'internships', 'jobs')")
-        placement_inquiries = place_row["c"] if place_row else 0
-
-        sess_row = db.query_one("SELECT count(DISTINCT coalesce(user_id::text, date_trunc('hour', created_at)::text)) as c FROM user_activity")
-        active_sessions = max(sess_row["c"] if sess_row else 1, 1)
+        act_sql = """
+            SELECT 
+                count(*) filter (where action_type in ('search', 'search_query')) as total_searches,
+                count(*) filter (where action_type in ('explore', 'view', 'navigate')) as total_explores,
+                count(*) filter (where module = 'colleges' and action_type in ('view', 'explore')) as total_college_views,
+                count(*) filter (where module = 'colleges' and action_type = 'search') as direct_college_searches,
+                count(*) filter (where module in ('comparison', 'reviews-compare') or action_type = 'compare') as comparison_queries,
+                count(*) filter (where module in ('placements', 'internships', 'jobs')) as placement_inquiries,
+                count(distinct coalesce(user_id::text, date_trunc('hour', created_at)::text)) as active_sessions
+            FROM user_activity;
+        """
+        act = db.query_one(act_sql) or {}
+        total_searches = act.get("total_searches", 0)
+        total_explores = act.get("total_explores", 0)
+        total_college_views = act.get("total_college_views", 0)
+        direct_college_searches = act.get("direct_college_searches", 0)
+        comparison_queries = act.get("comparison_queries", 0)
+        placement_inquiries = act.get("placement_inquiries", 0)
+        active_sessions = max(act.get("active_sessions", 1), 1)
 
         avg_queries = round(total_searches / active_sessions, 1)
         explore_depth = round(total_explores / active_sessions, 1)
 
-        pen_row = db.query_one("SELECT count(*) as c FROM content_updates WHERE status = 'pending'")
-        app_row = db.query_one("SELECT count(*) as c FROM content_updates WHERE status = 'approved'")
-        pending_appr = pen_row["c"] if pen_row else 0
-        approved_appr = app_row["c"] if app_row else 0
+        # Most searched college (from real user activity)
+        c_top = db.query_one("""
+            SELECT search_query, count(*) as c 
+            FROM user_activity 
+            WHERE (module = 'colleges' OR action_type = 'search') 
+              AND search_query != '' 
+              AND search_query NOT IN ('colleges', 'courses', 'domains', 'test') 
+            GROUP BY search_query ORDER BY c DESC LIMIT 1;
+        """)
+        most_searched_col = c_top["search_query"] if c_top else "—"
+        most_searched_col_count = c_top["c"] if c_top else 0
 
-        u_row = db.query_one("SELECT count(*) as c FROM users")
-        total_users = u_row["c"] if u_row else len(load_users_data().get("users", []))
+        # Most searched course (from real user activity)
+        crs_top = db.query_one("""
+            SELECT search_query, count(*) as c 
+            FROM user_activity 
+            WHERE module = 'courses' 
+              AND search_query != '' 
+              AND search_query != 'courses' 
+            GROUP BY search_query ORDER BY c DESC LIMIT 1;
+        """)
+        most_searched_course = crs_top["search_query"] if crs_top else "—"
+        most_searched_course_count = crs_top["c"] if crs_top else 0
 
-        rec_rows = db.query_all("SELECT action_type, module, search_query, created_at FROM user_activity ORDER BY id DESC LIMIT 5")
+        # Top domain track (from real user activity)
+        dom_top = db.query_one("""
+            SELECT record_id, count(*) as c 
+            FROM user_activity 
+            WHERE module = 'domains' 
+              AND record_id != '' 
+              AND record_id != 'domains' 
+            GROUP BY record_id ORDER BY c DESC LIMIT 1;
+        """)
+        top_domain = dom_top["record_id"].replace('-', ' ').title() if dom_top else "—"
+
+        # Most viewed exam (from real user activity)
+        exm_top = db.query_one("""
+            SELECT record_id, count(*) as c 
+            FROM user_activity 
+            WHERE module IN ('exams', 'entrance-prep') 
+              AND record_id != '' 
+              AND record_id NOT IN ('exams', 'entrance-prep') 
+            GROUP BY record_id ORDER BY c DESC LIMIT 1;
+        """)
+        most_viewed_exam = exm_top["record_id"].replace('-', ' ').upper() if exm_top else "—"
+
+        # Content updates & users
+        upd_sql = """
+            SELECT 
+                count(*) filter (where status = 'pending') as pending_count,
+                count(*) filter (where status = 'approved') as approved_count
+            FROM content_updates;
+        """
+        upd = db.query_one(upd_sql) or {}
+        pending_appr = upd.get("pending_count", 0)
+        approved_appr = upd.get("approved_count", 0)
+
+        u_row = db.query_one("SELECT count(*) as c FROM users;")
+        total_users = u_row["c"] if u_row else 0
+
+        # Recent interactions (top 5 real)
+        rec_rows = db.query_all("SELECT action_type, module, search_query, created_at FROM user_activity ORDER BY id DESC LIMIT 5;")
         recent_interactions = []
         for r in (rec_rows or []):
             action_desc = f"{r.get('module', 'General').title()} {r.get('action_type', 'Activity').title()}"
@@ -3991,12 +4121,12 @@ def api_admin_analytics():
             "totalUsers": len(users_data),
             "totalSearches": 0,
             "totalExplores": 0,
-            "mostSearchedCollege": "PSG College of Technology",
+            "mostSearchedCollege": "—",
             "mostSearchedCollegeCount": 0,
-            "mostSearchedCourse": "B.Tech Computer Science & Engineering",
+            "mostSearchedCourse": "—",
             "mostSearchedCourseCount": 0,
-            "topDomain": "Artificial Intelligence",
-            "mostViewedExam": "JEE Main 2026",
+            "topDomain": "—",
+            "mostViewedExam": "—",
             "pendingApprovals": pending_appr,
             "approvedUpdates": approved_appr,
             "totalCollegeViews": 0,
@@ -4433,28 +4563,60 @@ def api_get_districts():
 # ----------------------------------------------------
 # MENTORS & ENQUIRIES API (PostgreSQL + JSON Sync)
 # ----------------------------------------------------
-def send_mentor_enquiry_notification(enquiry_data):
+def send_mentor_enquiry_notification(enquiry_data, is_test_mode=False):
     """
     Dispatches backend email notification to official TheCampusNova Gmail
     regarding new Mentor Enquiry submissions using Gmail API service.
+    Enforces strict test isolation so automated tests and QA records never dispatch live mail.
     """
     official_email = os.environ.get("GMAIL_USER", "thecampusnova@gmail.com")
     enquiry_id = enquiry_data.get("enquiry_id") or ""
+    mentor_id = enquiry_data.get("mentor_id") or "N/A"
     mentor_name = enquiry_data.get("mentor_name") or "CampNova Mentor"
     user_name = enquiry_data.get("user_name") or "Prospective Student"
     user_email = enquiry_data.get("user_email") or ""
     user_mobile = enquiry_data.get("user_mobile") or ""
+    message_topic = enquiry_data.get("message") or enquiry_data.get("topic") or "Mentorship Guidance & Higher Education Advisory"
     now_dt = enquiry_data.get("enquiry_date") or time.strftime("%Y-%m-%d")
     now_tm = enquiry_data.get("enquiry_time") or time.strftime("%H:%M:%S")
+
+    # Isolation Check: Never allow automated tests, QA entries, or test email domains to flood production Gmail
+    test_env = os.environ.get("CAMPNOVA_TEST_MODE") == "1" or os.environ.get("CI") == "true"
+    test_header = False
+    try:
+        from flask import has_request_context, request
+        if has_request_context():
+            test_header = (
+                request.headers.get("X-Test-Mode") == "true" or 
+                request.headers.get("X-Automated-Test") == "true" or
+                request.args.get("test_mode") == "true"
+            )
+    except Exception:
+        pass
+
+    email_lower = str(user_email).strip().lower()
+    name_lower = str(user_name).strip().lower()
+    is_test_data = (
+        is_test_mode or test_env or test_header or
+        email_lower.endswith("@example.com") or email_lower.endswith("@example.edu") or
+        email_lower.startswith("test") or "test" in email_lower or
+        "test" in name_lower or name_lower.startswith("qa")
+    )
+
+    if is_test_data:
+        logger.info(f"[GMAIL TEST ISOLATION] Suppressed live email for test Mentor Enquiry: {enquiry_id} - {mentor_name} ({user_email})")
+        return True
 
     subject = f"[TheCampusNova] New Mentor Enquiry ({enquiry_id}) - {mentor_name}"
     body = f"""TheCampusNova Mentor Guidance System - New Enquiry Alert
 ---------------------------------------------------------
 Enquiry ID: {enquiry_id}
+Mentor ID: {mentor_id}
 Mentor Name: {mentor_name}
-Student / Enquiry Person Name: {user_name}
+Enquirer Name: {user_name}
 Student Email: {user_email}
 Student Mobile: {user_mobile}
+Guidance Topic / Message: {message_topic}
 Enquiry Date: {now_dt}
 Enquiry Time: {now_tm}
 Status: Pending Administrative Review
@@ -4651,6 +4813,7 @@ def api_submit_mentor_enquiry():
     now_dt = time.strftime("%Y-%m-%d")
     now_tm = time.strftime("%H:%M:%S")
     enquiry_id = f"MENQ-{secrets.token_hex(4).upper()}"
+    message_topic = str(data.get("message") or data.get("topic") or "Mentorship Guidance Enquiry").strip()
 
     enquiry_record = {
         "enquiry_id": enquiry_id,
@@ -4659,6 +4822,8 @@ def api_submit_mentor_enquiry():
         "user_name": user_name,
         "user_email": user_email,
         "user_mobile": user_mobile,
+        "message": message_topic,
+        "notes": message_topic,
         "terms_accepted": True,
         "enquiry_date": now_dt,
         "enquiry_time": now_tm,
@@ -4672,9 +4837,9 @@ def api_submit_mentor_enquiry():
     if db.is_pg_connected():
         try:
             db.execute_query("""
-                INSERT INTO mentor_enquiries (enquiry_id, mentor_id, mentor_name, user_name, user_email, user_mobile, terms_accepted, enquiry_date, enquiry_time, status, approval_status)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, (enquiry_id, mentor_id or None, mentor_name, user_name, user_email, user_mobile, True, now_dt, now_tm, "pending", "Pending"))
+                INSERT INTO mentor_enquiries (enquiry_id, mentor_id, mentor_name, user_name, user_email, user_mobile, terms_accepted, enquiry_date, enquiry_time, status, approval_status, notes)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (enquiry_id, mentor_id or None, mentor_name, user_name, user_email, user_mobile, True, now_dt, now_tm, "pending", "Pending", message_topic))
             db_saved = True
         except Exception as e:
             logger.warning(f"[PostgreSQL Mentor Enquiry Save Error] {e}")
@@ -5240,7 +5405,15 @@ def api_get_events():
     status = request.args.get("status", "").strip().lower()
 
     if db.is_pg_connected():
-        sql = "SELECT e.* FROM events e WHERE e.status != 'archived' AND e.status != 'deleted'"
+        sql = """
+            SELECT e.*,
+                   (SELECT c.website FROM colleges c 
+                    WHERE LOWER(c.college_name) = LOWER(e.college_name) 
+                      AND c.website IS NOT NULL AND c.website != '' 
+                    LIMIT 1) AS official_website
+            FROM events e 
+            WHERE e.status != 'archived' AND e.status != 'deleted'
+        """
         params = []
         if category and category != "all":
             sql += " AND LOWER(e.category) LIKE %s"
@@ -5257,27 +5430,8 @@ def api_get_events():
         sql += " ORDER BY e.id DESC"
         rows = db.query_all(sql, params)
         if rows:
-            # Efficiently map college websites for matching institutions
-            c_names = list({r.get("college_name", "").strip().lower() for r in rows if r.get("college_name")})
-            site_map = {}
-            if c_names:
-                try:
-                    q_marks = ", ".join(["%s"] * len(c_names))
-                    col_rows = db.query_all(
-                        f"SELECT LOWER(college_name) as cname, website FROM colleges WHERE LOWER(college_name) IN ({q_marks}) AND website IS NOT NULL AND website != ''",
-                        c_names
-                    )
-                    for cr in (col_rows or []):
-                        cn = cr.get("cname")
-                        wb = cr.get("website")
-                        if cn and wb and cn not in site_map:
-                            site_map[cn] = wb
-                except Exception as ex:
-                    logger.warning(f"Failed to fetch college websites for events: {ex}")
-
             events_list = []
             for r in rows:
-                c_norm = (r.get("college_name") or "").strip().lower()
                 events_list.append({
                     "id": r.get("event_id") or f"EVT-{r.get('id'):03d}",
                     "db_id": r.get("id"),
@@ -5290,7 +5444,7 @@ def api_get_events():
                     "venue": r.get("venue") or "",
                     "description": r.get("description") or "",
                     "registration_link": r.get("registration_link") or "",
-                    "official_website": site_map.get(c_norm, ""),
+                    "official_website": r.get("official_website") or "",
                     "status": r.get("status") or "Upcoming",
                     "badge": r.get("badge") or "Official Event"
                 })
@@ -7123,9 +7277,10 @@ def api_delete_facility(fac_id):
     return jsonify({"success": True, "message": "Facility deleted successfully from PostgreSQL"})
 
 # ----------------------------------------------------
-# 9. ENTRANCE EXAMS API (/api/entrance-exams)
+# 9. ENTRANCE EXAMS API (/api/entrance-exams, /api/entrance-prep)
 # ----------------------------------------------------
 @app.route("/api/entrance-exams", methods=["GET"])
+@app.route("/api/entrance-prep", methods=["GET"])
 def api_get_entrance_exams():
     field = request.args.get("field", "").strip().lower()
     q = request.args.get("q", "").strip().lower()
@@ -7171,6 +7326,7 @@ def api_get_entrance_exams():
     return jsonify({"success": True, "total": len(exams), "exams": exams, "reviews": []})
 
 @app.route("/api/entrance-exams", methods=["POST"])
+@app.route("/api/entrance-prep", methods=["POST"])
 @require_admin_auth
 def api_create_entrance_exam():
     body = request.get_json(force=True, silent=True) or {}
@@ -7508,6 +7664,12 @@ def api_compare_colleges():
         "comparison": comparison_result,
         "reviews": reviews
     })
+
+@app.route("/api/compare", methods=["GET"])
+def api_compare_alias():
+    if request.args.get("college1") and request.args.get("college2"):
+        return api_compare_colleges()
+    return api_get_comparisons()
 
 # ----------------------------------------------------
 # 11. SUGGESTIONS & REVIEWS UNIVERSAL API (/api/suggestions)

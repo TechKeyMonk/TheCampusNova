@@ -65,7 +65,7 @@ def get_pool():
 
         try:
             params = get_connection_params()
-            max_conn = int(os.environ.get("PGMAXCONN", "10"))
+            max_conn = int(os.environ.get("PGMAXCONN", "25"))
             if "dsn" in params:
                 dsn = params["dsn"]
                 from urllib.parse import urlparse

@@ -1,6 +1,38 @@
 {
   "events": [
     {
+      "id": "EVT-049",
+      "db_id": 49,
+      "title": "Test National Hackathon & Summit 2026",
+      "college_id": "COL-001",
+      "college_name": "IIT Madras",
+      "category": "Technical",
+      "event_date": "2026-10-18",
+      "time": "10:00 AM - 05:00 PM",
+      "venue": "Campus Research Park Auditorium",
+      "description": "",
+      "registration_link": "",
+      "status": "Active",
+      "badge": "Official Event",
+      "created_at": "2026-09-06T21:04:03Z"
+    },
+    {
+      "id": "EVT-048",
+      "db_id": 48,
+      "title": "HACK ITON'26 — Think · Build · Disrupt",
+      "college_id": "COL-001",
+      "college_name": "KPR Institute of Engineering and Technology (KPRIET)",
+      "category": "Tech Symposium & Hackathon",
+      "event_date": "2026-10-08",
+      "time": "09:00 AM - 05:00 PM",
+      "venue": "KPRIET, Coimbatore, Tamil Nadu",
+      "description": "HACK ITON'26 is a national-level 24-hour hackathon organized by the Department of Information Technology at KPRIET. The event brings together developers, designers and innovators to build practical solutions for real-world problems. The event includes six domains, a 24-hour on-site challenge, team-based participation, mentoring and a prize pool.",
+      "registration_link": "https://hackiton.in/26",
+      "status": "Upcoming",
+      "badge": "Official Event",
+      "created_at": "2026-09-06T13:47:50Z"
+    },
+    {
       "id": "EVT-047",
       "db_id": 47,
       "title": "Test National Hackathon & Summit 2026",

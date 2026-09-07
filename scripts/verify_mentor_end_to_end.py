@@ -185,7 +185,7 @@ def run_tests():
         "mentor_id": "MEN-007",
         "mentor_name": "JeganKumar Perumal"
     }
-    status, enq_res = http_req("/api/mentor-enquiries", method="POST", data=enquiry_payload)
+    status, enq_res = http_req("/api/mentor-enquiries", method="POST", data=enquiry_payload, headers={"X-Test-Mode": "true"})
     if status != 201 or not enq_res.get("success"):
         print(f"[FAIL] Mentor enquiry submission failed: {status}, {enq_res}")
         sys.exit(1)

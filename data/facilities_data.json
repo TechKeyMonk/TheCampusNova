@@ -719,6 +719,84 @@
       "library": "Digital Research Archives with IEEE, Elsevier & ScienceDirect",
       "hostel": "Air-conditioned modern single/double rooms with vegetarian dining",
       "score": "9.6"
+    },
+    "COL-0460": {
+      "college_id": "COL-0460",
+      "college_name": "Karunya Institute of Technology and Sciences (Deemed to be University)",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "scores": {
+        "labs": 9.2
+      },
+      "labs": [
+        "Karunya has nationally acclaimed research laboratories including Food Processing and Nanotechnology laboratories",
+        "along with a Computer Technology Centre. Centres of Excellence have been established in collaboration with Siemens",
+        "Cisco",
+        "Novell",
+        "IBM",
+        "Salzer Electronics and the Lancet Commission. The institution also has advanced laboratories across engineering",
+        "biotechnology",
+        "agriculture and food processing."
+      ],
+      "sports_areas": [
+        "The campus has football grounds",
+        "hockey fields",
+        "cricket grounds",
+        "basketball courts",
+        "volleyball courts",
+        "kabaddi courts",
+        "badminton facilities",
+        "indoor courts and gym facilities. The official sports facilities page lists multiple courts and grounds",
+        "while the Physical Education department also highlights athletics",
+        "football",
+        "badminton",
+        "indoor courts and residence gyms.\n\nSmart Classrooms & Campus Tech"
+      ],
+      "classrooms": [
+        "Karunya provides gallery classrooms with modern teaching aids",
+        "smart classrooms",
+        "a centralized Computer Technology Centre",
+        "high-end computing systems",
+        "licensed software",
+        "campus-wide Wi-Fi and a high-speed fibre-optic campus network. The institution's infrastructure documentation also reports extensive ICT-enabled learning facilities."
+      ],
+      "library": "The Central Library is an air-conditioned, automated library with an Integrated Library Management System. The institution's published infrastructure report records 1,40,913 volumes, 219 printed journals, 2,377 e-journals and 2,00,042 e-books, with access to e-ShodhSindhu, Shodhganga and 24x7 digital library/Web OPAC services.",
+      "hostel": "Karunya is a fully residential university with separate residential facilities for students. Official information describes thirteen well-furnished hostels with essential campus facilities, dining halls, study halls, Wi-Fi, laundry, hot water, 24-hour water and electricity supply, hospital and other student amenities.",
+      "canteen": "Hygienic campus food courts.",
+      "status": "Verified"
+    },
+    "COL-0098": {
+      "college_id": "COL-0098",
+      "college_name": "Indian Institute of Technology Hyderabad",
+      "state": "Telangana",
+      "district": "Sangareddy",
+      "scores": {
+        "labs": 9.5
+      },
+      "labs": [
+        "IIT Hyderabad has more than 100 research laboratories with state-of-the-art equipment supporting advanced interdisciplinary research. The institute also has facilities including the Centre for Healthcare Entrepreneurship",
+        "TiHAN",
+        "Research Park and other research and incubation facilities."
+      ],
+      "sports_areas": [
+        "The campus has a cricket ground",
+        "full-sized football ground",
+        "400-metre athletics track",
+        "volleyball courts",
+        "squash courts",
+        "swimming pool",
+        "badminton courts and a fully equipped gymnasium."
+      ],
+      "classrooms": [
+        "IIT Hyderabad provides modern academic and computing infrastructure",
+        "including ICT facilities",
+        "campus-wide Wi-Fi/LAN",
+        "computing facilities and specialized high-performance computing resources. The Knowledge Resource Centre also has a Virtual Class Room with 81 seats and a Video Conference Room."
+      ],
+      "library": "The IIT Hyderabad Knowledge Resource Centre has more than 20,000 books and 10,000 periodicals. It provides OPAC, institutional repository access, subscribed electronic resources, open-access resources, research support tools and digital library facilities.",
+      "hostel": "IIT Hyderabad is a residential campus with 23 hostel blocks. Most students have individual rooms with a cot, study table, cupboard and radiant cooling. The campus also provides common dining facilities serving North Indian and South Indian food.",
+      "canteen": "Hygienic campus food courts.",
+      "status": "Verified"
     }
   },
   "reviews": [

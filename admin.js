@@ -6275,6 +6275,11 @@ async function renderCollegeAnalyticsTable(searchQuery = '') {
 
       if (kpiTotal) kpiTotal.textContent = (a.totalColleges || 0).toLocaleString();
       if (kpiAuto) kpiAuto.textContent = (a.autonomousCount || 0).toLocaleString();
+      const kpiAutoTrend = document.getElementById('kpiDistrictAutoTrend');
+      if (kpiAutoTrend) {
+        const autoRatio = (a.totalColleges && a.totalColleges > 0) ? ((a.autonomousCount / a.totalColleges) * 100).toFixed(1) : '0.0';
+        kpiAutoTrend.textContent = `${autoRatio}% Autonomous Ratio`;
+      }
       if (kpiNaac) kpiNaac.textContent = (a.naacAPlusCount || 0).toLocaleString();
       if (kpiNirf) kpiNirf.textContent = Array.isArray(a.topNIRFColleges) ? a.topNIRFColleges.length : 12;
       if (kpiTrend) kpiTrend.textContent = `${selectedDistrict} Regional Database`;

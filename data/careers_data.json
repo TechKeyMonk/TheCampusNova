@@ -6,6 +6,14 @@
       "salary_range": "Rs. 28,00,000",
       "required_skills": "Python, Qiskit",
       "description": "Designs quantum hardware-software stacks.",
+      "id": 42
+    },
+    {
+      "career_name": "Test Quantum Systems Architect",
+      "domain_name": "Quantum Computing",
+      "salary_range": "Rs. 28,00,000",
+      "required_skills": "Python, Qiskit",
+      "description": "Designs quantum hardware-software stacks.",
       "id": 41
     },
     {

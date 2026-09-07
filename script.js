@@ -16756,11 +16756,301 @@ if (typeof renderDomainsDiscoveryView === 'function') {
   window.renderDomainsView = renderDomainsDiscoveryView;
 }
 
+// ==========================================================================
+// LIVE CAMPUS EVENTS & EDUCATION NEWS CONTROLLER (Synced with Admin Portal)
+// ==========================================================================
+
+// Cache for live events and news data
+window._liveEventsCache = [];
+window._liveNewsCache = [];
+
+function openEventDetailsModal(eventId) {
+  const cache = window._liveEventsCache || [];
+  const ev = cache.find(x => String(x.id) === String(eventId) || String(x.db_id) === String(eventId));
+  const modal = document.getElementById('eventDetailsModal');
+  if (!modal) {
+    showToast('Event details view');
+    return;
+  }
+
+  const titleEl = document.getElementById('eventModalTitle');
+  const subEl = document.getElementById('eventModalSubtitle');
+  const badgeEl = document.getElementById('eventModalBadge');
+  const dateEl = document.getElementById('eventModalDate');
+  const timeEl = document.getElementById('eventModalTime');
+  const venueEl = document.getElementById('eventModalVenue');
+  const catEl = document.getElementById('eventModalCategory');
+  const descEl = document.getElementById('eventModalDescription');
+  const extraEl = document.getElementById('eventModalExtraSection');
+  const linkBtn = document.getElementById('eventModalFurtherDetailsBtn');
+
+  if (ev) {
+    if (titleEl) titleEl.textContent = ev.title || 'Campus Conclave';
+    if (subEl) subEl.textContent = ev.college_name || 'Premier Educational Institution';
+    if (badgeEl) badgeEl.textContent = (ev.status || 'CAMPUS EVENT').toUpperCase();
+    if (dateEl) dateEl.textContent = ev.event_date || 'Upcoming';
+    if (timeEl) timeEl.textContent = ev.time || 'Schedule to be confirmed';
+    if (venueEl) venueEl.textContent = ev.venue || 'Main Campus Auditorium';
+    if (catEl) catEl.textContent = ev.category || 'Conclave & Fest';
+    if (descEl) descEl.textContent = ev.description || 'Official institutional conclave and student symposium organized by campus faculty and departments.';
+    
+    if (extraEl) {
+      extraEl.innerHTML = `
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; font-size:12.5px; color:#475569;">
+          <div>🏛️ <strong>Organizing Body:</strong> ${escapeHtml(ev.college_name || 'Campus Academic Department')}</div>
+          ${ev.badge ? `<div style="margin-top:4px;">🎖️ <strong>Event Distinction:</strong> ${escapeHtml(ev.badge)}</div>` : ''}
+        </div>
+      `;
+    }
+
+    const targetUrl = ev.official_website || ev.website || ev.registration_link || '';
+    if (linkBtn) {
+      linkBtn.onclick = () => {
+        if (targetUrl && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://'))) {
+          window.open(targetUrl, '_blank', 'noopener,noreferrer');
+        } else if (targetUrl && targetUrl.trim()) {
+          window.open('https://' + targetUrl.replace(/^\/+/, ''), '_blank', 'noopener,noreferrer');
+        } else {
+          showToast('No official website or registration link currently registered for this event.', 'info');
+        }
+      };
+    }
+
+    if (typeof recordUserActivity === 'function') {
+      recordUserActivity('view', 'events', ev.id || eventId, ev.title || '');
+    }
+  }
+
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+window.openEventDetailsModal = openEventDetailsModal;
+
+function closeEventDetailsModal() {
+  const modal = document.getElementById('eventDetailsModal');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+  document.body.style.overflow = '';
+}
+window.closeEventDetailsModal = closeEventDetailsModal;
+
+function openNewsDetailsModal(newsId) {
+  const cache = window._liveNewsCache || [];
+  const nw = cache.find(x => String(x.id) === String(newsId) || String(x.db_id) === String(newsId));
+  const modal = document.getElementById('newsDetailsModal');
+  if (!modal) {
+    showToast('News details view');
+    return;
+  }
+
+  const titleEl = document.getElementById('newsModalTitle');
+  const subEl = document.getElementById('newsModalSubtitle');
+  const badgeEl = document.getElementById('newsModalBadge');
+  const dateEl = document.getElementById('newsModalDate');
+  const catEl = document.getElementById('newsModalCategory');
+  const summaryEl = document.getElementById('newsModalSummary');
+  const contentEl = document.getElementById('newsModalContent');
+  const linkBtn = document.getElementById('newsModalOfficialSourceBtn');
+
+  if (nw) {
+    if (titleEl) titleEl.textContent = nw.title || 'Campus News Bulletin';
+    if (subEl) subEl.textContent = nw.college_name || 'Higher Education Authority';
+    if (badgeEl) badgeEl.textContent = (nw.badge || 'OFFICIAL BULLETIN').toUpperCase();
+    if (dateEl) dateEl.textContent = nw.published_date || 'Recent';
+    if (catEl) catEl.textContent = nw.category || 'General';
+    if (summaryEl) summaryEl.textContent = nw.summary || nw.content || 'Official higher education circular and academic notification.';
+    if (contentEl) contentEl.textContent = nw.content || nw.summary || 'Detailed notification text dispatched from institutional administrative office.';
+
+    const targetUrl = nw.source_url || '';
+    if (linkBtn) {
+      if (targetUrl && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://') || targetUrl.includes('.'))) {
+        linkBtn.style.display = 'inline-flex';
+        linkBtn.onclick = () => {
+          const finalUrl = (targetUrl.startsWith('http://') || targetUrl.startsWith('https://')) ? targetUrl : ('https://' + targetUrl);
+          window.open(finalUrl, '_blank', 'noopener,noreferrer');
+        };
+      } else {
+        linkBtn.style.display = 'none';
+      }
+    }
+
+    if (typeof recordUserActivity === 'function') {
+      recordUserActivity('view', 'news', nw.id || newsId, nw.title || '');
+    }
+  }
+
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+window.openNewsDetailsModal = openNewsDetailsModal;
+
+function closeNewsDetailsModal() {
+  const modal = document.getElementById('newsDetailsModal');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+  document.body.style.overflow = '';
+}
+window.closeNewsDetailsModal = closeNewsDetailsModal;
+
+function renderLiveEvents(eventsList) {
+  const eventsContainer = document.getElementById('homeEventsFeedContainer');
+  if (!eventsContainer || !Array.isArray(eventsList)) return;
+  const countBadge = document.getElementById('homeEventsCountBadge');
+  if (countBadge) countBadge.textContent = `${eventsList.length} Active`;
+
+  if (eventsList.length === 0) {
+    eventsContainer.innerHTML = '<div style="padding:20px; text-align:center; color:#64748B; font-size:13px;">No active events scheduled at this moment.</div>';
+    return;
+  }
+
+  eventsContainer.innerHTML = eventsList.map(e => {
+    const desc = (e.description && e.description.trim())
+      ? e.description.trim()
+      : `Official institutional event and student conclave organized by ${e.college_name || 'the campus'}.`;
+    const eventIdentifier = String(e.id || e.db_id || '');
+    return `
+    <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; transition:transform 0.2s ease, box-shadow 0.2s ease;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:4px;">
+        <strong style="font-size:13.5px; color:#0F172A; line-height:1.4;">${escapeHtml(e.title || '')}</strong>
+        <span style="font-size:10.5px; background:rgba(21,128,61,0.12); color:#15803D; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap;">
+          ${escapeHtml(e.status || 'Upcoming')}
+        </span>
+      </div>
+      <div style="font-size:11.5px; color:#64748B; margin-bottom:6px; display:flex; flex-wrap:wrap; gap:8px;">
+        <span>🏛️ <strong>${escapeHtml(e.college_name || 'Premier Institution')}</strong></span>
+        <span>📅 ${escapeHtml(e.event_date || '')}</span>
+        ${e.time ? `<span>⏰ ${escapeHtml(e.time)}</span>` : ''}
+        ${e.venue ? `<span>📍 ${escapeHtml(e.venue)}</span>` : ''}
+      </div>
+      <p style="font-size:12px; color:#475569; margin:0 0 8px; line-height:1.5;">${escapeHtml(desc)}</p>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:10.5px; background:#EDF2F7; color:#475569; padding:2px 6px; border-radius:4px; font-weight:600;">
+          ${escapeHtml(e.category || 'Tech Fest')}
+        </span>
+        <button type="button" class="action-btn-link" style="background:none; border:none; padding:0; font-size:11.5px; font-weight:700; color:#15803D; cursor:pointer; display:inline-flex; align-items:center; gap:3px;" onclick="openEventDetailsModal('${escapeHtml(eventIdentifier)}')">
+          View Info ↗
+        </button>
+      </div>
+    </div>
+  `;
+  }).join('');
+}
+window.renderLiveEvents = renderLiveEvents;
+
+function renderLiveNews(newsList) {
+  const newsContainer = document.getElementById('homeNewsFeedContainer');
+  if (!newsContainer || !Array.isArray(newsList)) return;
+  const countBadge = document.getElementById('homeNewsCountBadge');
+  if (countBadge) countBadge.textContent = `${newsList.length} Bulletins`;
+
+  if (newsList.length === 0) {
+    newsContainer.innerHTML = '<div style="padding:20px; text-align:center; color:#64748B; font-size:13px;">No bulletins announced today.</div>';
+    return;
+  }
+
+  newsContainer.innerHTML = newsList.map(n => {
+    const summaryText = (n.summary && n.summary.trim())
+      ? n.summary.trim()
+      : ((n.content && n.content.trim())
+        ? n.content.trim()
+        : `Official admission and academic circular announced by ${n.college_name || 'Higher Education Board'}.`);
+    const newsIdentifier = String(n.id || n.db_id || '');
+    return `
+    <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; transition:transform 0.2s ease, box-shadow 0.2s ease;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:4px;">
+        <strong style="font-size:13.5px; color:#0F172A; line-height:1.4;">${escapeHtml(n.title || '')}</strong>
+        ${n.badge ? `
+          <span style="font-size:10.5px; background:rgba(30,64,175,0.1); color:#1E40AF; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap;">
+            ${escapeHtml(n.badge)}
+          </span>
+        ` : ''}
+      </div>
+      <div style="font-size:11.5px; color:#64748B; margin-bottom:6px; display:flex; flex-wrap:wrap; gap:8px;">
+        <span>📢 <strong>${escapeHtml(n.college_name || 'Higher Education Authority')}</strong></span>
+        <span>📅 ${escapeHtml(n.published_date || '')}</span>
+      </div>
+      <p style="font-size:12px; color:#475569; margin:0 0 8px; line-height:1.5;">${escapeHtml(summaryText)}</p>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:10.5px; background:#EDF2F7; color:#475569; padding:2px 6px; border-radius:4px; font-weight:600;">
+          ${escapeHtml(n.category || 'General')}
+        </span>
+        <button type="button" class="action-btn-link" style="background:none; border:none; padding:0; font-size:11.5px; font-weight:700; color:#1D4ED8; cursor:pointer; display:inline-flex; align-items:center; gap:3px;" onclick="openNewsDetailsModal('${escapeHtml(newsIdentifier)}')">
+          Read More ↗
+        </button>
+      </div>
+    </div>
+  `;
+  }).join('');
+}
+window.renderLiveNews = renderLiveNews;
+
+async function loadLiveEvents() {
+  const eventsContainer = document.getElementById('homeEventsFeedContainer');
+  if (!eventsContainer) return;
+  try {
+    const res = await fetch('/api/events');
+    const data = await res.json();
+    if (data.success && Array.isArray(data.events)) {
+      window._liveEventsCache = data.events;
+      renderLiveEvents(data.events);
+    }
+  } catch (err) {
+    console.error('Failed to load live events:', err);
+  }
+}
+window.loadLiveEvents = loadLiveEvents;
+
+async function loadLiveNews() {
+  const newsContainer = document.getElementById('homeNewsFeedContainer');
+  if (!newsContainer) return;
+  try {
+    const res = await fetch('/api/news');
+    const data = await res.json();
+    if (data.success && Array.isArray(data.news)) {
+      window._liveNewsCache = data.news;
+      renderLiveNews(data.news);
+    }
+  } catch (err) {
+    console.error('Failed to load live news:', err);
+  }
+}
+window.loadLiveNews = loadLiveNews;
+
+var _isLoadingLiveEventsAndNews = false;
+async function loadLiveEventsAndNews() {
+  // Render immediately from cache if available (0ms instant render)
+  if (Array.isArray(window._liveEventsCache) && window._liveEventsCache.length > 0) {
+    renderLiveEvents(window._liveEventsCache);
+  }
+  if (Array.isArray(window._liveNewsCache) && window._liveNewsCache.length > 0) {
+    renderLiveNews(window._liveNewsCache);
+  }
+
+  if (_isLoadingLiveEventsAndNews) return;
+  _isLoadingLiveEventsAndNews = true;
+  try {
+    // Parallelized non-blocking fetch
+    await Promise.allSettled([loadLiveEvents(), loadLiveNews()]);
+  } finally {
+    _isLoadingLiveEventsAndNews = false;
+  }
+}
+window.loadLiveEventsAndNews = loadLiveEventsAndNews;
+
 let isAppInitialized = false;
 
 function initTheCampusNova() {
   if (isAppInitialized) return;
   isAppInitialized = true;
+
+  // Immediate First-Priority Load: Events & News Feeds (Non-blocking parallel)
+  try { if (typeof loadLiveEventsAndNews === 'function') loadLiveEventsAndNews(); } catch(e) {}
 
   try { initLiveTime(); } catch (e) { console.warn('[Init] LiveTime error:', e); }
   try { initHeroBackgroundCarousel(); } catch (e) { console.warn('[Init] Carousel error:', e); }
@@ -17747,254 +18037,3 @@ if (document.readyState === 'loading') {
 } else {
   initExploreAndLiveFeeds();
 }
-
-// ==========================================================================
-// LIVE CAMPUS EVENTS & EDUCATION NEWS CONTROLLER (Synced with Admin Portal)
-// ==========================================================================
-
-// Cache for live events and news data
-window._liveEventsCache = [];
-window._liveNewsCache = [];
-
-function openEventDetailsModal(eventId) {
-  const cache = window._liveEventsCache || [];
-  const ev = cache.find(x => String(x.id) === String(eventId) || String(x.db_id) === String(eventId));
-  const modal = document.getElementById('eventDetailsModal');
-  if (!modal) {
-    showToast('Event details view');
-    return;
-  }
-
-  const titleEl = document.getElementById('eventModalTitle');
-  const subEl = document.getElementById('eventModalSubtitle');
-  const badgeEl = document.getElementById('eventModalBadge');
-  const dateEl = document.getElementById('eventModalDate');
-  const timeEl = document.getElementById('eventModalTime');
-  const venueEl = document.getElementById('eventModalVenue');
-  const catEl = document.getElementById('eventModalCategory');
-  const descEl = document.getElementById('eventModalDescription');
-  const extraEl = document.getElementById('eventModalExtraSection');
-  const linkBtn = document.getElementById('eventModalFurtherDetailsBtn');
-
-  if (ev) {
-    if (titleEl) titleEl.textContent = ev.title || 'Campus Conclave';
-    if (subEl) subEl.textContent = ev.college_name || 'Premier Educational Institution';
-    if (badgeEl) badgeEl.textContent = (ev.status || 'CAMPUS EVENT').toUpperCase();
-    if (dateEl) dateEl.textContent = ev.event_date || 'Upcoming';
-    if (timeEl) timeEl.textContent = ev.time || 'Schedule to be confirmed';
-    if (venueEl) venueEl.textContent = ev.venue || 'Main Campus Auditorium';
-    if (catEl) catEl.textContent = ev.category || 'Conclave & Fest';
-    if (descEl) descEl.textContent = ev.description || 'Official institutional conclave and student symposium organized by campus faculty and departments.';
-    
-    if (extraEl) {
-      extraEl.innerHTML = `
-        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; font-size:12.5px; color:#475569;">
-          <div>🏛️ <strong>Organizing Body:</strong> ${escapeHtml(ev.college_name || 'Campus Academic Department')}</div>
-          ${ev.badge ? `<div style="margin-top:4px;">🎖️ <strong>Event Distinction:</strong> ${escapeHtml(ev.badge)}</div>` : ''}
-        </div>
-      `;
-    }
-
-    const targetUrl = ev.official_website || ev.website || ev.registration_link || '';
-    if (linkBtn) {
-      linkBtn.onclick = () => {
-        if (targetUrl && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://'))) {
-          window.open(targetUrl, '_blank', 'noopener,noreferrer');
-        } else if (targetUrl && targetUrl.trim()) {
-          window.open('https://' + targetUrl.replace(/^\/+/, ''), '_blank', 'noopener,noreferrer');
-        } else {
-          showToast('No official website or registration link currently registered for this event.', 'info');
-        }
-      };
-    }
-
-    if (typeof recordUserActivity === 'function') {
-      recordUserActivity('view', 'events', ev.id || eventId, ev.title || '');
-    }
-  }
-
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-}
-window.openEventDetailsModal = openEventDetailsModal;
-
-function closeEventDetailsModal() {
-  const modal = document.getElementById('eventDetailsModal');
-  if (modal) {
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-  }
-  document.body.style.overflow = '';
-}
-window.closeEventDetailsModal = closeEventDetailsModal;
-
-function openNewsDetailsModal(newsId) {
-  const cache = window._liveNewsCache || [];
-  const nw = cache.find(x => String(x.id) === String(newsId) || String(x.db_id) === String(newsId));
-  const modal = document.getElementById('newsDetailsModal');
-  if (!modal) {
-    showToast('News details view');
-    return;
-  }
-
-  const titleEl = document.getElementById('newsModalTitle');
-  const subEl = document.getElementById('newsModalSubtitle');
-  const badgeEl = document.getElementById('newsModalBadge');
-  const dateEl = document.getElementById('newsModalDate');
-  const catEl = document.getElementById('newsModalCategory');
-  const summaryEl = document.getElementById('newsModalSummary');
-  const contentEl = document.getElementById('newsModalContent');
-  const linkBtn = document.getElementById('newsModalOfficialSourceBtn');
-
-  if (nw) {
-    if (titleEl) titleEl.textContent = nw.title || 'Campus News Bulletin';
-    if (subEl) subEl.textContent = nw.college_name || 'Higher Education Authority';
-    if (badgeEl) badgeEl.textContent = (nw.badge || 'OFFICIAL BULLETIN').toUpperCase();
-    if (dateEl) dateEl.textContent = nw.published_date || 'Recent';
-    if (catEl) catEl.textContent = nw.category || 'General';
-    if (summaryEl) summaryEl.textContent = nw.summary || nw.content || 'Official higher education circular and academic notification.';
-    if (contentEl) contentEl.textContent = nw.content || nw.summary || 'Detailed notification text dispatched from institutional administrative office.';
-
-    const targetUrl = nw.source_url || '';
-    if (linkBtn) {
-      if (targetUrl && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://') || targetUrl.includes('.'))) {
-        linkBtn.style.display = 'inline-flex';
-        linkBtn.onclick = () => {
-          const finalUrl = (targetUrl.startsWith('http://') || targetUrl.startsWith('https://')) ? targetUrl : ('https://' + targetUrl);
-          window.open(finalUrl, '_blank', 'noopener,noreferrer');
-        };
-      } else {
-        linkBtn.style.display = 'none';
-      }
-    }
-
-    if (typeof recordUserActivity === 'function') {
-      recordUserActivity('view', 'news', nw.id || newsId, nw.title || '');
-    }
-  }
-
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-}
-window.openNewsDetailsModal = openNewsDetailsModal;
-
-function closeNewsDetailsModal() {
-  const modal = document.getElementById('newsDetailsModal');
-  if (modal) {
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-  }
-  document.body.style.overflow = '';
-}
-window.closeNewsDetailsModal = closeNewsDetailsModal;
-
-var _isLoadingLiveEventsAndNews = false;
-async function loadLiveEventsAndNews() {
-  if (_isLoadingLiveEventsAndNews) return;
-  _isLoadingLiveEventsAndNews = true;
-  try {
-    const eventsContainer = document.getElementById('homeEventsFeedContainer');
-    const newsContainer = document.getElementById('homeNewsFeedContainer');
-
-  // Load Events
-  if (eventsContainer) {
-    try {
-      const res = await fetch('/api/events');
-      const data = await res.json();
-      if (data.success && Array.isArray(data.events)) {
-        window._liveEventsCache = data.events;
-        const countBadge = document.getElementById('homeEventsCountBadge');
-        if (countBadge) countBadge.textContent = `${data.events.length} Active`;
-        
-        eventsContainer.innerHTML = data.events.map(e => {
-          const desc = (e.description && e.description.trim())
-            ? e.description.trim()
-            : `Official institutional event and student conclave organized by ${e.college_name || 'the campus'}.`;
-          const eventIdentifier = String(e.id || e.db_id || '');
-          return `
-          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; transition:transform 0.2s ease, box-shadow 0.2s ease;">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:4px;">
-              <strong style="font-size:13.5px; color:#0F172A; line-height:1.4;">${escapeHtml(e.title || '')}</strong>
-              <span style="font-size:10.5px; background:rgba(21,128,61,0.12); color:#15803D; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap;">
-                ${escapeHtml(e.status || 'Upcoming')}
-              </span>
-            </div>
-            <div style="font-size:11.5px; color:#64748B; margin-bottom:6px; display:flex; flex-wrap:wrap; gap:8px;">
-              <span>🏛️ <strong>${escapeHtml(e.college_name || 'Premier Institution')}</strong></span>
-              <span>📅 ${escapeHtml(e.event_date || '')}</span>
-              ${e.time ? `<span>⏰ ${escapeHtml(e.time)}</span>` : ''}
-              ${e.venue ? `<span>📍 ${escapeHtml(e.venue)}</span>` : ''}
-            </div>
-            <p style="font-size:12px; color:#475569; margin:0 0 8px; line-height:1.5;">${escapeHtml(desc)}</p>
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:10.5px; background:#EDF2F7; color:#475569; padding:2px 6px; border-radius:4px; font-weight:600;">
-                ${escapeHtml(e.category || 'Tech Fest')}
-              </span>
-              <button type="button" class="action-btn-link" style="background:none; border:none; padding:0; font-size:11.5px; font-weight:700; color:#15803D; cursor:pointer; display:inline-flex; align-items:center; gap:3px;" onclick="openEventDetailsModal('${escapeHtml(eventIdentifier)}')">
-                View Info ↗
-              </button>
-            </div>
-          </div>
-        `;
-        }).join('');
-      }
-    } catch (err) {
-      console.error('Failed to load live events:', err);
-    }
-  }
-
-  // Load News
-  if (newsContainer) {
-    try {
-      const res = await fetch('/api/news');
-      const data = await res.json();
-      if (data.success && Array.isArray(data.news)) {
-        window._liveNewsCache = data.news;
-        const countBadge = document.getElementById('homeNewsCountBadge');
-        if (countBadge) countBadge.textContent = `${data.news.length} Bulletins`;
-        
-        newsContainer.innerHTML = data.news.map(n => {
-          const summaryText = (n.summary && n.summary.trim())
-            ? n.summary.trim()
-            : ((n.content && n.content.trim())
-              ? n.content.trim()
-              : `Official admission and academic circular announced by ${n.college_name || 'Higher Education Board'}.`);
-          const newsIdentifier = String(n.id || n.db_id || '');
-          return `
-          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; transition:transform 0.2s ease, box-shadow 0.2s ease;">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:4px;">
-              <strong style="font-size:13.5px; color:#0F172A; line-height:1.4;">${escapeHtml(n.title || '')}</strong>
-              ${n.badge ? `
-                <span style="font-size:10.5px; background:rgba(30,64,175,0.1); color:#1E40AF; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap;">
-                  ${escapeHtml(n.badge)}
-                </span>
-              ` : ''}
-            </div>
-            <div style="font-size:11.5px; color:#64748B; margin-bottom:6px; display:flex; flex-wrap:wrap; gap:8px;">
-              <span>📢 <strong>${escapeHtml(n.college_name || 'Higher Education Authority')}</strong></span>
-              <span>📅 ${escapeHtml(n.published_date || '')}</span>
-            </div>
-            <p style="font-size:12px; color:#475569; margin:0 0 8px; line-height:1.5;">${escapeHtml(summaryText)}</p>
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:10.5px; background:#EDF2F7; color:#475569; padding:2px 6px; border-radius:4px; font-weight:600;">
-                ${escapeHtml(n.category || 'General')}
-              </span>
-              <button type="button" class="action-btn-link" style="background:none; border:none; padding:0; font-size:11.5px; font-weight:700; color:#1D4ED8; cursor:pointer; display:inline-flex; align-items:center; gap:3px;" onclick="openNewsDetailsModal('${escapeHtml(newsIdentifier)}')">
-                Read More ↗
-              </button>
-            </div>
-          </div>
-        `;
-        }).join('');
-      }
-    } catch (err) {
-      console.error('Failed to load live news:', err);
-    }
-  }
-  } finally {
-    _isLoadingLiveEventsAndNews = false;
-  }
-}
-window.loadLiveEventsAndNews = loadLiveEventsAndNews;

@@ -1,5 +1,20 @@
 [
   {
+    "id": "REV-88AAAF68",
+    "category": "college_experience",
+    "category_name": "College Experience & Campus Life",
+    "author": "Test Student Reviewer",
+    "role": "Student Candidate",
+    "context": "Ramakrishna Mission",
+    "rating": "*****",
+    "score": 5.0,
+    "tag": "Student Experience",
+    "statement": "Outstanding campus facilities and peer group.",
+    "advice": "Stay consistent and practice actively.",
+    "status": "approved",
+    "timestamp": "06 Sep 2026, 09:03 PM"
+  },
+  {
     "id": "REV-75388B47",
     "category": "college_experience",
     "category_name": "College Experience & Campus Life",
