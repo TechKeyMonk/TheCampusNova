@@ -1,6 +1,18 @@
 {
   "access_logs": [
     {
+      "id": "ACC-112",
+      "college_name": "NIT Calicut",
+      "authorized_email": "adminnit@gmail.com",
+      "aishe_code": "U-0255",
+      "access_date": "2026-09-08",
+      "access_time": "16:35:22",
+      "access_status": "Granted",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "created_at": "2026-09-08T16:35:22Z"
+    },
+    {
       "id": "ACC-111",
       "college_name": "ADITHYA COLLEGE OF ARTS AND SCIENCE",
       "authorized_email": "adminadithya@gmail.com",

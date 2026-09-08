@@ -5,6 +5,136 @@
       "user_identifier": "Admin (Shyam Ganesh)",
       "action": "Deleted Course",
       "module": "Courses",
+      "details": "Deleted course 130 (Ref: 130)",
+      "timestamp": "2026-09-08 17:39:47",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1788869368324 UPDATED (Ref: 130)",
+      "timestamp": "2026-09-08 17:39:42",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1788869368324 (Ref: 130)",
+      "timestamp": "2026-09-08 17:39:34",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry submitted by Arun Prakash (arun.prakash@example.edu) for mentor JeganKumar Perumal (Ref: MENQ-9A490E3F)",
+      "timestamp": "2026-09-08 17:34:12",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Deleted",
+      "module": "Mentors",
+      "details": "Admin deleted mentor profile MEN-010 (Ref: MEN-010)",
+      "timestamp": "2026-09-08 17:34:11",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Updated",
+      "module": "Mentors",
+      "details": "Admin updated mentor profile MEN-010 (Ref: MEN-010)",
+      "timestamp": "2026-09-08 17:34:10",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Created",
+      "module": "Mentors",
+      "details": "Admin added mentor profile for Dr. Kavitha Ramanathan (Google Research India) (Ref: MEN-010)",
+      "timestamp": "2026-09-08 17:34:09",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Exam",
+      "module": "exams",
+      "details": "Admin saved exam UGC-NET (University Grants Commission – National Eligibility Test) June 2026 (Ref: 79)",
+      "timestamp": "2026-09-08 17:05:49",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Domain Details",
+      "module": "Domains",
+      "details": "Admin updated domain AI-Powered FinTech & Financial Analytics (Ref: 71)",
+      "timestamp": "2026-09-08 16:59:13",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course B.Com (FinTech & Financial Analytics) (Ref: 129)",
+      "timestamp": "2026-09-08 16:52:07",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "College Update Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-140 for NIT Calicut (Ref: APP-140)",
+      "timestamp": "2026-09-08 16:40:47",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Update Details Access Granted",
+      "module": "Colleges",
+      "details": "Authorized access granted to adminnit@gmail.com (AISHE: U-0255) via CAPTCHA verification (Ref: NIT Calicut)",
+      "timestamp": "2026-09-08 16:35:22",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry submitted by Deepesh (deepeshvelmurugan@gamil.com) for mentor JeganKumar Perumal (Ref: MENQ-CDC8529B)",
+      "timestamp": "2026-09-07 19:21:58",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Deleted Course",
+      "module": "Courses",
       "details": "Deleted course 127 (Ref: 127)",
       "timestamp": "2026-09-07 18:52:30",
       "ip_address": "127.0.0.1",
@@ -1867,136 +1997,6 @@
       "module": "Courses",
       "details": "Saved course Test Robotics Engineering 2026 UPDATED (Ref: 115)",
       "timestamp": "2026-09-05 21:57:21",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Course",
-      "module": "Courses",
-      "details": "Saved course Test Robotics Engineering 2026 (Ref: 120)",
-      "timestamp": "2026-09-05 21:57:20",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Deleted Course",
-      "module": "Courses",
-      "details": "Deleted course 119 (Ref: 119)",
-      "timestamp": "2026-09-05 21:56:47",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Course",
-      "module": "Courses",
-      "details": "Saved course QA Test Robotics Vitest_1788625590546 UPDATED (Ref: 119)",
-      "timestamp": "2026-09-05 21:56:42",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Course",
-      "module": "Courses",
-      "details": "Saved course QA Test Robotics Vitest_1788625590546 (Ref: 119)",
-      "timestamp": "2026-09-05 21:56:36",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Deleted Course",
-      "module": "Courses",
-      "details": "Deleted course 118 (Ref: 118)",
-      "timestamp": "2026-09-05 21:22:47",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Course",
-      "module": "Courses",
-      "details": "Saved course QA Test Robotics Vitest_1788623545218 UPDATED (Ref: 118)",
-      "timestamp": "2026-09-05 21:22:41",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Course",
-      "module": "Courses",
-      "details": "Saved course QA Test Robotics Vitest_1788623545218 (Ref: 118)",
-      "timestamp": "2026-09-05 21:22:32",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "News Deleted",
-      "module": "News",
-      "details": "Deleted bulletin 35 (Ref: 35)",
-      "timestamp": "2026-09-05 17:54:42",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "News Updated",
-      "module": "News",
-      "details": "Updated bulletin 35 (Ref: 35)",
-      "timestamp": "2026-09-05 17:54:41",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "News Published",
-      "module": "News",
-      "details": "Published bulletin 'Test IIT Madras Launches Next-Gen Quantum Centre' (Ref: NWS-041)",
-      "timestamp": "2026-09-05 17:54:41",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Deleted Event",
-      "module": "Events",
-      "details": "Deleted event 37 (Ref: 37)",
-      "timestamp": "2026-09-05 17:54:40",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Event Updated",
-      "module": "Events",
-      "details": "Updated event 37 (Ref: 37)",
-      "timestamp": "2026-09-05 17:54:39",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Event Created",
-      "module": "Events",
-      "details": "Created campus event 'Test National Hackathon & Summit 2026' for IIT Madras (Ref: EVT-044)",
-      "timestamp": "2026-09-05 17:54:39",
       "ip_address": "127.0.0.1",
       "status": "Success"
     }

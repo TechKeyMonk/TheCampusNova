@@ -17,6 +17,17 @@
               "tagline": "Theoretical foundations of computation, algorithms, and full lifecycle software engineering.",
               "programs": [
                 {
+                  "id": "prog-4107f9d9",
+                  "name": "B.Com (FinTech & Financial Analytics)",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "3 Years",
+                  "eligibility": "12th / Higher Secondary with Commerce, Accountancy, Mathematics, Economics, Computer Science or related subjects. Minimum eligibility varies by institution.",
+                  "overview": "B.Com FinTech & Financial Analytics combines Commerce + Finance + Technology + Data Analytics. The course prepares students for the rapidly growing digital banking, financial technology, investment, analytics and AI-driven finance sectors, making it a future-oriented option for the next 5 years.",
+                  "annualTuitionFees": "₹40,000 – ₹2,00,000 per year",
+                  "annual_tuition_fees": "₹40,000 – ₹2,00,000 per year",
+                  "fees": "₹40,000 – ₹2,00,000 per year"
+                },
+                {
                   "id": "prog-b4a909a8",
                   "name": "Test Robotics Engineering 2026",
                   "degreeType": "Undergraduate (UG)",

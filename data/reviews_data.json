@@ -1,5 +1,20 @@
 [
   {
+    "id": "REV-E9E5C4AC",
+    "category": "college_experience",
+    "category_name": "College Experience & Campus Life",
+    "author": "Arun Kumar",
+    "role": "B.Tech Computer Science, 2026 Batch",
+    "context": "Campus / Course",
+    "rating": "★★★★★",
+    "score": 4.9,
+    "tag": "Campus Life & Academics",
+    "statement": "The college provides a good learning environment with supportive faculty, well-maintained campus facilities, and opportunities to participate in technical and extracurricular activities. The course structure helped me build both academic knowledge and practical skills through projects and workshops.",
+    "advice": "Make use of the workshops, projects, internships, and placement training opportunities available on campus. Staying consistent with academics while developing practical and communication skills can make a big difference during the final year.",
+    "status": "approved",
+    "timestamp": "08 Sep 2026, 05:15 PM"
+  },
+  {
     "id": "REV-88AAAF68",
     "category": "college_experience",
     "category_name": "College Experience & Campus Life",

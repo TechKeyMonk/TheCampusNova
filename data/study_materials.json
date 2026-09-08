@@ -1,6 +1,28 @@
 {
   "materials": [
     {
+      "id": "mat-67",
+      "db_id": 67,
+      "title": "NEET UG 2027 Complete Biology Preparation Guide",
+      "exam": "NEET UG 2027",
+      "exam_id": "",
+      "stream": "Medical",
+      "subject": "Biology - Botany & Zoology",
+      "topic": "Comprehensive",
+      "category": "Topic Guides",
+      "resource_format": "pdf",
+      "description": "A structured Biology preparation resource for NEET UG 2027 aspirants covering the major Botany and Zoology areas. Students should use the latest official NTA/NMC syllabus when the NEET UG 2027 syllabus is officially released and combine it with NCERT textbooks, previous-year questions, mock tests and regular revision. The official NTA portal currently provides the NEET UG 2026 syllabus and examination documents, which can be used as the latest official reference until the 2027 syllabus is published.",
+      "file_url": "https://neet.nta.nic.in/?utm_source=chatgpt.com",
+      "official_url": "",
+      "provider": "National Testing Agency (NTA) / National Medical Commission (NMC)",
+      "source_type": "admin_upload",
+      "status": "approved",
+      "views_count": 1,
+      "downloads_count": 0,
+      "rating": "5.0",
+      "created_at": "2026-09-08T17:11:19Z"
+    },
+    {
       "id": "mat-64",
       "db_id": 64,
       "title": "Test Deep Learning Architecture Guide 2026 (Updated)",
