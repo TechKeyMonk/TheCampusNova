@@ -1,4 +1,24 @@
 /* ==========================================================================
+   GLOBAL MEDIA PROTECTION (PREVENT DIRECT SAVING & DRAGGING)
+   - Inspect element and developer tools remain fully operational
+   - Media elements (images, videos, audio, picture, canvas) cannot be dragged or long-press saved
+   ========================================================================== */
+img,
+video,
+audio,
+picture,
+canvas,
+[data-media],
+.media-protected {
+  -webkit-user-drag: none !important;
+  -khtml-user-drag: none !important;
+  -moz-user-drag: none !important;
+  -o-user-drag: none !important;
+  user-drag: none !important;
+  -webkit-touch-callout: none !important; /* Disables mobile iOS/Android "Save Image" popup */
+}
+
+/* ==========================================================================
    NAVBAR EXACT DIMENSIONS + SPACING + ALIGNMENT
    ========================================================================== */
 

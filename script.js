@@ -7,47 +7,79 @@ var _activeSelectedMentor = window._activeSelectedMentor;
 var _isLoadingLiveEventsAndNews = false;
 
 // ============================================================================
-// FRONTEND SECURITY DETERRENCE LAYER (PUBLIC WEBSITE)
-// Lightweight deterrence against easy context-menu & common devtool shortcuts.
-// Note: Deterrence layer only; authoritative security is enforced server-side.
+// GLOBAL MEDIA PROTECTION LAYER
+// Inspect Element & Developer Tools are ENABLED across the entire site.
+// Only media assets (images, videos, audio, picture, canvas) are protected
+// against direct saving, context-menu saving ("Save image as..."), and dragging.
 // ============================================================================
-(function initFrontendSecurityDeterrence() {
-  // 1. Disable browser context menu on public user website (preserve form inputs)
-  document.addEventListener('contextmenu', function (e) {
-    const el = e.target;
-    const tag = el && el.tagName ? el.tagName.toUpperCase() : '';
-    const isInput = el && (el.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT');
-    if (!isInput) {
-      e.preventDefault();
-      return false;
+(function initGlobalMediaProtection() {
+  function isMediaTarget(target) {
+    if (!target) return false;
+    const tag = (target.tagName || '').toUpperCase();
+    if (['IMG', 'VIDEO', 'AUDIO', 'PICTURE', 'SOURCE', 'CANVAS'].includes(tag)) {
+      return true;
     }
-  }, { passive: false });
-
-  // 2. Deter common developer-tool shortcuts (F12, Ctrl+Shift+I/J/C, Ctrl+U)
-  document.addEventListener('keydown', function (e) {
-    // F12
-    if (e.key === 'F12' || e.keyCode === 123) {
-      e.preventDefault();
-      e.stopPropagation();
-      return false;
+    if (typeof target.closest === 'function' && target.closest('img, video, audio, picture, canvas, [data-media], .media-protected')) {
+      return true;
     }
-    const isCtrlOrCmd = e.ctrlKey || e.metaKey;
-    // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-    if (isCtrlOrCmd && e.shiftKey) {
-      const k = (e.key || '').toUpperCase();
-      if (k === 'I' || k === 'J' || k === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
+    try {
+      const bg = window.getComputedStyle(target).backgroundImage;
+      if (bg && bg !== 'none' && bg.includes('url(')) {
+        return true;
       }
-    }
-    // Ctrl+U (View Source)
-    if (isCtrlOrCmd && (e.key === 'u' || e.key === 'U' || e.keyCode === 85)) {
+    } catch (_) {}
+    return false;
+  }
+
+  // 1. Prevent contextmenu ONLY on media elements to block "Save image as...", "Copy image", etc.
+  // Standard context menu (Inspect Element, Copy, etc.) is fully allowed everywhere else.
+  document.addEventListener('contextmenu', function (e) {
+    if (isMediaTarget(e.target)) {
       e.preventDefault();
       e.stopPropagation();
       return false;
     }
-  }, { passive: false });
+  }, { passive: false, capture: true });
+
+  // 2. Prevent dragging media files (to desktop or another browser window/tab)
+  document.addEventListener('dragstart', function (e) {
+    if (isMediaTarget(e.target)) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  }, { passive: false, capture: true });
+
+  // 3. Configure audio/video controls to remove download button & disable PiP
+  function secureMediaElements(root) {
+    const scope = root && root.querySelectorAll ? root : document;
+    const mediaList = scope.querySelectorAll('video, audio');
+    mediaList.forEach(media => {
+      media.setAttribute('controlsList', 'nodownload noplaybackrate');
+      media.setAttribute('disablePictureInPicture', 'true');
+      media.setAttribute('oncontextmenu', 'return false;');
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => secureMediaElements(document));
+  } else {
+    secureMediaElements(document);
+  }
+
+  // Dynamically secure any newly inserted media elements
+  try {
+    const observer = new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType === 1) {
+            secureMediaElements(node);
+          }
+        }
+      }
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+  } catch (_) {}
 })();
 
 // ============================================================================

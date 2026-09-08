@@ -1,6 +1,80 @@
 // TheCampusNova Admin Portal Controller
 // Full Management & Analytics Extension (All 10 Core Features)
 
+// ============================================================================
+// GLOBAL MEDIA PROTECTION LAYER
+// Inspect Element & Developer Tools are ENABLED across the portal.
+// Only media assets (images, videos, audio, picture, canvas) are protected
+// against direct saving, context-menu saving ("Save image as..."), and dragging.
+// ============================================================================
+(function initGlobalMediaProtection() {
+  function isMediaTarget(target) {
+    if (!target) return false;
+    const tag = (target.tagName || '').toUpperCase();
+    if (['IMG', 'VIDEO', 'AUDIO', 'PICTURE', 'SOURCE', 'CANVAS'].includes(tag)) {
+      return true;
+    }
+    if (typeof target.closest === 'function' && target.closest('img, video, audio, picture, canvas, [data-media], .media-protected')) {
+      return true;
+    }
+    try {
+      const bg = window.getComputedStyle(target).backgroundImage;
+      if (bg && bg !== 'none' && bg.includes('url(')) {
+        return true;
+      }
+    } catch (_) {}
+    return false;
+  }
+
+  // 1. Prevent contextmenu ONLY on media elements to block "Save image as...", "Copy image", etc.
+  document.addEventListener('contextmenu', function (e) {
+    if (isMediaTarget(e.target)) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  }, { passive: false, capture: true });
+
+  // 2. Prevent dragging media files
+  document.addEventListener('dragstart', function (e) {
+    if (isMediaTarget(e.target)) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  }, { passive: false, capture: true });
+
+  // 3. Configure audio/video controls to remove download button & disable PiP
+  function secureMediaElements(root) {
+    const scope = root && root.querySelectorAll ? root : document;
+    const mediaList = scope.querySelectorAll('video, audio');
+    mediaList.forEach(media => {
+      media.setAttribute('controlsList', 'nodownload noplaybackrate');
+      media.setAttribute('disablePictureInPicture', 'true');
+      media.setAttribute('oncontextmenu', 'return false;');
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => secureMediaElements(document));
+  } else {
+    secureMediaElements(document);
+  }
+
+  try {
+    const observer = new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType === 1) {
+            secureMediaElements(node);
+          }
+        }
+      }
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+  } catch (_) {}
+})();
+
 const PREDEFINED_PASSKEYS = [
   'campusnova2026',
   'CampusNova2026',
