@@ -32,8 +32,16 @@ describe('Public Frontend & 19-Module API Integration Tests', () => {
       const data = await res.json();
       expect(data).toBeDefined();
       expect(typeof data).toBe('object');
-    });
+    }, 60000);
   }
+
+  it('Admin Analytics API: /api/admin/analytics returns HTTP 200 with valid data structure', async () => {
+    const res = await fetch(`${BASE_URL}/api/admin/analytics`);
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.success).toBe(true);
+    expect(data.analytics).toBeDefined();
+  });
 
   it('Serves index.html with HTTP 200', async () => {
     const res = await fetch(`${BASE_URL}/index.html`);

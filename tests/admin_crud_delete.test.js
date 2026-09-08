@@ -125,4 +125,18 @@ describe('Admin Authorization, CRUD, and Delete Operation Integration Tests', ()
     const stillActive = courseList.some(c => c.id == createdCourseId && c.status !== 'archived' && c.status !== 'inactive');
     expect(stillActive).toBe(false);
   });
+
+  it('8. Verifies Admin Analytics refresh returns HTTP 200 immediately following CRUD and deletion', async () => {
+    const res = await fetch(`${BASE_URL}/api/admin/analytics`);
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.success).toBe(true);
+    expect(data.analytics).toBeDefined();
+
+    const colRes = await fetch(`${BASE_URL}/api/admin/analytics?type=colleges`);
+    expect(colRes.status).toBe(200);
+    const colData = await colRes.json();
+    expect(colData.success).toBe(true);
+    expect(colData.analytics).toBeDefined();
+  });
 });

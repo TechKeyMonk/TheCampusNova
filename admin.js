@@ -1458,22 +1458,22 @@ function openUserActivityModal(sessionId) {
         <div style="margin-bottom:8px;">
           <small style="color:var(--admin-muted); font-size:10px; font-weight:700; text-transform:uppercase;">Recently Viewed Colleges</small>
           <div class="item-pill-group">
-            ${(act.colleges || ['IIT Madras', 'IISc Bengaluru']).map(c => `<span class="item-pill">🏛️ ${c}</span>`).join('')}
+            ${(Array.isArray(act.colleges) ? act.colleges : (typeof act.colleges === 'string' ? act.colleges.split(',') : ['IIT Madras', 'IISc Bengaluru'])).map(c => `<span class="item-pill">🏛️ ${String(c).trim()}</span>`).join('')}
           </div>
         </div>
 
         <div style="margin-bottom:8px;">
           <small style="color:var(--admin-muted); font-size:10px; font-weight:700; text-transform:uppercase;">Recently Viewed Courses &amp; Domains</small>
           <div class="item-pill-group">
-            ${(act.courses || ['B.Sc Computer Science']).map(c => `<span class="item-pill" style="border-color:rgba(58, 155, 143,0.3); color:var(--admin-teal);">📖 ${c}</span>`).join('')}
-            ${(act.domains || ['Artificial Intelligence']).map(d => `<span class="item-pill" style="border-color:rgba(58, 155, 143,0.3); color:var(--admin-accent);">🌐 ${d}</span>`).join('')}
+            ${(Array.isArray(act.courses) ? act.courses : (typeof act.courses === 'string' ? act.courses.split(',') : ['B.Sc Computer Science'])).map(c => `<span class="item-pill" style="border-color:rgba(58, 155, 143,0.3); color:var(--admin-teal);">📖 ${String(c).trim()}</span>`).join('')}
+            ${(Array.isArray(act.domains) ? act.domains : (typeof act.domains === 'string' ? act.domains.split(',') : ['Artificial Intelligence'])).map(d => `<span class="item-pill" style="border-color:rgba(58, 155, 143,0.3); color:var(--admin-accent);">🌐 ${String(d).trim()}</span>`).join('')}
           </div>
         </div>
 
         <div>
           <small style="color:var(--admin-muted); font-size:10px; font-weight:700; text-transform:uppercase;">Target Exams Looked Up</small>
           <div class="item-pill-group">
-            ${(act.exams || ['JEE Main 2026']).map(e => `<span class="item-pill" style="border-color:rgba(58, 155, 143,0.3); color:var(--admin-blue);">🎯 ${e}</span>`).join('')}
+            ${(Array.isArray(act.exams) ? act.exams : (typeof act.exams === 'string' ? act.exams.split(',') : ['JEE Main 2026'])).map(e => `<span class="item-pill" style="border-color:rgba(58, 155, 143,0.3); color:var(--admin-blue);">🎯 ${String(e).trim()}</span>`).join('')}
           </div>
         </div>
       </div>
@@ -6389,7 +6389,7 @@ async function renderCollegeAnalyticsTable(searchQuery = '') {
         <td><strong>#${c.nirf_rank || c.rank || (idx + 1)} ${c.name || c.college_name}</strong><br><small style="color:var(--admin-muted);">${c.aishe || c.aishe_code || 'U-0000'}</small></td>
         <td><strong>${(1850 + (idx * 210)).toLocaleString()}</strong></td>
         <td>${(940 + (idx * 85)).toLocaleString()}</td>
-        <td><small style="color:#77AC3B;">${(c.courses || ['Engineering', 'Technology']).slice(0, 2).join(' &bull; ')}</small></td>
+        <td><small style="color:#77AC3B;">${(Array.isArray(c.courses) ? c.courses : (typeof c.courses === 'string' ? c.courses.split(',') : ['Engineering', 'Technology'])).slice(0, 2).map(x => String(x).trim()).join(' &bull; ')}</small></td>
         <td><small>Placements: ${c.placement || '88%'}</small></td>
         <td><span class="status-tag approved">${c.type || 'Affiliated'}</span></td>
         <td><small style="color:var(--admin-muted);">${c.district || c.city || selectedDistrict}</small></td>

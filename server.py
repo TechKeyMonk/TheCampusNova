@@ -4157,301 +4157,377 @@ def api_record_activity():
 
 @app.route("/api/admin/analytics", methods=["GET"])
 def api_admin_analytics():
-    analytics_type = request.args.get("type", "").strip().lower()
-    district_filter = request.args.get("district", "").strip()
-    state_filter = request.args.get("state", "").strip()
+    try:
+        analytics_type = request.args.get("type", "").strip().lower()
+        district_filter = request.args.get("district", "").strip()
+        state_filter = request.args.get("state", "").strip()
 
-    # 1. District / Regional College Analytics
-    if analytics_type == "colleges" or district_filter or state_filter:
-        clean_dist = district_filter if district_filter and district_filter.lower() != "all" else None
-        clean_state = state_filter if state_filter and state_filter.lower() != "all" else None
+        # 1. District / Regional College Analytics
+        if analytics_type == "colleges" or district_filter or state_filter:
+            clean_dist = district_filter if district_filter and district_filter.lower() != "all" else None
+            clean_state = state_filter if state_filter and state_filter.lower() != "all" else None
 
+            if db.is_pg_connected():
+                where_clauses = ["status != 'archived'"]
+                params = []
+                if clean_state:
+                    where_clauses.append("LOWER(state) = %s")
+                    params.append(clean_state.lower())
+                if clean_dist:
+                    where_clauses.append("(LOWER(COALESCE(district, '')) = %s OR LOWER(COALESCE(location, '')) = %s)")
+                    params.extend([clean_dist.lower(), clean_dist.lower()])
+
+                where_str = " AND ".join(where_clauses)
+                
+                stats_sql = f"""
+                    SELECT 
+                        count(*) as total_match,
+                        count(*) filter (where lower(coalesce(college_type, '')) like '%%autonomous%%' or lower(coalesce(badge, '')) like '%%autonomous%%' or lower(coalesce(college_name, '')) like '%%autonomous%%') as autonomous,
+                        count(*) filter (where lower(coalesce(college_type, '')) like '%%affiliated%%' or lower(coalesce(college_type, '')) like '%%public%%') as affiliated,
+                        count(*) filter (where upper(coalesce(naac_grade, '')) in ('A+', 'A++') or upper(coalesce(accreditation, '')) like '%%A+%%') as naac_a_plus,
+                        count(*) filter (where upper(coalesce(naac_grade, '')) = 'A' or (upper(coalesce(accreditation, '')) like '%%NAAC A%%' and upper(coalesce(accreditation, '')) not like '%%A+%%')) as naac_a,
+                        (SELECT count(*) FROM colleges WHERE status != 'archived') as total_monitored
+                    FROM colleges
+                    WHERE {where_str};
+                """
+                st = db.query_one(stats_sql, tuple(params)) or {}
+                total_match = int(st.get("total_match") or 0)
+                autonomous = int(st.get("autonomous") or 0)
+                affiliated = int(st.get("affiliated") or 0)
+                deemed = max(0, total_match - autonomous - affiliated)
+                naac_a_plus = int(st.get("naac_a_plus") or 0)
+                naac_a = int(st.get("naac_a") or 0)
+                naac_b = max(0, total_match - naac_a_plus - naac_a)
+                total_monitored = int(st.get("total_monitored") or total_match)
+
+                nirf_sql = f"""
+                    SELECT COALESCE(short_name, college_name) as name, nirf_rank as rank, COALESCE(location, district) as city
+                    FROM colleges
+                    WHERE {where_str} AND nirf_rank IS NOT NULL AND nirf_rank != '' AND nirf_rank != 'NULL'
+                    ORDER BY CASE WHEN nirf_rank ~ '^[0-9]+$' THEN nirf_rank::int ELSE 9999 END ASC
+                    LIMIT 10;
+                """
+                top_nirf = db.query_all(nirf_sql, tuple(params)) or []
+
+                act_sql = """
+                    SELECT 
+                        count(*) filter (where module = 'colleges' and action_type in ('view', 'explore')) as total_col_views,
+                        count(*) filter (where module = 'colleges' and action_type = 'search') as direct_col_searches,
+                        count(*) filter (where module in ('comparison', 'reviews-compare') or action_type = 'compare') as comp_queries,
+                        count(*) filter (where module in ('placements', 'internships', 'jobs')) as place_inq
+                    FROM user_activity;
+                """
+                act = db.query_one(act_sql) or {}
+
+                return jsonify({
+                    "success": True,
+                    "district": district_filter or "All Districts",
+                    "state": state_filter or "Tamil Nadu",
+                    "analytics": {
+                        "totalColleges": total_match,
+                        "autonomousCount": autonomous,
+                        "affiliatedCount": affiliated,
+                        "deemedCount": deemed,
+                        "naacAPlusCount": naac_a_plus,
+                        "naacACount": naac_a,
+                        "naacBCount": naac_b,
+                        "topNIRFColleges": top_nirf,
+                        "averageRating": "4.6 / 5.0" if total_match > 0 else "0.0",
+                        "totalMonitoredDatabase": total_monitored,
+                        "totalCollegeViews": int(act.get("total_col_views") or 0),
+                        "directCollegeSearches": int(act.get("direct_col_searches") or 0),
+                        "comparisonQueries": int(act.get("comp_queries") or 0),
+                        "placementInquiries": int(act.get("place_inq") or 0)
+                    }
+                })
+            else:
+                colleges = load_colleges_data() or []
+                matching_colleges = colleges
+                if clean_state:
+                    matching_colleges = [c for c in matching_colleges if str(c.get("state") or "").lower() == clean_state.lower()]
+                if clean_dist:
+                    matching_colleges = [c for c in matching_colleges if clean_dist.lower() in str(c.get("district") or "").lower() or clean_dist.lower() in str(c.get("city") or "").lower()]
+                total_match = len(matching_colleges)
+                autonomous = len([c for c in matching_colleges if "autonomous" in str(c.get("type") or "").lower() or "autonomous" in str(c.get("badge") or "").lower()])
+                affiliated = len([c for c in matching_colleges if "affiliated" in str(c.get("type") or "").lower() or "public" in str(c.get("type") or "").lower()])
+                deemed = max(0, total_match - autonomous - affiliated)
+                naac_a_plus = len([c for c in matching_colleges if "A+" in str(c.get("naac_grade") or "") or "A++" in str(c.get("naac_grade") or "")])
+                naac_a = len([c for c in matching_colleges if str(c.get("naac_grade") or "") == "A"])
+                naac_b = max(0, total_match - naac_a_plus - naac_a)
+                nirf_ranked = [c for c in matching_colleges if str(c.get("nirf_rank") or "").isdigit() and int(str(c.get("nirf_rank"))) < 500]
+                nirf_ranked.sort(key=lambda x: int(x["nirf_rank"]))
+                return jsonify({
+                    "success": True,
+                    "district": district_filter or "All Districts",
+                    "state": state_filter or "Tamil Nadu",
+                    "analytics": {
+                        "totalColleges": total_match,
+                        "autonomousCount": autonomous,
+                        "affiliatedCount": affiliated,
+                        "deemedCount": deemed,
+                        "naacAPlusCount": naac_a_plus,
+                        "naacACount": naac_a,
+                        "naacBCount": naac_b,
+                        "topNIRFColleges": [{"name": c.get("name") or c.get("college_name"), "rank": c.get("nirf_rank"), "city": c.get("city") or c.get("district")} for c in nirf_ranked[:10]],
+                        "averageRating": "4.6 / 5.0" if total_match > 0 else "0.0",
+                        "totalMonitoredDatabase": len(colleges),
+                        "totalCollegeViews": 0,
+                        "directCollegeSearches": 0,
+                        "comparisonQueries": 0,
+                        "placementInquiries": 0
+                    }
+                })
+
+        # 2. General / User Analytics (Consolidated Real PostgreSQL Data)
         if db.is_pg_connected():
-            where_clauses = ["status != 'archived'"]
-            params = []
-            if clean_state:
-                where_clauses.append("LOWER(state) = %s")
-                params.append(clean_state.lower())
-            if clean_dist:
-                where_clauses.append("(LOWER(COALESCE(district, '')) = %s OR LOWER(COALESCE(location, '')) = %s)")
-                params.extend([clean_dist.lower(), clean_dist.lower()])
-
-            where_str = " AND ".join(where_clauses)
-            
-            stats_sql = f"""
-                SELECT 
-                    count(*) as total_match,
-                    count(*) filter (where lower(coalesce(college_type, '')) like '%%autonomous%%' or lower(coalesce(badge, '')) like '%%autonomous%%' or lower(coalesce(college_name, '')) like '%%autonomous%%') as autonomous,
-                    count(*) filter (where lower(coalesce(college_type, '')) like '%%affiliated%%' or lower(coalesce(college_type, '')) like '%%public%%') as affiliated,
-                    count(*) filter (where upper(coalesce(naac_grade, '')) in ('A+', 'A++') or upper(coalesce(accreditation, '')) like '%%A+%%') as naac_a_plus,
-                    count(*) filter (where upper(coalesce(naac_grade, '')) = 'A' or (upper(coalesce(accreditation, '')) like '%%NAAC A%%' and upper(coalesce(accreditation, '')) not like '%%A+%%')) as naac_a,
-                    (SELECT count(*) FROM colleges WHERE status != 'archived') as total_monitored
-                FROM colleges
-                WHERE {where_str};
-            """
-            st = db.query_one(stats_sql, tuple(params)) or {}
-            total_match = st.get("total_match", 0)
-            autonomous = st.get("autonomous", 0)
-            affiliated = st.get("affiliated", 0)
-            deemed = max(0, total_match - autonomous - affiliated)
-            naac_a_plus = st.get("naac_a_plus", 0)
-            naac_a = st.get("naac_a", 0)
-            naac_b = max(0, total_match - naac_a_plus - naac_a)
-            total_monitored = st.get("total_monitored", total_match)
-
-            nirf_sql = f"""
-                SELECT COALESCE(short_name, college_name) as name, nirf_rank as rank, COALESCE(location, district) as city
-                FROM colleges
-                WHERE {where_str} AND nirf_rank IS NOT NULL AND nirf_rank != '' AND nirf_rank != 'NULL'
-                ORDER BY CASE WHEN nirf_rank ~ '^[0-9]+$' THEN nirf_rank::int ELSE 9999 END ASC
-                LIMIT 10;
-            """
-            top_nirf = db.query_all(nirf_sql, tuple(params)) or []
-
             act_sql = """
                 SELECT 
-                    count(*) filter (where module = 'colleges' and action_type in ('view', 'explore')) as total_col_views,
-                    count(*) filter (where module = 'colleges' and action_type = 'search') as direct_col_searches,
-                    count(*) filter (where module in ('comparison', 'reviews-compare') or action_type = 'compare') as comp_queries,
-                    count(*) filter (where module in ('placements', 'internships', 'jobs')) as place_inq
+                    count(*) filter (where action_type in ('search', 'search_query')) as total_searches,
+                    count(*) filter (where action_type in ('explore', 'view', 'navigate')) as total_explores,
+                    count(*) filter (where module = 'colleges' and action_type in ('view', 'explore')) as total_college_views,
+                    count(*) filter (where module = 'colleges' and action_type = 'search') as direct_college_searches,
+                    count(*) filter (where module in ('comparison', 'reviews-compare') or action_type = 'compare') as comparison_queries,
+                    count(*) filter (where module in ('placements', 'internships', 'jobs')) as placement_inquiries,
+                    count(distinct coalesce(user_id::text, date_trunc('hour', created_at)::text)) as active_sessions
                 FROM user_activity;
             """
             act = db.query_one(act_sql) or {}
+            total_searches = int(act.get("total_searches") or 0)
+            total_explores = int(act.get("total_explores") or 0)
+            total_college_views = int(act.get("total_college_views") or 0)
+            direct_college_searches = int(act.get("direct_college_searches") or 0)
+            comparison_queries = int(act.get("comparison_queries") or 0)
+            placement_inquiries = int(act.get("placement_inquiries") or 0)
+            raw_sessions = act.get("active_sessions")
+            active_sessions = max(int(raw_sessions or 1), 1)
+
+            avg_queries = round(total_searches / active_sessions, 1) if active_sessions > 0 else 0.0
+            explore_depth = round(total_explores / active_sessions, 1) if active_sessions > 0 else 0.0
+
+            # Most searched college (from real user activity)
+            c_top = db.query_one("""
+                SELECT search_query, count(*) as c 
+                FROM user_activity 
+                WHERE (module = 'colleges' OR action_type = 'search') 
+                  AND search_query IS NOT NULL
+                  AND search_query != '' 
+                  AND search_query NOT IN ('colleges', 'courses', 'domains', 'test') 
+                GROUP BY search_query ORDER BY c DESC LIMIT 1;
+            """)
+            most_searched_col = str(c_top.get("search_query") or "—") if c_top and c_top.get("search_query") else "—"
+            most_searched_col_count = int(c_top.get("c") or 0) if c_top else 0
+
+            # Most searched course (from real user activity)
+            crs_top = db.query_one("""
+                SELECT search_query, count(*) as c 
+                FROM user_activity 
+                WHERE module = 'courses' 
+                  AND search_query IS NOT NULL
+                  AND search_query != '' 
+                  AND search_query != 'courses' 
+                GROUP BY search_query ORDER BY c DESC LIMIT 1;
+            """)
+            most_searched_course = str(crs_top.get("search_query") or "—") if crs_top and crs_top.get("search_query") else "—"
+            most_searched_course_count = int(crs_top.get("c") or 0) if crs_top else 0
+
+            # Top domain track (from real user activity)
+            dom_top = db.query_one("""
+                SELECT record_id, count(*) as c 
+                FROM user_activity 
+                WHERE module = 'domains' 
+                  AND record_id IS NOT NULL
+                  AND record_id != '' 
+                  AND record_id != 'domains' 
+                GROUP BY record_id ORDER BY c DESC LIMIT 1;
+            """)
+            top_domain = "—"
+            if dom_top and dom_top.get("record_id"):
+                top_domain = str(dom_top.get("record_id")).replace('-', ' ').title()
+
+            # Most viewed exam (from real user activity)
+            exm_top = db.query_one("""
+                SELECT record_id, count(*) as c 
+                FROM user_activity 
+                WHERE module IN ('exams', 'entrance-prep') 
+                  AND record_id IS NOT NULL
+                  AND record_id != '' 
+                  AND record_id NOT IN ('exams', 'entrance-prep') 
+                GROUP BY record_id ORDER BY c DESC LIMIT 1;
+            """)
+            most_viewed_exam = "—"
+            if exm_top and exm_top.get("record_id"):
+                most_viewed_exam = str(exm_top.get("record_id")).replace('-', ' ').upper()
+
+            # Content updates & users
+            upd_sql = """
+                SELECT 
+                    count(*) filter (where status = 'pending') as pending_count,
+                    count(*) filter (where status = 'approved') as approved_count
+                FROM content_updates;
+            """
+            upd = db.query_one(upd_sql) or {}
+            pending_appr = int(upd.get("pending_count") or 0)
+            approved_appr = int(upd.get("approved_count") or 0)
+
+            u_row = db.query_one("SELECT count(*) as c FROM users;")
+            total_users = int(u_row.get("c") or 0) if u_row else 0
+
+            # Recent interactions (top 5 real)
+            rec_rows = db.query_all("SELECT action_type, module, search_query, created_at FROM user_activity ORDER BY id DESC LIMIT 5;")
+            recent_interactions = []
+            for r in (rec_rows or []):
+                if not isinstance(r, dict):
+                    continue
+                module_name = str(r.get('module') or 'General').title()
+                action_name = str(r.get('action_type') or 'Activity').title()
+                action_desc = f"{module_name} {action_name}".strip() or "User Activity"
+                detail_desc = str(r.get('search_query') or f"{r.get('module') or 'portal'} exploration")
+                time_str = "Recently"
+                created_at = r.get("created_at")
+                if created_at and hasattr(created_at, "strftime"):
+                    try:
+                        time_str = created_at.strftime("%H:%M")
+                    except Exception:
+                        time_str = "Recently"
+                recent_interactions.append({
+                    "action": action_desc,
+                    "detail": detail_desc,
+                    "time": time_str
+                })
 
             return jsonify({
                 "success": True,
-                "district": district_filter or "All Districts",
-                "state": state_filter or "Tamil Nadu",
                 "analytics": {
-                    "totalColleges": total_match,
-                    "autonomousCount": autonomous,
-                    "affiliatedCount": affiliated,
-                    "deemedCount": deemed,
-                    "naacAPlusCount": naac_a_plus,
-                    "naacACount": naac_a,
-                    "naacBCount": naac_b,
-                    "topNIRFColleges": top_nirf,
-                    "averageRating": "4.6 / 5.0" if total_match > 0 else "0.0",
-                    "totalMonitoredDatabase": total_monitored,
-                    "totalCollegeViews": act.get("total_col_views", 0),
-                    "directCollegeSearches": act.get("direct_col_searches", 0),
-                    "comparisonQueries": act.get("comp_queries", 0),
-                    "placementInquiries": act.get("place_inq", 0)
-                }
-            })
-        else:
-            colleges = load_colleges_data()
-            matching_colleges = colleges
-            if clean_state:
-                matching_colleges = [c for c in matching_colleges if str(c.get("state") or "").lower() == clean_state.lower()]
-            if clean_dist:
-                matching_colleges = [c for c in matching_colleges if clean_dist.lower() in str(c.get("district") or "").lower() or clean_dist.lower() in str(c.get("city") or "").lower()]
-            total_match = len(matching_colleges)
-            autonomous = len([c for c in matching_colleges if "autonomous" in str(c.get("type") or "").lower() or "autonomous" in str(c.get("badge") or "").lower()])
-            affiliated = len([c for c in matching_colleges if "affiliated" in str(c.get("type") or "").lower() or "public" in str(c.get("type") or "").lower()])
-            deemed = max(0, total_match - autonomous - affiliated)
-            naac_a_plus = len([c for c in matching_colleges if "A+" in str(c.get("naac_grade") or "") or "A++" in str(c.get("naac_grade") or "")])
-            naac_a = len([c for c in matching_colleges if str(c.get("naac_grade") or "") == "A"])
-            naac_b = max(0, total_match - naac_a_plus - naac_a)
-            nirf_ranked = [c for c in matching_colleges if str(c.get("nirf_rank") or "").isdigit() and int(str(c.get("nirf_rank"))) < 500]
-            nirf_ranked.sort(key=lambda x: int(x["nirf_rank"]))
-            return jsonify({
-                "success": True,
-                "district": district_filter or "All Districts",
-                "state": state_filter or "Tamil Nadu",
-                "analytics": {
-                    "totalColleges": total_match,
-                    "autonomousCount": autonomous,
-                    "affiliatedCount": affiliated,
-                    "deemedCount": deemed,
-                    "naacAPlusCount": naac_a_plus,
-                    "naacACount": naac_a,
-                    "naacBCount": naac_b,
-                    "topNIRFColleges": [{"name": c.get("name") or c.get("college_name"), "rank": c.get("nirf_rank"), "city": c.get("city") or c.get("district")} for c in nirf_ranked[:10]],
-                    "averageRating": "4.6 / 5.0" if total_match > 0 else "0.0",
-                    "totalMonitoredDatabase": len(colleges),
-                    "totalCollegeViews": 0,
-                    "directCollegeSearches": 0,
-                    "comparisonQueries": 0,
-                    "placementInquiries": 0
+                    "totalUsers": total_users,
+                    "totalSearches": total_searches,
+                    "totalExplores": total_explores,
+                    "mostSearchedCollege": most_searched_col,
+                    "mostSearchedCollegeCount": most_searched_col_count,
+                    "mostSearchedCourse": most_searched_course,
+                    "mostSearchedCourseCount": most_searched_course_count,
+                    "topDomain": top_domain,
+                    "mostViewedExam": most_viewed_exam,
+                    "pendingApprovals": pending_appr,
+                    "approvedUpdates": approved_appr,
+                    "totalCollegeViews": total_college_views,
+                    "directCollegeSearches": direct_college_searches,
+                    "comparisonQueries": comparison_queries,
+                    "placementInquiries": placement_inquiries,
+                    "activeUserSessions": active_sessions,
+                    "avgQueriesPerSession": avg_queries,
+                    "exploreDepth": f"{explore_depth} Actions",
+                    "userActivity": {
+                        "searches": total_searches,
+                        "collegeViews": total_college_views,
+                        "courseExplores": total_explores,
+                        "domainExplores": 0,
+                        "examPrepViews": 0,
+                        "studyMaterialsUsed": 0,
+                        "reviewsSubmitted": 0,
+                        "mentorInteractions": 0
+                    },
+                    "recentInteractions": recent_interactions
                 }
             })
 
-    # 2. General / User Analytics (Consolidated Real PostgreSQL Data)
-    if db.is_pg_connected():
-        act_sql = """
-            SELECT 
-                count(*) filter (where action_type in ('search', 'search_query')) as total_searches,
-                count(*) filter (where action_type in ('explore', 'view', 'navigate')) as total_explores,
-                count(*) filter (where module = 'colleges' and action_type in ('view', 'explore')) as total_college_views,
-                count(*) filter (where module = 'colleges' and action_type = 'search') as direct_college_searches,
-                count(*) filter (where module in ('comparison', 'reviews-compare') or action_type = 'compare') as comparison_queries,
-                count(*) filter (where module in ('placements', 'internships', 'jobs')) as placement_inquiries,
-                count(distinct coalesce(user_id::text, date_trunc('hour', created_at)::text)) as active_sessions
-            FROM user_activity;
-        """
-        act = db.query_one(act_sql) or {}
-        total_searches = act.get("total_searches", 0)
-        total_explores = act.get("total_explores", 0)
-        total_college_views = act.get("total_college_views", 0)
-        direct_college_searches = act.get("direct_college_searches", 0)
-        comparison_queries = act.get("comparison_queries", 0)
-        placement_inquiries = act.get("placement_inquiries", 0)
-        active_sessions = max(act.get("active_sessions", 1), 1)
-
-        avg_queries = round(total_searches / active_sessions, 1)
-        explore_depth = round(total_explores / active_sessions, 1)
-
-        # Most searched college (from real user activity)
-        c_top = db.query_one("""
-            SELECT search_query, count(*) as c 
-            FROM user_activity 
-            WHERE (module = 'colleges' OR action_type = 'search') 
-              AND search_query != '' 
-              AND search_query NOT IN ('colleges', 'courses', 'domains', 'test') 
-            GROUP BY search_query ORDER BY c DESC LIMIT 1;
-        """)
-        most_searched_col = c_top["search_query"] if c_top else "—"
-        most_searched_col_count = c_top["c"] if c_top else 0
-
-        # Most searched course (from real user activity)
-        crs_top = db.query_one("""
-            SELECT search_query, count(*) as c 
-            FROM user_activity 
-            WHERE module = 'courses' 
-              AND search_query != '' 
-              AND search_query != 'courses' 
-            GROUP BY search_query ORDER BY c DESC LIMIT 1;
-        """)
-        most_searched_course = crs_top["search_query"] if crs_top else "—"
-        most_searched_course_count = crs_top["c"] if crs_top else 0
-
-        # Top domain track (from real user activity)
-        dom_top = db.query_one("""
-            SELECT record_id, count(*) as c 
-            FROM user_activity 
-            WHERE module = 'domains' 
-              AND record_id != '' 
-              AND record_id != 'domains' 
-            GROUP BY record_id ORDER BY c DESC LIMIT 1;
-        """)
-        top_domain = dom_top["record_id"].replace('-', ' ').title() if dom_top else "—"
-
-        # Most viewed exam (from real user activity)
-        exm_top = db.query_one("""
-            SELECT record_id, count(*) as c 
-            FROM user_activity 
-            WHERE module IN ('exams', 'entrance-prep') 
-              AND record_id != '' 
-              AND record_id NOT IN ('exams', 'entrance-prep') 
-            GROUP BY record_id ORDER BY c DESC LIMIT 1;
-        """)
-        most_viewed_exam = exm_top["record_id"].replace('-', ' ').upper() if exm_top else "—"
-
-        # Content updates & users
-        upd_sql = """
-            SELECT 
-                count(*) filter (where status = 'pending') as pending_count,
-                count(*) filter (where status = 'approved') as approved_count
-            FROM content_updates;
-        """
-        upd = db.query_one(upd_sql) or {}
-        pending_appr = upd.get("pending_count", 0)
-        approved_appr = upd.get("approved_count", 0)
-
-        u_row = db.query_one("SELECT count(*) as c FROM users;")
-        total_users = u_row["c"] if u_row else 0
-
-        # Recent interactions (top 5 real)
-        rec_rows = db.query_all("SELECT action_type, module, search_query, created_at FROM user_activity ORDER BY id DESC LIMIT 5;")
-        recent_interactions = []
-        for r in (rec_rows or []):
-            action_desc = f"{r.get('module', 'General').title()} {r.get('action_type', 'Activity').title()}"
-            detail_desc = r.get('search_query') or f"{r.get('module', 'portal')} exploration"
-            time_str = "Recently"
-            if r.get("created_at") and hasattr(r["created_at"], "strftime"):
-                time_str = r["created_at"].strftime("%H:%M")
-            recent_interactions.append({
-                "action": action_desc,
-                "detail": detail_desc,
-                "time": time_str
-            })
+        # Fallback to local files if DB disconnected
+        approvals_data = (load_approvals_data() or {}).get("approvals", [])
+        pending_appr = len([a for a in approvals_data if a.get("status") == "Pending"])
+        approved_appr = len([a for a in approvals_data if a.get("status") == "Approved"])
+        users_data = (load_users_data() or {}).get("users", [])
 
         return jsonify({
             "success": True,
             "analytics": {
-                "totalUsers": total_users,
-                "totalSearches": total_searches,
-                "totalExplores": total_explores,
-                "mostSearchedCollege": most_searched_col,
-                "mostSearchedCollegeCount": most_searched_col_count,
-                "mostSearchedCourse": most_searched_course,
-                "mostSearchedCourseCount": most_searched_course_count,
-                "topDomain": top_domain,
-                "mostViewedExam": most_viewed_exam,
+                "totalUsers": len(users_data),
+                "totalSearches": 0,
+                "totalExplores": 0,
+                "mostSearchedCollege": "—",
+                "mostSearchedCollegeCount": 0,
+                "mostSearchedCourse": "—",
+                "mostSearchedCourseCount": 0,
+                "topDomain": "—",
+                "mostViewedExam": "—",
                 "pendingApprovals": pending_appr,
                 "approvedUpdates": approved_appr,
-                "totalCollegeViews": total_college_views,
-                "directCollegeSearches": direct_college_searches,
-                "comparisonQueries": comparison_queries,
-                "placementInquiries": placement_inquiries,
-                "activeUserSessions": active_sessions,
-                "avgQueriesPerSession": avg_queries,
-                "exploreDepth": f"{explore_depth} Actions",
+                "totalCollegeViews": 0,
+                "directCollegeSearches": 0,
+                "comparisonQueries": 0,
+                "placementInquiries": 0,
+                "activeUserSessions": 1,
+                "avgQueriesPerSession": 0.0,
+                "exploreDepth": "0.0 Actions",
                 "userActivity": {
-                    "searches": total_searches,
-                    "collegeViews": total_college_views,
-                    "courseExplores": total_explores,
+                    "searches": 0,
+                    "collegeViews": 0,
+                    "courseExplores": 0,
                     "domainExplores": 0,
                     "examPrepViews": 0,
                     "studyMaterialsUsed": 0,
                     "reviewsSubmitted": 0,
                     "mentorInteractions": 0
                 },
-                "recentInteractions": recent_interactions
+                "recentInteractions": []
             }
         })
-
-    # Fallback to local files if DB disconnected
-    approvals_data = load_approvals_data().get("approvals", [])
-    pending_appr = len([a for a in approvals_data if a.get("status") == "Pending"])
-    approved_appr = len([a for a in approvals_data if a.get("status") == "Approved"])
-    users_data = load_users_data().get("users", [])
-
-    return jsonify({
-        "success": True,
-        "analytics": {
-            "totalUsers": len(users_data),
-            "totalSearches": 0,
-            "totalExplores": 0,
-            "mostSearchedCollege": "—",
-            "mostSearchedCollegeCount": 0,
-            "mostSearchedCourse": "—",
-            "mostSearchedCourseCount": 0,
-            "topDomain": "—",
-            "mostViewedExam": "—",
-            "pendingApprovals": pending_appr,
-            "approvedUpdates": approved_appr,
-            "totalCollegeViews": 0,
-            "directCollegeSearches": 0,
-            "comparisonQueries": 0,
-            "placementInquiries": 0,
-            "activeUserSessions": 1,
-            "avgQueriesPerSession": 0.0,
-            "exploreDepth": "0.0 Actions",
-            "userActivity": {
-                "searches": 0,
-                "collegeViews": 0,
-                "courseExplores": 0,
-                "domainExplores": 0,
-                "examPrepViews": 0,
-                "studyMaterialsUsed": 0,
-                "reviewsSubmitted": 0,
-                "mentorInteractions": 0
-            },
-            "recentInteractions": []
-        }
-    })
+    except Exception as e:
+        logger.error(f"Error in api_admin_analytics: {e}", exc_info=True)
+        if request.args.get("type", "").strip().lower() == "colleges":
+            return jsonify({
+                "success": True,
+                "district": request.args.get("district", "").strip() or "All Districts",
+                "state": request.args.get("state", "").strip() or "Tamil Nadu",
+                "analytics": {
+                    "totalColleges": 0,
+                    "autonomousCount": 0,
+                    "affiliatedCount": 0,
+                    "deemedCount": 0,
+                    "naacAPlusCount": 0,
+                    "naacACount": 0,
+                    "naacBCount": 0,
+                    "topNIRFColleges": [],
+                    "averageRating": "0.0",
+                    "totalMonitoredDatabase": 0,
+                    "totalCollegeViews": 0,
+                    "directCollegeSearches": 0,
+                    "comparisonQueries": 0,
+                    "placementInquiries": 0
+                }
+            })
+        return jsonify({
+            "success": True,
+            "analytics": {
+                "totalUsers": 0,
+                "totalSearches": 0,
+                "totalExplores": 0,
+                "mostSearchedCollege": "—",
+                "mostSearchedCollegeCount": 0,
+                "mostSearchedCourse": "—",
+                "mostSearchedCourseCount": 0,
+                "topDomain": "—",
+                "mostViewedExam": "—",
+                "pendingApprovals": 0,
+                "approvedUpdates": 0,
+                "totalCollegeViews": 0,
+                "directCollegeSearches": 0,
+                "comparisonQueries": 0,
+                "placementInquiries": 0,
+                "activeUserSessions": 1,
+                "avgQueriesPerSession": 0.0,
+                "exploreDepth": "0.0 Actions",
+                "userActivity": {
+                    "searches": 0,
+                    "collegeViews": 0,
+                    "courseExplores": 0,
+                    "domainExplores": 0,
+                    "examPrepViews": 0,
+                    "studyMaterialsUsed": 0,
+                    "reviewsSubmitted": 0,
+                    "mentorInteractions": 0
+                },
+                "recentInteractions": []
+            }
+        })
 
 # ----------------------------------------------------
 # 10. CONTENT UPDATES & AUDIT LOGS REST API

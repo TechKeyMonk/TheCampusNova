@@ -12381,7 +12381,8 @@ function getAdmissionsFilteredList() {
     const name = (item.college_name || '').toLowerCase();
     const state = (item.state || '').toLowerCase();
     const dist = (item.district || '').toLowerCase();
-    const courses = (item.courses_offered || []).map(c => c.toLowerCase());
+    const rawCourses = item.courses_offered || item.courses || [];
+    const courses = (Array.isArray(rawCourses) ? rawCourses : (typeof rawCourses === 'string' ? rawCourses.split(',') : [])).map(c => String(c).trim().toLowerCase()).filter(Boolean);
 
     const matchSearch = !q || name.includes(q) || courses.some(c => c.includes(q));
     const matchState = !selectedState || state.includes(selectedState);
@@ -13016,7 +13017,8 @@ function getFacilitiesFilteredColleges() {
     const name = (f.college_name || '').toLowerCase();
     const state = (f.state || '').toLowerCase();
     const dist = (f.district || '').toLowerCase();
-    const depts = (f.departments || f.classrooms || '').toLowerCase();
+    const rawDepts = f.departments || f.classrooms || '';
+    const depts = (Array.isArray(rawDepts) ? rawDepts.join(' ') : String(rawDepts || '')).toLowerCase();
 
     const matchSearch = !q || name.includes(q) || depts.includes(q);
     const matchState = !selectedState || state.includes(selectedState);
