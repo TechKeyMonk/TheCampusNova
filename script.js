@@ -18019,8 +18019,87 @@ async function submitMentorEnquiry() {
       btn.textContent = 'Submit Enquiry ➔';
     }
   }
-}
 window.submitMentorEnquiry = submitMentorEnquiry;
+
+async function submitContactEnquiry(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+
+  const nameInput = document.getElementById('contactFullName');
+  const emailInput = document.getElementById('contactEmailAddress');
+  const phoneInput = document.getElementById('contactPhone');
+  const subjectSelect = document.getElementById('contactSubjectSelect');
+  const messageInput = document.getElementById('contactMessageText');
+  const submitBtn = document.getElementById('contactSubmitBtn') || form.querySelector('button[type="submit"]');
+
+  const nameVal = nameInput ? nameInput.value.trim() : '';
+  const emailVal = emailInput ? emailInput.value.trim() : '';
+  const phoneVal = phoneInput ? phoneInput.value.trim() : '';
+  const subjectVal = subjectSelect ? subjectSelect.value : 'General';
+  const messageVal = messageInput ? messageInput.value.trim() : '';
+
+  if (!nameVal || !emailVal || !messageVal) {
+    if (typeof showToast === 'function') {
+      showToast('Please fill out your name, email, and message.');
+    }
+    return;
+  }
+
+  const subjectMap = {
+    admissions: 'Admissions & College Guidance',
+    mentor: 'Mentor Session Inquiry',
+    verification: 'Institutional Verification Request',
+    support: 'Platform Support & Feedback'
+  };
+  const subjectText = subjectMap[subjectVal] || subjectVal;
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending Inquiry...';
+  }
+
+  try {
+    const res = await fetch('/api/mentor-enquiries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: nameVal,
+        email: emailVal,
+        mobile: phoneVal || 'Not provided',
+        phone: phoneVal || 'Not provided',
+        terms_accepted: true,
+        mentor_id: 'Contact Us',
+        mentor_name: `Contact Us: ${subjectText}`,
+        message: messageVal,
+        topic: subjectText,
+        source: 'contact'
+      })
+    });
+    const data = await res.json();
+    if (data && data.success) {
+      if (typeof showToast === 'function') {
+        showToast(data.message || 'Thank you! Your inquiry has been received.');
+      }
+      form.reset();
+    } else {
+      if (typeof showToast === 'function') {
+        showToast((data && data.message) || 'Failed to submit inquiry. Please try again.');
+      }
+    }
+  } catch (err) {
+    console.error('[Contact Inquiry Error]', err);
+    if (typeof showToast === 'function') {
+      showToast('Connection error. Please try again.');
+    }
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Inquiry ➔';
+    }
+  }
+}
+window.submitContactEnquiry = submitContactEnquiry;
 
 // Public Mentor Search input listener
 document.addEventListener('DOMContentLoaded', () => {

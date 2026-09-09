@@ -1600,7 +1600,7 @@
           <!-- Contact Feedback Form Card -->
           <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:28px; box-shadow:0 4px 20px rgba(0,0,0,0.04);">
             <h3 style="font-size:20px; font-weight:700; color:#0F172A; margin:0 0 16px;">Send Us a Message</h3>
-            <form id="contactForm" onsubmit="event.preventDefault(); showToast('Thank you! Your message has been received.'); this.reset();" style="display:flex; flex-direction:column; gap:14px;">
+            <form id="contactForm" onsubmit="submitContactEnquiry(event);" style="display:flex; flex-direction:column; gap:14px;">
               <div>
                 <label for="contactFullName" style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Your Name</label>
                 <input type="text" id="contactFullName" name="contactFullName" autocomplete="name" required placeholder="Enter full name" style="width:100%; padding:10px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:13.5px; outline:none; box-sizing:border-box;" />
@@ -1608,6 +1608,10 @@
               <div>
                 <label for="contactEmailAddress" style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Email Address</label>
                 <input type="email" id="contactEmailAddress" name="contactEmailAddress" autocomplete="email" required placeholder="name@domain.com" style="width:100%; padding:10px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:13.5px; outline:none; box-sizing:border-box;" />
+              </div>
+              <div>
+                <label for="contactPhone" style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Phone Number (Optional)</label>
+                <input type="tel" id="contactPhone" name="contactPhone" placeholder="10-digit mobile number" style="width:100%; padding:10px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:13.5px; outline:none; box-sizing:border-box;" />
               </div>
               <div>
                 <label for="contactSubjectSelect" style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Inquiry Subject</label>
@@ -1622,7 +1626,7 @@
                 <label for="contactMessageText" style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Message</label>
                 <textarea id="contactMessageText" name="contactMessageText" rows="4" required placeholder="Describe how we can assist you..." style="width:100%; padding:10px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:13.5px; outline:none; box-sizing:border-box; resize:vertical;"></textarea>
               </div>
-              <button type="submit" class="primary-button" style="background:#77AC3B; border-color:#77AC3B; padding:12px; font-size:14px; font-weight:700; width:100%;">Send Inquiry ➔</button>
+              <button type="submit" id="contactSubmitBtn" class="primary-button" style="background:#77AC3B; border-color:#77AC3B; padding:12px; font-size:14px; font-weight:700; width:100%;">Send Inquiry ➔</button>
             </form>
           </div>
         </div>

@@ -57,13 +57,49 @@ def _get_clean_env_val(keys, default=""):
     """
     Resolves environment variable across multiple candidate keys,
     safely stripping whitespace, carriage returns, and enclosing quotes.
+    Supports:
+    1. Exact match for keys
+    2. Case-insensitive match across os.environ
+    3. Trimmed key match (handles accidental spaces in variable names)
+    4. Normalized match (handles prefixes and stripped underscores)
     """
+    # 1. Exact match
     for k in keys:
         raw = os.getenv(k)
         if raw is not None:
-            clean = raw.strip().strip("'\"")
+            clean = str(raw).strip().strip("'\"")
             if clean:
                 return clean
+
+    # 2. Case-insensitive and trimmed key match
+    env_keys_clean = {k.strip().upper(): k for k in os.environ.keys()}
+    for k in keys:
+        k_upper = k.strip().upper()
+        if k_upper in env_keys_clean:
+            actual_key = env_keys_clean[k_upper]
+            raw = os.getenv(actual_key)
+            if raw is not None:
+                clean = str(raw).strip().strip("'\"")
+                if clean:
+                    return clean
+
+    # 3. Normalized match (ignores underscores, hyphens, and common framework prefixes)
+    normalized_targets = {k.upper().replace("_", "").replace("-", "") for k in keys}
+    for env_k, env_v in os.environ.items():
+        clean_env_k = (
+            env_k.strip().upper()
+            .replace("NEXT_PUBLIC_", "")
+            .replace("VITE_", "")
+            .replace("REACT_APP_", "")
+            .replace("_", "")
+            .replace("-", "")
+        )
+        if clean_env_k in normalized_targets:
+            if env_v is not None:
+                clean = str(env_v).strip().strip("'\"")
+                if clean:
+                    return clean
+
     return default
 
 
@@ -164,6 +200,10 @@ def check_gmail_status():
         "refresh_token_configured": bool(refresh_token),
         "sender_email": sender,
         "initialized": False,
+        "detected_env_variable_names": [
+            k for k in sorted(os.environ.keys())
+            if any(term in k.upper() for term in ["GMAIL", "GOOGLE", "MAIL", "SMTP", "REFRESH", "CLIENT_ID", "CLIENT_SECRET", "TOKEN"])
+        ],
         "error": None
     }
 

@@ -5220,16 +5220,25 @@ def api_submit_mentor_enquiry():
     user_name = str(data.get("user_name") or data.get("name") or "").strip()
     user_email = str(data.get("user_email") or data.get("email") or "").strip()
     user_mobile = str(data.get("user_mobile") or data.get("mobile") or data.get("phone") or "").strip()
-    terms_accepted = bool(data.get("terms_accepted") or data.get("agree_terms") or data.get("terms"))
-    mentor_id = str(data.get("mentor_id") or data.get("mentorId") or "").strip()
-    mentor_name = str(data.get("mentor_name") or data.get("mentorName") or "").strip()
+    is_contact_form = str(data.get("source", "")).lower() == "contact" or str(data.get("mentor_id", "")).lower() in ["contact", "contact us", "general", "support"]
+    terms_accepted = bool(data.get("terms_accepted") or data.get("agree_terms") or data.get("terms") or is_contact_form)
+    mentor_id = str(data.get("mentor_id") or data.get("mentorId") or ("Contact Us" if is_contact_form else "")).strip()
+    mentor_name = str(data.get("mentor_name") or data.get("mentorName") or ("Admissions & Support Panel" if is_contact_form else "")).strip()
 
     if not user_name:
         return jsonify({"success": False, "message": "Please enter your full name."}), 400
     if not user_email or "@" not in user_email:
         return jsonify({"success": False, "message": "Please provide a valid email address."}), 400
-    if not user_mobile or len(re.sub(r'\D', '', user_mobile)) < 10:
-        return jsonify({"success": False, "message": "Please enter a valid 10-digit mobile number."}), 400
+    if not user_mobile:
+        if is_contact_form:
+            user_mobile = "Not provided"
+        else:
+            return jsonify({"success": False, "message": "Please enter a valid 10-digit mobile number."}), 400
+    elif len(re.sub(r'\D', '', user_mobile)) < 10 and user_mobile != "Not provided":
+        if is_contact_form:
+            user_mobile = "Not provided"
+        else:
+            return jsonify({"success": False, "message": "Please enter a valid 10-digit mobile number."}), 400
     if not terms_accepted:
         return jsonify({"success": False, "message": "You must accept the Terms & Conditions before submitting."}), 400
 
@@ -5259,10 +5268,11 @@ def api_submit_mentor_enquiry():
     db_saved = False
     if db.is_pg_connected():
         try:
+            db_mentor_id = mentor_id if (mentor_id and mentor_id.upper().startswith("MEN-")) else None
             db.execute_query("""
                 INSERT INTO mentor_enquiries (enquiry_id, mentor_id, mentor_name, user_name, user_email, user_mobile, terms_accepted, enquiry_date, enquiry_time, status, approval_status, notes)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, (enquiry_id, mentor_id or None, mentor_name, user_name, user_email, user_mobile, True, now_dt, now_tm, "pending", "Pending", message_topic))
+            """, (enquiry_id, db_mentor_id, mentor_name, user_name, user_email, user_mobile, True, now_dt, now_tm, "pending", "Pending", message_topic))
             db_saved = True
         except Exception as e:
             logger.warning(f"[PostgreSQL Mentor Enquiry Save Error] {e}")
