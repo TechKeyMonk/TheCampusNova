@@ -9,7 +9,7 @@ import hmac
 import base64
 import urllib.parse
 import logging
-from email_service import send_email
+from email_service import send_email, check_gmail_status
 from functools import wraps
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify, send_from_directory
@@ -1412,6 +1412,27 @@ An authorized representative has submitted a college profile update and the requ
     except Exception as e:
         logger.error(f"[COLLEGE UPDATE NOTIFICATION FAILED] Failed to send email via Gmail API: {e}")
         return False
+        
+@app.route("/api/admin/gmail/status", methods=["GET"])
+@require_admin_auth
+def api_admin_gmail_status():
+    """
+    Secure diagnostic endpoint for administrators to verify Gmail API
+    health, credentials availability, and service initialization.
+    Never exposes raw secrets or tokens.
+    """
+    try:
+        status = check_gmail_status()
+        return jsonify({
+            "success": True,
+            "gmail": status
+        })
+    except Exception as e:
+        logger.error(f"[Gmail Status Check Error] {e}")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 
 
 @app.route("/api/submit-update", methods=["POST"])

@@ -1,4 +1,5 @@
 import os
+import json
 import base64
 import logging
 from email.mime.text import MIMEText
@@ -18,16 +19,96 @@ logger = logging.getLogger(__name__)
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 
+# Production & Vercel Multi-Provider Environment Variable Key Aliases
+GMAIL_CLIENT_ID_KEYS = [
+    "GMAIL_CLIENT_ID",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_OAUTH_CLIENT_ID",
+    "CLIENT_ID"
+]
 
-def get_gmail_service():
-    refresh_token = os.getenv("GMAIL_REFRESH_TOKEN")
-    client_id = os.getenv("GMAIL_CLIENT_ID")
-    client_secret = os.getenv("GMAIL_CLIENT_SECRET")
+GMAIL_CLIENT_SECRET_KEYS = [
+    "GMAIL_CLIENT_SECRET",
+    "GOOGLE_CLIENT_SECRET",
+    "GOOGLE_OAUTH_CLIENT_SECRET",
+    "CLIENT_SECRET"
+]
+
+GMAIL_REFRESH_TOKEN_KEYS = [
+    "GMAIL_REFRESH_TOKEN",
+    "GOOGLE_REFRESH_TOKEN",
+    "GOOGLE_OAUTH_REFRESH_TOKEN",
+    "GMAIL_TOKEN",
+    "REFRESH_TOKEN"
+]
+
+GMAIL_USER_KEYS = [
+    "GMAIL_USER",
+    "GMAIL_EMAIL",
+    "GOOGLE_USER",
+    "SMTP_USER",
+    "SMTP_FROM"
+]
+
+DEFAULT_OFFICIAL_EMAIL = "thecampusnova@gmail.com"
+
+
+def _get_clean_env_val(keys, default=""):
+    """
+    Resolves environment variable across multiple candidate keys,
+    safely stripping whitespace, carriage returns, and enclosing quotes.
+    """
+    for k in keys:
+        raw = os.getenv(k)
+        if raw is not None:
+            clean = raw.strip().strip("'\"")
+            if clean:
+                return clean
+    return default
+
+
+def _load_client_secret_file():
+    """
+    Fallback helper to read client_id and client_secret from client_secret.json
+    if available locally.
+    """
+    cs_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "client_secret.json")
+    if os.path.exists(cs_path):
+        try:
+            with open(cs_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                web = data.get("web") or data.get("installed") or {}
+                return web.get("client_id", ""), web.get("client_secret", "")
+        except Exception as e:
+            logger.warning(f"[Gmail Client Secret File Warning] Failed to parse client_secret.json: {e}")
+    return "", ""
+
+
+def get_gmail_credentials():
+    """
+    Resolves and validates Gmail OAuth credentials from environment variables
+    with multi-key fallback, sanitization, and client_secret.json fallback.
+    """
+    client_id = _get_clean_env_val(GMAIL_CLIENT_ID_KEYS)
+    client_secret = _get_clean_env_val(GMAIL_CLIENT_SECRET_KEYS)
+    refresh_token = _get_clean_env_val(GMAIL_REFRESH_TOKEN_KEYS)
+
+    # Fallback to client_secret.json if client_id or client_secret missing in env
+    if not client_id or not client_secret:
+        f_cid, f_cs = _load_client_secret_file()
+        if not client_id and f_cid:
+            client_id = f_cid.strip().strip("'\"")
+        if not client_secret and f_cs:
+            client_secret = f_cs.strip().strip("'\"")
 
     missing = []
-    if not refresh_token: missing.append("GMAIL_REFRESH_TOKEN")
-    if not client_id: missing.append("GMAIL_CLIENT_ID")
-    if not client_secret: missing.append("GMAIL_CLIENT_SECRET")
+    if not refresh_token:
+        missing.append("GMAIL_REFRESH_TOKEN (or GOOGLE_REFRESH_TOKEN)")
+    if not client_id:
+        missing.append("GMAIL_CLIENT_ID (or GOOGLE_CLIENT_ID)")
+    if not client_secret:
+        missing.append("GMAIL_CLIENT_SECRET (or GOOGLE_CLIENT_SECRET)")
+
     if missing:
         raise RuntimeError(f"Missing required Gmail credentials in environment: {', '.join(missing)}")
 
@@ -43,14 +124,64 @@ def get_gmail_service():
     if not credentials.valid:
         credentials.refresh(Request())
 
-    return build("gmail", "v1", credentials=credentials)
+    return credentials
+
+
+def get_gmail_service():
+    """
+    Builds and returns the authorized Gmail API service Resource.
+    Configures cache_discovery=False and dynamic discovery fallback
+    to guarantee reliability in serverless (Vercel / Lambda) environments.
+    """
+    credentials = get_gmail_credentials()
+
+    try:
+        return build("gmail", "v1", credentials=credentials, cache_discovery=False)
+    except Exception as e:
+        logger.warning(f"[Gmail Build] Static discovery failed ({e}), attempting dynamic discovery fallback...")
+        return build("gmail", "v1", credentials=credentials, cache_discovery=False, static_discovery=False)
+
+
+def check_gmail_status():
+    """
+    Diagnostic helper for administrative health verification.
+    Reports credential availability and API initialization status
+    without exposing any secret tokens or passwords.
+    """
+    client_id = _get_clean_env_val(GMAIL_CLIENT_ID_KEYS)
+    client_secret = _get_clean_env_val(GMAIL_CLIENT_SECRET_KEYS)
+    refresh_token = _get_clean_env_val(GMAIL_REFRESH_TOKEN_KEYS)
+    sender = _get_clean_env_val(GMAIL_USER_KEYS, default=DEFAULT_OFFICIAL_EMAIL)
+
+    if not client_id or not client_secret:
+        f_cid, f_cs = _load_client_secret_file()
+        if not client_id and f_cid: client_id = f_cid
+        if not client_secret and f_cs: client_secret = f_cs
+
+    status = {
+        "client_id_configured": bool(client_id),
+        "client_secret_configured": bool(client_secret),
+        "refresh_token_configured": bool(refresh_token),
+        "sender_email": sender,
+        "initialized": False,
+        "error": None
+    }
+
+    try:
+        service = get_gmail_service()
+        status["initialized"] = bool(service)
+    except Exception as e:
+        status["error"] = str(e)
+
+    return status
 
 
 def send_email(subject, body, to_email=None):
-    sender = os.getenv("GMAIL_USER")
-    if not sender:
-        raise RuntimeError("Missing required environment variable: GMAIL_USER")
-
+    """
+    Sends an email using the Gmail API service.
+    Authoritative sender email defaults to official TheCampusNova Gmail.
+    """
+    sender = _get_clean_env_val(GMAIL_USER_KEYS, default=DEFAULT_OFFICIAL_EMAIL)
     recipient = to_email or sender
 
     service = get_gmail_service()
@@ -69,5 +200,5 @@ def send_email(subject, body, to_email=None):
         body={"raw": raw_message}
     ).execute()
 
+    logger.info(f"[GMAIL API] Email delivered successfully to {recipient} | Subject: {subject}")
     return True
-
