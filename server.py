@@ -314,6 +314,9 @@ def _save_json_data(file_path, data):
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         return True
+    except OSError as e:
+        print(f"[Warning] Serverless/Read-only filesystem limitation for {file_path}: {e}")
+        return False
     except Exception as e:
         print(f"[Error] Failed writing {file_path}: {e}")
         return False
@@ -5076,6 +5079,26 @@ def save_mentors_data_json(mentors_list):
         logger.error(f"[Save Mentors Error] {e}")
         return False
 
+def sync_mentors_json_from_db():
+    """Authoritatively mirrors PostgreSQL mentors into the JSON backup store."""
+    if db.is_pg_connected():
+        try:
+            rows = db.query_all("SELECT * FROM mentors WHERE status != 'archived' ORDER BY id ASC;")
+            if rows is not None:
+                clean_rows = []
+                for r in rows:
+                    r_copy = dict(r)
+                    if "created_at" in r_copy and r_copy["created_at"]:
+                        r_copy["created_at"] = str(r_copy["created_at"])
+                    if "updated_at" in r_copy and r_copy["updated_at"]:
+                        r_copy["updated_at"] = str(r_copy["updated_at"])
+                    clean_rows.append(r_copy)
+                save_mentors_data_json(clean_rows)
+                return clean_rows
+        except Exception as e:
+            logger.warning(f"[Sync Mentors JSON Error] {e}")
+    return []
+
 def load_mentor_enquiries_all():
     """Fetches all mentor enquiries from PostgreSQL or JSON fallback."""
     if db.is_pg_connected():
@@ -5317,7 +5340,7 @@ def api_admin_create_mentor():
             logger.error(f"[PostgreSQL Create Mentor Error] {e}")
             return jsonify({"success": False, "message": f"Database insert failed: {e}"}), 500
 
-    # 2. JSON Backup Sync
+    # 2. JSON Backup Sync (Authoritative mirror from DB)
     new_mentor_obj = {
         "id": new_id,
         "mentor_id": new_id,
@@ -5335,15 +5358,18 @@ def api_admin_create_mentor():
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "updated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ")
     }
-    try:
-        existing_mentors = []
-        if os.path.exists(MENTORS_DATA_FILE):
-            with open(MENTORS_DATA_FILE, "r", encoding="utf-8") as f:
-                existing_mentors = json.load(f).get("mentors", [])
-        existing_mentors.insert(0, new_mentor_obj)
-        save_mentors_data_json(existing_mentors)
-    except Exception as e:
-        logger.warning(f"[JSON Sync Mentor Error] {e}")
+    if db.is_pg_connected():
+        sync_mentors_json_from_db()
+    else:
+        try:
+            existing_mentors = []
+            if os.path.exists(MENTORS_DATA_FILE):
+                with open(MENTORS_DATA_FILE, "r", encoding="utf-8") as f:
+                    existing_mentors = json.load(f).get("mentors", [])
+            existing_mentors.insert(0, new_mentor_obj)
+            save_mentors_data_json(existing_mentors)
+        except Exception as e:
+            logger.warning(f"[JSON Sync Mentor Error] {e}")
 
     _record_audit_log("Mentor Created", "Mentors", new_id, f"Admin added mentor profile for {name} ({company})")
     return jsonify({"success": True, "message": "Mentor profile created successfully.", "mentor": new_mentor_obj}), 201
@@ -5389,29 +5415,32 @@ def api_admin_update_mentor(mentor_id):
             return jsonify({"success": False, "message": f"Database update failed: {e}"}), 500
 
     # JSON Sync
-    try:
-        mentors = []
-        if os.path.exists(MENTORS_DATA_FILE):
-            with open(MENTORS_DATA_FILE, "r", encoding="utf-8") as f:
-                mentors = json.load(f).get("mentors", [])
-        for m in mentors:
-            if m.get("mentor_id") == mentor_id or str(m.get("id")) == str(mentor_id):
-                if name: m["name"] = name
-                if company: m["company_name"] = company
-                if profession: m["profession"] = profession
-                if domains: m["domains"] = domains
-                if email: m["email"] = email
-                if mobile: m["mobile_number"] = mobile
-                if profile_image: m["profile_image"] = profile_image
-                m["facebook_url"] = facebook_url
-                m["instagram_url"] = instagram_url
-                m["linkedin_url"] = linkedin_url
-                if status: m["status"] = status
-                m["updated_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ")
-                break
-        save_mentors_data_json(mentors)
-    except Exception as e:
-        logger.warning(f"[JSON Sync Mentor Update Error] {e}")
+    if db.is_pg_connected():
+        sync_mentors_json_from_db()
+    else:
+        try:
+            mentors = []
+            if os.path.exists(MENTORS_DATA_FILE):
+                with open(MENTORS_DATA_FILE, "r", encoding="utf-8") as f:
+                    mentors = json.load(f).get("mentors", [])
+            for m in mentors:
+                if m.get("mentor_id") == mentor_id or str(m.get("id")) == str(mentor_id):
+                    if name: m["name"] = name
+                    if company: m["company_name"] = company
+                    if profession: m["profession"] = profession
+                    if domains: m["domains"] = domains
+                    if email: m["email"] = email
+                    if mobile: m["mobile_number"] = mobile
+                    if profile_image: m["profile_image"] = profile_image
+                    m["facebook_url"] = facebook_url
+                    m["instagram_url"] = instagram_url
+                    m["linkedin_url"] = linkedin_url
+                    if status: m["status"] = status
+                    m["updated_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ")
+                    break
+            save_mentors_data_json(mentors)
+        except Exception as e:
+            logger.warning(f"[JSON Sync Mentor Update Error] {e}")
 
     _record_audit_log("Mentor Updated", "Mentors", mentor_id, f"Admin updated mentor profile {mentor_id}")
     return jsonify({"success": True, "message": "Mentor profile updated successfully."})
@@ -5428,15 +5457,18 @@ def api_admin_delete_mentor(mentor_id):
             logger.error(f"[PostgreSQL Delete Mentor Error] {e}")
             return jsonify({"success": False, "message": f"Database delete failed: {e}"}), 500
 
-    try:
-        mentors = []
-        if os.path.exists(MENTORS_DATA_FILE):
-            with open(MENTORS_DATA_FILE, "r", encoding="utf-8") as f:
-                mentors = json.load(f).get("mentors", [])
-        mentors = [m for m in mentors if m.get("mentor_id") != mentor_id and str(m.get("id")) != str(mentor_id)]
-        save_mentors_data_json(mentors)
-    except Exception as e:
-        logger.warning(f"[JSON Sync Mentor Delete Error] {e}")
+    if db.is_pg_connected():
+        sync_mentors_json_from_db()
+    else:
+        try:
+            mentors = []
+            if os.path.exists(MENTORS_DATA_FILE):
+                with open(MENTORS_DATA_FILE, "r", encoding="utf-8") as f:
+                    mentors = json.load(f).get("mentors", [])
+            mentors = [m for m in mentors if m.get("mentor_id") != mentor_id and str(m.get("id")) != str(mentor_id)]
+            save_mentors_data_json(mentors)
+        except Exception as e:
+            logger.warning(f"[JSON Sync Mentor Delete Error] {e}")
 
     _record_audit_log("Mentor Deleted", "Mentors", mentor_id, f"Admin deleted mentor profile {mentor_id}")
     return jsonify({"success": True, "message": "Mentor profile removed successfully."})
@@ -6535,6 +6567,9 @@ def _save_json_data(file_path, data):
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         return True
+    except OSError as e:
+        print(f"[Warning] Serverless/Read-only filesystem limitation for {file_path}: {e}")
+        return False
     except Exception as e:
         print(f"[Error] Failed writing {file_path}: {e}")
         return False

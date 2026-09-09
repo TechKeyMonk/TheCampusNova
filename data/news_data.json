@@ -1,6 +1,48 @@
 {
   "news": [
     {
+      "id": "NWS-061",
+      "db_id": 61,
+      "title": "Phase III Applications for MSAT Are Now Open",
+      "college_name": "Muthoot Business School",
+      "category": "Admissions & Cutoffs",
+      "published_date": "2026-09-14",
+      "summary": "Muthoot Business School is currently displaying an official announcement that Phase III applications for MSAT are open for submission. The institution's website also highlights its PGDM admission and future-leader internship opportunities",
+      "content": "Muthoot Business School is currently displaying an official announcement that Phase III applications for MSAT are open for submission. The institution's website also highlights its PGDM admission and future-leader internship opportunities",
+      "source_url": "https://mbsglobal.ac.in/",
+      "badge": "Admissions Open",
+      "status": "Published",
+      "created_at": "2026-09-09T09:58:30Z"
+    },
+    {
+      "id": "NWS-060",
+      "db_id": 60,
+      "title": "Kaleido KMCT 2026, Pan-KMCT Cultural Fest",
+      "college_name": "KMCT Group of Institutions / KMCT School of Management",
+      "category": "General Notification",
+      "published_date": "2026-09-11",
+      "summary": "KMCT has announced Kaleido KMCT 2026, the Pan-KMCT Cultural Fest, scheduled to take place from September 17 to September 19, 2026. The official KMCT website currently displays this announcement and states that more updates will follow",
+      "content": "KMCT has announced Kaleido KMCT 2026, the Pan-KMCT Cultural Fest, scheduled to take place from September 17 to September 19, 2026. The official KMCT website currently displays this announcement and states that more updates will follow",
+      "source_url": "https://kmct.org/",
+      "badge": "Upcoming event",
+      "status": "Published",
+      "created_at": "2026-09-09T09:57:12Z"
+    },
+    {
+      "id": "NWS-059",
+      "db_id": 59,
+      "title": "Shamsudheen returns to alma mater, calls for colleges to become cultural centres",
+      "college_name": "PSMO College, Tirurangadi",
+      "category": "General Notification",
+      "published_date": "2026-09-09",
+      "summary": "General Education Minister N. Shamsudheen returned to PSMO College, Tirurangadi, his alma mater, on September 8, 2026. During the programme organised by the College Alumni Association, he highlighted the role of educational institutions as cultural centres and called for stronger college and school libraries to encourage reading and writing. He also presented Vottu Charitham 2026 to the college library and felicitated students associated with cultural achievements.",
+      "content": "General Education Minister N. Shamsudheen returned to PSMO College, Tirurangadi, his alma mater, on September 8, 2026. During the programme organised by the College Alumni Association, he highlighted the role of educational institutions as cultural centres and called for stronger college and school libraries to encourage reading and writing. He also presented Vottu Charitham 2026 to the college library and felicitated students associated with cultural achievements.",
+      "source_url": "https://indialive.net/shamsudheen-returns-to-alma-mater-calls-for-colleges-to-become-cultural-centres/",
+      "badge": "College Campus",
+      "status": "Published",
+      "created_at": "2026-09-09T08:02:29Z"
+    },
+    {
       "id": "NWS-058",
       "db_id": 58,
       "title": "Automated Lifecycle Test Two Days Ago",

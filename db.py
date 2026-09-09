@@ -19,7 +19,13 @@ try:
 except ImportError:
     PSYCOPG2_AVAILABLE = False
 
-# Database configuration
+DATABASE_URL_KEYS = [
+    "DATABASE_URL",
+    "POSTGRES_URL",
+    "POSTGRES_PRISMA_URL",
+    "POSTGRES_URL_NON_POOLING",
+    "NEON_DATABASE_URL",
+]
 DATABASE_URL = os.environ.get("DATABASE_URL")
 PGHOST = os.environ.get("PGHOST", "localhost")
 PGPORT = os.environ.get("PGPORT", "5432")
@@ -34,20 +40,24 @@ _POOL_RETRY_INTERVAL = 3  # seconds between reconnect attempts
 _CONNECT_TIMEOUT = int(os.environ.get("PGCONNECT_TIMEOUT", "10"))
 
 def get_connection_params():
-    """Builds connection configuration dictionary."""
-    database_url = os.environ.get("DATABASE_URL")
-    if database_url and database_url.strip():
-        dsn = database_url.strip()
-        # Normalize postgres:// to postgresql:// for psycopg2
-        if dsn.startswith("postgres://"):
-            dsn = "postgresql://" + dsn[len("postgres://"):]
-        return {"dsn": dsn}
+    """Builds connection configuration dictionary with multi-provider fallback."""
+    for key in DATABASE_URL_KEYS:
+        raw_val = os.environ.get(key)
+        if raw_val and raw_val.strip():
+            clean_val = raw_val.strip().strip("'\"")
+            if clean_val:
+                # Normalize postgres:// to postgresql:// for psycopg2
+                if clean_val.startswith("postgres://"):
+                    clean_val = "postgresql://" + clean_val[len("postgres://"):]
+                return {"dsn": clean_val, "source_env": key}
+
     return {
         "host": os.environ.get("PGHOST", "localhost"),
         "port": os.environ.get("PGPORT", "5432"),
         "dbname": os.environ.get("PGDATABASE", "campnova"),
         "user": os.environ.get("PGUSER", "postgres"),
-        "password": os.environ.get("PGPASSWORD", "postgres")
+        "password": os.environ.get("PGPASSWORD", "postgres"),
+        "source_env": "PGHOST/PGPORT/PGDATABASE"
     }
 
 def get_pool():
@@ -57,14 +67,19 @@ def get_pool():
         _is_connected = False
         return None
 
+    if _connection_pool is not None and getattr(_connection_pool, "closed", False):
+        _connection_pool = None
+
     if _connection_pool is None:
         now = time.time()
         if now - _last_pool_attempt < _POOL_RETRY_INTERVAL:
             return None
         _last_pool_attempt = now
 
+        source_env = "UNKNOWN"
         try:
             params = get_connection_params()
+            source_env = params.get("source_env", "UNKNOWN")
             max_conn = int(os.environ.get("PGMAXCONN", "25"))
             if "dsn" in params:
                 dsn = params["dsn"]
@@ -85,7 +100,7 @@ def get_pool():
 
                 _connection_pool = pool.ThreadedConnectionPool(minconn=1, maxconn=max_conn, dsn=dsn)
                 _is_connected = True
-                print(f"[PostgreSQL] Connected to shared database '{db_name}' at {db_host}:{db_port}")
+                print(f"[PostgreSQL] Connected via [{source_env}] to shared database '{db_name}' at {db_host}:{db_port}")
             else:
                 db_host = params["host"]
                 db_port = params["port"]
@@ -108,7 +123,7 @@ def get_pool():
             err_msg = str(e)
             if "@" in err_msg:
                 err_msg = err_msg.split("@")[-1]
-            print(f"[PostgreSQL Connection Error] Failed to connect: {err_msg}")
+            print(f"[PostgreSQL Connection Error] Failed to connect using [{source_env}]: {err_msg}")
             return None
     return _connection_pool
 

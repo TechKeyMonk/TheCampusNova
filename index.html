@@ -1602,25 +1602,25 @@
             <h3 style="font-size:20px; font-weight:700; color:#0F172A; margin:0 0 16px;">Send Us a Message</h3>
             <form id="contactForm" onsubmit="event.preventDefault(); showToast('Thank you! Your message has been received.'); this.reset();" style="display:flex; flex-direction:column; gap:14px;">
               <div>
-                <label style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Your Name</label>
-                <input type="text" required placeholder="Enter full name" style="width:100%; padding:10px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:13.5px; outline:none; box-sizing:border-box;" />
+                <label for="contactFullName" style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Your Name</label>
+                <input type="text" id="contactFullName" name="contactFullName" autocomplete="name" required placeholder="Enter full name" style="width:100%; padding:10px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:13.5px; outline:none; box-sizing:border-box;" />
               </div>
               <div>
-                <label style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Email Address</label>
-                <input type="email" required placeholder="name@domain.com" style="width:100%; padding:10px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:13.5px; outline:none; box-sizing:border-box;" />
+                <label for="contactEmailAddress" style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Email Address</label>
+                <input type="email" id="contactEmailAddress" name="contactEmailAddress" autocomplete="email" required placeholder="name@domain.com" style="width:100%; padding:10px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:13.5px; outline:none; box-sizing:border-box;" />
               </div>
               <div>
-                <label style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Inquiry Subject</label>
-                <select style="width:100%; padding:10px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:13.5px; outline:none; box-sizing:border-box;">
-                  <option>Admissions &amp; College Guidance</option>
-                  <option>Mentor Session Inquiry</option>
-                  <option>Institutional Verification Request</option>
-                  <option>Platform Support &amp; Feedback</option>
+                <label for="contactSubjectSelect" style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Inquiry Subject</label>
+                <select id="contactSubjectSelect" name="contactSubjectSelect" style="width:100%; padding:10px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:13.5px; outline:none; box-sizing:border-box;">
+                  <option value="admissions">Admissions &amp; College Guidance</option>
+                  <option value="mentor">Mentor Session Inquiry</option>
+                  <option value="verification">Institutional Verification Request</option>
+                  <option value="support">Platform Support &amp; Feedback</option>
                 </select>
               </div>
               <div>
-                <label style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Message</label>
-                <textarea rows="4" required placeholder="Describe how we can assist you..." style="width:100%; padding:10px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:13.5px; outline:none; box-sizing:border-box; resize:vertical;"></textarea>
+                <label for="contactMessageText" style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:4px;">Message</label>
+                <textarea id="contactMessageText" name="contactMessageText" rows="4" required placeholder="Describe how we can assist you..." style="width:100%; padding:10px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:13.5px; outline:none; box-sizing:border-box; resize:vertical;"></textarea>
               </div>
               <button type="submit" class="primary-button" style="background:#77AC3B; border-color:#77AC3B; padding:12px; font-size:14px; font-weight:700; width:100%;">Send Inquiry ➔</button>
             </form>

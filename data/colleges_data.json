@@ -1,5 +1,5 @@
 {
-  "total": 204,
+  "total": 218,
   "colleges": [
     {
       "id": "COL-4120",
@@ -5334,6 +5334,160 @@
       "location": "Urban",
       "website": "https://dhs.kerala.gov.in/",
       "established_year": 2012
+    },
+    {
+      "id": 4664,
+      "aishe": "S-26863",
+      "name": "AADHYA INTEGRATED INSTITUTE OF MANAGEMENT STUDIES",
+      "state": "Kerala",
+      "district": "Malappuram",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://aadhyaiims.com/",
+      "established_year": 2025
+    },
+    {
+      "id": 4665,
+      "aishe": "S-19657",
+      "name": "ATLAS IDEAL INTERNATIONAL COLLEGE",
+      "state": "Kerala",
+      "district": "Malappuram",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://aiic.in/",
+      "established_year": null
+    },
+    {
+      "id": 4666,
+      "aishe": "S-25818",
+      "name": "DUXFORD INTERNATIONAL BUSINESS SCHOOL",
+      "state": "Kerala",
+      "district": "Malappuram",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://dibs.edu.in/",
+      "established_year": 2023
+    },
+    {
+      "id": 4667,
+      "aishe": "S-17598",
+      "name": "ICA-The Institute of Certified  Accountants",
+      "state": "Kerala",
+      "district": "Malappuram",
+      "city": "Urban",
+      "location": "Urban",
+      "website": "https://icacmacacsaccacatfirstrankinstitute.dialndial.com/",
+      "established_year": null
+    },
+    {
+      "id": 4668,
+      "aishe": "S-21910",
+      "name": "KMCT SCHOOL OF MANAGEMENT",
+      "state": "Kerala",
+      "district": "Kozhikode",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://kmct.org/",
+      "established_year": null
+    },
+    {
+      "id": 4669,
+      "aishe": "S-22462",
+      "name": "LEADERS COLLEGE",
+      "state": "Kerala",
+      "district": "Kannur",
+      "city": "Urban",
+      "location": "Urban",
+      "website": "https://leaderscollege.in/",
+      "established_year": 2022
+    },
+    {
+      "id": 4670,
+      "aishe": "S-26401",
+      "name": "MUTHOOT BUSINESS SCHOOL",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://www.mbsglobal.ac.in/",
+      "established_year": 2025
+    },
+    {
+      "id": 4671,
+      "aishe": "S-22464",
+      "name": "PMA SAFI HUMAN RESOURCES INSTITUTE",
+      "state": "Kerala",
+      "district": "Malappuram",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://safihr.edu.in/",
+      "established_year": 2023
+    },
+    {
+      "id": 4672,
+      "aishe": "S-22463",
+      "name": "PRAYAGA INSTITUTE OF MANAGEMENT STUDIES",
+      "state": "Kerala",
+      "district": "Palakkad",
+      "city": "Urban",
+      "location": "Urban",
+      "website": "https://prayagapgdm.com/",
+      "established_year": null
+    },
+    {
+      "id": 4673,
+      "aishe": "S-164",
+      "name": "RAJAGIRI BUSINESS SCHOOL",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "Urban",
+      "location": "Urban",
+      "website": "https://www.rajagiribusinessschool.edu.in/",
+      "established_year": 2008
+    },
+    {
+      "id": 4674,
+      "aishe": "S-165",
+      "name": "SADANAM INSTITUTE OF COMMERCE AND MANAGEMENT STUDIES",
+      "state": "Kerala",
+      "district": "Palakkad",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://sicoms.edu.in/",
+      "established_year": 2008
+    },
+    {
+      "id": 4675,
+      "aishe": "S-166",
+      "name": "SCMS COCHIN SCHOOL OF BUSINESS",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "Rural",
+      "location": "Rural",
+      "website": "https://scms.edu.in/",
+      "established_year": 1992
+    },
+    {
+      "id": 4676,
+      "aishe": "S-18336",
+      "name": "The Institute for Cost and Management Studies",
+      "state": "Kerala",
+      "district": "Malappuram",
+      "city": "Urban",
+      "location": "Urban",
+      "website": "https://icmscampus.com/",
+      "established_year": null
+    },
+    {
+      "id": 4677,
+      "aishe": "S-14893",
+      "name": "XAVIER INSTITUTE OF MANAGEMENT AND ENTREPRENEURSHIP",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "city": "Urban",
+      "location": "Urban",
+      "website": "https://www.ximekochi.org/",
+      "established_year": 2013
     }
   ]
 }
