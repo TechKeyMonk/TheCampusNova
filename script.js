@@ -18019,6 +18019,7 @@ async function submitMentorEnquiry() {
       btn.textContent = 'Submit Enquiry ➔';
     }
   }
+}
 window.submitMentorEnquiry = submitMentorEnquiry;
 
 async function submitContactEnquiry(e) {
