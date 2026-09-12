@@ -3,6 +3,136 @@
     {
       "id": 201,
       "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Deleted Course",
+      "module": "Courses",
+      "details": "Deleted course 103 (Ref: 103)",
+      "timestamp": "2026-09-12 12:41:21",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1789197081736 UPDATED (Ref: 103)",
+      "timestamp": "2026-09-12 12:41:21",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1789197081736 (Ref: 103)",
+      "timestamp": "2026-09-12 12:41:21",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "College Update Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-129 for SoRSPE, Ramakrishna Mission Vivekananda University (Ref: APP-129)",
+      "timestamp": "2026-09-12 12:41:10",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Contact Inquiry Submitted",
+      "module": "Support",
+      "details": "Enquiry MENQ-A2BC44BB submitted by E2E Contact Tester (shyamg2408@gmail.com) for Admissions & Support Panel (Ref: MENQ-A2BC44BB)",
+      "timestamp": "2026-09-12 12:41:08",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-92968E7F submitted by E2E Mentor Tester (shyamg2408@gmail.com) for Guidance Desk Panel (Ref: MENQ-92968E7F)",
+      "timestamp": "2026-09-12 12:41:06",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Deleted Course",
+      "module": "Courses",
+      "details": "Deleted course 102 (Ref: 102)",
+      "timestamp": "2026-09-12 12:40:20",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1789197020331 UPDATED (Ref: 102)",
+      "timestamp": "2026-09-12 12:40:20",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1789197020331 (Ref: 102)",
+      "timestamp": "2026-09-12 12:40:20",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "College Update Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-128 for SoRSPE, Ramakrishna Mission Vivekananda University (Ref: APP-128)",
+      "timestamp": "2026-09-12 12:37:53",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Contact Inquiry Submitted",
+      "module": "Support",
+      "details": "Enquiry MENQ-1FB2CD1E submitted by Serverless Vercel Tester (shyamg2408@gmail.com) for Admissions & Support Panel (Ref: MENQ-1FB2CD1E)",
+      "timestamp": "2026-09-12 12:36:59",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Contact Inquiry Submitted",
+      "module": "Support",
+      "details": "Enquiry MENQ-A1B4851A submitted by Audit Contact Tester (shyamg2408@gmail.com) for Admissions & Support Panel (Ref: MENQ-A1B4851A)",
+      "timestamp": "2026-09-12 12:36:48",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-62F58B93 submitted by Audit Tester (shyamg2408@gmail.com) for Dr. Test Mentor (Ref: MENQ-62F58B93)",
+      "timestamp": "2026-09-12 12:36:46",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
       "action": "College Update Submitted",
       "module": "Approvals",
       "details": "Submitted update APP-151 for Indian Institute of Technology Madras (Ref: APP-151)",
@@ -1867,136 +1997,6 @@
       "module": "Facilities",
       "details": "Created facility Campus Labs & High-Tech Facilities for college 460 (Ref: 52)",
       "timestamp": "2026-09-06 14:07:18",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Update Details Access Granted",
-      "module": "Colleges",
-      "details": "Authorized access granted to adminkarunya@gmail.com (AISHE: U-0460) via CAPTCHA verification (Ref: Karunya Institute of Technology and Sciences, Coimbatore)",
-      "timestamp": "2026-09-06 14:02:42",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "News Published",
-      "module": "News",
-      "details": "Published bulletin 'IIT Madras and CMC Vellore Researchers Build AI Tools for Early Kidney Disease Detection' (Ref: NWS-045)",
-      "timestamp": "2026-09-06 13:59:42",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "AI Events Generated",
-      "module": "Events",
-      "details": "Generated 0 verified campus events using AI automation (Ref: AUTO-0)",
-      "timestamp": "2026-09-06 13:49:41",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Event Created",
-      "module": "Events",
-      "details": "Created campus event 'HACK ITON'26 — Think · Build · Disrupt' for KPR Institute of Engineering and Technology (KPRIET) (Ref: EVT-048)",
-      "timestamp": "2026-09-06 13:47:50",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Deleted Course",
-      "module": "Courses",
-      "details": "Deleted course 122 (Ref: 122)",
-      "timestamp": "2026-09-05 22:34:29",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Course",
-      "module": "Courses",
-      "details": "Saved course QA Test Robotics Vitest_1788627850694 UPDATED (Ref: 122)",
-      "timestamp": "2026-09-05 22:34:25",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Course",
-      "module": "Courses",
-      "details": "Saved course QA Test Robotics Vitest_1788627850694 (Ref: 122)",
-      "timestamp": "2026-09-05 22:34:17",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "News Deleted",
-      "module": "News",
-      "details": "Deleted bulletin 42 (Ref: 42)",
-      "timestamp": "2026-09-05 22:33:58",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "News Updated",
-      "module": "News",
-      "details": "Updated bulletin 42 (Ref: 42)",
-      "timestamp": "2026-09-05 22:33:58",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "News Published",
-      "module": "News",
-      "details": "Published bulletin 'Test IIT Madras Launches Next-Gen Quantum Centre' (Ref: NWS-044)",
-      "timestamp": "2026-09-05 22:33:57",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Deleted Event",
-      "module": "Events",
-      "details": "Deleted event 45 (Ref: 45)",
-      "timestamp": "2026-09-05 22:33:56",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Event Updated",
-      "module": "Events",
-      "details": "Updated event 45 (Ref: 45)",
-      "timestamp": "2026-09-05 22:33:55",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Event Created",
-      "module": "Events",
-      "details": "Created campus event 'Test National Hackathon & Summit 2026' for IIT Madras (Ref: EVT-047)",
-      "timestamp": "2026-09-05 22:33:55",
       "ip_address": "127.0.0.1",
       "status": "Success"
     }

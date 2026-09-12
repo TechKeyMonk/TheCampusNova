@@ -25,6 +25,8 @@ DATABASE_URL_KEYS = [
     "POSTGRES_PRISMA_URL",
     "POSTGRES_URL_NON_POOLING",
     "NEON_DATABASE_URL",
+    "PGDATABASE_URL",
+    "POSTGRESQL_URL"
 ]
 DATABASE_URL = os.environ.get("DATABASE_URL")
 PGHOST = os.environ.get("PGHOST", "localhost")
@@ -36,32 +38,76 @@ PGPASSWORD = os.environ.get("PGPASSWORD", "postgres")
 _connection_pool = None
 _is_connected = False
 _last_pool_attempt = 0
-_POOL_RETRY_INTERVAL = 30  # seconds between reconnect attempts if offline
+_POOL_RETRY_INTERVAL = 15  # seconds between reconnect attempts if offline
 _CONNECT_TIMEOUT = int(os.environ.get("PGCONNECT_TIMEOUT", "3"))
 
-def get_connection_params():
-    """Builds connection configuration dictionary with multi-provider fallback."""
+def get_connection_candidates():
+    """
+    Returns an ordered list of connection candidate dictionaries.
+    Prioritizes connection strings, then discrete variables.
+    In serverless / Vercel mode, filters out localhost configurations to prevent blocking timeouts.
+    """
+    candidates = []
+    is_serverless = bool(
+        os.environ.get("VERCEL") or
+        os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or
+        os.environ.get("VERCEL_ENV")
+    )
+
+    # 1. Full connection URI environment variables
     for key in DATABASE_URL_KEYS:
         raw_val = os.environ.get(key)
         if raw_val and raw_val.strip():
             clean_val = raw_val.strip().strip("'\"")
             if clean_val:
-                # Normalize postgres:// to postgresql:// for psycopg2
                 if clean_val.startswith("postgres://"):
                     clean_val = "postgresql://" + clean_val[len("postgres://"):]
-                return {"dsn": clean_val, "source_env": key}
 
-    return {
-        "host": os.environ.get("PGHOST", "localhost"),
-        "port": os.environ.get("PGPORT", "5432"),
-        "dbname": os.environ.get("PGDATABASE", "campnova"),
-        "user": os.environ.get("PGUSER", "postgres"),
-        "password": os.environ.get("PGPASSWORD", "postgres"),
-        "source_env": "PGHOST/PGPORT/PGDATABASE"
-    }
+                from urllib.parse import urlparse
+                try:
+                    parsed = urlparse(clean_val)
+                    db_host = (parsed.hostname or "").lower().strip()
+                    if is_serverless and db_host in ["localhost", "127.0.0.1", "::1"]:
+                        continue
+                except Exception:
+                    pass
+
+                candidates.append({"dsn": clean_val, "source_env": key})
+
+    # 2. Discrete host/user/pass/dbname environment variables
+    host = os.environ.get("PGHOST") or os.environ.get("POSTGRES_HOST")
+    user = os.environ.get("PGUSER") or os.environ.get("POSTGRES_USER")
+    password = os.environ.get("PGPASSWORD") or os.environ.get("POSTGRES_PASSWORD")
+    dbname = os.environ.get("PGDATABASE") or os.environ.get("POSTGRES_DATABASE") or os.environ.get("POSTGRES_DB") or "campnova"
+    port = os.environ.get("PGPORT") or os.environ.get("POSTGRES_PORT") or "5432"
+
+    if host:
+        host_clean = str(host).strip().lower()
+        if is_serverless and host_clean in ["localhost", "127.0.0.1", "::1"]:
+            pass
+        else:
+            candidates.append({
+                "host": host,
+                "port": port,
+                "dbname": dbname,
+                "user": user or "postgres",
+                "password": password or "",
+                "source_env": "DISCRETE_ENV"
+            })
+    elif not is_serverless:
+        candidates.append({
+            "host": "localhost",
+            "port": port,
+            "dbname": dbname,
+            "user": user or "postgres",
+            "password": password or "",
+            "source_env": "LOCAL_DEFAULT"
+        })
+
+    return candidates
 
 def get_pool():
-    """Initializes or returns threaded PostgreSQL connection pool."""
+    """Initializes or returns threaded PostgreSQL connection pool with serverless resiliency."""
     global _connection_pool, _is_connected, _last_pool_attempt
     if not PSYCOPG2_AVAILABLE:
         _is_connected = False
@@ -69,18 +115,34 @@ def get_pool():
 
     if _connection_pool is not None and getattr(_connection_pool, "closed", False):
         _connection_pool = None
+        _is_connected = False
 
-    if _connection_pool is None:
-        now = time.time()
-        if now - _last_pool_attempt < _POOL_RETRY_INTERVAL:
-            return None
-        _last_pool_attempt = now
+    if _connection_pool is not None:
+        return _connection_pool
 
-        source_env = "UNKNOWN"
+    now = time.time()
+    if now - _last_pool_attempt < _POOL_RETRY_INTERVAL:
+        return None
+    _last_pool_attempt = now
+
+    is_serverless = bool(
+        os.environ.get("VERCEL") or
+        os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or
+        os.environ.get("VERCEL_ENV")
+    )
+    candidates = get_connection_candidates()
+    if not candidates:
+        _is_connected = False
+        if is_serverless:
+            print("[PostgreSQL Notice] No remote PostgreSQL configuration provided or reachable in Vercel environment.")
+        return None
+
+    max_conn = 5 if is_serverless else int(os.environ.get("PGMAXCONN", "25"))
+    conn_timeout = int(os.environ.get("PGCONNECT_TIMEOUT", "3" if is_serverless else "5"))
+
+    for params in candidates:
+        source_env = params.get("source_env", "UNKNOWN")
         try:
-            params = get_connection_params()
-            source_env = params.get("source_env", "UNKNOWN")
-            max_conn = int(os.environ.get("PGMAXCONN", "25"))
             if "dsn" in params:
                 dsn = params["dsn"]
                 from urllib.parse import urlparse
@@ -89,23 +151,29 @@ def get_pool():
                 db_port = parsed.port or 5432
                 db_name = (parsed.path or "").lstrip("/") or "database"
 
-                # Enforce sslmode=require for non-local PostgreSQL instances if not already defined
                 if db_host not in ["localhost", "127.0.0.1", "::1"] and "sslmode" not in dsn:
                     sep = "&" if "?" in dsn else "?"
                     dsn = f"{dsn}{sep}sslmode=require"
 
                 if "connect_timeout" not in dsn:
                     sep = "&" if "?" in dsn else "?"
-                    dsn = f"{dsn}{sep}connect_timeout={_CONNECT_TIMEOUT}"
+                    dsn = f"{dsn}{sep}connect_timeout={conn_timeout}"
 
-                _connection_pool = pool.ThreadedConnectionPool(minconn=1, maxconn=max_conn, dsn=dsn)
+                p = pool.ThreadedConnectionPool(minconn=1, maxconn=max_conn, dsn=dsn)
+                test_conn = p.getconn()
+                with test_conn.cursor() as cur:
+                    cur.execute("SELECT 1;")
+                p.putconn(test_conn)
+
+                _connection_pool = p
                 _is_connected = True
-                print(f"[PostgreSQL] Connected via [{source_env}] to shared database '{db_name}' at {db_host}:{db_port}")
+                print(f"[PostgreSQL] Connected via [{source_env}] to database '{db_name}' at {db_host}:{db_port}")
+                return _connection_pool
             else:
                 db_host = params["host"]
                 db_port = params["port"]
                 db_name = params["dbname"]
-                _connection_pool = pool.ThreadedConnectionPool(
+                p = pool.ThreadedConnectionPool(
                     minconn=1,
                     maxconn=max_conn,
                     host=db_host,
@@ -113,24 +181,33 @@ def get_pool():
                     dbname=db_name,
                     user=params["user"],
                     password=params["password"],
-                    connect_timeout=_CONNECT_TIMEOUT
+                    connect_timeout=conn_timeout
                 )
+                test_conn = p.getconn()
+                with test_conn.cursor() as cur:
+                    cur.execute("SELECT 1;")
+                p.putconn(test_conn)
+
+                _connection_pool = p
                 _is_connected = True
                 print(f"[PostgreSQL] Connected to database '{db_name}' at {db_host}:{db_port}")
+                return _connection_pool
         except Exception as e:
-            _is_connected = False
-            # Safely report error without leaking credentials
             err_msg = str(e)
             if "@" in err_msg:
                 err_msg = err_msg.split("@")[-1]
-            print(f"[PostgreSQL Connection Error] Failed to connect using [{source_env}]: {err_msg}")
-            return None
-    return _connection_pool
+            safe_err = err_msg.encode('ascii', 'replace').decode('ascii')
+            print(f"[PostgreSQL Connection Notice] Candidate [{source_env}] unavailable: {safe_err.strip()}")
+            continue
+
+    _is_connected = False
+    _connection_pool = None
+    return None
 
 def is_pg_connected():
     """Returns True if active PostgreSQL connection pool is available."""
     p = get_pool()
-    return p is not None
+    return p is not None and _is_connected
 
 def query_all(sql, params=None):
     """Executes a SELECT query and returns all records as a list of dicts."""
@@ -140,6 +217,11 @@ def query_all(sql, params=None):
     conn = None
     try:
         conn = p.getconn()
+        if getattr(conn, "closed", 0) != 0:
+            try: p.putconn(conn, close=True)
+            except Exception: pass
+            conn = p.getconn()
+
         try:
             conn.rollback()
         except Exception:
@@ -152,13 +234,27 @@ def query_all(sql, params=None):
     except Exception as e:
         safe_msg = str(e).encode('ascii', 'replace').decode('ascii')
         print(f"[PostgreSQL Query Error] {safe_msg} (SQL: {sql[:60]}...)")
-        if conn:
+        if isinstance(e, (psycopg2.OperationalError, psycopg2.InterfaceError)):
+            if conn:
+                try: p.putconn(conn, close=True)
+                except Exception: pass
+                conn = None
+            global _connection_pool, _is_connected
+            _connection_pool = None
+            _is_connected = False
+        elif conn:
             try: conn.rollback()
             except Exception: pass
         return []
     finally:
         if conn and p:
-            p.putconn(conn)
+            try:
+                if getattr(conn, "closed", 0) != 0:
+                    p.putconn(conn, close=True)
+                else:
+                    p.putconn(conn)
+            except Exception:
+                pass
 
 def query_one(sql, params=None):
     """Executes a SELECT query and returns a single record as a dict or None."""
@@ -168,6 +264,11 @@ def query_one(sql, params=None):
     conn = None
     try:
         conn = p.getconn()
+        if getattr(conn, "closed", 0) != 0:
+            try: p.putconn(conn, close=True)
+            except Exception: pass
+            conn = p.getconn()
+
         try:
             conn.rollback()
         except Exception:
@@ -178,14 +279,29 @@ def query_one(sql, params=None):
             row = cur.fetchone()
             return dict(row) if row else None
     except Exception as e:
-        print(f"[PostgreSQL Query One Error] {e}")
-        if conn:
+        safe_msg = str(e).encode('ascii', 'replace').decode('ascii')
+        print(f"[PostgreSQL Query One Error] {safe_msg}")
+        if isinstance(e, (psycopg2.OperationalError, psycopg2.InterfaceError)):
+            if conn:
+                try: p.putconn(conn, close=True)
+                except Exception: pass
+                conn = None
+            global _connection_pool, _is_connected
+            _connection_pool = None
+            _is_connected = False
+        elif conn:
             try: conn.rollback()
             except Exception: pass
         return None
     finally:
         if conn and p:
-            p.putconn(conn)
+            try:
+                if getattr(conn, "closed", 0) != 0:
+                    p.putconn(conn, close=True)
+                else:
+                    p.putconn(conn)
+            except Exception:
+                pass
 
 def execute_query(sql, params=None):
     """Executes an INSERT, UPDATE, or DELETE query and commits."""
@@ -195,6 +311,11 @@ def execute_query(sql, params=None):
     conn = None
     try:
         conn = p.getconn()
+        if getattr(conn, "closed", 0) != 0:
+            try: p.putconn(conn, close=True)
+            except Exception: pass
+            conn = p.getconn()
+
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(sql, params or ())
             conn.commit()
@@ -205,12 +326,27 @@ def execute_query(sql, params=None):
     except Exception as e:
         safe_msg = str(e).encode('ascii', 'replace').decode('ascii')
         print(f"[PostgreSQL Execute Error] {safe_msg} (SQL: {sql[:60]}...)")
-        if conn:
-            conn.rollback()
+        if isinstance(e, (psycopg2.OperationalError, psycopg2.InterfaceError)):
+            if conn:
+                try: p.putconn(conn, close=True)
+                except Exception: pass
+                conn = None
+            global _connection_pool, _is_connected
+            _connection_pool = None
+            _is_connected = False
+        elif conn:
+            try: conn.rollback()
+            except Exception: pass
         return None
     finally:
         if conn and p:
-            p.putconn(conn)
+            try:
+                if getattr(conn, "closed", 0) != 0:
+                    p.putconn(conn, close=True)
+                else:
+                    p.putconn(conn)
+            except Exception:
+                pass
 
 def init_db_schema():
     """Runs schema.sql and seed.sql to initialize all 20 tables if not existing."""

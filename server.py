@@ -10,6 +10,7 @@ import base64
 import urllib.parse
 import logging
 import urllib.request
+import tempfile
 from email_service import (
     send_email,
     check_gmail_status,
@@ -344,27 +345,66 @@ SUGGESTIONS_DATA_FILE = os.path.join(os.path.dirname(__file__), "data", "suggest
 DISTRICT_ANALYTICS_FILE = os.path.join(os.path.dirname(__file__), "data", "district_analytics.json")
 REVIEWS_DATA_FILE = os.path.join(os.path.dirname(__file__), "data", "reviews_data.json")
 
-def _load_json_data(file_path, default_val):
-    if os.path.exists(file_path):
-        try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"[Warning] Error reading {file_path}: {e}")
-    return default_val
-
-def _save_json_data(file_path, data):
+def safe_save_json(file_path, data):
+    """
+    Saves JSON data safely across both local and serverless (Vercel) environments.
+    If writing to the target file path fails due to a read-only filesystem (OSError 30 / EROFS),
+    it automatically writes to tempfile.gettempdir() (/tmp) to preserve runtime state without crashing.
+    """
     try:
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
+            json.dump(data, f, indent=2, ensure_ascii=False, default=str)
         return True
-    except OSError as e:
-        print(f"[Warning] Serverless/Read-only filesystem limitation for {file_path}: {e}")
-        return False
+    except (OSError, PermissionError) as e:
+        try:
+            tmp_path = os.path.join(tempfile.gettempdir(), os.path.basename(file_path))
+            with open(tmp_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2, ensure_ascii=False, default=str)
+            logger.info(f"[Serverless Storage Fallback] Safely stored {os.path.basename(file_path)} in ephemeral storage: {tmp_path}")
+            return True
+        except Exception as inner_e:
+            logger.warning(f"[Storage Warning] Ephemeral write failed for {file_path}: {inner_e}")
+            return False
     except Exception as e:
-        print(f"[Error] Failed writing {file_path}: {e}")
+        logger.error(f"[Storage Error] Failed to write {file_path}: {e}")
         return False
+
+def safe_load_json(file_path, default_val=None):
+    """
+    Loads JSON data safely. If an ephemeral copy in tempfile.gettempdir() exists and is newer,
+    it loads that; otherwise it reads from the bundled read-only file_path.
+    """
+    if default_val is None:
+        default_val = {}
+    tmp_path = os.path.join(tempfile.gettempdir(), os.path.basename(file_path))
+    chosen_path = None
+    if os.path.exists(tmp_path) and os.path.exists(file_path):
+        try:
+            if os.path.getmtime(tmp_path) >= os.path.getmtime(file_path):
+                chosen_path = tmp_path
+            else:
+                chosen_path = file_path
+        except Exception:
+            chosen_path = tmp_path
+    elif os.path.exists(tmp_path):
+        chosen_path = tmp_path
+    elif os.path.exists(file_path):
+        chosen_path = file_path
+
+    if chosen_path:
+        try:
+            with open(chosen_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            logger.warning(f"[Storage Warning] Failed reading {chosen_path}: {e}")
+    return default_val
+
+def _load_json_data(file_path, default_val):
+    return safe_load_json(file_path, default_val)
+
+def _save_json_data(file_path, data):
+    return safe_save_json(file_path, data)
 
 # In-memory stores for fast fallback when DB is offline
 _in_memory_placements = None
@@ -414,13 +454,8 @@ USERS_DATA_FILE = os.path.join(os.path.dirname(__file__), "users_data.json")
 
 def load_users_data():
     """Loads users list from database or fallback JSON."""
-    users = []
-    if os.path.exists(USERS_DATA_FILE):
-        try:
-            with open(USERS_DATA_FILE, "r", encoding="utf-8") as f:
-                users = json.load(f).get("users", [])
-        except Exception:
-            users = []
+    data = safe_load_json(USERS_DATA_FILE, {"users": []})
+    users = data.get("users", [])
 
     if db.is_pg_connected():
         try:
@@ -457,21 +492,11 @@ def save_user_record(email, password_hash, name="Student User", role="user"):
         "created_at": time.strftime("%Y-%m-%d %H:%M:%S")
     }
 
-    users = []
-    if os.path.exists(USERS_DATA_FILE):
-        try:
-            with open(USERS_DATA_FILE, "r", encoding="utf-8") as f:
-                users = json.load(f).get("users", [])
-        except Exception:
-            users = []
-
+    data = safe_load_json(USERS_DATA_FILE, {"users": []})
+    users = data.get("users", [])
     users = [u for u in users if u.get("email", "").strip().lower() != clean_email]
     users.append(user_obj)
-    try:
-        with open(USERS_DATA_FILE, "w", encoding="utf-8") as f:
-            json.dump({"users": users}, f, indent=2)
-    except Exception as e:
-        print(f"[Warning] Failed to write users_data.json: {e}")
+    safe_save_json(USERS_DATA_FILE, {"users": users})
 
     if db.is_pg_connected():
         try:
@@ -502,21 +527,18 @@ def get_user_by_email(email):
 def update_user_password(email, new_password_hash):
     """Updates password for an existing user."""
     clean_email = email.strip().lower()
-    users = []
-    if os.path.exists(USERS_DATA_FILE):
-        try:
-            with open(USERS_DATA_FILE, "r", encoding="utf-8") as f:
-                users = json.load(f).get("users", [])
-        except Exception:
-            users = []
+    data = safe_load_json(USERS_DATA_FILE, {"users": []})
+    users = data.get("users", [])
     for u in users:
         if u.get("email", "").strip().lower() == clean_email:
             u["password_hash"] = new_password_hash
-    try:
-        with open(USERS_DATA_FILE, "w", encoding="utf-8") as f:
-            json.dump({"users": users}, f, indent=2)
-    except Exception:
-        pass
+    safe_save_json(USERS_DATA_FILE, {"users": users})
+
+    if db.is_pg_connected():
+        try:
+            db.execute_query("UPDATE users SET password_hash = %s, updated_at = CURRENT_TIMESTAMP WHERE LOWER(email) = %s", (new_password_hash, clean_email))
+        except Exception:
+            pass
 
     if db.is_pg_connected():
         try:
@@ -801,22 +823,66 @@ def load_colleges_data():
     for json_path in [root_json, data_json]:
         if os.path.exists(json_path):
             try:
-                with open(json_path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                    for it in data.get("colleges", []):
-                        c_dict = _row_to_college_dict(it)
-                        aishe_k = str(c_dict.get("aishe") or c_dict.get("aishe_code") or "").strip().lower()
-                        name_k = str(c_dict.get("name") or c_dict.get("college_name") or "").strip().lower()
-                        id_k = str(c_dict.get("id") or "").strip().lower()
+                data = safe_load_json(json_path, {"colleges": []})
+                for it in data.get("colleges", []):
+                    c_dict = _row_to_college_dict(it)
+                    aishe_k = str(c_dict.get("aishe") or c_dict.get("aishe_code") or "").strip().lower()
+                    name_k = str(c_dict.get("name") or c_dict.get("college_name") or "").strip().lower()
+                    id_k = str(c_dict.get("id") or "").strip().lower()
 
-                        unique_id = id_k or aishe_k or name_k
-                        if unique_id and unique_id not in seen_keys:
-                            seen_keys.add(unique_id)
-                            if aishe_k: seen_keys.add(aishe_k)
-                            if name_k: seen_keys.add(name_k)
-                            result.append(c_dict)
+                    unique_id = id_k or aishe_k or name_k
+                    if unique_id and unique_id not in seen_keys:
+                        seen_keys.add(unique_id)
+                        if aishe_k: seen_keys.add(aishe_k)
+                        if name_k: seen_keys.add(name_k)
+                        result.append(c_dict)
             except Exception as e:
                 print(f"[Warning] Could not read {json_path}: {e}")
+
+    # 3. Supplemental CSV fallback if JSON fallback has incomplete coverage
+    if len(result) < 1000 and os.path.exists(MASTER_CSV_FILE):
+        try:
+            import csv
+            with open(MASTER_CSV_FILE, "r", encoding="utf-8", errors="replace") as f:
+                reader = csv.DictReader(f)
+                idx = len(result) + 1
+                for row in reader:
+                    aishe_val = (row.get("AISHE code") or "").strip()
+                    name_val = (row.get("College Name") or "").strip()
+                    if not name_val:
+                        continue
+                    key = aishe_val.lower() if aishe_val else name_val.lower()
+                    if key in seen_keys:
+                        continue
+                    seen_keys.add(key)
+                    if aishe_val: seen_keys.add(aishe_val.lower())
+                    if name_val: seen_keys.add(name_val.lower())
+
+                    col_obj = _row_to_college_dict({
+                        "id": idx,
+                        "aishe_code": aishe_val,
+                        "college_name": name_val,
+                        "state": row.get("State") or "Tamil Nadu",
+                        "district": row.get("District") or "",
+                        "location": row.get("District") or "",
+                        "website": row.get("web url") or "",
+                        "established_year": row.get("Year of established") or "",
+                        "location_type": row.get("Location Type(Rural/Urban)") or "",
+                        "college_type": row.get("Institute Type") or "College",
+                        "naac_grade": row.get("NAAC Grade") or "",
+                        "accreditation": row.get("Accreditation") or "",
+                        "nirf_rank": row.get("NIRF Rank") or "",
+                        "address": row.get("Address") or "",
+                        "email": row.get("Email") or "",
+                        "phone": row.get("Phone") or "",
+                        "description": row.get("Description") or "",
+                        "logo_url": row.get("Logo URL") or "",
+                        "status": "active"
+                    })
+                    result.append(col_obj)
+                    idx += 1
+        except Exception as e:
+            print(f"[Warning] Could not parse master CSV fallback: {e}")
 
     _cached_colleges_registry = result
     _cached_colleges_timestamp = now
@@ -1291,10 +1357,8 @@ def api_verify_update_captcha():
 
     # 2. Sync to JSON fallback
     try:
-        logs_data = []
-        if os.path.exists(ACCESS_LOGS_FILE):
-            with open(ACCESS_LOGS_FILE, "r", encoding="utf-8") as f:
-                logs_data = json.load(f).get("access_logs", [])
+        data = safe_load_json(ACCESS_LOGS_FILE, {"access_logs": []})
+        logs_data = data.get("access_logs", [])
         logs_data.insert(0, {
             "id": f"ACC-{len(logs_data) + 101}",
             "college_name": resolved_college,
@@ -1307,8 +1371,7 @@ def api_verify_update_captcha():
             "user_agent": user_agent,
             "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ")
         })
-        with open(ACCESS_LOGS_FILE, "w", encoding="utf-8") as f:
-            json.dump({"access_logs": logs_data[:200]}, f, indent=2)
+        safe_save_json(ACCESS_LOGS_FILE, {"access_logs": logs_data[:200]})
     except Exception as e:
         logger.warning(f"[JSON Access Log Error] {e}")
 
@@ -1372,13 +1435,8 @@ def api_get_update_details_access_logs():
             logger.warning(f"[DB Access Logs Error] {e}")
 
     # Fallback to JSON
-    logs = []
-    if os.path.exists(ACCESS_LOGS_FILE):
-        try:
-            with open(ACCESS_LOGS_FILE, "r", encoding="utf-8") as f:
-                logs = json.load(f).get("access_logs", [])
-        except Exception:
-            pass
+    data = safe_load_json(ACCESS_LOGS_FILE, {"access_logs": []})
+    logs = data.get("access_logs", [])
     return jsonify({"success": True, "total": len(logs), "logs": logs})
 
 @app.route("/api/logout", methods=["POST"])
@@ -1628,15 +1686,18 @@ def api_submit_update():
     except Exception as e:
         logger.error(f"[Approvals JSON Save Error] {e}")
 
-    # Enforce Requirement 10: No False Success if storage completely failed
-    if not db_saved and not json_saved:
+    # Send email notification to official TheCampusNova Gmail
+    email_sent = False
+    try:
+        email_sent = send_college_update_notification(new_approval)
+    except Exception as e:
+        logger.error(f"[College Update Email Error] {e}")
+
+    if not db_saved and not json_saved and not email_sent:
         return jsonify({
             "success": False,
             "message": "Database storage error: Failed to save update request to system records. Please try again."
         }), 500
-
-    # Send email notification to official TheCampusNova Gmail
-    email_sent = send_college_update_notification(new_approval)
 
     # Invalidate token after successful submission so it cannot be reused
     used_tokens.add(token)
@@ -1727,10 +1788,7 @@ def _sync_college_to_json_file(college_dict, is_delete=False):
     """Safely synchronizes a college record to persistent JSON storage as backup."""
     for file_path in [COLLEGES_DATA_FILE, os.path.join(os.path.dirname(__file__), "data", "colleges_data.json")]:
         try:
-            if not os.path.exists(file_path):
-                continue
-            with open(file_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
+            data = safe_load_json(file_path, {"colleges": []})
             col_list = data.get("colleges", [])
             target_aishe = str(college_dict.get("aishe") or college_dict.get("aishe_code") or "").strip().lower()
             target_id = str(college_dict.get("id") or "").strip().lower()
@@ -1756,8 +1814,7 @@ def _sync_college_to_json_file(college_dict, is_delete=False):
 
             data["colleges"] = col_list
             data["total"] = len(col_list)
-            with open(file_path, "w", encoding="utf-8") as f:
-                json.dump(data, f, indent=2, ensure_ascii=False)
+            safe_save_json(file_path, data)
         except Exception as e:
             print(f"[Warning] Failed to sync college to {file_path}: {e}")
 
@@ -2234,22 +2291,10 @@ def api_admin_colleges_bulk_update():
 # 3. COURSES REST API (CRUD)
 # ----------------------------------------------------
 def load_courses_data():
-    if os.path.exists(COURSES_DATA_FILE):
-        try:
-            with open(COURSES_DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"[Warning] Could not read courses_data.json: {e}")
-    return {"categories": []}
+    return safe_load_json(COURSES_DATA_FILE, {"categories": []})
 
 def save_courses_data(data):
-    try:
-        with open(COURSES_DATA_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        return True
-    except Exception as e:
-        print(f"[Error] Could not save courses_data.json: {e}")
-        return False
+    return safe_save_json(COURSES_DATA_FILE, data)
 
 _cached_courses_list = None
 _cached_courses_timestamp = 0
@@ -2422,8 +2467,7 @@ def sync_course_in_json_stores(course_id, course_code, course_name, degree_type,
                     }
                     cats[0]["groups"][0]["subfields"][0]["programs"].insert(0, new_prog)
 
-            with open(filepath, "w", encoding="utf-8") as f:
-                json.dump(c_store, f, indent=2, ensure_ascii=False)
+            safe_save_json(filepath, c_store)
         except Exception as e:
             logger.warning(f"Could not sync course {course_name} in {filepath}: {e}")
 
@@ -2573,8 +2617,7 @@ def api_delete_course(course_id):
                         if len(sub["programs"]) != orig_len:
                             changed = True
             if changed:
-                with open(filepath, "w", encoding="utf-8") as f:
-                    json.dump(c_store, f, indent=2, ensure_ascii=False)
+                safe_save_json(filepath, c_store)
         except Exception as e:
             logger.warning(f"[JSON Course Delete Error] {e}")
 
@@ -2914,24 +2957,11 @@ STUDY_MATERIALS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 
 
 def load_study_materials_store():
     """Loads study materials, reviews, feedback, and stats from disk."""
-    if os.path.exists(STUDY_MATERIALS_FILE):
-        try:
-            with open(STUDY_MATERIALS_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            logger.warning(f"Failed to read study_materials.json: {e}")
-    return {"materials": [], "reviews": [], "feedback": [], "experiences": [], "stats": {}}
+    return safe_load_json(STUDY_MATERIALS_FILE, {"materials": [], "reviews": [], "feedback": [], "experiences": [], "stats": {}})
 
 def save_study_materials_store(data):
     """Saves study materials store to disk."""
-    try:
-        os.makedirs(os.path.dirname(STUDY_MATERIALS_FILE), exist_ok=True)
-        with open(STUDY_MATERIALS_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        return True
-    except Exception as e:
-        logger.error(f"Failed to write study_materials.json: {e}")
-        return False
+    return safe_save_json(STUDY_MATERIALS_FILE, data)
 
 @app.route("/api/study-materials", methods=["GET"])
 def api_get_study_materials():
@@ -4077,32 +4107,19 @@ REVIEWS_FILE = os.path.join(os.path.dirname(__file__), "data", "reviews_data.jso
 
 def load_reviews_store():
     """Loads reviews from data/reviews_data.json or fallback."""
-    if os.path.exists(REVIEWS_FILE):
-        try:
-            with open(REVIEWS_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            logger.warning(f"Failed to read reviews_data.json: {e}")
-    if os.path.exists(EXAM_REVIEWS_FILE):
-        try:
-            with open(EXAM_REVIEWS_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            pass
+    data = safe_load_json(REVIEWS_FILE, None)
+    if data is not None and isinstance(data, list):
+        return data
+    data_exam = safe_load_json(EXAM_REVIEWS_FILE, None)
+    if data_exam is not None and isinstance(data_exam, list):
+        return data_exam
     return []
 
 def save_reviews_store(items):
     """Saves reviews to data/reviews_data.json and syncs exam_reviews.json."""
-    try:
-        os.makedirs(os.path.dirname(REVIEWS_FILE), exist_ok=True)
-        with open(REVIEWS_FILE, "w", encoding="utf-8") as f:
-            json.dump(items, f, indent=2, ensure_ascii=False)
-        with open(EXAM_REVIEWS_FILE, "w", encoding="utf-8") as f:
-            json.dump(items, f, indent=2, ensure_ascii=False)
-        return True
-    except Exception as e:
-        logger.error(f"Failed to write reviews_data.json: {e}")
-        return False
+    r1 = safe_save_json(REVIEWS_FILE, items)
+    safe_save_json(EXAM_REVIEWS_FILE, items)
+    return r1
 
 @app.route("/api/reviews", methods=["GET"])
 @app.route("/api/exam-reviews", methods=["GET"])
@@ -5376,14 +5393,8 @@ def load_mentors_data_all():
         except Exception as e:
             logger.warning(f"[PostgreSQL Mentors Error] {e}")
 
-    if os.path.exists(MENTORS_DATA_FILE):
-        try:
-            with open(MENTORS_DATA_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                return data.get("mentors", [])
-        except Exception as e:
-            logger.warning(f"[JSON Mentors Error] {e}")
-    return []
+    data = safe_load_json(MENTORS_DATA_FILE, {"mentors": []})
+    return data.get("mentors", [])
 
 def generate_next_mentor_id():
     """Generates next available unique mentor_id (e.g. MEN-008) without collision."""
@@ -5404,32 +5415,21 @@ def generate_next_mentor_id():
             logger.warning(f"[Generate Mentor ID PG Error] {e}")
 
     # Also check JSON file
-    if os.path.exists(MENTORS_DATA_FILE):
-        try:
-            with open(MENTORS_DATA_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                for m in data.get("mentors", []):
-                    mid = str(m.get("mentor_id") or m.get("id") or "")
-                    if mid.startswith("MEN-"):
-                        try:
-                            num = int(mid.split("-")[1])
-                            if num > max_id:
-                                max_id = num
-                        except (ValueError, IndexError):
-                            pass
-        except Exception:
-            pass
+    data = safe_load_json(MENTORS_DATA_FILE, {"mentors": []})
+    for m in data.get("mentors", []):
+        mid = str(m.get("mentor_id") or m.get("id") or "")
+        if mid.startswith("MEN-"):
+            try:
+                num = int(mid.split("-")[1])
+                if num > max_id:
+                    max_id = num
+            except (ValueError, IndexError):
+                pass
 
     return f"MEN-{max_id + 1:03d}"
 
 def save_mentors_data_json(mentors_list):
-    try:
-        with open(MENTORS_DATA_FILE, "w", encoding="utf-8") as f:
-            json.dump({"mentors": mentors_list}, f, indent=2, ensure_ascii=False, default=str)
-        return True
-    except Exception as e:
-        logger.error(f"[Save Mentors Error] {e}")
-        return False
+    return safe_save_json(MENTORS_DATA_FILE, {"mentors": mentors_list})
 
 def sync_mentors_json_from_db():
     """Authoritatively mirrors PostgreSQL mentors into the JSON backup store."""
@@ -5461,23 +5461,11 @@ def load_mentor_enquiries_all():
         except Exception as e:
             logger.warning(f"[PostgreSQL Mentor Enquiries Error] {e}")
 
-    if os.path.exists(MENTOR_ENQUIRIES_FILE):
-        try:
-            with open(MENTOR_ENQUIRIES_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                return data.get("enquiries", [])
-        except Exception as e:
-            logger.warning(f"[JSON Mentor Enquiries Error] {e}")
-    return []
+    data = safe_load_json(MENTOR_ENQUIRIES_FILE, {"enquiries": []})
+    return data.get("enquiries", [])
 
 def save_mentor_enquiries_json(enquiries_list):
-    try:
-        with open(MENTOR_ENQUIRIES_FILE, "w", encoding="utf-8") as f:
-            json.dump({"enquiries": enquiries_list}, f, indent=2, ensure_ascii=False, default=str)
-        return True
-    except Exception as e:
-        logger.error(f"[Save Enquiries Error] {e}")
-        return False
+    return safe_save_json(MENTOR_ENQUIRIES_FILE, {"enquiries": enquiries_list})
 
 @app.route("/api/mentors", methods=["GET"])
 def api_get_mentors_public():
@@ -5621,7 +5609,7 @@ def api_submit_mentor_enquiry():
         except Exception as e:
             logger.warning(f"[PostgreSQL Mentor Enquiry Save Error] {e}")
 
-    # 4. Sync to JSON fallback
+    # 4. Sync to JSON fallback (serverless-safe with /tmp fallback)
     json_saved = False
     try:
         all_enquiries = load_mentor_enquiries_all()
@@ -5630,13 +5618,7 @@ def api_submit_mentor_enquiry():
     except Exception as e:
         logger.warning(f"[JSON Mentor Enquiry Save Error] {e}")
 
-    if not db_saved and not json_saved:
-        return jsonify({
-            "success": False,
-            "message": "Database storage error: Failed to record enquiry in system records. Please try again."
-        }), 500
-
-    # 5. Record Audit Log
+    # 5. Record Audit Log (safe)
     _record_audit_log(
         "Contact Inquiry Submitted" if is_contact_form else "Mentor Enquiry Submitted",
         "Support" if is_contact_form else "Mentors",
@@ -5645,26 +5627,37 @@ def api_submit_mentor_enquiry():
     )
 
     # 6. Dispatch Email Notifications (Admin, Mentor, User Confirmation)
-    email_sent = send_mentor_enquiry_notification(enquiry_record)
+    email_sent = False
+    try:
+        email_sent = send_mentor_enquiry_notification(enquiry_record)
+    except Exception as e:
+        logger.error(f"[Gmail Dispatch Error] {e}")
 
-    if email_sent:
-        if is_contact_form:
-            msg = "Thank you! Your message has been received and official confirmation has been dispatched to your email."
+    # If any channel succeeded (Database, Ephemeral JSON, or Gmail Delivery), treat as SUCCESS!
+    if email_sent or db_saved or json_saved:
+        if email_sent:
+            if is_contact_form:
+                msg = "Thank you! Your message has been received and official confirmation has been dispatched to your email."
+            else:
+                msg = "Thank you! Your mentorship enquiry has been received and official confirmation has been dispatched to your email."
         else:
-            msg = "Thank you! Your mentorship enquiry has been received and official confirmation has been dispatched to your email."
-    else:
-        if is_contact_form:
-            msg = "Thank you! Your inquiry has been registered in our portal and is queued for support team review."
-        else:
-            msg = "Thank you! Your enquiry has been registered in our portal and is queued for advisor review."
+            if is_contact_form:
+                msg = "Thank you! Your inquiry has been registered in our portal and is queued for support team review."
+            else:
+                msg = "Thank you! Your enquiry has been registered in our portal and is queued for advisor review."
+
+        return jsonify({
+            "success": True,
+            "email_sent": bool(email_sent),
+            "db_saved": bool(db_saved or json_saved),
+            "message": msg,
+            "enquiry_id": enquiry_id
+        }), 201
 
     return jsonify({
-        "success": True,
-        "email_sent": bool(email_sent),
-        "db_saved": db_saved or json_saved,
-        "message": msg,
-        "enquiry_id": enquiry_id
-    }), 201
+        "success": False,
+        "message": "Enquiry submission error: Unable to record enquiry or deliver email notification at this time. Please try again later."
+    }), 500
 
 @app.route("/api/admin/mentors", methods=["GET"])
 @require_admin_auth
@@ -5950,22 +5943,10 @@ def load_approvals_data():
             logger.warning(f"[PostgreSQL Approvals Load Warning] {e}")
 
     # 2. Fallback to approvals_data.json
-    if os.path.exists(APPROVALS_DATA_FILE):
-        try:
-            with open(APPROVALS_DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"[Warning] Error reading approvals_data.json: {e}")
-    return {"approvals": []}
+    return safe_load_json(APPROVALS_DATA_FILE, {"approvals": []})
 
 def save_approvals_data(data):
-    try:
-        with open(APPROVALS_DATA_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        return True
-    except Exception as e:
-        print(f"[Error] Failed to save approvals_data.json: {e}")
-        return False
+    return safe_save_json(APPROVALS_DATA_FILE, data)
 
 @app.route("/api/approvals", methods=["GET"])
 @app.route("/api/admin/approvals", methods=["GET"])
@@ -6177,22 +6158,10 @@ def api_delete_approval(approval_id):
 # EVENTS REST API (PostgreSQL + JSON Store)
 # ----------------------------------------------------
 def load_events_data():
-    if os.path.exists(EVENTS_DATA_FILE):
-        try:
-            with open(EVENTS_DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"[Warning] Error reading events_data.json: {e}")
-    return {"events": []}
+    return safe_load_json(EVENTS_DATA_FILE, {"events": []})
 
 def save_events_data(data):
-    try:
-        with open(EVENTS_DATA_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        return True
-    except Exception as e:
-        print(f"[Error] Failed to save events_data.json: {e}")
-        return False
+    return safe_save_json(EVENTS_DATA_FILE, data)
 
 @app.route("/api/events", methods=["GET"])
 def api_get_events():
@@ -6505,22 +6474,10 @@ def api_ai_generate_events():
 # NEWS REST API (Update Details Sub-Field)
 # ----------------------------------------------------
 def load_news_data():
-    if os.path.exists(NEWS_DATA_FILE):
-        try:
-            with open(NEWS_DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"[Warning] Error reading news_data.json: {e}")
-    return {"news": []}
+    return safe_load_json(NEWS_DATA_FILE, {"news": []})
 
 def save_news_data(data):
-    try:
-        with open(NEWS_DATA_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        return True
-    except Exception as e:
-        print(f"[Error] Failed to save news_data.json: {e}")
-        return False
+    return safe_save_json(NEWS_DATA_FILE, data)
 
 @app.route("/api/news", methods=["GET"])
 def api_get_news():
@@ -6824,10 +6781,8 @@ def _record_audit_log(action, module_name, record_id, description, status="Succe
     import datetime
     now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
-        logs = []
-        if os.path.exists(AUDIT_LOGS_FILE):
-            with open(AUDIT_LOGS_FILE, "r", encoding="utf-8") as f:
-                logs = json.load(f).get("logs", [])
+        data = safe_load_json(AUDIT_LOGS_FILE, {"logs": []})
+        logs = data.get("logs", [])
         new_log = {
             "id": len(logs) + 1,
             "user_identifier": user,
@@ -6841,8 +6796,7 @@ def _record_audit_log(action, module_name, record_id, description, status="Succe
         logs.insert(0, new_log)
         if len(logs) > 200:
             logs = logs[:200]
-        with open(AUDIT_LOGS_FILE, "w", encoding="utf-8") as f:
-            json.dump({"logs": logs}, f, indent=2, ensure_ascii=False)
+        safe_save_json(AUDIT_LOGS_FILE, {"logs": logs})
     except Exception as e:
         print(f"[Warning] Failed to write audit log: {e}")
 
@@ -6939,26 +6893,10 @@ DISTRICT_ANALYTICS_FILE = os.path.join(os.path.dirname(__file__), "data", "distr
 # ==============================================================================
 
 def _load_json_data(file_path, default_val):
-    if os.path.exists(file_path):
-        try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"[Warning] Error reading {file_path}: {e}")
-    return default_val
+    return safe_load_json(file_path, default_val)
 
 def _save_json_data(file_path, data):
-    try:
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        return True
-    except OSError as e:
-        print(f"[Warning] Serverless/Read-only filesystem limitation for {file_path}: {e}")
-        return False
-    except Exception as e:
-        print(f"[Error] Failed writing {file_path}: {e}")
-        return False
+    return safe_save_json(file_path, data)
 
 # ----------------------------------------------------
 # 1. RANKINGS API (/api/rankings)

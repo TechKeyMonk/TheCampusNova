@@ -168,7 +168,7 @@ def load_cache():
 
 
 def save_cache(force=False):
-    """Flushes translation cache to disk safely."""
+    """Flushes translation cache to disk safely with serverless read-only fallback."""
     global _cache_dirty, _last_save_time
     with _cache_lock:
         now = time.time()
@@ -176,13 +176,22 @@ def save_cache(force=False):
             return
 
         try:
-            with open(CACHE_FILE, "w", encoding="utf-8") as f:
-                json.dump(_cache, f, ensure_ascii=False, indent=2)
-            _cache_dirty = False
-            _last_save_time = now
-            logger.info(f"Translation cache saved to disk: {CACHE_FILE}")
+            try:
+                with open(CACHE_FILE, "w", encoding="utf-8") as f:
+                    json.dump(_cache, f, ensure_ascii=False, indent=2)
+                _cache_dirty = False
+                _last_save_time = now
+                logger.info(f"Translation cache saved to disk: {CACHE_FILE}")
+            except (OSError, PermissionError):
+                import tempfile
+                tmp_cache = os.path.join(tempfile.gettempdir(), os.path.basename(CACHE_FILE))
+                with open(tmp_cache, "w", encoding="utf-8") as f:
+                    json.dump(_cache, f, ensure_ascii=False, indent=2)
+                _cache_dirty = False
+                _last_save_time = now
+                logger.info(f"[Serverless Storage Fallback] Translation cache saved to ephemeral disk: {tmp_cache}")
         except Exception as e:
-            logger.error(f"Failed to save translation cache: {e}")
+            logger.warning(f"Failed to save translation cache: {e}")
 
 
 import atexit
