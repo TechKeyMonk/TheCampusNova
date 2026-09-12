@@ -586,21 +586,15 @@ def execute_bulk_update_transaction(records_to_update):
     if not records_to_update:
         return {"updated_count": 0, "updated_colleges": []}
 
-    pool = db.get_pool()
-    if not pool:
-        raise RuntimeError("Could not obtain PostgreSQL connection pool.")
+    updated_records = []
 
-    conn = pool.getconn()
-    try:
-        conn.autocommit = False
-        updated_records = []
+    def clean_val(v):
+        if v is None:
+            return None
+        s = str(v).strip()
+        return s if s != "" else None
 
-        def clean_val(v):
-            if v is None:
-                return None
-            s = str(v).strip()
-            return s if s != "" else None
-
+    with db.transaction() as conn:
         with conn.cursor() as cur:
             for row in records_to_update:
                 raw_aishe = clean_val(row.get("aishe_code"))
@@ -718,17 +712,10 @@ def execute_bulk_update_transaction(records_to_update):
                         "established_year": res[7]
                     })
 
-        conn.commit()
-        return {
-            "updated_count": len(updated_records),
-            "updated_colleges": updated_records
-        }
-    except Exception as e:
-        conn.rollback()
-        logger.error(f"[Bulk Update Transaction Rolled Back] {e}")
-        raise e
-    finally:
-        pool.putconn(conn)
+    return {
+        "updated_count": len(updated_records),
+        "updated_colleges": updated_records
+    }
 
 
 def detect_individual_headers_and_rows(sheet):
@@ -1002,21 +989,15 @@ def execute_individual_details_bulk_update(records_to_update):
     if not records_to_update:
         return {"updated_count": 0, "updated_colleges": []}
 
-    pool = db.get_pool()
-    if not pool:
-        raise RuntimeError("Could not obtain PostgreSQL connection pool.")
+    updated_records = []
 
-    conn = pool.getconn()
-    try:
-        conn.autocommit = False
-        updated_records = []
+    def clean_val(v):
+        if v is None:
+            return None
+        s = str(v).strip()
+        return s if s != "" else None
 
-        def clean_val(v):
-            if v is None:
-                return None
-            s = str(v).strip()
-            return s if s != "" else None
-
+    with db.transaction() as conn:
         with conn.cursor() as cur:
             # 1. Fast Batch Prefetch of matching college IDs
             all_aishes = list({clean_val(r.get("aishe_code")).upper() for r in records_to_update if clean_val(r.get("aishe_code"))})
@@ -1127,14 +1108,7 @@ def execute_individual_details_bulk_update(records_to_update):
                         "established_year": res[7]
                     })
 
-        conn.commit()
-        return {
-            "updated_count": len(updated_records),
-            "updated_colleges": updated_records
-        }
-    except Exception as e:
-        conn.rollback()
-        logger.error(f"[Individual Bulk Update Transaction Rolled Back] {e}")
-        raise e
-    finally:
-        pool.putconn(conn)
+    return {
+        "updated_count": len(updated_records),
+        "updated_colleges": updated_records
+    }

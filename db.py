@@ -1,6 +1,7 @@
 import os
 import json
 import time
+from contextlib import contextmanager
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -106,22 +107,49 @@ def get_connection_candidates():
 
     return candidates
 
-def get_pool():
+def is_connection_alive(conn):
+    """Checks if a psycopg2 connection is active and responsive."""
+    if conn is None or getattr(conn, "closed", 0) != 0:
+        return False
+    try:
+        if PSYCOPG2_AVAILABLE:
+            from psycopg2.extensions import TRANSACTION_STATUS_IDLE
+            if hasattr(conn, "get_transaction_status") and conn.get_transaction_status() != TRANSACTION_STATUS_IDLE:
+                conn.rollback()
+        with conn.cursor() as cur:
+            cur.execute("SELECT 1;")
+        if PSYCOPG2_AVAILABLE:
+            from psycopg2.extensions import TRANSACTION_STATUS_IDLE
+            if hasattr(conn, "get_transaction_status") and conn.get_transaction_status() != TRANSACTION_STATUS_IDLE:
+                conn.rollback()
+        return True
+    except Exception:
+        return False
+
+def get_pool(force_reconnect=False):
     """Initializes or returns threaded PostgreSQL connection pool with serverless resiliency."""
     global _connection_pool, _is_connected, _last_pool_attempt
     if not PSYCOPG2_AVAILABLE:
         _is_connected = False
         return None
 
+    if force_reconnect and _connection_pool is not None:
+        try:
+            _connection_pool.closeall()
+        except Exception:
+            pass
+        _connection_pool = None
+        _is_connected = False
+
     if _connection_pool is not None and getattr(_connection_pool, "closed", False):
         _connection_pool = None
         _is_connected = False
 
-    if _connection_pool is not None:
+    if _connection_pool is not None and not force_reconnect:
         return _connection_pool
 
     now = time.time()
-    if now - _last_pool_attempt < _POOL_RETRY_INTERVAL:
+    if not force_reconnect and (now - _last_pool_attempt < _POOL_RETRY_INTERVAL):
         return None
     _last_pool_attempt = now
 
@@ -137,7 +165,7 @@ def get_pool():
             print("[PostgreSQL Notice] No remote PostgreSQL configuration provided or reachable in Vercel environment.")
         return None
 
-    max_conn = 5 if is_serverless else int(os.environ.get("PGMAXCONN", "25"))
+    max_conn = 5 if is_serverless else int(os.environ.get("PGMAXCONN", "4"))
     conn_timeout = int(os.environ.get("PGCONNECT_TIMEOUT", "3" if is_serverless else "5"))
 
     for params in candidates:
@@ -159,10 +187,15 @@ def get_pool():
                     sep = "&" if "?" in dsn else "?"
                     dsn = f"{dsn}{sep}connect_timeout={conn_timeout}"
 
+                if "keepalives" not in dsn:
+                    sep = "&" if "?" in dsn else "?"
+                    dsn = f"{dsn}{sep}keepalives=1&keepalives_idle=30&keepalives_interval=10&keepalives_count=5"
+
                 p = pool.ThreadedConnectionPool(minconn=1, maxconn=max_conn, dsn=dsn)
                 test_conn = p.getconn()
                 with test_conn.cursor() as cur:
                     cur.execute("SELECT 1;")
+                test_conn.rollback()
                 p.putconn(test_conn)
 
                 _connection_pool = p
@@ -186,6 +219,7 @@ def get_pool():
                 test_conn = p.getconn()
                 with test_conn.cursor() as cur:
                     cur.execute("SELECT 1;")
+                test_conn.rollback()
                 p.putconn(test_conn)
 
                 _connection_pool = p
@@ -204,149 +238,204 @@ def get_pool():
     _connection_pool = None
     return None
 
-def is_pg_connected():
-    """Returns True if active PostgreSQL connection pool is available."""
+def get_connection_params():
+    """Builds connection configuration dictionary for legacy scripts."""
+    candidates = get_connection_candidates()
+    return candidates[0] if candidates else {}
+
+def get_connection():
+    """Acquires a verified live connection from the pool, recycling stale sockets."""
     p = get_pool()
-    return p is not None and _is_connected
+    if not p:
+        p = get_pool(force_reconnect=True)
+    if not p:
+        return None
+    try:
+        conn = p.getconn()
+        if not is_connection_alive(conn):
+            try:
+                p.putconn(conn, close=True)
+            except Exception:
+                pass
+            p = get_pool(force_reconnect=True)
+            if not p:
+                return None
+            conn = p.getconn()
+            if not is_connection_alive(conn):
+                try:
+                    p.putconn(conn, close=True)
+                except Exception:
+                    pass
+                return None
+        return conn
+    except Exception as e:
+        safe_msg = str(e).encode('ascii', 'replace').decode('ascii')
+        print(f"[PostgreSQL Connection Acquisition Error] {safe_msg}")
+        return None
+
+def release_connection(conn, close=False):
+    """Safely releases a connection back to the pool, ensuring autocommit is reset."""
+    p = get_pool()
+    if not p or not conn:
+        return
+    try:
+        if close or getattr(conn, "closed", 0) != 0:
+            try:
+                p.putconn(conn, close=True)
+            except Exception:
+                pass
+        else:
+            try:
+                if PSYCOPG2_AVAILABLE:
+                    from psycopg2.extensions import TRANSACTION_STATUS_IDLE
+                    if hasattr(conn, "get_transaction_status") and conn.get_transaction_status() != TRANSACTION_STATUS_IDLE:
+                        conn.rollback()
+                if not conn.autocommit:
+                    conn.autocommit = True
+            except Exception:
+                pass
+            p.putconn(conn)
+    except Exception:
+        pass
+
+@contextmanager
+def transaction():
+    """Transactional context manager for atomic multi-statement operations with rollback on failure."""
+    conn = get_connection()
+    if not conn:
+        raise RuntimeError("PostgreSQL database is disconnected or unavailable.")
+    try:
+        if PSYCOPG2_AVAILABLE:
+            from psycopg2.extensions import TRANSACTION_STATUS_IDLE
+            if hasattr(conn, "get_transaction_status") and conn.get_transaction_status() != TRANSACTION_STATUS_IDLE:
+                conn.rollback()
+        if conn.autocommit:
+            conn.autocommit = False
+        yield conn
+        conn.commit()
+    except Exception as e:
+        try:
+            conn.rollback()
+        except Exception:
+            pass
+        is_conn_error = isinstance(e, (psycopg2.OperationalError, psycopg2.InterfaceError)) if PSYCOPG2_AVAILABLE else False
+        release_connection(conn, close=is_conn_error)
+        raise e
+    else:
+        release_connection(conn, close=False)
+
+def is_pg_connected():
+    """Returns True if active PostgreSQL connection pool is available and responsive."""
+    p = get_pool()
+    if p is None or not _is_connected:
+        p = get_pool(force_reconnect=True)
+        if p is None or not _is_connected:
+            return False
+    conn = None
+    try:
+        conn = p.getconn()
+        if not is_connection_alive(conn):
+            try:
+                p.putconn(conn, close=True)
+            except Exception:
+                pass
+            conn = None
+            p = get_pool(force_reconnect=True)
+            if not p:
+                return False
+            conn = p.getconn()
+            if not is_connection_alive(conn):
+                try:
+                    p.putconn(conn, close=True)
+                except Exception:
+                    pass
+                conn = None
+                return False
+        return True
+    except Exception:
+        return False
+    finally:
+        if conn:
+            release_connection(conn)
 
 def query_all(sql, params=None):
-    """Executes a SELECT query and returns all records as a list of dicts."""
-    p = get_pool()
-    if not p:
-        return []
-    conn = None
-    try:
-        conn = p.getconn()
-        if getattr(conn, "closed", 0) != 0:
-            try: p.putconn(conn, close=True)
-            except Exception: pass
-            conn = p.getconn()
-
+    """Executes a SELECT query and returns all records as a list of dicts with stale socket retry."""
+    for attempt in range(2):
+        conn = get_connection()
+        if not conn:
+            return []
         try:
-            conn.rollback()
-        except Exception:
-            pass
-        conn.autocommit = True
-        with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute(sql, params or ())
-            rows = cur.fetchall()
-            return [dict(r) for r in rows]
-    except Exception as e:
-        safe_msg = str(e).encode('ascii', 'replace').decode('ascii')
-        print(f"[PostgreSQL Query Error] {safe_msg} (SQL: {sql[:60]}...)")
-        if isinstance(e, (psycopg2.OperationalError, psycopg2.InterfaceError)):
-            if conn:
-                try: p.putconn(conn, close=True)
-                except Exception: pass
-                conn = None
-            global _connection_pool, _is_connected
-            _connection_pool = None
-            _is_connected = False
-        elif conn:
-            try: conn.rollback()
-            except Exception: pass
-        return []
-    finally:
-        if conn and p:
-            try:
-                if getattr(conn, "closed", 0) != 0:
-                    p.putconn(conn, close=True)
-                else:
-                    p.putconn(conn)
-            except Exception:
-                pass
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute(sql, params or ())
+                rows = cur.fetchall()
+                res = [dict(r) for r in rows]
+            release_connection(conn)
+            return res
+        except Exception as e:
+            is_conn_err = isinstance(e, (psycopg2.OperationalError, psycopg2.InterfaceError)) if PSYCOPG2_AVAILABLE else False
+            release_connection(conn, close=is_conn_err)
+            if is_conn_err and attempt == 0:
+                print(f"[PostgreSQL Query Notice] Stale connection detected. Reconnecting and retrying: {sql[:60]}...")
+                get_pool(force_reconnect=True)
+                continue
+            safe_msg = str(e).encode('ascii', 'replace').decode('ascii')
+            print(f"[PostgreSQL Query Error] {safe_msg} (SQL: {sql[:60]}...)")
+            return []
+    return []
 
 def query_one(sql, params=None):
-    """Executes a SELECT query and returns a single record as a dict or None."""
-    p = get_pool()
-    if not p:
-        return None
-    conn = None
-    try:
-        conn = p.getconn()
-        if getattr(conn, "closed", 0) != 0:
-            try: p.putconn(conn, close=True)
-            except Exception: pass
-            conn = p.getconn()
-
+    """Executes a SELECT query and returns a single record as a dict or None with stale socket retry."""
+    for attempt in range(2):
+        conn = get_connection()
+        if not conn:
+            return None
         try:
-            conn.rollback()
-        except Exception:
-            pass
-        conn.autocommit = True
-        with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute(sql, params or ())
-            row = cur.fetchone()
-            return dict(row) if row else None
-    except Exception as e:
-        safe_msg = str(e).encode('ascii', 'replace').decode('ascii')
-        print(f"[PostgreSQL Query One Error] {safe_msg}")
-        if isinstance(e, (psycopg2.OperationalError, psycopg2.InterfaceError)):
-            if conn:
-                try: p.putconn(conn, close=True)
-                except Exception: pass
-                conn = None
-            global _connection_pool, _is_connected
-            _connection_pool = None
-            _is_connected = False
-        elif conn:
-            try: conn.rollback()
-            except Exception: pass
-        return None
-    finally:
-        if conn and p:
-            try:
-                if getattr(conn, "closed", 0) != 0:
-                    p.putconn(conn, close=True)
-                else:
-                    p.putconn(conn)
-            except Exception:
-                pass
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute(sql, params or ())
+                row = cur.fetchone()
+                res = dict(row) if row else None
+            release_connection(conn)
+            return res
+        except Exception as e:
+            is_conn_err = isinstance(e, (psycopg2.OperationalError, psycopg2.InterfaceError)) if PSYCOPG2_AVAILABLE else False
+            release_connection(conn, close=is_conn_err)
+            if is_conn_err and attempt == 0:
+                print(f"[PostgreSQL Query One Notice] Stale connection detected. Reconnecting and retrying: {sql[:60]}...")
+                get_pool(force_reconnect=True)
+                continue
+            safe_msg = str(e).encode('ascii', 'replace').decode('ascii')
+            print(f"[PostgreSQL Query One Error] {safe_msg}")
+            return None
+    return None
 
 def execute_query(sql, params=None):
-    """Executes an INSERT, UPDATE, or DELETE query and commits."""
-    p = get_pool()
-    if not p:
-        return None
-    conn = None
-    try:
-        conn = p.getconn()
-        if getattr(conn, "closed", 0) != 0:
-            try: p.putconn(conn, close=True)
-            except Exception: pass
-            conn = p.getconn()
-
-        with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute(sql, params or ())
-            conn.commit()
-            if cur.description:
-                row = cur.fetchone()
-                return dict(row) if row else None
-            return cur.rowcount
-    except Exception as e:
-        safe_msg = str(e).encode('ascii', 'replace').decode('ascii')
-        print(f"[PostgreSQL Execute Error] {safe_msg} (SQL: {sql[:60]}...)")
-        if isinstance(e, (psycopg2.OperationalError, psycopg2.InterfaceError)):
-            if conn:
-                try: p.putconn(conn, close=True)
-                except Exception: pass
-                conn = None
-            global _connection_pool, _is_connected
-            _connection_pool = None
-            _is_connected = False
-        elif conn:
-            try: conn.rollback()
-            except Exception: pass
-        return None
-    finally:
-        if conn and p:
-            try:
-                if getattr(conn, "closed", 0) != 0:
-                    p.putconn(conn, close=True)
+    """Executes an INSERT, UPDATE, or DELETE query and commits with stale socket retry."""
+    for attempt in range(2):
+        conn = get_connection()
+        if not conn:
+            return None
+        try:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute(sql, params or ())
+                conn.commit()
+                if cur.description:
+                    row = cur.fetchone()
+                    res = dict(row) if row else None
                 else:
-                    p.putconn(conn)
-            except Exception:
-                pass
+                    res = cur.rowcount
+            release_connection(conn)
+            return res
+        except Exception as e:
+            is_conn_err = isinstance(e, (psycopg2.OperationalError, psycopg2.InterfaceError)) if PSYCOPG2_AVAILABLE else False
+            release_connection(conn, close=is_conn_err)
+            if is_conn_err and attempt == 0:
+                print(f"[PostgreSQL Execute Notice] Stale connection detected. Reconnecting and retrying: {sql[:60]}...")
+                get_pool(force_reconnect=True)
+                continue
+            safe_msg = str(e).encode('ascii', 'replace').decode('ascii')
+            print(f"[PostgreSQL Execute Error] {safe_msg} (SQL: {sql[:60]}...)")
+            return None
+    return None
 
 def init_db_schema():
     """Runs schema.sql and seed.sql to initialize all 20 tables if not existing."""
