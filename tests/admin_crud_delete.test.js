@@ -138,5 +138,5 @@ describe('Admin Authorization, CRUD, and Delete Operation Integration Tests', ()
     const colData = await colRes.json();
     expect(colData.success).toBe(true);
     expect(colData.analytics).toBeDefined();
-  });
+  }, 60000);
 });

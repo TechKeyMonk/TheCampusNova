@@ -3,6 +3,716 @@
     {
       "id": 201,
       "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "College Update Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-151 for Indian Institute of Technology Madras (Ref: APP-151)",
+      "timestamp": "2026-09-12 11:09:11",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-774229DA submitted by Audit Prospective Student (thecampusnova@gmail.com) for Dr. Ramesh Babu (Ref: MENQ-774229DA)",
+      "timestamp": "2026-09-12 11:09:06",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Contact Inquiry Submitted",
+      "module": "Support",
+      "details": "Enquiry MENQ-3FA970BA submitted by Audit Test Enquirer (thecampusnova@gmail.com) for Contact Us: Platform Verification (Ref: MENQ-3FA970BA)",
+      "timestamp": "2026-09-12 11:09:02",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course Test Robotics (Ref: None)",
+      "timestamp": "2026-09-12 11:01:36",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1789190966320 (Ref: None)",
+      "timestamp": "2026-09-12 10:59:28",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "College Update Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-150 for Indian Institute of Technology Madras (Ref: APP-150)",
+      "timestamp": "2026-09-12 10:56:37",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-ABC77DCE submitted by Audit Prospective Student (thecampusnova@gmail.com) for Dr. Ramesh Babu (Ref: MENQ-ABC77DCE)",
+      "timestamp": "2026-09-12 10:56:30",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Contact Inquiry Submitted",
+      "module": "Support",
+      "details": "Enquiry MENQ-413ED40C submitted by Audit Test Enquirer (thecampusnova@gmail.com) for Contact Us: Platform Verification (Ref: MENQ-413ED40C)",
+      "timestamp": "2026-09-12 10:56:25",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "College Update Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-149 for Indian Institute of Technology Madras (Ref: APP-149)",
+      "timestamp": "2026-09-12 10:51:31",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-1B2F60F7 submitted by Audit Prospective Student (thecampusnova@gmail.com) for Dr. Ramesh Babu (Ref: MENQ-1B2F60F7)",
+      "timestamp": "2026-09-12 10:51:20",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Contact Inquiry Submitted",
+      "module": "Support",
+      "details": "Enquiry MENQ-9A8AC5A2 submitted by Audit Test Enquirer (thecampusnova@gmail.com) for Contact Us: Platform Verification (Ref: MENQ-9A8AC5A2)",
+      "timestamp": "2026-09-12 10:51:15",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "College Update Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-148 for Indian Institute of Technology Madras (Ref: APP-148)",
+      "timestamp": "2026-09-12 10:42:57",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-87B71DEA submitted by Audit Prospective Student (thecampusnova@gmail.com) for Dr. Ramesh Babu (Ref: MENQ-87B71DEA)",
+      "timestamp": "2026-09-12 10:42:50",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Contact Inquiry Submitted",
+      "module": "Support",
+      "details": "Enquiry MENQ-6566F49E submitted by Audit Test Enquirer (thecampusnova@gmail.com) for Contact Us: Platform Verification (Ref: MENQ-6566F49E)",
+      "timestamp": "2026-09-12 10:42:46",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "College Update Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-147 for Indian Institute of Technology Madras (Ref: APP-147)",
+      "timestamp": "2026-09-12 10:21:27",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-54BF9D3E submitted by Audit Prospective Student (thecampusnova@gmail.com) for Dr. Ramesh Babu (Ref: MENQ-54BF9D3E)",
+      "timestamp": "2026-09-12 10:21:20",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Contact Inquiry Submitted",
+      "module": "Support",
+      "details": "Enquiry MENQ-7E42B294 submitted by Audit Test Enquirer (thecampusnova@gmail.com) for Contact Us: Platform Verification (Ref: MENQ-7E42B294)",
+      "timestamp": "2026-09-12 10:21:15",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Deleted Course",
+      "module": "Courses",
+      "details": "Deleted course 150 (Ref: 150)",
+      "timestamp": "2026-09-12 10:17:56",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1789188474303 UPDATED (Ref: 150)",
+      "timestamp": "2026-09-12 10:17:55",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Saved Course",
+      "module": "Courses",
+      "details": "Saved course QA Test Robotics Vitest_1789188474303 (Ref: 150)",
+      "timestamp": "2026-09-12 10:17:54",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "College Update Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-146 for Rathinam Global University (Ref: APP-146)",
+      "timestamp": "2026-09-12 10:08:20",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Update Details Access Granted",
+      "module": "Colleges",
+      "details": "Authorized access granted to adminrathinam@gmail.com (AISHE: U-1471) via CAPTCHA verification (Ref: Rathinam Global University)",
+      "timestamp": "2026-09-12 10:06:51",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-C1B53CAC submitted by test (test@gmail.com) for JeganKumar Perumal (Ref: MENQ-C1B53CAC)",
+      "timestamp": "2026-09-12 10:05:17",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Contact Inquiry Submitted",
+      "module": "Support",
+      "details": "Enquiry MENQ-8F4B6506 submitted by Shyam Ganesh M (shyamdeepa2610@gmail.com) for Contact Us: Admissions & College Guidance (Ref: MENQ-8F4B6506)",
+      "timestamp": "2026-09-12 10:04:39",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "College Update Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-145 for Karunya Institute of Technology and Sciences, Coimbatore (Ref: APP-145)",
+      "timestamp": "2026-09-12 08:24:09",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Update Details Access Granted",
+      "module": "Colleges",
+      "details": "Authorized access granted to adminkarunya@gmail.com (AISHE: U-0460) via CAPTCHA verification (Ref: Karunya Institute of Technology and Sciences, Coimbatore)",
+      "timestamp": "2026-09-12 08:23:37",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Contact Inquiry Submitted",
+      "module": "Support",
+      "details": "Enquiry MENQ-266ED075 submitted by Shyam Ganesh M (shyamdeepa2610@gmail.com) for Contact Us: Admissions & College Guidance (Ref: MENQ-266ED075)",
+      "timestamp": "2026-09-12 08:22:44",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-86FDFD28 submitted by Spam Bot (spambot@example.com) for JeganKumar Perumal (Ref: MENQ-86FDFD28)",
+      "timestamp": "2026-09-12 08:06:16",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-678A7DE2 submitted by Spam Bot (spambot@example.com) for JeganKumar Perumal (Ref: MENQ-678A7DE2)",
+      "timestamp": "2026-09-12 08:06:14",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-498A4418 submitted by Spam Bot (spambot@example.com) for JeganKumar Perumal (Ref: MENQ-498A4418)",
+      "timestamp": "2026-09-12 08:06:13",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-C7D5184A submitted by Spam Bot (spambot@example.com) for JeganKumar Perumal (Ref: MENQ-C7D5184A)",
+      "timestamp": "2026-09-12 08:06:12",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-655584E4 submitted by Spam Bot (spambot@example.com) for JeganKumar Perumal (Ref: MENQ-655584E4)",
+      "timestamp": "2026-09-12 08:06:11",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "College Update Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-144 for Anna University (Ref: APP-144)",
+      "timestamp": "2026-09-12 08:06:11",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Update Details Access Granted",
+      "module": "Colleges",
+      "details": "Authorized access granted to registrar@annauniv.edu (AISHE: C-25000) via CAPTCHA verification (Ref: Gnanam School of Business)",
+      "timestamp": "2026-09-12 08:06:10",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Contact Inquiry Submitted",
+      "module": "Support",
+      "details": "Enquiry MENQ-B086D6E7 submitted by Priya Sharma (priya.sharma@gmail.com) for Contact Us: Admissions Guidance (Ref: MENQ-B086D6E7)",
+      "timestamp": "2026-09-12 08:06:09",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-574D083F submitted by Karthik Subramanian (karthik.subramanian@gmail.com) for JeganKumar Perumal (Ref: MENQ-574D083F)",
+      "timestamp": "2026-09-12 08:06:08",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Contact Inquiry Submitted",
+      "module": "Support",
+      "details": "Enquiry MENQ-C27B0167 submitted by Priya Sharma (priya.sharma@gmail.com) for Contact Us: Admissions Guidance (Ref: MENQ-C27B0167)",
+      "timestamp": "2026-09-12 08:04:47",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-D5B31431 submitted by Karthik Subramanian (karthik.subramanian@gmail.com) for JeganKumar Perumal (Ref: MENQ-D5B31431)",
+      "timestamp": "2026-09-12 08:03:41",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-81E89F0A submitted by Karthik Subramanian (karthik.subramanian@gmail.com) for JeganKumar Perumal (Ref: MENQ-81E89F0A)",
+      "timestamp": "2026-09-12 08:02:30",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-AAD00927 submitted by Karthik Subramanian (karthik.subramanian@gmail.com) for JeganKumar Perumal (Ref: MENQ-AAD00927)",
+      "timestamp": "2026-09-12 08:01:40",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry MENQ-613EA32C submitted by Karthik Subramanian (karthik.subramanian@gmail.com) for JeganKumar Perumal (Ref: MENQ-613EA32C)",
+      "timestamp": "2026-09-12 08:00:44",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "College Update Submitted",
+      "module": "Approvals",
+      "details": "Submitted update APP-143 for Karunya Institute of Technology and Sciences, Coimbatore (Ref: APP-143)",
+      "timestamp": "2026-09-12 07:43:27",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Update Details Access Granted",
+      "module": "Colleges",
+      "details": "Authorized access granted to adminkarunya@gmail.com (AISHE: U-0460) via CAPTCHA verification (Ref: Karunya Institute of Technology and Sciences, Coimbatore)",
+      "timestamp": "2026-09-12 07:42:32",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry submitted by test (shyamdeepa2610@gmail.com) for mentor JeganKumar Perumal (Ref: MENQ-C6B8128E)",
+      "timestamp": "2026-09-12 07:40:34",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry submitted by Shyam Ganesh M (shyamdeepa2610@gmail.com) for mentor Contact Us: Admissions & College Guidance (Ref: MENQ-6C34ECA7)",
+      "timestamp": "2026-09-12 07:40:13",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Mentor Enquiry Submitted",
+      "module": "Mentors",
+      "details": "Enquiry submitted by Shyam Ganesh M (shyamdeepa2610@gmail.com) for mentor Contact Us: Admissions & College Guidance (Ref: MENQ-B4EFB417)",
+      "timestamp": "2026-09-12 07:39:32",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Job Posting Updated",
+      "module": "Jobs",
+      "details": "Updated job 48 (Ref: 48)",
+      "timestamp": "2026-09-12 00:17:53",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Internship Deleted",
+      "module": "Internships",
+      "details": "Deleted internship 53 (Ref: 53)",
+      "timestamp": "2026-09-11 22:08:15",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Internship Created",
+      "module": "Internships",
+      "details": "Created internship for OpenAI Research Labs (Ref: 53)",
+      "timestamp": "2026-09-11 22:08:15",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Internship Updated",
+      "module": "Internships",
+      "details": "Updated internship 51 (Ref: 51)",
+      "timestamp": "2026-09-11 22:08:14",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Passkey Authentication",
+      "module": "Authentication",
+      "details": "Passkey Authentication: Administrator Gate (SUCCESS) (Ref: Administrator Gate)",
+      "timestamp": "2026-09-11 22:06:17",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Passkey Authentication",
+      "module": "Authentication",
+      "details": "Passkey Authentication: Administrator Gate (SUCCESS) (Ref: Administrator Gate)",
+      "timestamp": "2026-09-11 22:04:24",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Passkey Authentication",
+      "module": "Authentication",
+      "details": "Passkey Authentication: Administrator Gate (SUCCESS) (Ref: Administrator Gate)",
+      "timestamp": "2026-09-11 21:49:25",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Internship Deleted",
+      "module": "Internships",
+      "details": "Deleted internship 52 (Ref: 52)",
+      "timestamp": "2026-09-11 21:40:07",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Internship Created",
+      "module": "Internships",
+      "details": "Created internship for OpenAI Research Labs (Ref: 52)",
+      "timestamp": "2026-09-11 21:40:07",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Internship Updated",
+      "module": "Internships",
+      "details": "Updated internship 51 (Ref: 51)",
+      "timestamp": "2026-09-11 21:40:05",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Internship Updated",
+      "module": "Internships",
+      "details": "Updated internship 51 (Ref: 51)",
+      "timestamp": "2026-09-11 20:42:51",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Internship Updated",
+      "module": "Internships",
+      "details": "Updated internship 51 (Ref: 51)",
+      "timestamp": "2026-09-11 20:40:41",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Internship Updated",
+      "module": "Internships",
+      "details": "Updated internship 51 (Ref: 51)",
+      "timestamp": "2026-09-11 20:39:41",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Event Created",
+      "module": "Events",
+      "details": "Created campus event 'WBJEE 2026 Decentralised Counselling Phase 2 - Registration and Choice Filling' for West Bengal Joint Entrance Examinations Board (WBJEEB) (Ref: EVT-051)",
+      "timestamp": "2026-09-11 20:33:34",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'Assam CEE 2026: Spot Round Counselling Dates (OUT), Seat Allotment, Cutoff' (Ref: NWS-064)",
+      "timestamp": "2026-09-11 20:28:31",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Edited College Profile: PPG College of Nursing",
+      "module": "Content Updates",
+      "details": "Edited College Profile: PPG College of Nursing: AISHE: U-0154, Placement: - Image Uploaded: Screenshot 2026-09-10 125557.png. (SUCCESS) (Ref: AISHE: U-0154, Placement: - Image Uploaded: Screenshot 2026-09-10 125557.png.)",
+      "timestamp": "2026-09-10 13:23:25",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Added Institution: PPG College of Physiotherapy",
+      "module": "Admin Actions",
+      "details": "Added Institution: PPG College of Physiotherapy: AISHE: U-0146 (SUCCESS) (Ref: AISHE: U-0146)",
+      "timestamp": "2026-09-10 13:22:10",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Added Institution: PPG College of Nursing",
+      "module": "Admin Actions",
+      "details": "Added Institution: PPG College of Nursing: AISHE: U-0154 (SUCCESS) (Ref: AISHE: U-0154)",
+      "timestamp": "2026-09-10 12:56:17",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Edited College Profile: PPG Institute of Technology",
+      "module": "Content Updates",
+      "details": "Edited College Profile: PPG Institute of Technology: AISHE: C-37043, Placement: Median CTC: ₹14.0 LPA Image Uploaded: Screenshot 2026-09-10 124211.png. (SUCCESS) (Ref: AISHE: C-37043, Placement: Median CTC: ₹14.0 LPA Image Uploaded: Screenshot 2026-09-10 124211.png.)",
+      "timestamp": "2026-09-10 12:44:42",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Edited College Profile: PPG Business School",
+      "module": "Content Updates",
+      "details": "Edited College Profile: PPG Business School: AISHE: C-37014, Placement: Median CTC: ₹14.0 LPA Image Uploaded: Screenshot 2026-09-10 114912.png. (SUCCESS) (Ref: AISHE: C-37014, Placement: Median CTC: ₹14.0 LPA Image Uploaded: Screenshot 2026-09-10 114912.png.)",
+      "timestamp": "2026-09-10 11:50:29",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Edited College Profile: PPG COLLEGE OF PHARMACY",
+      "module": "Content Updates",
+      "details": "Edited College Profile: PPG COLLEGE OF PHARMACY: AISHE: C-65573, Placement: Median CTC: ₹14.0 LPA Image Uploaded: Screenshot 2026-09-10 112257.png. (SUCCESS) (Ref: AISHE: C-65573, Placement: Median CTC: ₹14.0 LPA Image Uploaded: Screenshot 2026-09-10 112257.png.)",
+      "timestamp": "2026-09-10 11:23:32",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Edited College Profile: PPG COLLEGE OF OCCUPATIONAL THERAPY",
+      "module": "Content Updates",
+      "details": "Edited College Profile: PPG COLLEGE OF OCCUPATIONAL THERAPY: AISHE: C-66823, Placement: Median CTC: ₹14.0 LPA Image Uploaded: Screenshot 2026-09-10 111917.png. (SUCCESS) (Ref: AISHE: C-66823, Placement: Median CTC: ₹14.0 LPA Image Uploaded: Screenshot 2026-09-10 111917.png.)",
+      "timestamp": "2026-09-10 11:20:08",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Edited College Profile: PPG College of Arts and Science",
+      "module": "Content Updates",
+      "details": "Edited College Profile: PPG College of Arts and Science: AISHE: C-58920, Placement: Median CTC: ₹14.0 LPA Image Uploaded: Screenshot 2026-09-10 111645.png. (SUCCESS) (Ref: AISHE: C-58920, Placement: Median CTC: ₹14.0 LPA Image Uploaded: Screenshot 2026-09-10 111645.png.)",
+      "timestamp": "2026-09-10 11:17:45",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "News Published",
+      "module": "News",
+      "details": "Published bulletin 'CAT 2026 Registration Live Updates; IIM Indore to Close Registration Window on Sept 15, Check Fees & Apply Now' (Ref: NWS-063)",
+      "timestamp": "2026-09-10 11:03:33",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
+      "action": "Event Created",
+      "module": "Events",
+      "details": "Created campus event 'AI Film Fest 2026' for Sri Ramakrishna Institute of Technology (SRIT), Coimbatore (Ref: EVT-050)",
+      "timestamp": "2026-09-10 10:17:56",
+      "ip_address": "127.0.0.1",
+      "status": "Success"
+    },
+    {
+      "id": 201,
+      "user_identifier": "Admin (Shyam Ganesh)",
       "action": "Mentor Enquiry Submitted",
       "module": "Mentors",
       "details": "Enquiry submitted by Arun Prakash (arun.prakash@example.edu) for mentor JeganKumar Perumal (Ref: MENQ-8D6280DF)",
@@ -1287,716 +1997,6 @@
       "module": "Events",
       "details": "Created campus event 'Test National Hackathon & Summit 2026' for IIT Madras (Ref: EVT-047)",
       "timestamp": "2026-09-05 22:33:55",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Mentor Deleted",
-      "module": "Mentors",
-      "details": "Admin deleted mentor profile MEN-010 (Ref: MEN-010)",
-      "timestamp": "2026-09-05 22:33:54",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Mentor Updated",
-      "module": "Mentors",
-      "details": "Admin updated mentor profile MEN-010 (Ref: MEN-010)",
-      "timestamp": "2026-09-05 22:33:53",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Mentor Created",
-      "module": "Mentors",
-      "details": "Admin added mentor profile for Dr. Test Mentor Scientist (CampNova Research) (Ref: MEN-010)",
-      "timestamp": "2026-09-05 22:33:52",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Comparison Deleted",
-      "module": "Comparisons",
-      "details": "Deleted comparison 25 (Ref: 25)",
-      "timestamp": "2026-09-05 22:33:51",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Comparison Model Created",
-      "module": "Comparisons",
-      "details": "Created comparison IIT Madras vs NIT Trichy (Ref: CMP-027)",
-      "timestamp": "2026-09-05 22:33:50",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Entrance Exam Deleted",
-      "module": "Entrance Prep",
-      "details": "Deleted exam 70 (Ref: 70)",
-      "timestamp": "2026-09-05 22:33:49",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Entrance Exam Updated",
-      "module": "Entrance Prep",
-      "details": "Updated exam 70 (Ref: 70)",
-      "timestamp": "2026-09-05 22:33:48",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Entrance Exam Created",
-      "module": "Entrance Prep",
-      "details": "Created exam Test Advanced Engineering Entrance Prep (Ref: 70)",
-      "timestamp": "2026-09-05 22:33:48",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Facility Deleted",
-      "module": "Facilities",
-      "details": "Deleted facility 51 (Ref: 51)",
-      "timestamp": "2026-09-05 22:33:46",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Facility Updated",
-      "module": "Facilities",
-      "details": "Updated facility 51 (Ref: 51)",
-      "timestamp": "2026-09-05 22:33:46",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Facility Created",
-      "module": "Facilities",
-      "details": "Created facility Test High-Performance Computing Cluster for college 2 (Ref: 51)",
-      "timestamp": "2026-09-05 22:33:45",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Scholarship Deleted",
-      "module": "Scholarships",
-      "details": "Deleted scholarship 32 (Ref: 32)",
-      "timestamp": "2026-09-05 22:33:44",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Scholarship Updated",
-      "module": "Scholarships",
-      "details": "Updated scholarship 32 (Ref: 32)",
-      "timestamp": "2026-09-05 22:33:43",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Scholarship Created",
-      "module": "Scholarships",
-      "details": "Created scholarship Test Merit Fellowship Scheme 2026 (Ref: 32)",
-      "timestamp": "2026-09-05 22:33:43",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Admission Deleted",
-      "module": "Admissions",
-      "details": "Deleted admission 51 (Ref: 51)",
-      "timestamp": "2026-09-05 22:33:42",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Admission Updated",
-      "module": "Admissions",
-      "details": "Updated admission 51 (Ref: 51)",
-      "timestamp": "2026-09-05 22:33:41",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Admission Created",
-      "module": "Admissions",
-      "details": "Created admission for college 2 (Ref: 53)",
-      "timestamp": "2026-09-05 22:33:41",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Internship Deleted",
-      "module": "Internships",
-      "details": "Deleted internship 48 (Ref: 48)",
-      "timestamp": "2026-09-05 22:33:40",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Internship Updated",
-      "module": "Internships",
-      "details": "Updated internship 48 (Ref: 48)",
-      "timestamp": "2026-09-05 22:33:39",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Internship Created",
-      "module": "Internships",
-      "details": "Created internship for Test DeepMind Research (Ref: 50)",
-      "timestamp": "2026-09-05 22:33:39",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Job Posting Deleted",
-      "module": "Jobs",
-      "details": "Deleted job 45 (Ref: 45)",
-      "timestamp": "2026-09-05 22:33:38",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Job Posting Updated",
-      "module": "Jobs",
-      "details": "Updated job 45 (Ref: 45)",
-      "timestamp": "2026-09-05 22:33:37",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Job Posting Created",
-      "module": "Jobs",
-      "details": "Created job Test Lead AI Compiler Engineer at Test Global Tech (Ref: 47)",
-      "timestamp": "2026-09-05 22:33:36",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Placement Deleted",
-      "module": "Placements",
-      "details": "Deleted placement 51 (Ref: 51)",
-      "timestamp": "2026-09-05 22:33:36",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Placement Updated",
-      "module": "Placements",
-      "details": "Updated placement 51 (Ref: 51)",
-      "timestamp": "2026-09-05 22:33:35",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Placement Created",
-      "module": "Placements",
-      "details": "Created placement record for Test Nvidia Quantum AI (Ref: 51)",
-      "timestamp": "2026-09-05 22:33:34",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Career Roadmap Deleted",
-      "module": "Careers",
-      "details": "Deleted career roadmap 40 (Ref: 40)",
-      "timestamp": "2026-09-05 22:33:34",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Career Roadmap Updated",
-      "module": "Careers",
-      "details": "Updated career roadmap 40 (Ref: 40)",
-      "timestamp": "2026-09-05 22:33:33",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Career Roadmap Created",
-      "module": "Careers",
-      "details": "Created roadmap for Test Quantum Systems Architect (Ref: 41)",
-      "timestamp": "2026-09-05 22:33:32",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Ranking Deleted",
-      "module": "Rankings",
-      "details": "Deleted ranking 54 (Ref: 54)",
-      "timestamp": "2026-09-05 22:33:32",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Ranking Updated",
-      "module": "Rankings",
-      "details": "Updated ranking 54 (Ref: 54)",
-      "timestamp": "2026-09-05 22:33:31",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Ranking Created",
-      "module": "Rankings",
-      "details": "Created ranking for college 2 (Ref: 57)",
-      "timestamp": "2026-09-05 22:33:30",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Deleted Exam",
-      "module": "exams",
-      "details": "Deleted exam ID 69 (Ref: 69)",
-      "timestamp": "2026-09-05 22:33:24",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Exam",
-      "module": "exams",
-      "details": "Admin saved exam Entrance Exam (Ref: 69)",
-      "timestamp": "2026-09-05 22:33:23",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Exam",
-      "module": "exams",
-      "details": "Admin saved exam Test National Tech Aptitude 2026 (Ref: 69)",
-      "timestamp": "2026-09-05 22:33:22",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Deleted Domain",
-      "module": "Domains",
-      "details": "Deleted domain 67 (Ref: 67)",
-      "timestamp": "2026-09-05 22:33:22",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Domain Details",
-      "module": "Domains",
-      "details": "Admin updated domain New Domain (Ref: 67)",
-      "timestamp": "2026-09-05 22:33:21",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Domain Details",
-      "module": "Domains",
-      "details": "Admin updated domain Test Quantum Machine Learning (Ref: 69)",
-      "timestamp": "2026-09-05 22:33:20",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Deleted Course",
-      "module": "Courses",
-      "details": "Deleted course 117 (Ref: 117)",
-      "timestamp": "2026-09-05 22:33:15",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Course",
-      "module": "Courses",
-      "details": "Saved course Test Robotics Engineering 2026 UPDATED (Ref: 117)",
-      "timestamp": "2026-09-05 22:33:14",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Saved Course",
-      "module": "Courses",
-      "details": "Saved course Test Robotics Engineering 2026 (Ref: 121)",
-      "timestamp": "2026-09-05 22:33:13",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "News Deleted",
-      "module": "News",
-      "details": "Deleted bulletin 41 (Ref: 41)",
-      "timestamp": "2026-09-05 21:58:02",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "News Updated",
-      "module": "News",
-      "details": "Updated bulletin 41 (Ref: 41)",
-      "timestamp": "2026-09-05 21:58:02",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "News Published",
-      "module": "News",
-      "details": "Published bulletin 'Test IIT Madras Launches Next-Gen Quantum Centre' (Ref: NWS-043)",
-      "timestamp": "2026-09-05 21:58:01",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Deleted Event",
-      "module": "Events",
-      "details": "Deleted event 44 (Ref: 44)",
-      "timestamp": "2026-09-05 21:58:00",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Event Updated",
-      "module": "Events",
-      "details": "Updated event 44 (Ref: 44)",
-      "timestamp": "2026-09-05 21:58:00",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Event Created",
-      "module": "Events",
-      "details": "Created campus event 'Test National Hackathon & Summit 2026' for IIT Madras (Ref: EVT-046)",
-      "timestamp": "2026-09-05 21:57:59",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Mentor Deleted",
-      "module": "Mentors",
-      "details": "Admin deleted mentor profile MEN-010 (Ref: MEN-010)",
-      "timestamp": "2026-09-05 21:57:58",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Mentor Updated",
-      "module": "Mentors",
-      "details": "Admin updated mentor profile MEN-010 (Ref: MEN-010)",
-      "timestamp": "2026-09-05 21:57:58",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Mentor Created",
-      "module": "Mentors",
-      "details": "Admin added mentor profile for Dr. Test Mentor Scientist (CampNova Research) (Ref: MEN-010)",
-      "timestamp": "2026-09-05 21:57:57",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Comparison Deleted",
-      "module": "Comparisons",
-      "details": "Deleted comparison 24 (Ref: 24)",
-      "timestamp": "2026-09-05 21:57:56",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Comparison Model Created",
-      "module": "Comparisons",
-      "details": "Created comparison IIT Madras vs NIT Trichy (Ref: CMP-026)",
-      "timestamp": "2026-09-05 21:57:55",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Entrance Exam Deleted",
-      "module": "Entrance Prep",
-      "details": "Deleted exam 68 (Ref: 68)",
-      "timestamp": "2026-09-05 21:57:54",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Entrance Exam Updated",
-      "module": "Entrance Prep",
-      "details": "Updated exam 68 (Ref: 68)",
-      "timestamp": "2026-09-05 21:57:53",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Entrance Exam Created",
-      "module": "Entrance Prep",
-      "details": "Created exam Test Advanced Engineering Entrance Prep (Ref: 68)",
-      "timestamp": "2026-09-05 21:57:52",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Facility Deleted",
-      "module": "Facilities",
-      "details": "Deleted facility 50 (Ref: 50)",
-      "timestamp": "2026-09-05 21:57:51",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Facility Updated",
-      "module": "Facilities",
-      "details": "Updated facility 50 (Ref: 50)",
-      "timestamp": "2026-09-05 21:57:51",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Facility Created",
-      "module": "Facilities",
-      "details": "Created facility Test High-Performance Computing Cluster for college 2 (Ref: 50)",
-      "timestamp": "2026-09-05 21:57:50",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Scholarship Deleted",
-      "module": "Scholarships",
-      "details": "Deleted scholarship 28 (Ref: 28)",
-      "timestamp": "2026-09-05 21:57:49",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Scholarship Updated",
-      "module": "Scholarships",
-      "details": "Updated scholarship 28 (Ref: 28)",
-      "timestamp": "2026-09-05 21:57:49",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Scholarship Created",
-      "module": "Scholarships",
-      "details": "Created scholarship Test Merit Fellowship Scheme 2026 (Ref: 31)",
-      "timestamp": "2026-09-05 21:57:48",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Admission Deleted",
-      "module": "Admissions",
-      "details": "Deleted admission 50 (Ref: 50)",
-      "timestamp": "2026-09-05 21:57:48",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Admission Updated",
-      "module": "Admissions",
-      "details": "Updated admission 50 (Ref: 50)",
-      "timestamp": "2026-09-05 21:57:47",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Admission Created",
-      "module": "Admissions",
-      "details": "Created admission for college 2 (Ref: 52)",
-      "timestamp": "2026-09-05 21:57:46",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Internship Deleted",
-      "module": "Internships",
-      "details": "Deleted internship 47 (Ref: 47)",
-      "timestamp": "2026-09-05 21:57:46",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Internship Updated",
-      "module": "Internships",
-      "details": "Updated internship 47 (Ref: 47)",
-      "timestamp": "2026-09-05 21:57:45",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Internship Created",
-      "module": "Internships",
-      "details": "Created internship for Test DeepMind Research (Ref: 49)",
-      "timestamp": "2026-09-05 21:57:44",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Job Posting Deleted",
-      "module": "Jobs",
-      "details": "Deleted job 44 (Ref: 44)",
-      "timestamp": "2026-09-05 21:57:44",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Job Posting Updated",
-      "module": "Jobs",
-      "details": "Updated job 44 (Ref: 44)",
-      "timestamp": "2026-09-05 21:57:43",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Job Posting Created",
-      "module": "Jobs",
-      "details": "Created job Test Lead AI Compiler Engineer at Test Global Tech (Ref: 46)",
-      "timestamp": "2026-09-05 21:57:42",
-      "ip_address": "127.0.0.1",
-      "status": "Success"
-    },
-    {
-      "id": 201,
-      "user_identifier": "Admin (Shyam Ganesh)",
-      "action": "Placement Deleted",
-      "module": "Placements",
-      "details": "Deleted placement 48 (Ref: 48)",
-      "timestamp": "2026-09-05 21:57:41",
       "ip_address": "127.0.0.1",
       "status": "Success"
     }

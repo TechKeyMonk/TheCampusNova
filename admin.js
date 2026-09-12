@@ -75,6 +75,17 @@
   } catch (_) {}
 })();
 
+// Helper to sanitize, normalize and validate external portal URLs
+function formatPortalUrl(url) {
+  if (!url || typeof url !== 'string') return null;
+  const trimmed = url.trim();
+  if (!trimmed || trimmed === '#' || trimmed.toLowerCase() === 'null' || trimmed.toLowerCase() === 'undefined' || trimmed === 'about:blank' || trimmed.toLowerCase() === 'n/a' || trimmed.toLowerCase().includes('admin.html') || trimmed.startsWith('#')) return null;
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
+  if (trimmed.startsWith('/') || trimmed.startsWith('javascript:')) return null;
+  return 'https://' + trimmed;
+}
+window.formatPortalUrl = formatPortalUrl;
+
 const PREDEFINED_PASSKEYS = [
   'campusnova2026',
   'CampusNova2026',
@@ -1534,8 +1545,8 @@ async function openCollegeReviewModal(targetIdentifier) {
   }
   
   if (collegeHistoryModalBody) {
-    const webUrl = col.website || col.officialLink || col.official_url || '';
-    const websiteLink = webUrl && webUrl !== '#' && webUrl !== 'NULL' ? `<a href="${webUrl.startsWith('http') ? webUrl : 'https://' + webUrl}" target="_blank" rel="noopener noreferrer" style="color:#0284C7; font-weight:700; text-decoration:underline;">${escapeHtml(webUrl)} ↗</a>` : '<span style="color:var(--admin-muted, #64748B);">Not specified</span>';
+    const webUrl = formatPortalUrl(col.website || col.officialLink || col.official_url || '');
+    const websiteLink = webUrl ? `<a href="${webUrl}" target="_blank" rel="noopener noreferrer" style="color:#0284C7; font-weight:700; text-decoration:underline;">${escapeHtml(webUrl)} ↗</a>` : '<span style="color:var(--admin-muted, #64748B);">Not specified</span>';
 
     const hasImage = !!(col.image || col.image_url);
     const hasVideo = !!(col.video || col.video_url);
@@ -1730,7 +1741,15 @@ function reviewApproval(index) {
         <p style="color:var(--admin-text); font-size:13px; line-height:1.5; margin:0 0 12px;">${item.description || 'No description provided.'}</p>
         
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:12px; border-top:1px solid var(--admin-border); padding-top:10px;">
-          <div><small style="color:var(--admin-muted);">OFFICIAL SOURCE:</small><br><a href="${item.source || '#'}" target="_blank" style="color:var(--admin-teal);">${item.source || 'Official Link Provided'}</a></div>
+          <div>
+            <small style="color:var(--admin-muted);">OFFICIAL SOURCE:</small><br>
+            ${(() => {
+              const srcUrl = formatPortalUrl(item.source);
+              return srcUrl
+                ? `<a href="${srcUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--admin-teal); text-decoration:underline;">${escapeHtml(item.source)} ↗</a>`
+                : `<span style="color:var(--admin-muted);">Not provided</span>`;
+            })()}
+          </div>
           <div><small style="color:var(--admin-muted);">SUBMITTED BY:</small><br><span style="color:#fff;">${item.submittedBy || item.verifiedEmail}</span></div>
         </div>
 
@@ -5275,23 +5294,31 @@ async function loadInternships(searchTerm = '') {
       const data = await res.json();
       const pgInternships = (data && Array.isArray(data.internships)) ? data.internships : [];
       if (pgInternships.length > 0) {
-        _adminInternshipsLive = pgInternships.map(i => ({
-          id: i.id,
-          company: i.company_name || i.company || 'Enterprise Partner',
-          role: i.title || i.role || 'Summer Intern',
-          domain: i.domain || 'Technology',
-          location: i.location || 'Bengaluru',
-          workMode: i.work_mode || i.workMode || 'Hybrid',
-          stipend: i.stipend || '₹25,000 / month',
-          paid: i.paid !== false,
-          duration: i.duration || '3 Months',
-          eligibility: i.eligibility || 'B.Tech / MCA',
-          skills: i.skills || ['Problem Solving', 'Data Structures'],
-          deadline: i.deadline || 'Ongoing',
-          applyUrl: i.apply_url || i.applyUrl || '#',
-          verified: true,
-          status: i.status || 'active'
-        }));
+        _adminInternshipsLive = pgInternships.map(i => {
+          const rawUrl = i.application_url || i.apply_url || i.applyUrl || i.portal_url || i.website || '';
+          return {
+            id: i.id,
+            company: i.company_name || i.company || 'Enterprise Partner',
+            role: i.title || i.role || 'Summer Intern',
+            domain: i.domain || 'Technology',
+            location: i.location || 'Bengaluru',
+            workMode: i.work_mode || i.workMode || 'Hybrid',
+            stipend: i.stipend || '₹25,000 / month',
+            paid: i.paid !== false,
+            duration: i.duration || '3 Months',
+            eligibility: i.eligibility || 'B.Tech / MCA',
+            skills: i.skills || ['Problem Solving', 'Data Structures'],
+            deadline: i.deadline || 'Ongoing',
+            applyUrl: rawUrl,
+            apply_url: rawUrl,
+            application_url: rawUrl,
+            portal_url: rawUrl,
+            website: rawUrl,
+            verified: true,
+            status: i.status || 'active'
+          };
+        });
+        window._adminInternshipsLive = _adminInternshipsLive;
       }
     }
   } catch (e) {
@@ -5302,6 +5329,7 @@ async function loadInternships(searchTerm = '') {
   }
 }
 window.loadInternships = loadInternships;
+window.renderAdminInternshipsTable = renderAdminInternshipsTable;
 
 function getAdminInternships() {
   if (_adminInternshipsLive && _adminInternshipsLive.length > 0) {
@@ -5370,9 +5398,12 @@ function renderAdminInternshipsTable(searchTerm = '') {
         <span style="font-size:11.5px; color:var(--admin-accent); font-weight:700;">${item.deadline}</span>
       </td>
       <td>
-        <a href="${item.applyUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--admin-teal); font-size:11.5px; text-decoration:underline;">
-          Portal Link ↗
-        </a>
+        ${(() => {
+          const validUrl = formatPortalUrl(item.apply_url || item.applyUrl || item.application_url || item.website || item.portal_url);
+          return validUrl
+            ? `<a href="${validUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--admin-teal); font-size:11.5px; text-decoration:underline; font-weight:600;">Official Portal ↗</a>`
+            : `<span style="color:var(--admin-muted); font-size:11.5px;">N/A</span>`;
+        })()}
       </td>
       <td>
         <span class="badge active">
@@ -5683,7 +5714,12 @@ function renderAdminStudyMaterialsTable(materials) {
               </button>
             ` : ''}
             <button type="button" class="btn-sm edit" onclick="editAdminStudyMaterial('${m.id}')" title="Edit Resource">✏️ Edit</button>
-            <a href="${m.file_url || '#'}" target="_blank" class="btn-sm view" title="Open / Preview Resource">Preview ↗</a>
+            ${(() => {
+              const validUrl = formatPortalUrl(m.file_url || m.url || m.website);
+              return validUrl
+                ? `<a href="${validUrl}" target="_blank" rel="noopener noreferrer" class="btn-sm view" title="Open / Preview Resource">Preview ↗</a>`
+                : `<span class="btn-sm view" style="opacity:0.4; cursor:not-allowed;" title="No file/portal URL available">N/A</span>`;
+            })()}
             <button type="button" class="btn-sm delete" onclick="deleteAdminStudyMaterial('${m.id}')" title="Delete Resource">🗑️</button>
           </div>
         </td>
@@ -11257,15 +11293,81 @@ function openUniversalEditModal(categoryKey, record) {
       }
     }
     // Also fill common aliases
+    // 1. Portal / Website / Application URL aliases (Internships, Jobs, Admissions, Scholarships, Exams, etc.)
+    const resolvedPortalUrl = record.apply_url || record.applyUrl || record.application_url || record.portal_url || record.official_url || record.official_website || record.website || record.url || record.file_url || '';
+    if (resolvedPortalUrl) {
+      ['apply_url', 'portal_url', 'official_url', 'website', 'url', 'application_url', 'official_website'].forEach(inputName => {
+        const inp = form.querySelector(`[name="${inputName}"]`);
+        if (inp && !inp.value) {
+          inp.value = resolvedPortalUrl;
+        }
+      });
+    }
+
+    // 2. Internship & Job aliases
+    if (record.company && form.querySelector('[name="company"]')) form.querySelector('[name="company"]').value = record.company;
+    if (record.company_name && form.querySelector('[name="company"]')) form.querySelector('[name="company"]').value = record.company_name;
+    if (record.company_name && form.querySelector('[name="company_name"]')) form.querySelector('[name="company_name"]').value = record.company_name;
+    if (record.role && form.querySelector('[name="role"]')) form.querySelector('[name="role"]').value = record.role;
+    if (record.job_title && form.querySelector('[name="role"]')) form.querySelector('[name="role"]').value = record.job_title;
+    if (record.title && form.querySelector('[name="role"]')) form.querySelector('[name="role"]').value = record.title;
+    if (record.title && form.querySelector('[name="title"]')) form.querySelector('[name="title"]').value = record.title;
+    if (record.domain && form.querySelector('[name="domain"]')) form.querySelector('[name="domain"]').value = record.domain;
+    if (record.domain_name && form.querySelector('[name="domain"]')) form.querySelector('[name="domain"]').value = record.domain_name;
+    if (record.stipend && form.querySelector('[name="stipend"]')) form.querySelector('[name="stipend"]').value = record.stipend;
+    if (record.duration && form.querySelector('[name="duration"]')) form.querySelector('[name="duration"]').value = record.duration;
+    if (record.location && form.querySelector('[name="location"]')) form.querySelector('[name="location"]').value = record.location;
+    if (record.state && form.querySelector('[name="state"]')) form.querySelector('[name="state"]').value = record.state;
+    if (record.district && form.querySelector('[name="district"]')) form.querySelector('[name="district"]').value = record.district;
+    if (record.salary && form.querySelector('[name="salary"]')) form.querySelector('[name="salary"]').value = record.salary;
+    if (record.deadline && form.querySelector('[name="deadline"]')) form.querySelector('[name="deadline"]').value = record.deadline;
+    if (record.application_end && form.querySelector('[name="deadline"]')) form.querySelector('[name="deadline"]').value = record.application_end;
+    if (record.eligibility && form.querySelector('[name="eligibility"]')) form.querySelector('[name="eligibility"]').value = record.eligibility;
+    if (record.eligibility_criteria && form.querySelector('[name="eligibility"]')) form.querySelector('[name="eligibility"]').value = record.eligibility_criteria;
+    if (record.skills && form.querySelector('[name="skills"]')) {
+      form.querySelector('[name="skills"]').value = Array.isArray(record.skills) ? record.skills.join(', ') : record.skills;
+    }
+
+    // 3. Scholarship aliases
+    if ((record.benefit || record.amount) && form.querySelector('[name="benefit"]')) {
+      form.querySelector('[name="benefit"]').value = record.benefit || record.amount;
+    }
+    if ((record.type || record.provider) && form.querySelector('[name="type"]')) {
+      form.querySelector('[name="type"]').value = record.type || record.provider;
+    }
+
+    // 4. Admission aliases
+    if (record.college_name && form.querySelector('[name="college_name"]')) form.querySelector('[name="college_name"]').value = record.college_name;
+    if (record.admission_type && form.querySelector('[name="mode"]')) form.querySelector('[name="mode"]').value = record.admission_type;
+    if ((record.application_dates || (record.application_start && record.application_end ? `${record.application_start} – ${record.application_end}` : record.application_start)) && form.querySelector('[name="application_dates"]')) {
+      form.querySelector('[name="application_dates"]').value = record.application_dates || `${record.application_start || ''} – ${record.application_end || ''}`;
+    }
+    if (record.courses_offered && form.querySelector('[name="courses_offered"]')) {
+      form.querySelector('[name="courses_offered"]').value = Array.isArray(record.courses_offered) ? record.courses_offered.join(', ') : record.courses_offered;
+    }
+
+    // 5. Entrance exam aliases
+    if ((record.name || record.exam_name) && form.querySelector('[name="name"]')) {
+      form.querySelector('[name="name"]').value = record.name || record.exam_name;
+    }
+    if ((record.field || record.exam_type) && form.querySelector('[name="field"]')) {
+      form.querySelector('[name="field"]').value = record.field || record.exam_type;
+    }
+    if ((record.marks_cutoff || record.total_marks || record.cutoff_range) && form.querySelector('[name="marks_cutoff"]')) {
+      form.querySelector('[name="marks_cutoff"]').value = record.marks_cutoff || record.total_marks || record.cutoff_range;
+    }
+    if ((record.stages || record.study_plan || record.roadmap) && form.querySelector('[name="stages"]')) {
+      const stagesVal = record.stages || record.study_plan || record.roadmap;
+      form.querySelector('[name="stages"]').value = Array.isArray(stagesVal) ? stagesVal.map(s => s.desc || s).join(', ') : stagesVal;
+    }
+
+    // 6. Course / Domain / Ranking / Comparison aliases
     if (record.course_name && form.querySelector('[name="name"]')) form.querySelector('[name="name"]').value = record.course_name;
     if (record.domain_name && form.querySelector('[name="name"]')) form.querySelector('[name="name"]').value = record.domain_name;
     if (record.domain_name && form.querySelector('[name="domain_name"]')) form.querySelector('[name="domain_name"]').value = record.domain_name;
     if ((record.roadmap || record.full_roadmap) && form.querySelector('[name="roadmap"]')) form.querySelector('[name="roadmap"]').value = record.roadmap || record.full_roadmap;
     if (record.career_name && form.querySelector('[name="name"]')) form.querySelector('[name="name"]').value = record.career_name;
     if (record.ranking_body && form.querySelector('[name="ranking_body"]')) form.querySelector('[name="ranking_body"]').value = record.ranking_body;
-    if (record.job_title && form.querySelector('[name="role"]')) form.querySelector('[name="role"]').value = record.job_title;
-    if (record.company_name && form.querySelector('[name="company"]')) form.querySelector('[name="company"]').value = record.company_name;
-    if (record.company_name && form.querySelector('[name="company_name"]')) form.querySelector('[name="company_name"]').value = record.company_name;
     if (record.name && form.querySelector('[name="exam_name"]')) form.querySelector('[name="exam_name"]').value = record.name;
     if (record.exam_name && form.querySelector('[name="exam_name"]')) form.querySelector('[name="exam_name"]').value = record.exam_name;
     if (record.conducting_body && form.querySelector('[name="organization"]')) form.querySelector('[name="organization"]').value = record.conducting_body;
@@ -11273,8 +11375,6 @@ function openUniversalEditModal(categoryKey, record) {
     if (record.college2 && form.querySelector('[name="college2"]')) form.querySelector('[name="college2"]').value = record.college2;
     if (record.college_1 && form.querySelector('[name="college1"]')) form.querySelector('[name="college1"]').value = record.college_1;
     if (record.college_2 && form.querySelector('[name="college2"]')) form.querySelector('[name="college2"]').value = record.college_2;
-    if (record.title && form.querySelector('[name="title"]')) form.querySelector('[name="title"]').value = record.title;
-    if (record.title && form.querySelector('[name="role"]')) form.querySelector('[name="role"]').value = record.title;
 
     // Prefill exact fee aliases for courses / colleges without rounding or formatting
     const feeVal = record.annual_tuition_fees ?? record.annualTuitionFees ?? record.fees;

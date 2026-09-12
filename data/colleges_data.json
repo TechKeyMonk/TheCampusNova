@@ -1,5 +1,5 @@
 {
-  "total": 218,
+  "total": 225,
   "colleges": [
     {
       "id": "COL-4120",
@@ -5488,6 +5488,652 @@
       "location": "Urban",
       "website": "https://www.ximekochi.org/",
       "established_year": 2013
+    },
+    {
+      "id": "COL-150",
+      "db_id": 150,
+      "rank": 1,
+      "nirf_rank": 1,
+      "name": "PPG College of Arts and Science",
+      "college_name": "PPG College of Arts and Science",
+      "short_name": "",
+      "city": "Coimbatore",
+      "location": "Coimbatore",
+      "district": "Coimbatore",
+      "state": "Tamil Nadu",
+      "aishe": "C-58920",
+      "aishe_code": "C-58920",
+      "aishe_codes": [
+        "C-58920"
+      ],
+      "badge": "Premier Higher Education Institution",
+      "type": "Arts and Science College",
+      "college_type": "Arts and Science College",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "bsc",
+      "courses": [
+        "bsc"
+      ],
+      "domains": [
+        "ppg.edu.in"
+      ],
+      "placement": "Median CTC: ₹14.0 LPA",
+      "avg_placement": "Median CTC: ₹14.0 LPA",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹1.5L / yr",
+      "cutoff": "National Entrance Exam Merit",
+      "accreditation": "Recognized under UGC Act; Affiliated with Bharathiar University",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Extensive summer internship and industrial training programs.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with relevant subject combinations and entrance qualifying rank.",
+      "facilities": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
+      "scholarships_info": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
+      "overview": "PPG College of Arts and Science is an undergraduate and postgraduate higher education institution located in Coimbatore District, Tamil Nadu, affiliated with Bharathiar University.",
+      "description": "PPG College of Arts and Science is an undergraduate and postgraduate higher education institution located in Coimbatore District, Tamil Nadu, affiliated with Bharathiar University.",
+      "website": "https://www.ppg.edu.in/arts",
+      "official_url": "https://www.ppg.edu.in/arts",
+      "officialLink": "https://www.ppg.edu.in/arts",
+      "email": "",
+      "phone": "",
+      "address": "PPG College of Arts and Science, Coimbatore District, Tamil Nadu",
+      "image": "/uploads/colleges/image_Screenshot_2026-09-10_111645_1789019261_091004.png",
+      "image_url": "/uploads/colleges/image_Screenshot_2026-09-10_111645_1789019261_091004.png",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "PPG College of Arts and Science Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://www.ppg.edu.in/arts"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://www.ppg.edu.in/arts"
+        }
+      ],
+      "news": [
+        {
+          "title": "PPG College of Arts and Science Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://www.ppg.edu.in/arts"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://www.ppg.edu.in/arts"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-153",
+      "db_id": 153,
+      "rank": 1,
+      "nirf_rank": 1,
+      "name": "PPG COLLEGE OF OCCUPATIONAL THERAPY",
+      "college_name": "PPG COLLEGE OF OCCUPATIONAL THERAPY",
+      "short_name": "",
+      "city": "Coimbatore",
+      "location": "Coimbatore",
+      "district": "Coimbatore",
+      "state": "Tamil Nadu",
+      "aishe": "C-66823",
+      "aishe_code": "C-66823",
+      "aishe_codes": [
+        "C-66823"
+      ],
+      "badge": "Premier Higher Education Institution",
+      "type": "Health Sciences College",
+      "college_type": "Health Sciences College",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "medical",
+      "courses": [
+        "medical"
+      ],
+      "domains": [
+        "ppg.edu.in"
+      ],
+      "placement": "Median CTC: ₹14.0 LPA",
+      "avg_placement": "Median CTC: ₹14.0 LPA",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹1.5L / yr",
+      "cutoff": "National Entrance Exam Merit",
+      "accreditation": "Recognized under UGC Act; Affiliated with Bharathiar University",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Extensive summer internship and industrial training programs.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with relevant subject combinations and entrance qualifying rank.",
+      "facilities": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
+      "scholarships_info": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
+      "overview": "PPG COLLEGE OF OCCUPATIONAL THERAPY is an undergraduate and postgraduate higher education institution located in Coimbatore District, Tamil Nadu, affiliated with Bharathiar University.",
+      "description": "PPG COLLEGE OF OCCUPATIONAL THERAPY is an undergraduate and postgraduate higher education institution located in Coimbatore District, Tamil Nadu, affiliated with Bharathiar University.",
+      "website": "https://ppg.edu.in",
+      "official_url": "https://ppg.edu.in",
+      "officialLink": "https://ppg.edu.in",
+      "email": "",
+      "phone": "",
+      "address": "PPG COLLEGE OF OCCUPATIONAL THERAPY, Coimbatore District, Tamil Nadu",
+      "image": "/uploads/colleges/image_Screenshot_2026-09-10_111917_1789019405_9213c4.png",
+      "image_url": "/uploads/colleges/image_Screenshot_2026-09-10_111917_1789019405_9213c4.png",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "PPG COLLEGE OF OCCUPATIONAL THERAPY Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://ppg.edu.in"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://ppg.edu.in"
+        }
+      ],
+      "news": [
+        {
+          "title": "PPG COLLEGE OF OCCUPATIONAL THERAPY Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://ppg.edu.in"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://ppg.edu.in"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-154",
+      "db_id": 154,
+      "rank": 1,
+      "nirf_rank": 1,
+      "name": "PPG COLLEGE OF PHARMACY",
+      "college_name": "PPG COLLEGE OF PHARMACY",
+      "short_name": "",
+      "city": "Coimbatore",
+      "location": "Coimbatore",
+      "district": "Coimbatore",
+      "state": "Tamil Nadu",
+      "aishe": "C-65573",
+      "aishe_code": "C-65573",
+      "aishe_codes": [
+        "C-65573"
+      ],
+      "badge": "Premier Higher Education Institution",
+      "type": "Private College",
+      "college_type": "Private College",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "medical",
+      "courses": [
+        "medical"
+      ],
+      "domains": [
+        "ppg.edu.in."
+      ],
+      "placement": "Median CTC: ₹14.0 LPA",
+      "avg_placement": "Median CTC: ₹14.0 LPA",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹1.5L / yr",
+      "cutoff": "National Entrance Exam Merit",
+      "accreditation": "Approved by Pharmacy Council of India (PCI); Affiliated with The Tamil Nadu Dr. M.G.R. Medical University, Chennai",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Extensive summer internship and industrial training programs.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with relevant subject combinations and entrance qualifying rank.",
+      "facilities": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
+      "scholarships_info": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
+      "overview": "PPG COLLEGE OF PHARMACY is a healthcare education institution situated in Coimbatore District, Tamil Nadu, affiliated with The Tamil Nadu Dr. M.G.R. Medical University.",
+      "description": "PPG COLLEGE OF PHARMACY is a healthcare education institution situated in Coimbatore District, Tamil Nadu, affiliated with The Tamil Nadu Dr. M.G.R. Medical University.",
+      "website": "https://www.ppg.edu.in./pharmacy/",
+      "official_url": "https://www.ppg.edu.in./pharmacy/",
+      "officialLink": "https://www.ppg.edu.in./pharmacy/",
+      "email": "",
+      "phone": "",
+      "address": "PPG COLLEGE OF PHARMACY, Coimbatore District, Tamil Nadu",
+      "image": "/uploads/colleges/image_Screenshot_2026-09-10_112257_1789019610_453259.png",
+      "image_url": "/uploads/colleges/image_Screenshot_2026-09-10_112257_1789019610_453259.png",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "PPG COLLEGE OF PHARMACY Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://www.ppg.edu.in./pharmacy/"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://www.ppg.edu.in./pharmacy/"
+        }
+      ],
+      "news": [
+        {
+          "title": "PPG COLLEGE OF PHARMACY Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://www.ppg.edu.in./pharmacy/"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://www.ppg.edu.in./pharmacy/"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-149",
+      "db_id": 149,
+      "rank": 1,
+      "nirf_rank": 1,
+      "name": "PPG Business School",
+      "college_name": "PPG Business School",
+      "short_name": "",
+      "city": "Coimbatore",
+      "location": "Coimbatore",
+      "district": "Coimbatore",
+      "state": "Tamil Nadu",
+      "aishe": "C-37014",
+      "aishe_code": "C-37014",
+      "aishe_codes": [
+        "C-37014"
+      ],
+      "badge": "Premier Higher Education Institution",
+      "type": "Business School",
+      "college_type": "Business School",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Engineering, Sciences & Technology",
+      "courses": [
+        "Engineering",
+        "Sciences & Technology"
+      ],
+      "domains": [
+        "ppg.edu.in "
+      ],
+      "placement": "Median CTC: ₹14.0 LPA",
+      "avg_placement": "Median CTC: ₹14.0 LPA",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹1.5L / yr",
+      "cutoff": "National Entrance Exam Merit",
+      "accreditation": "Recognized under UGC Act; Affiliated with Bharathiar University",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Extensive summer internship and industrial training programs.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with relevant subject combinations and entrance qualifying rank.",
+      "facilities": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
+      "scholarships_info": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
+      "overview": "PPG Business School is an undergraduate and postgraduate higher education institution located in Coimbatore District, Tamil Nadu, affiliated with Bharathiar University.",
+      "description": "PPG Business School is an undergraduate and postgraduate higher education institution located in Coimbatore District, Tamil Nadu, affiliated with Bharathiar University.",
+      "website": "https://www.ppg.edu.in /bschool/",
+      "official_url": "https://www.ppg.edu.in /bschool/",
+      "officialLink": "https://www.ppg.edu.in /bschool/",
+      "email": "",
+      "phone": "",
+      "address": "PPG Business School, Coimbatore District, Tamil Nadu",
+      "image": "/uploads/colleges/image_Screenshot_2026-09-10_114912_1789021225_cd311a.png",
+      "image_url": "/uploads/colleges/image_Screenshot_2026-09-10_114912_1789021225_cd311a.png",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "PPG Business School Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://www.ppg.edu.in /bschool/"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://www.ppg.edu.in /bschool/"
+        }
+      ],
+      "news": [
+        {
+          "title": "PPG Business School Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://www.ppg.edu.in /bschool/"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://www.ppg.edu.in /bschool/"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-157",
+      "db_id": 157,
+      "rank": 1,
+      "nirf_rank": 1,
+      "name": "PPG Institute of Technology",
+      "college_name": "PPG Institute of Technology",
+      "short_name": "",
+      "city": "Coimbatore",
+      "location": "Coimbatore",
+      "district": "Coimbatore",
+      "state": "Tamil Nadu",
+      "aishe": "C-37043",
+      "aishe_code": "C-37043",
+      "aishe_codes": [
+        "C-37043"
+      ],
+      "badge": "Premier Higher Education Institution",
+      "type": "Engineering College",
+      "college_type": "Engineering College",
+      "rating": "4.8",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Engineering, Sciences & Technology",
+      "courses": [
+        "Engineering",
+        "Sciences & Technology"
+      ],
+      "domains": [
+        "ppgit.in"
+      ],
+      "placement": "Median CTC: ₹14.0 LPA",
+      "avg_placement": "Median CTC: ₹14.0 LPA",
+      "highest_placement": "₹45.0 LPA",
+      "highestPlacement": "₹45.0 LPA",
+      "fees": "₹1.5L / yr",
+      "cutoff": "National Entrance Exam Merit",
+      "accreditation": "Approved by AICTE, New Delhi; Affiliated with Anna University, Chennai",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Extensive summer internship and industrial training programs.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with relevant subject combinations and entrance qualifying rank.",
+      "facilities": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "facilities_list": "Central Library, Advanced Laboratories, Hostels, Sports Complex, High-Speed Wi-Fi",
+      "scholarships": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
+      "scholarships_info": "Merit-cum-Means Scholarships and Government Financial Aid schemes.",
+      "overview": "PPG Institute of Technology is a technical education institution located in Coimbatore District, Tamil Nadu, approved by AICTE and affiliated with Anna University, Chennai.",
+      "description": "PPG Institute of Technology is a technical education institution located in Coimbatore District, Tamil Nadu, approved by AICTE and affiliated with Anna University, Chennai.",
+      "website": "https://www.ppgit.in",
+      "official_url": "https://www.ppgit.in",
+      "officialLink": "https://www.ppgit.in",
+      "email": "",
+      "phone": "",
+      "address": "PPG Institute of Technology, Coimbatore District, Tamil Nadu",
+      "image": "/uploads/colleges/image_Screenshot_2026-09-10_124211_1789024478_d69604.png",
+      "image_url": "/uploads/colleges/image_Screenshot_2026-09-10_124211_1789024478_d69604.png",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "PPG Institute of Technology Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://www.ppgit.in"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://www.ppgit.in"
+        }
+      ],
+      "news": [
+        {
+          "title": "PPG Institute of Technology Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://www.ppgit.in"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://www.ppgit.in"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4790",
+      "db_id": 4790,
+      "rank": 84,
+      "nirf_rank": 84,
+      "name": "PPG College of Nursing",
+      "college_name": "PPG College of Nursing",
+      "short_name": "PPG College of Nursing",
+      "city": "Coimbatore, Tamil Nadu",
+      "location": "Coimbatore, Tamil Nadu",
+      "district": "Coimbatore",
+      "state": "Tamil Nadu",
+      "aishe": "U-0154",
+      "aishe_code": "U-0154",
+      "aishe_codes": [
+        "U-0154"
+      ],
+      "badge": "Premier Institution",
+      "type": "Private / Self-Financing College",
+      "college_type": "Private / Self-Financing College",
+      "rating": "4.6",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "B.Sc. Nursing General Nursing & Midwifery (GNM) Post Basic B.Sc. Nursing M.Sc. Nursing Ph.D. Nursing",
+      "courses": [
+        "B.Sc. Nursing General Nursing & Midwifery (GNM) Post Basic B.Sc. Nursing M.Sc. Nursing Ph.D. Nursing"
+      ],
+      "domains": [
+        "www.ppgnursing.edu.in"
+      ],
+      "placement": "-",
+      "avg_placement": "-",
+      "highest_placement": "-",
+      "highestPlacement": "-",
+      "fees": "₹1.20 lakh/yea",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "LibraryAuditoriumGymHostelTransportationLaboratoriesClassroomsPlaygroundClinical training facilitiesAccess to Ashwin Hospital and other affiliated clinical institutions",
+      "facilities_list": "LibraryAuditoriumGymHostelTransportationLaboratoriesClassroomsPlaygroundClinical training facilitiesAccess to Ashwin Hospital and other affiliated clinical institutions",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "PPG College of Nursing is situated at Keeranatham Road, Saravanampatti, Coimbatore. The institution describes its campus as a serene campus with postgraduate and research facilities. It is part of the PPG Group of Institutions",
+      "description": "PPG College of Nursing is situated at Keeranatham Road, Saravanampatti, Coimbatore. The institution describes its campus as a serene campus with postgraduate and research facilities. It is part of the PPG Group of Institutions",
+      "website": "https://www.ppgnursing.edu.in/",
+      "official_url": "https://www.ppgnursing.edu.in/",
+      "officialLink": "https://www.ppgnursing.edu.in/",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "/uploads/colleges/image_Screenshot_2026-09-10_125557_1789026801_4daf91.png",
+      "image_url": "/uploads/colleges/image_Screenshot_2026-09-10_125557_1789026801_4daf91.png",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "PPG College of Nursing Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://www.ppgnursing.edu.in/"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://www.ppgnursing.edu.in/"
+        }
+      ],
+      "news": [
+        {
+          "title": "PPG College of Nursing Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://www.ppgnursing.edu.in/"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://www.ppgnursing.edu.in/"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "COL-4791",
+      "db_id": 4791,
+      "rank": 85,
+      "nirf_rank": 85,
+      "name": "PPG College of Physiotherapy",
+      "college_name": "PPG College of Physiotherapy",
+      "short_name": "PPG College of Physiother",
+      "city": "Coimbatore, Tamil Nadu",
+      "location": "Coimbatore, Tamil Nadu",
+      "district": "Coimbatore",
+      "state": "Tamil Nadu",
+      "aishe": "U-0146",
+      "aishe_code": "U-0146",
+      "aishe_codes": [
+        "U-0146"
+      ],
+      "badge": "Premier Institution",
+      "type": "Private / Self-Financing Institution",
+      "college_type": "Private / Self-Financing Institution",
+      "rating": "4.7",
+      "reviews": "1,200+ Reviews",
+      "reviews_count": "1,200+ Reviews",
+      "stream": "Bachelor of Physiotherapy (BPT) Master of Physiotherapy (MPT)",
+      "courses": [
+        "Bachelor of Physiotherapy (BPT) Master of Physiotherapy (MPT)"
+      ],
+      "domains": [
+        "ppg.edu.in"
+      ],
+      "placement": "-",
+      "avg_placement": "-",
+      "highest_placement": "-",
+      "highestPlacement": "-",
+      "fees": "Not officially disclosed on the PPG institution page. Don't enter an estimated amount in your database.",
+      "cutoff": "Entrance Merit",
+      "accreditation": "NAAC A++, UGC Approved",
+      "naac_grade": "A++",
+      "recruiters": "Top Global & National Corporations",
+      "internship_support": "Campus internship support.",
+      "admissions": "National entrance examination and centralized counseling.",
+      "eligibility": "10+2 with 60% in relevant subjects.",
+      "facilities": "Physiotherapy education and practical training facilities\nAcademic classrooms\nClinical/practical learning environment\nAccess to the PPG Group's healthcare and institutional ecosystem\nCampus hostel facilities\nLocated in the PPG Group's Campus 2, which also houses PPG College of Nursing and PPG Institute of Allied Health Sciences",
+      "facilities_list": "Physiotherapy education and practical training facilities\nAcademic classrooms\nClinical/practical learning environment\nAccess to the PPG Group's healthcare and institutional ecosystem\nCampus hostel facilities\nLocated in the PPG Group's Campus 2, which also houses PPG College of Nursing and PPG Institute of Allied Health Sciences",
+      "scholarships": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "scholarships_info": "Merit-cum-Means Scholarships, Government Welfare Scholarships",
+      "overview": "PPG College of Physiotherapy was established in 1999 and operates under the P. Perichi Gounder Memorial Education and Charitable Trust. It is affiliated with The Tamil Nadu Dr. M.G.R. Medical University and focuses on physiotherapy education and healthcare professional development.",
+      "description": "PPG College of Physiotherapy was established in 1999 and operates under the P. Perichi Gounder Memorial Education and Charitable Trust. It is affiliated with The Tamil Nadu Dr. M.G.R. Medical University and focuses on physiotherapy education and healthcare professional development.",
+      "website": "https://ppg.edu.in/institution.php?id=2&utm_source=chatgpt.com",
+      "official_url": "https://ppg.edu.in/institution.php?id=2&utm_source=chatgpt.com",
+      "officialLink": "https://ppg.edu.in/institution.php?id=2&utm_source=chatgpt.com",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "image": "/uploads/colleges/image_Screenshot_2026-09-10_132151_1789026724_5fc681.png",
+      "image_url": "/uploads/colleges/image_Screenshot_2026-09-10_132151_1789026724_5fc681.png",
+      "video": "",
+      "video_url": "",
+      "events": [
+        {
+          "title": "PPG College of Physiotherapy Annual Tech Symposium & Hackathon 2026",
+          "date": "2026-09-18",
+          "type": "Symposium",
+          "description": "State-level student innovation summit featuring coding sprints and project presentations.",
+          "link": "https://ppg.edu.in/institution.php?id=2&utm_source=chatgpt.com"
+        },
+        {
+          "title": "Campus Placement Drive 2026-27 (Tier-1 Recruiters)",
+          "date": "2026-10-12",
+          "type": "Placement",
+          "description": "Annual multi-company recruitment drive featuring top product and core sector recruiters.",
+          "link": "https://ppg.edu.in/institution.php?id=2&utm_source=chatgpt.com"
+        }
+      ],
+      "news": [
+        {
+          "title": "PPG College of Physiotherapy Recognized in Top Tier in 2026 Academic Assessment",
+          "date": "2026-08-22",
+          "category": "Academic",
+          "summary": "Achieved top percentile rankings for research outcomes, student placements, and teaching learning resources.",
+          "link": "https://ppg.edu.in/institution.php?id=2&utm_source=chatgpt.com"
+        },
+        {
+          "title": "State-of-the-Art AI & Innovation Center Inaugurated",
+          "date": "2026-07-16",
+          "category": "Infrastructure",
+          "summary": "Equipped with advanced GPU compute clusters and collaborative industrial testbeds.",
+          "link": "https://ppg.edu.in/institution.php?id=2&utm_source=chatgpt.com"
+        }
+      ],
+      "status": "active"
     }
   ]
 }

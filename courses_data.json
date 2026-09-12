@@ -17,6 +17,28 @@
               "tagline": "Theoretical foundations of computation, algorithms, and full lifecycle software engineering.",
               "programs": [
                 {
+                  "id": "prog-61470108",
+                  "name": "Test Robotics",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Comprehensive academic degree curriculum.",
+                  "annualTuitionFees": "",
+                  "annual_tuition_fees": "",
+                  "fees": ""
+                },
+                {
+                  "id": "prog-73b0f95b",
+                  "name": "QA Test Robotics Vitest_1789190966320",
+                  "degreeType": "Undergraduate (UG)",
+                  "duration": "4 Years",
+                  "eligibility": "10+2 or Equivalent",
+                  "overview": "Vitest automated integration test course.",
+                  "annualTuitionFees": "Rs. 2,50,000",
+                  "annual_tuition_fees": "Rs. 2,50,000",
+                  "fees": "Rs. 2,50,000"
+                },
+                {
                   "id": "prog-4107f9d9",
                   "name": "B.Com (FinTech & Financial Analytics)",
                   "degreeType": "Undergraduate (UG)",

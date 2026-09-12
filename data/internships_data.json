@@ -182,12 +182,28 @@
   ],
   "internships": [
     {
-      "title": "Test Advanced ML Research Intern",
-      "company_name": "Test DeepMind Research",
+      "title": "DeepMind Research & Software Fellowship Intern",
+      "company_name": "Google DeepMind",
       "location": "Bengaluru",
       "stipend": "Rs. 75,000 / month",
       "duration": "6 Months",
-      "id": 51
+      "id": 51,
+      "company": "DeepMind Research",
+      "role": " Advanced ML Research Intern",
+      "domain": "AI & Machine Learning",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "eligibility": "Students in final/pre-final year.",
+      "skills": [
+        "Problem Solving",
+        "Data Structures"
+      ],
+      "deadline": "Ongoing",
+      "apply_url": "https://deepmind.google/student-researcher-program/",
+      "website": "https://deepmind.google/student-researcher-program/",
+      "application_url": "https://deepmind.google/student-researcher-program/",
+      "applyUrl": "https://deepmind.google/student-researcher-program/",
+      "portal_url": "https://deepmind.google/student-researcher-program/"
     },
     {
       "title": "Test Advanced ML Research Intern",

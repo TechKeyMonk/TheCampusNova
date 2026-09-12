@@ -36,8 +36,8 @@ PGPASSWORD = os.environ.get("PGPASSWORD", "postgres")
 _connection_pool = None
 _is_connected = False
 _last_pool_attempt = 0
-_POOL_RETRY_INTERVAL = 3  # seconds between reconnect attempts
-_CONNECT_TIMEOUT = int(os.environ.get("PGCONNECT_TIMEOUT", "10"))
+_POOL_RETRY_INTERVAL = 30  # seconds between reconnect attempts if offline
+_CONNECT_TIMEOUT = int(os.environ.get("PGCONNECT_TIMEOUT", "3"))
 
 def get_connection_params():
     """Builds connection configuration dictionary with multi-provider fallback."""

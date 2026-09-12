@@ -9,10 +9,21 @@ import hmac
 import base64
 import urllib.parse
 import logging
-from email_service import send_email, check_gmail_status
+import urllib.request
+from email_service import (
+    send_email,
+    check_gmail_status,
+    _get_clean_env_val,
+    _load_client_secret_file,
+    GMAIL_CLIENT_ID_KEYS,
+    GMAIL_CLIENT_SECRET_KEYS,
+    GMAIL_USER_KEYS,
+    DEFAULT_OFFICIAL_EMAIL,
+    update_env_refresh_token
+)
 from functools import wraps
 from dotenv import load_dotenv
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, redirect, has_request_context
 from werkzeug.security import generate_password_hash, check_password_hash
 import db
 import translation_service
@@ -90,6 +101,40 @@ captcha_store = {}
 verified_tokens = {}
 used_tokens = set()
 
+# Rate limiting and input validation utilities for enquiries and updates
+_enquiry_rate_limits = {}
+EMAIL_VALIDATION_REGEX = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
+
+def is_enquiry_rate_limited(ip_address, max_requests=5, window_seconds=60):
+    """Enforces sliding-window rate limiting per IP to prevent spam submissions."""
+    if not ip_address:
+        return False
+    now = time.time()
+    history = _enquiry_rate_limits.get(ip_address, [])
+    history = [t for t in history if now - t < window_seconds]
+    if len(history) >= max_requests:
+        _enquiry_rate_limits[ip_address] = history
+        return True
+    history.append(now)
+    _enquiry_rate_limits[ip_address] = history
+    return False
+
+def is_valid_email_address(email_str):
+    """Validates email format strictly against RFC standards."""
+    if not email_str or not isinstance(email_str, str):
+        return False
+    clean = email_str.strip()
+    if len(clean) > 254:
+        return False
+    return bool(EMAIL_VALIDATION_REGEX.match(clean))
+
+def sanitize_user_input(val, max_len=1000):
+    """Strips HTML tags and restricts length to protect email clients and stores."""
+    if not val:
+        return ""
+    clean = re.sub(r'<[^>]*?>', '', str(val))
+    return clean.strip()[:max_len]
+
 def sign_payload(data_dict: dict) -> str:
     """Signs a dict into a URL-safe token: base64(json).hmac"""
     payload_b64 = base64.urlsafe_b64encode(json.dumps(data_dict).encode("utf-8")).decode("utf-8").rstrip("=")
@@ -141,17 +186,17 @@ def generate_captcha_challenge(email=None, college=None, aishe=None, college_id=
         "nonce": secrets.token_hex(4)
     }
     captcha_id = "CAP-" + sign_payload(token_data)
-    
+
     # Also store in memory cache for backward compatibility
     captcha_store[captcha_id] = token_data
-    
+
     lines_svg = []
     for _ in range(6):
         x1, y1 = secrets.randbelow(200), secrets.randbelow(55)
         x2, y2 = secrets.randbelow(200), secrets.randbelow(55)
         color = secrets.choice(["#77AC3B", "#3A9B8F", "#94A3B8", "#CBD5E1", "#E2E8F0"])
         lines_svg.append(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{color}" stroke-width="1.5" opacity="0.7"/>')
-    
+
     char_svgs = []
     x_offset = 20
     for ch in captcha_text:
@@ -167,7 +212,7 @@ def generate_captcha_challenge(email=None, college=None, aishe=None, college_id=
       {"".join(lines_svg)}
       {"".join(char_svgs)}
     </svg>'''
-    
+
     return captcha_id, svg_content
 
 @app.before_request
@@ -176,11 +221,11 @@ def block_sensitive_files():
     path = request.path.lower()
     blocked_prefixes = [".env", ".git", ".venv", "database/", ".vscode", "cloudflared"]
     blocked_extensions = [".py", ".pyc", ".env", ".sql", ".sh", ".bat", ".log"]
-    
+
     for prefix in blocked_prefixes:
         if path.startswith(f"/{prefix}") or f"/{prefix}" in path:
             return jsonify({"error": "Forbidden", "message": "Access to sensitive file is restricted."}), 403
-            
+
     for ext in blocked_extensions:
         if path.endswith(ext):
             return jsonify({"error": "Forbidden", "message": "Access restricted."}), 403
@@ -237,7 +282,7 @@ def apply_cors_and_security_headers(response):
         response.headers["Access-Control-Allow-Credentials"] = "true"
         response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
         response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Admin-Role, X-Admin-Passkey, X-Requested-With, Accept"
-    
+
     # Security Headers
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
@@ -376,7 +421,7 @@ def load_users_data():
                 users = json.load(f).get("users", [])
         except Exception:
             users = []
-            
+
     if db.is_pg_connected():
         try:
             rows = db.query_all("SELECT id, name, email, password_hash, role, status FROM users WHERE status != 'suspended'")
@@ -397,7 +442,7 @@ def load_users_data():
                 return merged
         except Exception as e:
             print(f"[Warning] DB users query failed: {e}")
-            
+
     return users
 
 def save_user_record(email, password_hash, name="Student User", role="user"):
@@ -411,7 +456,7 @@ def save_user_record(email, password_hash, name="Student User", role="user"):
         "role": role,
         "created_at": time.strftime("%Y-%m-%d %H:%M:%S")
     }
-    
+
     users = []
     if os.path.exists(USERS_DATA_FILE):
         try:
@@ -419,7 +464,7 @@ def save_user_record(email, password_hash, name="Student User", role="user"):
                 users = json.load(f).get("users", [])
         except Exception:
             users = []
-            
+
     users = [u for u in users if u.get("email", "").strip().lower() != clean_email]
     users.append(user_obj)
     try:
@@ -472,7 +517,7 @@ def update_user_password(email, new_password_hash):
             json.dump({"users": users}, f, indent=2)
     except Exception:
         pass
-        
+
     if db.is_pg_connected():
         try:
             db.execute_query("UPDATE users SET password_hash = %s, updated_at = CURRENT_TIMESTAMP WHERE LOWER(email) = %s", (new_password_hash, clean_email))
@@ -733,7 +778,7 @@ def load_colleges_data():
     """Loads complete college registry from PostgreSQL as single source of truth, with seamless caching."""
     global _cached_colleges_registry, _cached_colleges_timestamp
     now = time.time()
-    if _cached_colleges_registry is not None and (now - _cached_colleges_timestamp < 60):
+    if _cached_colleges_registry is not None and (now - _cached_colleges_timestamp < 900):
         return _cached_colleges_registry
 
     # 1. PostgreSQL is the primary Single Source of Truth
@@ -828,7 +873,7 @@ def are_matching_college_names(name1, name2):
     overlap = s1.intersection(s2)
     if s1 == s2:
         return True
-    
+
     # Substring of distinct phrase (e.g. "IIT Madras" in "IIT Madras - Indian Institute of Technology")
     if len(n1) >= 6 and len(n2) >= 6:
         if n1 in n2 or n2 in n1:
@@ -857,10 +902,10 @@ def get_college_record(college_identifier, college_name=None, aishe_code=None):
             if lookup_aishe:
                 norm_t = normalize_aishe(lookup_aishe) if 'normalize_aishe' in globals() else lookup_aishe
                 row = db.query_one("""
-                    SELECT * FROM colleges 
+                    SELECT * FROM colleges
                     WHERE status != 'archived' AND (
-                        LOWER(aishe_code) = %s OR 
-                        LOWER(aishe_code) = %s OR 
+                        LOWER(aishe_code) = %s OR
+                        LOWER(aishe_code) = %s OR
                         REPLACE(LOWER(aishe_code), '-', '') = %s
                     ) LIMIT 1;
                 """, (lookup_aishe.lower(), norm_t.lower(), lookup_aishe.lower().replace("-", "")))
@@ -871,15 +916,15 @@ def get_college_record(college_identifier, college_name=None, aishe_code=None):
             target_name = name_str or (id_str if not id_str.isdigit() and not id_str.lower().startswith("col-") else "")
             if target_name:
                 row = db.query_one("""
-                    SELECT * FROM colleges 
+                    SELECT * FROM colleges
                     WHERE status != 'archived' AND (
-                        LOWER(college_name) = %s OR 
+                        LOWER(college_name) = %s OR
                         LOWER(short_name) = %s
                     ) LIMIT 1;
                 """, (target_name.lower(), target_name.lower()))
                 if row:
                     return _row_to_college_dict(row)
-                
+
                 # Check all rows in PG using are_matching_college_names
                 all_pg = db.query_all("SELECT * FROM colleges WHERE status != 'archived';")
                 if all_pg:
@@ -967,11 +1012,11 @@ def is_authorized_college_email(email, col_record=None):
     """
     if not email:
         return False
-        
+
     clean_email = str(email).strip().lower()
     if "@" not in clean_email or len(clean_email) < 5:
         return False
-        
+
     parts = clean_email.split("@")
     if len(parts) != 2 or not parts[0].strip() or not parts[1].strip():
         return False
@@ -994,7 +1039,7 @@ def is_authorized_college_email(email, col_record=None):
         rec_domains = col_record.get("domains") or []
         if isinstance(rec_domains, str):
             rec_domains = [rec_domains]
-        
+
         web_url = col_record.get("website") or col_record.get("official_url") or ""
         if web_url:
             clean_host = web_url.replace("https://", "").replace("http://", "").replace("www.", "").split("/")[0].strip().lower()
@@ -1021,7 +1066,7 @@ def is_valid_college_aishe(aishe_code, col_record):
     """
     if not aishe_code or not col_record:
         return False
-        
+
     norm_entered = normalize_aishe(aishe_code)
     clean_entered = str(aishe_code).upper().replace("-", "").replace(" ", "").strip()
     if not clean_entered:
@@ -1075,7 +1120,7 @@ def is_valid_college_aishe(aishe_code, col_record):
     if db.is_pg_connected() and col_name:
         try:
             db_matches = db.query_all("""
-                SELECT id, college_name, short_name, aishe_code FROM colleges 
+                SELECT id, college_name, short_name, aishe_code FROM colleges
                 WHERE status != 'archived';
             """)
             for row in db_matches:
@@ -1107,14 +1152,14 @@ def validate_college_and_aishe(college_identifier, aishe_code, email="", college
     # Step 1: Authorized Email Validation
     if not email or not email.strip():
         return False, "Please enter the authorized institutional email address.", col
-        
+
     if not is_authorized_college_email(email, col):
         return False, "Access Restricted: Only the authorized college administrator email can submit updates for this institution.", col
 
     # Step 2: AISHE Code Validation
     if not aishe_code or not str(aishe_code).strip():
         return False, "Please enter the registered AISHE code.", col
-        
+
     if not is_valid_college_aishe(aishe_code, col):
         return False, "Invalid AISHE Code: The entered AISHE Code does not match the selected college.", col
 
@@ -1158,7 +1203,7 @@ def api_request_update_captcha():
 
     resolved_name = col.get("name") or col.get("college_name") or college_name or college
     captcha_id, captcha_svg = generate_captcha_challenge(email=email, college=resolved_name, aishe=aishe, college_id=col.get("id"))
-    
+
     # Store challenge metadata in memory cache as well
     if captcha_id in captcha_store:
         captcha_store[captcha_id]["email"] = email
@@ -1167,7 +1212,7 @@ def api_request_update_captcha():
         captcha_store[captcha_id]["aishe"] = aishe
 
     logger.info(f"[CAPTCHA CHALLENGE] Generated challenge {captcha_id[:24]}... for {email} ({resolved_name}, AISHE: {aishe})")
-    
+
     return jsonify({
         "success": True,
         "message": f"Authority verified for {mask_email_public(email)}. Complete CAPTCHA to continue.",
@@ -1301,7 +1346,7 @@ def api_refresh_update_captcha():
 
     if old_id and old_id in captcha_store:
         del captcha_store[old_id]
-        
+
     captcha_id, captcha_svg = generate_captcha_challenge(email=email, college=college, aishe=aishe)
     if captcha_id in captcha_store:
         if email: captcha_store[captcha_id]["email"] = email
@@ -1347,11 +1392,11 @@ def api_logout():
 
 def send_college_update_notification(approval_data, is_test_mode=False):
     """
-    Dispatches backend email notification to official TheCampusNova Gmail
-    regarding new College Update submissions using Gmail API service.
-    Enforces strict test isolation so automated tests and QA records never dispatch live mail.
+    Dispatches backend email notifications regarding new College Update submissions:
+    1. Sends notification to administrative email (thecampusnova@gmail.com).
+    2. Sends receipt confirmation email to authorized institutional representative.
     """
-    official_email = os.environ.get("GMAIL_USER", "thecampusnova@gmail.com")
+    official_email = _get_clean_env_val(GMAIL_USER_KEYS, default=DEFAULT_OFFICIAL_EMAIL)
     req_id = approval_data.get("id") or "APP-NEW"
     college_name = approval_data.get("target_title") or approval_data.get("college_name") or "College Update"
     aishe_code = approval_data.get("target_id") or approval_data.get("aishe_code") or "N/A"
@@ -1361,64 +1406,81 @@ def send_college_update_notification(approval_data, is_test_mode=False):
     req_field = approval_data.get("field") or "Profile Updates"
     submitted_val = approval_data.get("new_value") or approval_data.get("description") or "Submitted profile update"
 
-    # Isolation Check: Never allow automated tests, QA entries, or test email domains to flood production Gmail
-    test_env = os.environ.get("CAMPNOVA_TEST_MODE") == "1" or os.environ.get("CI") == "true"
-    test_header = False
-    try:
-        from flask import has_request_context, request
-        if has_request_context():
-            test_header = (
-                request.headers.get("X-Test-Mode") == "true" or 
-                request.headers.get("X-Automated-Test") == "true" or
-                request.args.get("test_mode") == "true"
-            )
-    except Exception:
-        pass
-
-    auth_lower = str(auth_email).strip().lower()
-    col_lower = str(college_name).strip().lower()
-    aishe_upper = str(aishe_code).strip().upper()
-    is_test_data = (
-        is_test_mode or test_env or test_header or
-        auth_lower.endswith("@example.com") or auth_lower.endswith("@example.edu") or
-        auth_lower.startswith("test") or "test" in auth_lower or
-        "test college" in col_lower or col_lower.startswith("test") or
-        aishe_upper.startswith("TEST") or aishe_upper == "TEST-123"
+    # Only suppress when explicitly in CI or header-instructed automated testing
+    is_ci_automated = (
+        is_test_mode or
+        os.environ.get("CI") == "true" or
+        (has_request_context() and request.headers.get("X-Suppress-Email") == "true")
     )
-
-    if is_test_data:
-        logger.info(f"[GMAIL TEST ISOLATION] Suppressed live email for test College Update: {req_id} - {college_name} ({auth_email})")
+    if is_ci_automated:
+        logger.info(f"[EMAIL CI ISOLATION] Suppressed live email for automated test: {req_id} ({auth_email})")
         return True
 
-    subject = f"[TheCampusNova] College Update Request ({req_id}) - {college_name}"
-    body = f"""TheCampusNova Institutional Portal - College Update Request
+    # 1. Admin Alert Email
+    admin_subject = f"[TheCampusNova] College Update Request ({req_id}) - {college_name}"
+    admin_body = f"""TheCampusNova Institutional Portal - College Update Request
 ---------------------------------------------------------
 Request / Approval ID: {req_id}
 College Name: {college_name}
 Original AISHE Code: {aishe_code}
-Authorized Email: {auth_email}
+Authorized Submitter Email: {auth_email}
 Requested Category / Field: {req_field}
 Submitted Values: {submitted_val}
 Submitted Date: {now_dt}
 Submitted Time: {now_tm}
 Current Status: Pending Administrative Review
 
-An authorized representative has submitted a college profile update and the request is pending administrative review. Please review this submission in the Admin Portal under Update Approvals.
+An authorized representative has submitted a college profile update and the request is pending administrative review.
+Please review this submission in the Admin Portal under Update Approvals.
 """
+
+    admin_sent = False
     try:
-        send_email(subject, body, to_email=official_email)
-        logger.info(f"[COLLEGE UPDATE NOTIFICATION SENT] To: {official_email} | Subject: {subject}")
-        return True
+        send_email(admin_subject, admin_body, to_email=official_email)
+        admin_sent = True
+        logger.info(f"[COLLEGE UPDATE NOTIFICATION SENT] Admin alert to: {official_email} | Req: {req_id}")
     except Exception as e:
-        logger.error(f"[COLLEGE UPDATE NOTIFICATION FAILED] Failed to send email via Gmail API: {e}")
-        return False
-        
+        logger.error(f"[COLLEGE UPDATE NOTIFICATION FAILED] Admin alert failed: {e}")
+
+    # 2. Confirmation Email to Submitter
+    if auth_email and is_valid_email_address(auth_email):
+        user_subject = f"TheCampusNova - College Profile Update Request Received ({req_id})"
+        user_body = f"""Dear Institutional Representative,
+
+Thank you for submitting an update request for {college_name} (AISHE: {aishe_code}) on TheCampusNova.
+
+Request Summary:
+---------------------------------------------------------
+Approval Reference ID: {req_id}
+College: {college_name}
+AISHE Code: {aishe_code}
+Updated Section / Field: {req_field}
+Submitted At: {now_dt} {now_tm}
+Status: Pending Administrative Review
+
+Our institutional verification desk will review the submitted details. Once confirmed against official records, the updates will be published live to the college profile.
+
+If you have any questions or need to provide supplemental documentation, reply directly to this email.
+
+Warm regards,
+Institutional Verification Team
+TheCampusNova
+https://thecampusnova.com
+"""
+        try:
+            send_email(user_subject, user_body, to_email=auth_email)
+            logger.info(f"[COLLEGE UPDATE CONFIRMATION SENT] Submitter receipt to: {auth_email} | Req: {req_id}")
+        except Exception as e:
+            logger.warning(f"[COLLEGE UPDATE CONFIRMATION FAILED] Submitter receipt failed: {e}")
+
+    return admin_sent
+
 @app.route("/api/admin/gmail/status", methods=["GET"])
 @require_admin_auth
 def api_admin_gmail_status():
     """
     Secure diagnostic endpoint for administrators to verify Gmail API
-    health, credentials availability, and service initialization.
+    and SMTP health, credentials availability, and service initialization.
     Never exposes raw secrets or tokens.
     """
     try:
@@ -1431,15 +1493,50 @@ def api_admin_gmail_status():
         logger.error(f"[Gmail Status Check Error] {e}")
         return jsonify({
             "success": False,
-            "error": str(e)
+            "error": "Failed to retrieve Gmail status. Check server logs."
         }), 500
+
+@app.route("/api/admin/gmail/authorize", methods=["GET"])
+@require_admin_auth
+def api_admin_gmail_authorize():
+    """
+    Generates Google OAuth consent URL and redirects admin to authorize Gmail API.
+    Handles redirect_uri dynamically based on current environment.
+    """
+    try:
+        f_cid, f_cs, redirect_uris = _load_client_secret_file()
+        cid = _get_clean_env_val(GMAIL_CLIENT_ID_KEYS) or f_cid
+        if not cid:
+            return jsonify({"success": False, "message": "GMAIL_CLIENT_ID is not configured."}), 400
+
+        req_host = request.host_url.rstrip("/")
+        redirect_uri = f"{req_host}/"
+        if redirect_uris and redirect_uri not in redirect_uris:
+            for u in redirect_uris:
+                if "localhost:8000" in u or "127.0.0.1:8000" in u:
+                    redirect_uri = u
+                    break
+
+        params = {
+            "client_id": cid,
+            "redirect_uri": redirect_uri,
+            "response_type": "code",
+            "scope": "https://www.googleapis.com/auth/gmail.send",
+            "access_type": "offline",
+            "prompt": "consent"
+        }
+        auth_url = f"https://accounts.google.com/o/oauth2/auth?{urllib.parse.urlencode(params)}"
+        return redirect(auth_url)
+    except Exception as e:
+        logger.error(f"[Gmail Authorize Error] {e}")
+        return jsonify({"success": False, "error": "Failed to initiate Gmail authorization."}), 500
 
 
 @app.route("/api/submit-update", methods=["POST"])
 def api_submit_update():
     data = request.get_json(force=True, silent=True) or {}
     token = data.get("token")
-    
+
     # 1. Enforce verified CAPTCHA session token (supports in-memory or stateless signed token)
     if not token or token in used_tokens:
         return jsonify({"success": False, "message": "Unauthorized: Verification required or session expired. Please complete CAPTCHA verification first."}), 401
@@ -1449,10 +1546,10 @@ def api_submit_update():
         session_info = verified_tokens[token]
     elif token.startswith("VER-"):
         session_info = verify_and_decode_payload(token[4:])
-    
+
     if not session_info:
         return jsonify({"success": False, "message": "Unauthorized: Verification required or session expired. Please complete CAPTCHA verification first."}), 401
-    
+
     exp_ts = session_info.get("exp") or session_info.get("expires_at", 0)
     if time.time() > exp_ts:
         if token in verified_tokens:
@@ -1587,13 +1684,13 @@ def api_get_colleges():
 
         if q:
             match_q = (
-                q in c_name or 
-                q in c_city or 
-                q in c_district or 
-                q in c_state or 
-                q in c_aishe or 
-                q in c_stream or 
-                q in c_id or 
+                q in c_name or
+                q in c_city or
+                q in c_district or
+                q in c_state or
+                q in c_aishe or
+                q in c_stream or
+                q in c_id or
                 q == c_db_id or
                 any(q in crs for crs in c_courses)
             )
@@ -1850,7 +1947,7 @@ def api_update_college(college_id):
         rank_param = str(data["nirf_rank"]) if data.get("nirf_rank") else (str(data["rank"]) if data.get("rank") else None)
 
         res = db.execute_query("""
-            UPDATE colleges SET 
+            UPDATE colleges SET
                 college_name = COALESCE(%s, college_name),
                 aishe_code = COALESCE(%s, aishe_code),
                 location = COALESCE(%s, location),
@@ -1941,12 +2038,12 @@ def api_delete_college(college_id):
 
     try:
         col_record = db.query_one("""
-            SELECT id, college_name, aishe_code FROM colleges 
+            SELECT id, college_name, aishe_code FROM colleges
             WHERE id = %s OR aishe_code = %s OR LOWER(college_name) = LOWER(%s)
         """, (clean_num_id, target_str, target_str))
 
         db.execute_query("""
-            DELETE FROM colleges 
+            DELETE FROM colleges
             WHERE id = %s OR aishe_code = %s OR LOWER(college_name) = LOWER(%s)
         """, (
             clean_num_id,
@@ -2154,15 +2251,24 @@ def save_courses_data(data):
         print(f"[Error] Could not save courses_data.json: {e}")
         return False
 
+_cached_courses_list = None
+_cached_courses_timestamp = 0
+
 @app.route("/api/courses", methods=["GET"])
 def api_get_courses():
+    global _cached_courses_list, _cached_courses_timestamp
     data = load_courses_data()
     categories = data.get("categories", [])
     search_query = request.args.get("search", "").strip().lower()
     category_filter = request.args.get("category", "").strip().lower()
 
+    now = time.time()
+    is_default_query = not search_query and (not category_filter or category_filter == "all")
+
     courses_list = []
-    if db.is_pg_connected():
+    if is_default_query and _cached_courses_list is not None and (now - _cached_courses_timestamp < 300):
+        courses_list = _cached_courses_list
+    elif db.is_pg_connected():
         sql = "SELECT id, course_name, course_code, degree_type, duration, eligibility, description, annual_tuition_fees, status FROM courses WHERE status != 'deleted'"
         params = []
         if search_query:
@@ -2180,6 +2286,9 @@ def api_get_courses():
             fee = c.get("annual_tuition_fees") or ""
             c["annualTuitionFees"] = fee
             c["fees"] = fee
+        if is_default_query and courses_list:
+            _cached_courses_list = courses_list
+            _cached_courses_timestamp = now
 
     filtered_categories = []
     for cat in categories:
@@ -2234,12 +2343,30 @@ def api_get_courses():
                     matched_cat["groups"][0]["subfields"][0].setdefault("programs", []).append(prog_obj)
                     existing_program_names.add(c_name)
 
+    if not courses_list:
+        courses_list = []
+        for cat in filtered_categories:
+            for grp in cat.get("groups", []):
+                for sub in grp.get("subfields", []):
+                    for p in sub.get("programs", []):
+                        courses_list.append({
+                            "id": p.get("id"),
+                            "name": p.get("name"),
+                            "course_name": p.get("course_name") or p.get("name"),
+                            "degree_type": p.get("degreeType"),
+                            "duration": p.get("duration"),
+                            "eligibility": p.get("eligibility"),
+                            "description": p.get("overview"),
+                            "annual_tuition_fees": p.get("annualTuitionFees") or p.get("fees"),
+                            "status": "active"
+                        })
+
     return jsonify({
         "success": True,
         "totalCategories": len(filtered_categories),
         "categories": filtered_categories,
-        "courses": courses_list if courses_list else [],
-        "totalCourses": len(courses_list) if courses_list else 0
+        "courses": courses_list,
+        "totalCourses": len(courses_list)
     })
 
 def sync_course_in_json_stores(course_id, course_code, course_name, degree_type, duration, eligibility, description, annual_tuition_fees):
@@ -2281,8 +2408,10 @@ def sync_course_in_json_stores(course_id, course_code, course_name, degree_type,
                 cats = c_store.get("categories", [])
                 if cats and cats[0].get("groups") and cats[0]["groups"][0].get("subfields"):
                     new_prog = {
-                        "id": course_code or f"prog-{course_id or 'new'}",
+                        "id": course_id or course_code or f"prog-{secrets.token_hex(4)}",
+                        "course_code": course_code or str(course_id or ""),
                         "name": course_name,
+                        "course_name": course_name,
                         "degreeType": degree_type,
                         "duration": duration,
                         "eligibility": eligibility,
@@ -2391,14 +2520,25 @@ def api_save_course(course_id=None):
                 saved_id = new_row["id"]
         _record_audit_log("Saved Course", "Courses", str(saved_id), f"Saved course {course_name}")
 
+    if not saved_id:
+        if not course_code:
+            course_code = f"prog-{secrets.token_hex(4)}"
+        saved_id = int(time.time() * 1000) % 10000000
+
     # Synchronize exact values into JSON stores
     sync_course_in_json_stores(saved_id, course_code, course_name, degree_type, duration, eligibility, description, annual_tuition_fees)
+    global _cached_courses_list, _cached_admin_analytics
+    _cached_courses_list = None
+    if "_cached_admin_analytics" in globals() and isinstance(_cached_admin_analytics, dict):
+        _cached_admin_analytics.clear()
 
-    return jsonify({"success": True, "message": f"Course '{course_name}' saved successfully in PostgreSQL.", "id": saved_id, "annualTuitionFees": annual_tuition_fees}), 201
+    return jsonify({"success": True, "message": f"Course '{course_name}' saved successfully.", "id": saved_id, "annualTuitionFees": annual_tuition_fees}), 201
 
 @app.route("/api/courses/<course_id>", methods=["DELETE"])
 @require_admin_auth
 def api_delete_course(course_id):
+    global _cached_courses_list
+    _cached_courses_list = None
     target_ids = {f"prog-{course_id}".lower(), str(course_id).lower()}
     target_names = set()
 
@@ -2902,11 +3042,11 @@ def api_upload_study_material_file():
     """
     if "file" not in request.files:
         return jsonify({"success": False, "message": "No file provided in request."}), 400
-    
+
     f = request.files["file"]
     if not f or not f.filename:
         return jsonify({"success": False, "message": "Empty filename."}), 400
-        
+
     filename = f.filename.replace(" ", "_")
     clean_filename = re.sub(r"[^a-zA-Z0-9_.-]", "", filename)
     if not clean_filename:
@@ -2941,7 +3081,7 @@ def api_upload_study_material_file():
             out_f.write(file_bytes)
     except Exception as e:
         logger.info(f"[Filesystem Save Skipped in Serverless Environment] {e}")
-    
+
     file_url = f"/uploads/study-materials/{clean_filename}"
     return jsonify({
         "success": True,
@@ -4049,7 +4189,7 @@ def api_submit_review():
             "exams_prep": "Exams & Preparation"
         }
         category_name = cat_map.get(category, "College Experience & Campus Life")
-        
+
     context = data.get("context") or data.get("exam", "National University Campus")
     role = data.get("role") or data.get("author_role", "Student Candidate")
     rating = data.get("rating", "★★★★★")
@@ -4179,12 +4319,25 @@ def api_record_activity():
         )
     return jsonify({"success": True, "message": "Activity recorded."})
 
+_cached_admin_analytics = {}
+_cached_admin_analytics_time = {}
+
 @app.route("/api/admin/analytics", methods=["GET"])
 def api_admin_analytics():
     try:
         analytics_type = request.args.get("type", "").strip().lower()
         district_filter = request.args.get("district", "").strip()
         state_filter = request.args.get("state", "").strip()
+
+        cache_key = (analytics_type, district_filter, state_filter)
+        now = time.time()
+        if cache_key in _cached_admin_analytics and (now - _cached_admin_analytics_time.get(cache_key, 0) < 60):
+            return jsonify(_cached_admin_analytics[cache_key])
+
+        def _cache_and_jsonify(payload):
+            _cached_admin_analytics[cache_key] = payload
+            _cached_admin_analytics_time[cache_key] = time.time()
+            return jsonify(payload)
 
         # 1. District / Regional College Analytics
         if analytics_type == "colleges" or district_filter or state_filter:
@@ -4202,9 +4355,9 @@ def api_admin_analytics():
                     params.extend([clean_dist.lower(), clean_dist.lower()])
 
                 where_str = " AND ".join(where_clauses)
-                
+
                 stats_sql = f"""
-                    SELECT 
+                    SELECT
                         count(*) as total_match,
                         count(*) filter (where lower(coalesce(college_type, '')) like '%%autonomous%%' or lower(coalesce(badge, '')) like '%%autonomous%%' or lower(coalesce(college_name, '')) like '%%autonomous%%') as autonomous,
                         count(*) filter (where lower(coalesce(college_type, '')) like '%%affiliated%%' or lower(coalesce(college_type, '')) like '%%public%%') as affiliated,
@@ -4234,7 +4387,7 @@ def api_admin_analytics():
                 top_nirf = db.query_all(nirf_sql, tuple(params)) or []
 
                 act_sql = """
-                    SELECT 
+                    SELECT
                         count(*) filter (where module = 'colleges' and action_type in ('view', 'explore')) as total_col_views,
                         count(*) filter (where module = 'colleges' and action_type = 'search') as direct_col_searches,
                         count(*) filter (where module in ('comparison', 'reviews-compare') or action_type = 'compare') as comp_queries,
@@ -4243,7 +4396,7 @@ def api_admin_analytics():
                 """
                 act = db.query_one(act_sql) or {}
 
-                return jsonify({
+                return _cache_and_jsonify({
                     "success": True,
                     "district": district_filter or "All Districts",
                     "state": state_filter or "Tamil Nadu",
@@ -4280,7 +4433,7 @@ def api_admin_analytics():
                 naac_b = max(0, total_match - naac_a_plus - naac_a)
                 nirf_ranked = [c for c in matching_colleges if str(c.get("nirf_rank") or "").isdigit() and int(str(c.get("nirf_rank"))) < 500]
                 nirf_ranked.sort(key=lambda x: int(x["nirf_rank"]))
-                return jsonify({
+                return _cache_and_jsonify({
                     "success": True,
                     "district": district_filter or "All Districts",
                     "state": state_filter or "Tamil Nadu",
@@ -4305,7 +4458,7 @@ def api_admin_analytics():
         # 2. General / User Analytics (Consolidated Real PostgreSQL Data)
         if db.is_pg_connected():
             act_sql = """
-                SELECT 
+                SELECT
                     count(*) filter (where action_type in ('search', 'search_query')) as total_searches,
                     count(*) filter (where action_type in ('explore', 'view', 'navigate')) as total_explores,
                     count(*) filter (where module = 'colleges' and action_type in ('view', 'explore')) as total_college_views,
@@ -4330,12 +4483,12 @@ def api_admin_analytics():
 
             # Most searched college (from real user activity)
             c_top = db.query_one("""
-                SELECT search_query, count(*) as c 
-                FROM user_activity 
-                WHERE (module = 'colleges' OR action_type = 'search') 
+                SELECT search_query, count(*) as c
+                FROM user_activity
+                WHERE (module = 'colleges' OR action_type = 'search')
                   AND search_query IS NOT NULL
-                  AND search_query != '' 
-                  AND search_query NOT IN ('colleges', 'courses', 'domains', 'test') 
+                  AND search_query != ''
+                  AND search_query NOT IN ('colleges', 'courses', 'domains', 'test')
                 GROUP BY search_query ORDER BY c DESC LIMIT 1;
             """)
             most_searched_col = str(c_top.get("search_query") or "—") if c_top and c_top.get("search_query") else "—"
@@ -4343,12 +4496,12 @@ def api_admin_analytics():
 
             # Most searched course (from real user activity)
             crs_top = db.query_one("""
-                SELECT search_query, count(*) as c 
-                FROM user_activity 
-                WHERE module = 'courses' 
+                SELECT search_query, count(*) as c
+                FROM user_activity
+                WHERE module = 'courses'
                   AND search_query IS NOT NULL
-                  AND search_query != '' 
-                  AND search_query != 'courses' 
+                  AND search_query != ''
+                  AND search_query != 'courses'
                 GROUP BY search_query ORDER BY c DESC LIMIT 1;
             """)
             most_searched_course = str(crs_top.get("search_query") or "—") if crs_top and crs_top.get("search_query") else "—"
@@ -4356,12 +4509,12 @@ def api_admin_analytics():
 
             # Top domain track (from real user activity)
             dom_top = db.query_one("""
-                SELECT record_id, count(*) as c 
-                FROM user_activity 
-                WHERE module = 'domains' 
+                SELECT record_id, count(*) as c
+                FROM user_activity
+                WHERE module = 'domains'
                   AND record_id IS NOT NULL
-                  AND record_id != '' 
-                  AND record_id != 'domains' 
+                  AND record_id != ''
+                  AND record_id != 'domains'
                 GROUP BY record_id ORDER BY c DESC LIMIT 1;
             """)
             top_domain = "—"
@@ -4370,12 +4523,12 @@ def api_admin_analytics():
 
             # Most viewed exam (from real user activity)
             exm_top = db.query_one("""
-                SELECT record_id, count(*) as c 
-                FROM user_activity 
-                WHERE module IN ('exams', 'entrance-prep') 
+                SELECT record_id, count(*) as c
+                FROM user_activity
+                WHERE module IN ('exams', 'entrance-prep')
                   AND record_id IS NOT NULL
-                  AND record_id != '' 
-                  AND record_id NOT IN ('exams', 'entrance-prep') 
+                  AND record_id != ''
+                  AND record_id NOT IN ('exams', 'entrance-prep')
                 GROUP BY record_id ORDER BY c DESC LIMIT 1;
             """)
             most_viewed_exam = "—"
@@ -4384,7 +4537,7 @@ def api_admin_analytics():
 
             # Content updates & users
             upd_sql = """
-                SELECT 
+                SELECT
                     count(*) filter (where status = 'pending') as pending_count,
                     count(*) filter (where status = 'approved') as approved_count
                 FROM content_updates;
@@ -4419,7 +4572,7 @@ def api_admin_analytics():
                     "time": time_str
                 })
 
-            return jsonify({
+            return _cache_and_jsonify({
                 "success": True,
                 "analytics": {
                     "totalUsers": total_users,
@@ -4455,12 +4608,14 @@ def api_admin_analytics():
             })
 
         # Fallback to local files if DB disconnected
-        approvals_data = (load_approvals_data() or {}).get("approvals", [])
-        pending_appr = len([a for a in approvals_data if a.get("status") == "Pending"])
-        approved_appr = len([a for a in approvals_data if a.get("status") == "Approved"])
-        users_data = (load_users_data() or {}).get("users", [])
+        appr_raw = load_approvals_data()
+        approvals_data = appr_raw if isinstance(appr_raw, list) else (appr_raw or {}).get("approvals", [])
+        pending_appr = len([a for a in approvals_data if isinstance(a, dict) and a.get("status") == "Pending"])
+        approved_appr = len([a for a in approvals_data if isinstance(a, dict) and a.get("status") == "Approved"])
+        u_raw = load_users_data()
+        users_data = u_raw if isinstance(u_raw, list) else (u_raw or {}).get("users", [])
 
-        return jsonify({
+        return _cache_and_jsonify({
             "success": True,
             "analytics": {
                 "totalUsers": len(users_data),
@@ -4842,13 +4997,13 @@ def api_translate():
     data = request.get_json(force=True, silent=True) or {}
     target_lang = data.get("target", "ta")
     source_lang = data.get("source", "en")
-    
+
     # Handle batch request
     texts = data.get("texts")
     if texts is not None:
         if not isinstance(texts, list):
             return jsonify({"success": False, "error": "Field 'texts' must be an array of strings."}), 400
-        
+
         try:
             translations = translation_service.translate_batch(texts, target_lang, source_lang)
             return jsonify({
@@ -4868,7 +5023,7 @@ def api_translate():
                 "fallback": True,
                 "translations": fallback_map
             })
-            
+
     # Handle single string request
     text = data.get("text", "")
     if text:
@@ -4891,7 +5046,7 @@ def api_translate():
                 "translated": text,
                 "fallback": True
             })
-            
+
     return jsonify({"success": False, "error": "Either 'texts' (array) or 'text' (string) is required."}), 400
 
 @app.route("/api/translate/languages", methods=["GET"])
@@ -4928,6 +5083,62 @@ def api_translate_cache_stats():
 # ----------------------------------------------------
 @app.route("/")
 def index():
+    code = request.args.get("code")
+    if code:
+        # Seamlessly handle Google OAuth callback redirect
+        try:
+            f_cid, f_cs, _ = _load_client_secret_file()
+            cid = _get_clean_env_val(GMAIL_CLIENT_ID_KEYS) or f_cid
+            csec = _get_clean_env_val(GMAIL_CLIENT_SECRET_KEYS) or f_cs
+            req_host = request.host_url.rstrip("/")
+            redirect_uri = f"{req_host}/"
+
+            token_post_data = urllib.parse.urlencode({
+                "code": code,
+                "client_id": cid,
+                "client_secret": csec,
+                "redirect_uri": redirect_uri,
+                "grant_type": "authorization_code"
+            }).encode("utf-8")
+
+            token_req = urllib.request.Request("https://oauth2.googleapis.com/token", data=token_post_data, method="POST")
+            with urllib.request.urlopen(token_req) as resp:
+                token_resp = json.loads(resp.read().decode("utf-8"))
+                new_refresh_token = token_resp.get("refresh_token")
+                if new_refresh_token:
+                    update_env_refresh_token(new_refresh_token)
+                    logger.info("[Google OAuth Callback] New refresh token acquired and saved to .env")
+                    return """
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                      <meta charset="utf-8">
+                      <title>Gmail Connected - TheCampusNova</title>
+                      <style>
+                        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #F8FAFC; margin: 0; padding: 40px 16px; display: flex; align-items: center; justify-content: center; min-height: 80vh; }
+                        .card { max-width: 460px; width: 100%; background: #FFFFFF; border-radius: 12px; border: 1px solid #E2E8F0; padding: 32px 24px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,0.06); }
+                        .icon { font-size: 40px; margin-bottom: 12px; }
+                        h2 { font-size: 20px; color: #0F172A; margin: 0 0 8px; }
+                        p { font-size: 13.5px; line-height: 1.6; color: #475569; margin: 0 0 20px; }
+                        .btn { display: inline-block; background: #77AC3B; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none; padding: 10px 24px; border-radius: 8px; }
+                      </style>
+                    </head>
+                    <body>
+                      <div class="card">
+                        <div class="icon">✅</div>
+                        <h2>Gmail API Connected Successfully!</h2>
+                        <p>A fresh OAuth2 refresh token was acquired from Google and securely configured in your local environment. TheCampusNova email service is now active.</p>
+                        <a href="/" class="btn">Go to TheCampusNova ➔</a>
+                      </div>
+                    </body>
+                    </html>
+                    """
+                else:
+                    return f"Google authorization completed, but no new refresh token was issued. (If re-authorizing, revoked access in Google Account first or pass prompt=consent). Response: {token_resp}", 200
+        except Exception as e:
+            logger.error(f"[Google OAuth Callback Error] {e}")
+            return f"Failed to complete OAuth authorization: {e}", 500
+
     return send_from_directory(ROOT_DIR, "index.html")
 
 @app.route("/admin")
@@ -4948,9 +5159,31 @@ def static_files(path):
 # ----------------------------------------------------
 # DISTRICTS & METRICS API
 # ----------------------------------------------------
+_cached_districts = {}
+_cached_districts_timestamp = {}
+
 @app.route("/api/districts", methods=["GET"])
 def api_get_districts():
     state = request.args.get("state", "").strip().lower()
+    now = time.time()
+    cache_key = state or "all"
+    if cache_key in _cached_districts and (now - _cached_districts_timestamp.get(cache_key, 0) < 600):
+        districts = _cached_districts[cache_key]
+        return jsonify({"success": True, "total": len(districts), "districts": districts})
+
+    if db.is_pg_connected():
+        try:
+            if state and state != "all":
+                rows = db.query_all("SELECT DISTINCT district FROM colleges WHERE status != 'archived' AND LOWER(state) = %s AND district IS NOT NULL AND TRIM(district) != '' ORDER BY district ASC;", (state,))
+            else:
+                rows = db.query_all("SELECT DISTINCT district FROM colleges WHERE status != 'archived' AND district IS NOT NULL AND TRIM(district) != '' ORDER BY district ASC;")
+            districts = [str(r["district"]).strip() for r in rows if r.get("district") and str(r["district"]).strip().upper() != "NULL"]
+            if districts:
+                _cached_districts[cache_key] = districts
+                _cached_districts_timestamp[cache_key] = now
+                return jsonify({"success": True, "total": len(districts), "districts": districts})
+        except Exception:
+            pass
     colleges = load_colleges_data()
     districts_set = set()
     for c in colleges:
@@ -4968,71 +5201,169 @@ def api_get_districts():
 # ----------------------------------------------------
 def send_mentor_enquiry_notification(enquiry_data, is_test_mode=False):
     """
-    Dispatches backend email notification to official TheCampusNova Gmail
-    regarding new Mentor Enquiry submissions using Gmail API service.
-    Enforces strict test isolation so automated tests and QA records never dispatch live mail.
+    Dispatches backend email notifications regarding new Mentor & Contact Us submissions:
+    1. Sends alert to Admin (thecampusnova@gmail.com).
+    2. Sends alert to Mentor (if a specific mentor profile is assigned with an email).
+    3. Sends receipt confirmation email to the user / student (user_email).
     """
-    official_email = os.environ.get("GMAIL_USER", "thecampusnova@gmail.com")
-    enquiry_id = enquiry_data.get("enquiry_id") or ""
-    mentor_id = enquiry_data.get("mentor_id") or "N/A"
-    mentor_name = enquiry_data.get("mentor_name") or "CampNova Mentor"
+    official_email = _get_clean_env_val(GMAIL_USER_KEYS, default=DEFAULT_OFFICIAL_EMAIL)
+    enquiry_id = enquiry_data.get("enquiry_id") or "ENQ-NEW"
+    mentor_id = str(enquiry_data.get("mentor_id") or "General").strip()
+    mentor_name = enquiry_data.get("mentor_name") or "CampNova Mentor Panel"
     user_name = enquiry_data.get("user_name") or "Prospective Student"
     user_email = enquiry_data.get("user_email") or ""
-    user_mobile = enquiry_data.get("user_mobile") or ""
+    user_mobile = enquiry_data.get("user_mobile") or "Not provided"
     message_topic = enquiry_data.get("message") or enquiry_data.get("topic") or "Mentorship Guidance & Higher Education Advisory"
+    is_contact_form = enquiry_data.get("is_contact_form") or mentor_id in ["Contact Us", "General", "Support"] or str(enquiry_data.get("source", "")).lower() == "contact"
     now_dt = enquiry_data.get("enquiry_date") or time.strftime("%Y-%m-%d")
     now_tm = enquiry_data.get("enquiry_time") or time.strftime("%H:%M:%S")
 
-    # Isolation Check: Never allow automated tests, QA entries, or test email domains to flood production Gmail
-    test_env = os.environ.get("CAMPNOVA_TEST_MODE") == "1" or os.environ.get("CI") == "true"
-    test_header = False
-    try:
-        from flask import has_request_context, request
-        if has_request_context():
-            test_header = (
-                request.headers.get("X-Test-Mode") == "true" or 
-                request.headers.get("X-Automated-Test") == "true" or
-                request.args.get("test_mode") == "true"
-            )
-    except Exception:
-        pass
-
-    email_lower = str(user_email).strip().lower()
-    name_lower = str(user_name).strip().lower()
-    is_test_data = (
-        is_test_mode or test_env or test_header or
-        email_lower.endswith("@example.com") or email_lower.endswith("@example.edu") or
-        email_lower.startswith("test") or "test" in email_lower or
-        "test" in name_lower or name_lower.startswith("qa")
+    # Only suppress when explicitly in CI or header-instructed automated testing
+    is_ci_automated = (
+        is_test_mode or
+        os.environ.get("CI") == "true" or
+        (has_request_context() and request.headers.get("X-Suppress-Email") == "true")
     )
-
-    if is_test_data:
-        logger.info(f"[GMAIL TEST ISOLATION] Suppressed live email for test Mentor Enquiry: {enquiry_id} - {mentor_name} ({user_email})")
+    if is_ci_automated:
+        logger.info(f"[EMAIL CI ISOLATION] Suppressed live email for automated test: {enquiry_id} ({user_email})")
         return True
 
-    subject = f"[TheCampusNova] New Mentor Enquiry ({enquiry_id}) - {mentor_name}"
-    body = f"""TheCampusNova Mentor Guidance System - New Enquiry Alert
+    admin_sent = False
+
+    # 1. Admin Alert Email
+    if is_contact_form:
+        admin_subject = f"[TheCampusNova Contact Us] New Inquiry ({enquiry_id}) - {message_topic}"
+        admin_body = f"""TheCampusNova Contact & Support Portal - New Inquiry Received
+---------------------------------------------------------
+Inquiry Reference ID: {enquiry_id}
+Category / Subject: {message_topic}
+From: {user_name}
+Email: {user_email}
+Mobile / Phone: {user_mobile}
+Date: {now_dt} at {now_tm}
+
+Message Details:
+{message_topic}
+
+Please respond to the enquirer or manage this inquiry via the Admin Portal.
+"""
+    else:
+        admin_subject = f"[TheCampusNova] New Mentor Enquiry ({enquiry_id}) - {mentor_name}"
+        admin_body = f"""TheCampusNova Mentor Guidance System - New Student Enquiry Alert
 ---------------------------------------------------------
 Enquiry ID: {enquiry_id}
-Mentor ID: {mentor_id}
-Mentor Name: {mentor_name}
-Enquirer Name: {user_name}
+Assigned Mentor: {mentor_name} (ID: {mentor_id})
+Student Full Name: {user_name}
 Student Email: {user_email}
 Student Mobile: {user_mobile}
-Guidance Topic / Message: {message_topic}
-Enquiry Date: {now_dt}
-Enquiry Time: {now_tm}
-Status: Pending Administrative Review
+Guidance Topic / Question: {message_topic}
+Enquiry Date: {now_dt} at {now_tm}
+Current Status: Pending Administrative Review
 
-An enquiry has been submitted for mentorship guidance. Please review this submission in the Admin Portal under Mentors & Enquiries.
+A student has submitted an inquiry for mentorship guidance. Please review this submission in the Admin Portal under Mentors & Enquiries.
 """
+
     try:
-        send_email(subject, body, to_email=official_email)
-        logger.info(f"[MENTOR NOTIFICATION SENT] To: {official_email} | Subject: {subject}")
-        return True
+        send_email(admin_subject, admin_body, to_email=official_email)
+        admin_sent = True
+        logger.info(f"[ENQUIRY ADMIN ALERT SENT] To: {official_email} | Req: {enquiry_id}")
     except Exception as e:
-        logger.error(f"[MENTOR NOTIFICATION FAILED] Failed to send email via Gmail API: {e}")
-        return False
+        logger.error(f"[ENQUIRY ADMIN ALERT FAILED] Failed to send admin email: {e}")
+
+    # 2. Mentor Direct Notification (if specific mentor with valid email address)
+    if not is_contact_form and mentor_id and mentor_id.upper().startswith("MEN-"):
+        mentor_email = None
+        try:
+            if db.is_pg_connected():
+                m_row = db.query_one("SELECT email, name FROM mentors WHERE mentor_id = %s;", (mentor_id,))
+                if m_row and m_row.get("email"):
+                    mentor_email = m_row["email"].strip()
+            if not mentor_email and os.path.exists(MENTORS_DATA_FILE):
+                with open(MENTORS_DATA_FILE, "r", encoding="utf-8") as f:
+                    m_list = json.load(f).get("mentors", [])
+                    for m in m_list:
+                        if m.get("mentor_id") == mentor_id or str(m.get("id")) == mentor_id:
+                            if m.get("email"):
+                                mentor_email = m["email"].strip()
+                                break
+        except Exception as e:
+            logger.debug(f"[Mentor Email Lookup Note] {e}")
+
+        if mentor_email and is_valid_email_address(mentor_email) and mentor_email.lower() != official_email.lower():
+            mentor_subj = f"[TheCampusNova Mentorship] New Student Guidance Request from {user_name}"
+            mentor_body = f"""Dear {mentor_name},
+
+A student has requested mentorship guidance with you through TheCampusNova portal.
+
+Student Details:
+- Student Name: {user_name}
+- Email: {user_email}
+- Mobile: {user_mobile}
+- Discussion Topic / Question: {message_topic}
+- Reference ID: {enquiry_id}
+
+Our advisory team is coordinating this guidance session. If you wish to reach out directly, you may contact the student at {user_email}.
+
+Warm regards,
+TheCampusNova Mentorship Advisory Panel
+https://thecampusnova.com
+"""
+            try:
+                send_email(mentor_subj, mentor_body, to_email=mentor_email)
+                logger.info(f"[MENTOR DIRECT ALERT SENT] To: {mentor_email} for enquiry {enquiry_id}")
+            except Exception as e:
+                logger.warning(f"[MENTOR DIRECT ALERT FAILED] Could not deliver to mentor {mentor_email}: {e}")
+
+    # 3. User Confirmation Response Email
+    if user_email and is_valid_email_address(user_email):
+        if is_contact_form:
+            user_subject = f"We have received your message - TheCampusNova ({enquiry_id})"
+            user_body = f"""Dear {user_name},
+
+Thank you for reaching out to TheCampusNova.
+
+We have received your message regarding:
+Subject: {message_topic}
+Reference ID: {enquiry_id}
+Date: {now_dt}
+
+Our support and admissions advisory team is reviewing your inquiry. We will get back to you shortly at this email address ({user_email}).
+
+If you have additional details to share, please reply directly to this email.
+
+Best regards,
+Admissions & Support Team
+TheCampusNova
+https://thecampusnova.com
+"""
+        else:
+            user_subject = f"Confirmation: Your Mentorship Guidance Enquiry with TheCampusNova ({enquiry_id})"
+            user_body = f"""Dear {user_name},
+
+Thank you for requesting mentorship guidance on TheCampusNova.
+
+We have successfully received your enquiry:
+- Designated Mentor: {mentor_name}
+- Reference ID: {enquiry_id}
+- Guidance Topic / Message: {message_topic}
+- Date: {now_dt}
+
+Our counseling coordinators and {mentor_name} are reviewing your profile. A member of our guidance desk will connect with you via email ({user_email}) or mobile ({user_mobile}) regarding next steps and scheduling.
+
+Thank you for choosing TheCampusNova as your higher education companion.
+
+Warm regards,
+Mentorship Advisory Panel
+TheCampusNova
+https://thecampusnova.com
+"""
+        try:
+            send_email(user_subject, user_body, to_email=user_email)
+            logger.info(f"[USER CONFIRMATION EMAIL SENT] Confirmation sent to {user_email} for enquiry {enquiry_id}")
+        except Exception as e:
+            logger.warning(f"[USER CONFIRMATION EMAIL FAILED] Could not deliver to student {user_email}: {e}")
+
+    return admin_sent
 
 
 def load_mentors_data_all():
@@ -5160,31 +5491,31 @@ def api_get_mentors_public():
         query = request.args.get("q", "").strip().lower()
         if query == "all":
             query = ""
-        
+
         public_mentors = []
         for m in raw_mentors:
             m_status = str(m.get("status") or "active").strip().lower()
             if m_status not in ["active", "approved"]:
                 continue
-                
+
             m_name = str(m.get("name") or "").strip()
             m_company = str(m.get("company_name") or "").strip()
             m_profession = str(m.get("profession") or "").strip()
             m_domains = str(m.get("domains") or "").strip()
-            
+
             if query:
-                match = (query in m_name.lower() or 
-                         query in m_company.lower() or 
-                         query in m_profession.lower() or 
+                match = (query in m_name.lower() or
+                         query in m_company.lower() or
+                         query in m_profession.lower() or
                          query in m_domains.lower())
                 if not match:
                     continue
-                    
+
             # Mask contact details for public privacy
             raw_email = str(m.get("email") or "").strip()
             raw_mobile = str(m.get("mobile_number") or "").strip()
             mentor_key = str(m.get("mentor_id") or m.get("id") or f"MEN-{len(public_mentors)+1:03d}")
-            
+
             public_mentors.append({
                 "id": mentor_key,
                 "mentor_id": mentor_key,
@@ -5200,7 +5531,7 @@ def api_get_mentors_public():
                 "linkedin_url": m.get("linkedin_url") or "",
                 "status": m_status
             })
-            
+
         return jsonify({
             "success": True,
             "total": len(public_mentors),
@@ -5213,49 +5544,62 @@ def api_get_mentors_public():
 @app.route("/api/mentor-enquiries", methods=["POST"])
 def api_submit_mentor_enquiry():
     """
-    User Website Mentor Enquiry submission:
-    Stores enquiry in PostgreSQL & JSON, records audit log, and prepares email notification.
+    User Website Mentor Enquiry & Contact Us submission:
+    Validates form data, checks rate limiting, stores enquiry in PostgreSQL & JSON,
+    records audit log, and dispatches email notifications to admin, mentor, and student.
     """
+    # 1. Rate Limiting Protection (5 submissions per minute per IP)
+    client_ip = request.headers.get("X-Forwarded-For", request.remote_addr or "").split(",")[0].strip()
+    if is_enquiry_rate_limited(client_ip, max_requests=5, window_seconds=60):
+        return jsonify({
+            "success": False,
+            "message": "Too many requests submitted. Please wait a minute before submitting again."
+        }), 429
+
     data = request.get_json(force=True, silent=True) or {}
-    user_name = str(data.get("user_name") or data.get("name") or "").strip()
-    user_email = str(data.get("user_email") or data.get("email") or "").strip()
-    user_mobile = str(data.get("user_mobile") or data.get("mobile") or data.get("phone") or "").strip()
+    user_name = sanitize_user_input(data.get("user_name") or data.get("name") or "", max_len=100)
+    user_email = str(data.get("user_email") or data.get("email") or "").strip().lower()
+    user_mobile = sanitize_user_input(data.get("user_mobile") or data.get("mobile") or data.get("phone") or "", max_len=20)
     is_contact_form = str(data.get("source", "")).lower() == "contact" or str(data.get("mentor_id", "")).lower() in ["contact", "contact us", "general", "support"]
     terms_accepted = bool(data.get("terms_accepted") or data.get("agree_terms") or data.get("terms") or is_contact_form)
-    mentor_id = str(data.get("mentor_id") or data.get("mentorId") or ("Contact Us" if is_contact_form else "")).strip()
-    mentor_name = str(data.get("mentor_name") or data.get("mentorName") or ("Admissions & Support Panel" if is_contact_form else "")).strip()
+    mentor_id = sanitize_user_input(data.get("mentor_id") or data.get("mentorId") or ("Contact Us" if is_contact_form else ""), max_len=50)
+    mentor_name = sanitize_user_input(data.get("mentor_name") or data.get("mentorName") or ("Admissions & Support Panel" if is_contact_form else ""), max_len=150)
+    message_topic = sanitize_user_input(data.get("message") or data.get("topic") or ("General Inquiry" if is_contact_form else "Mentorship Guidance Enquiry"), max_len=2000)
 
-    if not user_name:
-        return jsonify({"success": False, "message": "Please enter your full name."}), 400
-    if not user_email or "@" not in user_email:
-        return jsonify({"success": False, "message": "Please provide a valid email address."}), 400
-    if not user_mobile:
-        if is_contact_form:
+    # 2. Strict Server-Side Validation
+    if not user_name or len(user_name) < 2:
+        return jsonify({"success": False, "message": "Please enter your valid full name (at least 2 characters)."}), 400
+    if not is_valid_email_address(user_email):
+        return jsonify({"success": False, "message": "Please provide a valid email address (e.g. name@domain.com)."}), 400
+
+    clean_digits = re.sub(r'\D', '', user_mobile)
+    if not is_contact_form:
+        if not user_mobile or len(clean_digits) < 10 or len(clean_digits) > 15:
+            return jsonify({"success": False, "message": "Please enter a valid 10-digit mobile phone number."}), 400
+    else:
+        if not user_mobile or user_mobile == "Not provided":
             user_mobile = "Not provided"
-        else:
-            return jsonify({"success": False, "message": "Please enter a valid 10-digit mobile number."}), 400
-    elif len(re.sub(r'\D', '', user_mobile)) < 10 and user_mobile != "Not provided":
-        if is_contact_form:
-            user_mobile = "Not provided"
-        else:
-            return jsonify({"success": False, "message": "Please enter a valid 10-digit mobile number."}), 400
+        elif len(clean_digits) > 0 and (len(clean_digits) < 7 or len(clean_digits) > 15):
+            return jsonify({"success": False, "message": "Please enter a valid phone number or leave it blank."}), 400
+
     if not terms_accepted:
         return jsonify({"success": False, "message": "You must accept the Terms & Conditions before submitting."}), 400
 
     now_dt = time.strftime("%Y-%m-%d")
     now_tm = time.strftime("%H:%M:%S")
     enquiry_id = f"MENQ-{secrets.token_hex(4).upper()}"
-    message_topic = str(data.get("message") or data.get("topic") or "Mentorship Guidance Enquiry").strip()
 
     enquiry_record = {
         "enquiry_id": enquiry_id,
         "mentor_id": mentor_id or "General",
-        "mentor_name": mentor_name or "CampNova Mentor Panel",
+        "mentor_name": mentor_name or ("Admissions & Support Panel" if is_contact_form else "CampNova Mentor Panel"),
         "user_name": user_name,
         "user_email": user_email,
         "user_mobile": user_mobile,
         "message": message_topic,
         "notes": message_topic,
+        "is_contact_form": is_contact_form,
+        "source": "contact" if is_contact_form else "mentor",
         "terms_accepted": True,
         "enquiry_date": now_dt,
         "enquiry_time": now_tm,
@@ -5264,7 +5608,7 @@ def api_submit_mentor_enquiry():
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ")
     }
 
-    # 1. Store in PostgreSQL
+    # 3. Store in PostgreSQL
     db_saved = False
     if db.is_pg_connected():
         try:
@@ -5277,7 +5621,7 @@ def api_submit_mentor_enquiry():
         except Exception as e:
             logger.warning(f"[PostgreSQL Mentor Enquiry Save Error] {e}")
 
-    # 2. Sync to JSON fallback
+    # 4. Sync to JSON fallback
     json_saved = False
     try:
         all_enquiries = load_mentor_enquiries_all()
@@ -5292,16 +5636,27 @@ def api_submit_mentor_enquiry():
             "message": "Database storage error: Failed to record enquiry in system records. Please try again."
         }), 500
 
-    # 3. Record Audit Log
-    _record_audit_log("Mentor Enquiry Submitted", "Mentors", enquiry_id, f"Enquiry submitted by {user_name} ({user_email}) for mentor {mentor_name}")
+    # 5. Record Audit Log
+    _record_audit_log(
+        "Contact Inquiry Submitted" if is_contact_form else "Mentor Enquiry Submitted",
+        "Support" if is_contact_form else "Mentors",
+        enquiry_id,
+        f"Enquiry {enquiry_id} submitted by {user_name} ({user_email}) for {mentor_name}"
+    )
 
-    # 4. Prepare email notification for official TheCampusNova email
+    # 6. Dispatch Email Notifications (Admin, Mentor, User Confirmation)
     email_sent = send_mentor_enquiry_notification(enquiry_record)
 
     if email_sent:
-        msg = "Thank you for sharing your details. Our team has received your enquiry and will connect with you regarding the next steps."
+        if is_contact_form:
+            msg = "Thank you! Your message has been received and official confirmation has been dispatched to your email."
+        else:
+            msg = "Thank you! Your mentorship enquiry has been received and official confirmation has been dispatched to your email."
     else:
-        msg = "Thank you for sharing your details. Your enquiry has been registered in our portal and is queued for advisor review."
+        if is_contact_form:
+            msg = "Thank you! Your inquiry has been registered in our portal and is queued for support team review."
+        else:
+            msg = "Thank you! Your enquiry has been registered in our portal and is queued for advisor review."
 
     return jsonify({
         "success": True,
@@ -5628,11 +5983,11 @@ def api_create_approval():
     body = request.get_json(force=True, silent=True) or {}
     data = load_approvals_data()
     approvals = data.get("approvals", [])
-    
+
     import datetime
     now_dt = datetime.datetime.now()
     new_id = f"APP-{len(approvals) + 101}"
-    
+
     new_approval = {
         "id": new_id,
         "date": now_dt.strftime("%Y-%m-%d"),
@@ -5647,7 +6002,7 @@ def api_create_approval():
         "status": "Pending",
         "notes": body.get("notes", "Submitted via portal for administrative review.")
     }
-    
+
     if db.is_pg_connected():
         try:
             ins_res = db.execute_query(
@@ -5673,10 +6028,10 @@ def api_process_approval(approval_id):
     body = request.get_json(force=True, silent=True) or {}
     action = body.get("action", "").strip().lower() # 'approve', 'pending', or 'reject'
     admin_name = body.get("reviewed_by", "Super Admin")
-    
+
     if action not in ["approve", "reject", "pending"]:
         return jsonify({"success": False, "message": "Action must be 'approve', 'pending', or 'reject'"}), 400
-        
+
     data = load_approvals_data()
     approvals = data.get("approvals", [])
     found_idx = -1
@@ -5684,22 +6039,22 @@ def api_process_approval(approval_id):
         if str(a.get("id")) == str(approval_id) or str(a.get("db_id")) == str(approval_id):
             found_idx = idx
             break
-            
+
     if found_idx == -1:
         return jsonify({"success": False, "message": "Approval record not found"}), 404
-        
+
     import datetime
     now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     target_record = approvals[found_idx]
     target_id = target_record.get("target_id")
     target_title = target_record.get("target_title", "")
     db_id = target_record.get("db_id")
-    
+
     if action == "approve":
         target_record["status"] = "Approved"
         target_record["reviewed_at"] = now_str
         target_record["reviewed_by"] = admin_name
-        
+
         # Apply approved change to target college / database
         if target_id or target_title:
             col = get_college_record(target_id) or get_college_record(target_title)
@@ -5754,7 +6109,7 @@ def api_process_approval(approval_id):
                         db.execute_query("UPDATE colleges SET description = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (new_desc, col_id_int))
 
             invalidate_colleges_cache()
-                
+
         if db.is_pg_connected():
             if db_id:
                 db.execute_query("UPDATE content_updates SET status = 'approved', reviewed_at = CURRENT_TIMESTAMP WHERE id = %s", (db_id,))
@@ -5781,7 +6136,7 @@ def api_process_approval(approval_id):
             else:
                 db.execute_query("UPDATE content_updates SET status = 'rejected', reviewed_at = CURRENT_TIMESTAMP WHERE record_id = %s OR record_id = %s", (str(target_id), str(target_title)))
         _record_audit_log("Approval Rejected", "Approvals", approval_id, f"Rejected update for {target_record.get('target_title')}")
-        
+
     approvals[found_idx] = target_record
     data["approvals"] = approvals
     save_approvals_data(data)
@@ -5800,21 +6155,21 @@ def api_delete_approval(approval_id):
             found_idx = idx
             target_rec = a
             break
-            
+
     if found_idx == -1:
         return jsonify({"success": False, "message": "Approval record not found"}), 404
-        
+
     del approvals[found_idx]
     data["approvals"] = approvals
     save_approvals_data(data)
-    
+
     if db.is_pg_connected() and target_rec:
         db_id = target_rec.get("db_id")
         if db_id:
             db.execute_query("DELETE FROM content_updates WHERE id = %s", (db_id,))
         else:
             db.execute_query("DELETE FROM content_updates WHERE record_id = %s OR record_id = %s", (str(target_rec.get("target_id")), str(target_rec.get("target_title"))))
-            
+
     _record_audit_log("Approval Deleted", "Approvals", str(approval_id), f"Deleted approval {approval_id}")
     return jsonify({"success": True, "message": f"Approval {approval_id} deleted successfully."})
 
@@ -5849,11 +6204,11 @@ def api_get_events():
     if db.is_pg_connected():
         sql = """
             SELECT e.*,
-                   (SELECT c.website FROM colleges c 
-                    WHERE LOWER(c.college_name) = LOWER(e.college_name) 
-                      AND c.website IS NOT NULL AND c.website != '' 
+                   (SELECT c.website FROM colleges c
+                    WHERE LOWER(c.college_name) = LOWER(e.college_name)
+                      AND c.website IS NOT NULL AND c.website != ''
                     LIMIT 1) AS official_website
-            FROM events e 
+            FROM events e
             WHERE e.status != 'archived' AND e.status != 'deleted'
         """
         params = []
@@ -6026,7 +6381,7 @@ def api_delete_event(event_id):
     data["events"] = [e for e in events if str(e.get("id")) != str(event_id)]
     save_events_data(data)
     return jsonify({"success": True, "message": "Event deleted successfully from PostgreSQL."})
-        
+
     data["events"] = events
     save_events_data(data)
     _record_audit_log("Event Deleted", "Events", event_id, f"Deleted event {event_id}")
@@ -6122,7 +6477,7 @@ def api_ai_generate_events():
     data = load_events_data()
     events = data.get("events", [])
     existing_titles = {e.get("title", "").strip().lower() for e in events}
-    
+
     added_count = 0
     for tmpl in ai_event_templates:
         if tmpl["title"].strip().lower() not in existing_titles:
@@ -6439,7 +6794,7 @@ def api_ai_generate_news():
     data = load_news_data()
     news_items = data.get("news", [])
     existing_titles = {n.get("title", "").strip().lower() for n in news_items}
-    
+
     added_count = 0
     for tmpl in ai_news_templates:
         if tmpl["title"].strip().lower() not in existing_titles:
@@ -6499,7 +6854,7 @@ def api_get_reports():
     period = request.args.get("period", "weekly").strip().lower()
     colleges = load_colleges_data()
     total_colleges = len(colleges)
-    
+
     if period == "daily":
         return jsonify({
             "success": True,
@@ -6614,9 +6969,9 @@ def api_get_rankings():
     district = request.args.get("district", "").strip().lower()
     category = request.args.get("category", "").strip().lower()
     q = request.args.get("q", "").strip().lower()
-    
+
     data = _load_json_data(RANKINGS_DATA_FILE, {"categories": ["Overall", "Engineering", "Arts & Science", "Management", "Medical"], "rankings": []})
-    
+
     if db.is_pg_connected():
         sql = """
             SELECT r.id, r.college_id, c.college_name, c.state, c.district, r.rank, r.category, r.score,
@@ -6652,7 +7007,7 @@ def api_get_rankings():
                 "rankings": rows,
                 "reviews": data.get("reviews", [])
             })
-    
+
     rankings = data.get("rankings", [])
     if state and state != "all":
         rankings = [r for r in rankings if state in str(r.get("state", "")).lower()]
@@ -6662,7 +7017,7 @@ def api_get_rankings():
         rankings = [r for r in rankings if category == str(r.get("category", "")).lower()]
     if q:
         rankings = [r for r in rankings if q in str(r.get("college_name", "")).lower() or q in str(r.get("summary", "")).lower()]
-        
+
     return jsonify({
         "success": True,
         "total": len(rankings),
@@ -6685,7 +7040,7 @@ def api_create_ranking():
                 college_id = col_row["id"]
         if not str(college_id).isdigit():
             college_id = 1
-        
+
         rank_val = body.get("rank", 1)
         try: rank_val = int(str(rank_val).replace("#", "").strip())
         except Exception: rank_val = 1
@@ -6725,9 +7080,9 @@ def api_update_ranking(rank_id):
                 col_row = db.query_one("SELECT id FROM colleges WHERE college_name ILIKE %s LIMIT 1", (f"%{body['college_name'].strip()}%",))
             if col_row:
                 col_id = col_row["id"]
-        
+
         db.execute_query("""
-            UPDATE rankings 
+            UPDATE rankings
             SET college_id = COALESCE(%s, college_id),
                 category = COALESCE(%s, category),
                 rank = COALESCE(%s, rank),
@@ -6768,7 +7123,7 @@ def api_get_careers():
     q = request.args.get("q", "").strip().lower()
     tech = request.args.get("tech", "").strip().lower()
     category = request.args.get("category", "").strip().lower()
-    
+
     if db.is_pg_connected():
         sql = """
             SELECT c.id, c.career_name as name, c.career_name, c.domain_id, d.domain_name as category,
@@ -6807,29 +7162,40 @@ def api_get_careers():
                 raw_rd = r.get("roadmap")
                 stages = []
                 if isinstance(raw_rd, str) and raw_rd.strip():
-                    parts = [p.strip() for p in re.split(r'->|→|\n|;', raw_rd) if p.strip()]
-                    for idx, pt in enumerate(parts, 1):
-                        stages.append({
-                            "step": idx,
-                            "title": pt if not ":" in pt else pt.split(":")[0].strip(),
-                            "desc": pt if not ":" in pt else pt.split(":")[1].strip(),
-                            "duration": "Yearly Progression"
-                        })
-                else:
+                    try:
+                        parsed_json = json.loads(raw_rd)
+                        if isinstance(parsed_json, list) and len(parsed_json) > 0:
+                            stages = parsed_json
+                    except Exception:
+                        pass
+                    if not stages:
+                        parts = [p.strip() for p in re.split(r'->|→|\n|;', raw_rd) if p.strip()]
+                        for idx, pt in enumerate(parts, 1):
+                            stages.append({
+                                "step": idx,
+                                "title": pt if not ":" in pt else pt.split(":")[0].strip(),
+                                "desc": pt if not ":" in pt else pt.split(":")[1].strip(),
+                                "duration": "Yearly Progression"
+                            })
+                elif isinstance(raw_rd, list) and len(raw_rd) > 0:
+                    stages = raw_rd
+
+                if not stages:
                     stages = [
                         {"step": 1, "title": "Core Foundations & Theory", "desc": "Foundational programming, mathematics and system design principles.", "duration": "3-6 Months"},
                         {"step": 2, "title": "Frameworks & Production Tooling", "desc": "Hands-on projects with production frameworks, databases and testing.", "duration": "6-12 Months"},
                         {"step": 3, "title": "Advanced Architectures & Systems", "desc": "Distributed architectures, cloud performance optimization and end-to-end leadership.", "duration": "1-2 Years"}
                     ]
                 r["roadmap"] = stages
+            json_data = _load_json_data(CAREERS_DATA_FILE, {"career_areas": [], "reviews": []})
             return jsonify({
                 "success": True,
                 "total": len(rows),
                 "career_areas": rows,
                 "careers": rows,
-                "reviews": []
+                "reviews": json_data.get("reviews", [])
             })
-            
+
     data = _load_json_data(CAREERS_DATA_FILE, {"career_areas": [], "reviews": []})
     areas = data.get("career_areas", [])
     if q:
@@ -6852,7 +7218,7 @@ def api_create_career():
     if isinstance(skills, list): skills = ", ".join(skills)
     salary = body.get("salary") or body.get("salary_range") or body.get("avg_salary") or "₹12L - ₹25L CTC"
     domain_name = body.get("domain") or body.get("category") or ""
-    
+
     dom_id = 1
     if db.is_pg_connected():
         if domain_name:
@@ -6928,7 +7294,7 @@ def api_delete_career(career_id):
 def api_get_full_placements():
     college_q = request.args.get("college", "").strip().lower()
     company_q = request.args.get("company", "").strip().lower()
-    
+
     if db.is_pg_connected():
         sql = """
             SELECT p.id, p.college_id, c.college_name, p.company_name, p.company_name as company,
@@ -6949,14 +7315,15 @@ def api_get_full_placements():
         sql += " ORDER BY p.id DESC"
         rows = db.query_all(sql, params)
         if rows:
+            json_data = _load_json_data(PLACEMENTS_DATA_FILE, {"stats": {}, "company_visits": [], "reviews": []})
             return jsonify({
                 "success": True,
                 "total_visits": len(rows),
                 "company_visits": rows,
                 "placements": rows,
-                "reviews": []
+                "reviews": json_data.get("reviews", [])
             })
-            
+
     data = _load_json_data(PLACEMENTS_DATA_FILE, {"stats": {}, "company_visits": [], "reviews": []})
     visits = data.get("company_visits", [])
     if company_q and company_q != "all":
@@ -6987,7 +7354,7 @@ def api_create_placement():
             col_row = db.query_one("SELECT id FROM colleges WHERE college_name ILIKE %s LIMIT 1", (f"%{body['college_name'].strip()}%",))
             if col_row: college_id = col_row["id"]
         if not str(college_id).isdigit(): college_id = 1
-        
+
         new_row = db.execute_query("""
             INSERT INTO placements (college_id, company_name, year, highest_package, average_package, placement_percentage, total_placed, description)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
@@ -7059,7 +7426,9 @@ def api_get_jobs():
         sql = """
             SELECT j.id, j.job_title as role, j.job_title, j.company_name as company, j.company_name,
                    d.domain_name as domain, j.location, j.job_type, j.experience as exp_level, j.salary,
-                   j.application_url as website, j.deadline, j.description as why_join, j.status
+                   j.application_url as website, j.application_url as apply_url, j.application_url as applyUrl,
+                   j.application_url as portal_url, j.application_url,
+                   j.deadline, j.description as why_join, j.status
             FROM jobs j
             LEFT JOIN domains d ON j.domain_id = d.id
             WHERE j.status != 'deleted'
@@ -7074,17 +7443,32 @@ def api_get_jobs():
         sql += " ORDER BY j.id DESC"
         rows = db.query_all(sql, params)
         if rows:
+            for r in rows:
+                url = r.get("application_url") or r.get("website") or ""
+                r["website"] = url
+                r["apply_url"] = url
+                r["applyUrl"] = url
+                r["portal_url"] = url
+                r["application_url"] = url
+            json_data = _load_json_data(JOBS_DATA_FILE, {"jobs": [], "reviews": []})
             return jsonify({
                 "success": True,
                 "total": len(rows),
                 "jobs": rows,
-                "reviews": []
+                "reviews": json_data.get("reviews", [])
             })
 
     data = _load_json_data(JOBS_DATA_FILE, {"jobs": [], "reviews": []})
     jobs = data.get("jobs", [])
     if q:
         jobs = [j for j in jobs if q in str(j.get("company", "")).lower() or q in str(j.get("role", "")).lower()]
+    for j in jobs:
+        url = j.get("apply_url") or j.get("website") or j.get("application_url") or j.get("portal_url") or j.get("applyUrl") or ""
+        j["website"] = url
+        j["apply_url"] = url
+        j["applyUrl"] = url
+        j["portal_url"] = url
+        j["application_url"] = url
     return jsonify({"success": True, "total": len(jobs), "jobs": jobs, "reviews": data.get("reviews", [])})
 
 @app.route("/api/jobs", methods=["POST"])
@@ -7097,7 +7481,7 @@ def api_create_job():
     loc = body.get("location") or "Bengaluru / Hybrid"
     sal = body.get("salary") or "₹12,00,000 / yr"
     exp = body.get("exp_level") or body.get("experience") or "Entry / 1-3 Years"
-    app_url = body.get("website") or body.get("application_url") or "https://thecampusnova.com"
+    app_url = body.get("apply_url") or body.get("application_url") or body.get("website") or body.get("portal_url") or body.get("applyUrl") or ""
     desc = body.get("why_join") or body.get("description") or "Leading technology role."
 
     if db.is_pg_connected():
@@ -7115,6 +7499,11 @@ def api_create_job():
     data = _load_json_data(JOBS_DATA_FILE, {"jobs": [], "reviews": []})
     jobs = data.get("jobs", [])
     body["id"] = body.get("id") or f"JOB-{len(jobs) + 1:02d}"
+    body["apply_url"] = app_url
+    body["website"] = app_url
+    body["application_url"] = app_url
+    body["applyUrl"] = app_url
+    body["portal_url"] = app_url
     jobs.insert(0, body)
     data["jobs"] = jobs
     _save_json_data(JOBS_DATA_FILE, data)
@@ -7129,9 +7518,11 @@ def api_update_job(job_id):
     loc = body.get("location")
     sal = body.get("salary")
     exp = body.get("exp_level") or body.get("experience")
+    app_url = body.get("apply_url") or body.get("application_url") or body.get("website") or body.get("portal_url") or body.get("applyUrl")
     status = body.get("status")
 
-    if db.is_pg_connected() and str(job_id).isdigit():
+    clean_id = re.sub(r'^[^\d]+', '', str(job_id))
+    if db.is_pg_connected() and clean_id.isdigit():
         db.execute_query("""
             UPDATE jobs
             SET job_title = COALESCE(%s, job_title),
@@ -7139,16 +7530,23 @@ def api_update_job(job_id):
                 location = COALESCE(%s, location),
                 salary = COALESCE(%s, salary),
                 experience = COALESCE(%s, experience),
+                application_url = COALESCE(%s, application_url),
                 status = COALESCE(%s, status),
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = %s
-        """, (title, company, loc, sal, exp, status, int(job_id)))
+        """, (title, company, loc, sal, exp, app_url, status, int(clean_id)))
         _record_audit_log("Job Posting Updated", "Jobs", str(job_id), f"Updated job {job_id}")
 
     data = _load_json_data(JOBS_DATA_FILE, {"jobs": [], "reviews": []})
     for idx, j in enumerate(data.get("jobs", [])):
-        if str(j.get("id")) == str(job_id):
+        if str(j.get("id")) == str(job_id) or (clean_id.isdigit() and str(j.get("id")) == clean_id):
             data["jobs"][idx].update(body)
+            if app_url:
+                data["jobs"][idx]["apply_url"] = app_url
+                data["jobs"][idx]["website"] = app_url
+                data["jobs"][idx]["application_url"] = app_url
+                data["jobs"][idx]["applyUrl"] = app_url
+                data["jobs"][idx]["portal_url"] = app_url
             break
     _save_json_data(JOBS_DATA_FILE, data)
     return jsonify({"success": True, "message": "Job updated successfully in PostgreSQL"})
@@ -7173,12 +7571,14 @@ def api_delete_job(job_id):
 def api_get_full_internships():
     domain = request.args.get("domain", "").strip().lower()
     q = request.args.get("q", "").strip().lower()
-    
+
     if db.is_pg_connected():
         sql = """
             SELECT i.id, i.title as role, i.title, i.company_name as company, i.company_name,
                    d.domain_name as domain, i.location, i.stipend, i.duration, i.eligibility,
-                   i.application_url as website, i.deadline, i.description, i.status
+                   i.application_url as website, i.application_url as apply_url, i.application_url as applyUrl,
+                   i.application_url as portal_url, i.application_url,
+                   i.deadline, i.description, i.status
             FROM internships i
             LEFT JOIN domains d ON i.domain_id = d.id
             WHERE i.status != 'deleted'
@@ -7193,18 +7593,62 @@ def api_get_full_internships():
         sql += " ORDER BY i.id DESC"
         rows = db.query_all(sql, params)
         if rows:
+            for r in rows:
+                url = r.get("application_url") or r.get("website") or ""
+                r["apply_url"] = url
+                r["applyUrl"] = url
+                r["website"] = url
+                r["portal_url"] = url
+                r["application_url"] = url
+            json_data = _load_json_data(INTERNSHIPS_DATA_FILE, {"internships": [], "reviews": [], "top_10_projects": []})
             return jsonify({
                 "success": True,
                 "total": len(rows),
                 "internships": rows,
-                "reviews": []
+                "top_10_projects": json_data.get("top_10_projects", []),
+                "past_10yr_trends": json_data.get("past_10yr_trends", {}),
+                "future_5yr_pathway": json_data.get("future_5yr_pathway", {}),
+                "reviews": json_data.get("reviews", [])
             })
-            
-    data = _load_json_data(INTERNSHIPS_DATA_FILE, {"internships": [], "reviews": []})
+
+    data = _load_json_data(INTERNSHIPS_DATA_FILE, {"internships": [], "reviews": [], "top_10_projects": []})
     internships = data.get("internships", [])
     if q:
         internships = [i for i in internships if q in str(i.get("company", "")).lower() or q in str(i.get("role", "")).lower()]
-    return jsonify({"success": True, "total": len(internships), "internships": internships, "reviews": data.get("reviews", [])})
+    for item in internships:
+        url = item.get("apply_url") or item.get("website") or item.get("application_url") or item.get("portal_url") or item.get("applyUrl") or ""
+        item["apply_url"] = url
+        item["applyUrl"] = url
+        item["website"] = url
+        item["portal_url"] = url
+        item["application_url"] = url
+    return jsonify({
+        "success": True,
+        "total": len(internships),
+        "internships": internships,
+        "top_10_projects": data.get("top_10_projects", []),
+        "past_10yr_trends": data.get("past_10yr_trends", {}),
+        "future_5yr_pathway": data.get("future_5yr_pathway", {}),
+        "reviews": data.get("reviews", [])
+    })
+
+@app.route("/api/internships/top-projects", methods=["GET"])
+def api_get_internship_top_projects():
+    data = _load_json_data(INTERNSHIPS_DATA_FILE, {"top_10_projects": []})
+    return jsonify({"success": True, "top_10_projects": data.get("top_10_projects", [])})
+
+@app.route("/api/internships/top-projects", methods=["PUT", "POST"])
+@require_admin_auth
+def api_update_internship_top_projects():
+    body = request.get_json(force=True, silent=True) or {}
+    projects = body.get("top_10_projects")
+    if not isinstance(projects, list):
+        return jsonify({"success": False, "message": "Invalid top_10_projects list"}), 400
+    data = _load_json_data(INTERNSHIPS_DATA_FILE, {"top_10_projects": []})
+    data["top_10_projects"] = projects
+    _save_json_data(INTERNSHIPS_DATA_FILE, data)
+    _record_audit_log("Top Projects Updated", "Internships", "all", f"Updated top 10 projects ({len(projects)} items)")
+    return jsonify({"success": True, "message": "Top 10 projects updated successfully", "top_10_projects": projects})
 
 @app.route("/api/internships", methods=["POST"], endpoint="api_create_internship_short")
 @app.route("/api/internships/full", methods=["POST"], endpoint="api_create_internship_full")
@@ -7218,7 +7662,7 @@ def api_create_internship():
     stipend = body.get("stipend") or "₹40,000 / month"
     duration = body.get("duration") or "8 - 12 Weeks"
     elig = body.get("eligibility") or "Students in final/pre-final year."
-    app_url = body.get("website") or body.get("application_url") or "https://thecampusnova.com"
+    app_url = body.get("apply_url") or body.get("application_url") or body.get("website") or body.get("portal_url") or body.get("applyUrl") or ""
     desc = body.get("details") or body.get("description") or "Hands-on project work."
 
     if db.is_pg_connected():
@@ -7236,6 +7680,11 @@ def api_create_internship():
     data = _load_json_data(INTERNSHIPS_DATA_FILE, {"internships": []})
     internships = data.get("internships", [])
     body["id"] = body.get("id") or f"INT-{len(internships) + 1:02d}"
+    body["apply_url"] = app_url
+    body["website"] = app_url
+    body["application_url"] = app_url
+    body["applyUrl"] = app_url
+    body["portal_url"] = app_url
     internships.insert(0, body)
     data["internships"] = internships
     _save_json_data(INTERNSHIPS_DATA_FILE, data)
@@ -7247,27 +7696,44 @@ def api_update_internship(int_id):
     body = request.get_json(force=True, silent=True) or {}
     title = body.get("role") or body.get("title")
     company = body.get("company") or body.get("company_name")
+    loc = body.get("location")
     stipend = body.get("stipend")
     duration = body.get("duration")
+    elig = body.get("eligibility")
+    app_url = body.get("apply_url") or body.get("application_url") or body.get("website") or body.get("portal_url") or body.get("applyUrl")
+    deadline = body.get("deadline")
+    desc = body.get("details") or body.get("description")
     status = body.get("status")
 
-    if db.is_pg_connected() and str(int_id).isdigit():
+    clean_id = re.sub(r'^[^\d]+', '', str(int_id))
+    if db.is_pg_connected() and clean_id.isdigit():
         db.execute_query("""
             UPDATE internships
             SET title = COALESCE(%s, title),
                 company_name = COALESCE(%s, company_name),
+                location = COALESCE(%s, location),
                 stipend = COALESCE(%s, stipend),
                 duration = COALESCE(%s, duration),
+                eligibility = COALESCE(%s, eligibility),
+                application_url = COALESCE(%s, application_url),
+                deadline = COALESCE(%s, deadline),
+                description = COALESCE(%s, description),
                 status = COALESCE(%s, status),
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = %s
-        """, (title, company, stipend, duration, status, int(int_id)))
+        """, (title, company, loc, stipend, duration, elig, app_url, deadline, desc, status, int(clean_id)))
         _record_audit_log("Internship Updated", "Internships", str(int_id), f"Updated internship {int_id}")
 
     data = _load_json_data(INTERNSHIPS_DATA_FILE, {"internships": []})
     for idx, i in enumerate(data.get("internships", [])):
-        if str(i.get("id")) == str(int_id):
+        if str(i.get("id")) == str(int_id) or (clean_id.isdigit() and str(i.get("id")) == clean_id):
             data["internships"][idx].update(body)
+            if app_url:
+                data["internships"][idx]["apply_url"] = app_url
+                data["internships"][idx]["website"] = app_url
+                data["internships"][idx]["application_url"] = app_url
+                data["internships"][idx]["applyUrl"] = app_url
+                data["internships"][idx]["portal_url"] = app_url
             break
     _save_json_data(INTERNSHIPS_DATA_FILE, data)
     return jsonify({"success": True, "message": "Internship updated successfully in PostgreSQL"})
@@ -7290,11 +7756,16 @@ def api_delete_internship(int_id):
 @app.route("/api/admissions", methods=["GET"])
 def api_get_admissions():
     q = request.args.get("q", "").strip().lower()
-    
+
     if db.is_pg_connected():
         sql = """
             SELECT a.id, a.college_id, c.college_name, c.state, c.district, a.admission_type,
-                   a.eligibility, a.application_start, a.application_end, a.admission_process, a.fees, a.status
+                   a.eligibility, a.application_start, a.application_end, a.admission_process, a.fees,
+                   COALESCE(a.application_url, c.website) as portal_url,
+                   COALESCE(a.application_url, c.website) as application_url,
+                   COALESCE(a.application_url, c.website) as apply_url,
+                   COALESCE(a.application_url, c.website) as website,
+                   a.status
             FROM admissions a
             LEFT JOIN colleges c ON a.college_id = c.id
             WHERE a.status != 'deleted'
@@ -7306,20 +7777,33 @@ def api_get_admissions():
         sql += " ORDER BY a.id DESC"
         rows = db.query_all(sql, params)
         if rows:
+            for r in rows:
+                url = r.get("portal_url") or r.get("application_url") or r.get("website") or ""
+                r["portal_url"] = url
+                r["application_url"] = url
+                r["apply_url"] = url
+                r["website"] = url
+            json_data = _load_json_data(ADMISSIONS_DATA_FILE, {"admissions": [], "reviews": []})
             return jsonify({
                 "success": True,
                 "active_admissions_count": len(rows),
                 "total": len(rows),
                 "admissions": rows,
                 "admission_notifications": [{"id": r["id"], "college": r.get("college_name", ""), "title": f"Admission {r.get('admission_type', '')}", "date": r.get("application_end", ""), "badge": "Active"} for r in rows[:5]],
-                "reviews": []
+                "reviews": json_data.get("reviews", [])
             })
-            
-    data = _load_json_data(ADMISSIONS_DATA_FILE, {"admissions": []})
+
+    data = _load_json_data(ADMISSIONS_DATA_FILE, {"admissions": [], "reviews": []})
     admissions = data.get("admissions", [])
     if q:
         admissions = [a for a in admissions if q in str(a.get("college_name", "")).lower() or q in str(a.get("admission_process", "")).lower()]
-    return jsonify({"success": True, "total": len(admissions), "admissions": admissions, "reviews": []})
+    for a in admissions:
+        url = a.get("portal_url") or a.get("application_url") or a.get("website") or a.get("apply_url") or ""
+        a["portal_url"] = url
+        a["application_url"] = url
+        a["website"] = url
+        a["apply_url"] = url
+    return jsonify({"success": True, "total": len(admissions), "admissions": admissions, "reviews": data.get("reviews", [])})
 
 @app.route("/api/admissions", methods=["POST"])
 @require_admin_auth
@@ -7333,6 +7817,7 @@ def api_create_admission():
     process = body.get("admission_process") or "Centralized Single Window Counseling"
     fees = body.get("fees") or body.get("fee_structure", "₹55,000 / yr")
     if isinstance(fees, (dict, list)): fees = json.dumps(fees)
+    app_url = body.get("portal_url") or body.get("application_url") or body.get("apply_url") or body.get("website") or ""
     status = body.get("status", "active")
 
     if db.is_pg_connected():
@@ -7340,12 +7825,12 @@ def api_create_admission():
             col_row = db.query_one("SELECT id FROM colleges WHERE college_name ILIKE %s LIMIT 1", (f"%{body['college_name'].strip()}%",))
             if col_row: college_id = col_row["id"]
         if not str(college_id).isdigit(): college_id = 1
-        
+
         new_row = db.execute_query("""
-            INSERT INTO admissions (college_id, admission_type, eligibility, application_start, application_end, admission_process, fees, status)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO admissions (college_id, admission_type, eligibility, application_start, application_end, admission_process, fees, application_url, status)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING id
-        """, (int(college_id), adm_type[:100], elig, app_start, app_end, process, str(fees)[:100], status))
+        """, (int(college_id), adm_type[:100], elig, app_start, app_end, process, str(fees)[:100], app_url, status))
         new_id = new_row["id"] if new_row and "id" in new_row else 1
         body["id"] = new_id
         _record_audit_log("Admission Created", "Admissions", str(new_id), f"Created admission for college {college_id}")
@@ -7353,6 +7838,10 @@ def api_create_admission():
     data = _load_json_data(ADMISSIONS_DATA_FILE, {"admissions": []})
     admissions = data.get("admissions", [])
     body["id"] = body.get("id") or f"ADM-{len(admissions) + 1:03d}"
+    body["portal_url"] = app_url
+    body["application_url"] = app_url
+    body["website"] = app_url
+    body["apply_url"] = app_url
     admissions.insert(0, body)
     data["admissions"] = admissions
     _save_json_data(ADMISSIONS_DATA_FILE, data)
@@ -7366,26 +7855,34 @@ def api_update_admission(adm_id):
     elig = body.get("eligibility")
     app_end = body.get("application_end")
     fees = body.get("fees")
+    app_url = body.get("portal_url") or body.get("application_url") or body.get("apply_url") or body.get("website")
     status = body.get("status")
     db_status = status.lower() if status and status.lower() in ('active', 'upcoming', 'closed') else ('active' if status else None)
 
-    if db.is_pg_connected() and str(adm_id).isdigit():
+    clean_id = re.sub(r'^[^\d]+', '', str(adm_id))
+    if db.is_pg_connected() and clean_id.isdigit():
         db.execute_query("""
             UPDATE admissions
             SET admission_type = COALESCE(%s, admission_type),
                 eligibility = COALESCE(%s, eligibility),
                 application_end = COALESCE(%s, application_end),
                 fees = COALESCE(%s, fees),
+                application_url = COALESCE(%s, application_url),
                 status = COALESCE(%s, status),
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = %s
-        """, (adm_type, elig, app_end, fees, db_status, int(adm_id)))
+        """, (adm_type, elig, app_end, fees, app_url, db_status, int(clean_id)))
         _record_audit_log("Admission Updated", "Admissions", str(adm_id), f"Updated admission {adm_id}")
 
     data = _load_json_data(ADMISSIONS_DATA_FILE, {"admissions": []})
     for idx, a in enumerate(data.get("admissions", [])):
-        if str(a.get("id")) == str(adm_id):
+        if str(a.get("id")) == str(adm_id) or (clean_id.isdigit() and str(a.get("id")) == clean_id):
             data["admissions"][idx].update(body)
+            if app_url:
+                data["admissions"][idx]["portal_url"] = app_url
+                data["admissions"][idx]["application_url"] = app_url
+                data["admissions"][idx]["website"] = app_url
+                data["admissions"][idx]["apply_url"] = app_url
             break
     _save_json_data(ADMISSIONS_DATA_FILE, data)
     return jsonify({"success": True, "message": "Admission updated successfully in PostgreSQL"})
@@ -7409,12 +7906,14 @@ def api_delete_admission(adm_id):
 @app.route("/api/scholarships/full", methods=["GET"])
 def api_get_full_scholarships():
     q = request.args.get("q", "").strip().lower()
-    
+
     if db.is_pg_connected():
         sql = """
             SELECT s.id, s.scholarship_name, s.scholarship_name as name, s.provider, s.eligibility,
                    s.amount, s.amount as benefit, s.application_start, s.application_end, s.application_end as deadline,
-                   s.application_url, s.application_url as portal_url, s.description, s.status
+                   s.application_url, s.application_url as portal_url, s.application_url as apply_url,
+                   s.application_url as applyUrl, s.application_url as website,
+                   s.description, s.status
             FROM scholarships s
             WHERE s.status != 'deleted'
         """
@@ -7425,19 +7924,40 @@ def api_get_full_scholarships():
         sql += " ORDER BY s.id DESC"
         rows = db.query_all(sql, params)
         if rows:
+            for r in rows:
+                url = r.get("application_url") or r.get("portal_url") or r.get("apply_url") or r.get("website") or ""
+                r["application_url"] = url
+                r["portal_url"] = url
+                r["apply_url"] = url
+                r["applyUrl"] = url
+                r["website"] = url
+            json_data = _load_json_data(SCHOLARSHIPS_DATA_FILE, {"scholarships": [], "application_flow": [], "reviews": []})
             return jsonify({
                 "success": True,
                 "total": len(rows),
                 "scholarships": rows,
-                "application_flow": [],
-                "reviews": []
+                "application_flow": json_data.get("application_flow", []),
+                "reviews": json_data.get("reviews", [])
             })
-            
-    data = _load_json_data(SCHOLARSHIPS_DATA_FILE, {"scholarships": []})
+
+    data = _load_json_data(SCHOLARSHIPS_DATA_FILE, {"scholarships": [], "application_flow": [], "reviews": []})
     scholarships = data.get("scholarships", [])
+    for s in scholarships:
+        url = s.get("application_url") or s.get("portal_url") or s.get("apply_url") or s.get("website") or ""
+        s["application_url"] = url
+        s["portal_url"] = url
+        s["apply_url"] = url
+        s["applyUrl"] = url
+        s["website"] = url
     if q:
         scholarships = [s for s in scholarships if q in str(s.get("name", "")).lower() or q in str(s.get("provider", "")).lower()]
-    return jsonify({"success": True, "total": len(scholarships), "scholarships": scholarships, "reviews": []})
+    return jsonify({
+        "success": True,
+        "total": len(scholarships),
+        "scholarships": scholarships,
+        "application_flow": data.get("application_flow", []),
+        "reviews": data.get("reviews", [])
+    })
 
 @app.route("/api/scholarships", methods=["POST"], endpoint="api_create_scholarship_short")
 @app.route("/api/scholarships/full", methods=["POST"], endpoint="api_create_scholarship_full")
@@ -7450,7 +7970,7 @@ def api_create_scholarship():
     amount = body.get("amount") or body.get("benefit", "₹50,000 / year")
     app_start = body.get("application_start", "01 Aug 2026")
     app_end = body.get("application_end") or body.get("deadline", "31 Oct 2026")
-    app_url = body.get("application_url") or body.get("portal_url", "https://scholarships.gov.in")
+    app_url = body.get("application_url") or body.get("portal_url") or body.get("apply_url") or body.get("website") or body.get("applyUrl") or "https://scholarships.gov.in"
     desc = body.get("description", "Financial support for higher education.")
     raw_status = str(body.get("status", "active")).strip().lower()
     if raw_status in ["verified", "approved", "active", "published"]:
@@ -7472,6 +7992,12 @@ def api_create_scholarship():
         body["id"] = new_id
         _record_audit_log("Scholarship Created", "Scholarships", str(new_id), f"Created scholarship {name}")
 
+    body["application_url"] = app_url
+    body["portal_url"] = app_url
+    body["apply_url"] = app_url
+    body["applyUrl"] = app_url
+    body["website"] = app_url
+
     data = _load_json_data(SCHOLARSHIPS_DATA_FILE, {"scholarships": []})
     scholarships = data.get("scholarships", [])
     body["id"] = body.get("id") or f"SCH-{len(scholarships) + 1:03d}"
@@ -7489,6 +8015,7 @@ def api_update_scholarship(sch_id):
     provider = body.get("provider") or body.get("type")
     amount = body.get("amount") or body.get("benefit")
     elig = body.get("eligibility") or body.get("eligibility_criteria")
+    app_url = body.get("application_url") or body.get("portal_url") or body.get("apply_url") or body.get("website") or body.get("applyUrl")
     raw_status = body.get("status")
     if raw_status is not None:
         norm_status = str(raw_status).strip().lower()
@@ -7515,16 +8042,23 @@ def api_update_scholarship(sch_id):
                 eligibility = COALESCE(%s, eligibility),
                 description = COALESCE(%s, description),
                 application_end = COALESCE(%s, application_end),
+                application_url = COALESCE(%s, application_url),
                 status = COALESCE(%s, status),
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = %s
-        """, (name, provider, amount, elig, desc, app_end, status, int(clean_id)))
+        """, (name, provider, amount, elig, desc, app_end, app_url, status, int(clean_id)))
         _record_audit_log("Scholarship Updated", "Scholarships", str(sch_id), f"Updated scholarship {sch_id}")
 
     data = _load_json_data(SCHOLARSHIPS_DATA_FILE, {"scholarships": []})
     for idx, s in enumerate(data.get("scholarships", [])):
         if str(s.get("id")) == str(sch_id) or (clean_id.isdigit() and re.sub(r'^[^\d]+', '', str(s.get("id"))) == clean_id):
             data["scholarships"][idx].update(body)
+            if app_url:
+                data["scholarships"][idx]["application_url"] = app_url
+                data["scholarships"][idx]["portal_url"] = app_url
+                data["scholarships"][idx]["apply_url"] = app_url
+                data["scholarships"][idx]["applyUrl"] = app_url
+                data["scholarships"][idx]["website"] = app_url
             break
     _save_json_data(SCHOLARSHIPS_DATA_FILE, data)
     return jsonify({"success": True, "message": "Scholarship updated successfully in PostgreSQL"})
@@ -7553,7 +8087,7 @@ def api_get_facilities():
     facilities_by_college = data.get("facilities_by_college", {})
     top_15 = data.get("top_15_facilities_ranking", [])
     reviews = data.get("reviews", [])
-    
+
     rows = []
     if db.is_pg_connected():
         sql = """
@@ -7584,7 +8118,7 @@ def api_get_facilities():
                     if (v.get("college_name") or "").lower() == (r.get("college_name") or "").lower():
                         col_key = k
                         break
-                
+
                 if col_key not in facilities_by_college:
                     facilities_by_college[col_key] = {
                         "college_id": col_key,
@@ -7644,7 +8178,7 @@ def api_create_facility():
             if col_row: college_id = col_row["id"]
         clean_cid = re.sub(r'^[^\d]+', '', str(college_id))
         college_id = int(clean_cid) if clean_cid.isdigit() else 1
-        
+
         new_row = db.execute_query("""
             INSERT INTO facilities (college_id, facility_name, description, available, labs, sports, smart_classes, library, hostel, canteen, score, status)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -7710,7 +8244,7 @@ def api_update_facility(fac_id):
             WHERE id = %s OR college_id = %s
             RETURNING id
         """, (fname, desc, avail, labs, sports, smart_classes, library, hostel, canteen, score, status, int(clean_id), int(clean_id)))
-        
+
         if not updated_row:
             col_exists = db.query_one("SELECT id FROM colleges WHERE id = %s", (int(clean_id),))
             cid = col_exists["id"] if col_exists else 1
@@ -7756,11 +8290,13 @@ def api_delete_facility(fac_id):
 def api_get_entrance_exams():
     field = request.args.get("field", "").strip().lower()
     q = request.args.get("q", "").strip().lower()
-    
+
     if db.is_pg_connected():
         sql = """
             SELECT e.id, e.exam_name as name, e.exam_name, e.exam_type as field, e.conducting_body,
                    e.conducting_body as conducted_by, e.eligibility, e.exam_date, e.status, e.description as purpose,
+                   e.official_website, e.official_website as official_url, e.official_website as portal_url,
+                   e.official_website as website, e.official_website as apply_url,
                    ep.syllabus, ep.preparation_tips, ep.study_plan, ep.resources
             FROM exams e
             LEFT JOIN exam_preparation ep ON e.id = ep.exam_id
@@ -7776,26 +8312,75 @@ def api_get_entrance_exams():
         sql += " ORDER BY e.id ASC"
         rows = db.query_all(sql, params)
         if rows:
+            json_data = _load_json_data(ENTRANCE_EXAMS_DATA_FILE, {"exams": [], "reviews": []})
+            json_exams_map = {str(e.get("name", "")).strip().lower(): e for e in json_data.get("exams", []) if e.get("name")}
             for r in rows:
+                url = r.get("official_website") or r.get("official_url") or r.get("portal_url") or r.get("website") or r.get("apply_url") or ""
+                r["official_website"] = url
+                r["official_url"] = url
+                r["portal_url"] = url
+                r["website"] = url
+                r["apply_url"] = url
                 r["cutoff_range"] = "Top 10-15 percentile"
                 r["total_marks"] = 300
-                r["roadmap_stages"] = [
-                    {"phase": "Phase 1", "desc": "Syllabus Mastery & NCERT Foundations"},
-                    {"phase": "Phase 2", "desc": "10-Year PYQ Drill & Timed Mocks"},
-                    {"phase": "Phase 3", "desc": "Formula Revision & Exam Readiness"}
-                ]
+
+                # Match real roadmap stages from entrance_exams_data.json
+                r_name = str(r.get("name") or r.get("exam_name") or "").strip().lower()
+                matched_ex = json_exams_map.get(r_name)
+                if not matched_ex:
+                    for k, ex_val in json_exams_map.items():
+                        if k in r_name or r_name in k:
+                            matched_ex = ex_val
+                            break
+
+                if matched_ex and matched_ex.get("roadmap_stages"):
+                    r["roadmap_stages"] = matched_ex.get("roadmap_stages")
+                    if matched_ex.get("full_syllabus"):
+                        r["full_syllabus"] = matched_ex.get("full_syllabus")
+                    if matched_ex.get("pyq_archives"):
+                        r["pyq_archives"] = matched_ex.get("pyq_archives")
+                    if matched_ex.get("official_blueprint"):
+                        r["official_blueprint"] = matched_ex.get("official_blueprint")
+                else:
+                    r["roadmap_stages"] = [
+                        {
+                            "stage": 1,
+                            "title": "Syllabus Mastery & NCERT Foundations",
+                            "focus": "Core subject fundamentals, conceptual clarity and NCERT textbook mapping.",
+                            "resources": ["Standard NCERT Textbooks", "Chapter-wise Theory Notes"]
+                        },
+                        {
+                            "stage": 2,
+                            "title": "10-Year PYQ Drill & Timed Mocks",
+                            "focus": "Solving past 10-year question archives, speed benchmarks, and negative marking control.",
+                            "resources": ["10-Year Solved Papers", "Full Syllabus Mock Tests"]
+                        },
+                        {
+                            "stage": 3,
+                            "title": "Formula Revision & Exam Readiness",
+                            "focus": "Daily formula memorization, high-yield topic drills, and CBT interface simulation.",
+                            "resources": ["Formula Handbooks", "Official CBT Mock Simulator"]
+                        }
+                    ]
             return jsonify({
                 "success": True,
                 "total": len(rows),
                 "exams": rows,
-                "reviews": []
+                "reviews": json_data.get("reviews", [])
             })
-            
-    data = _load_json_data(ENTRANCE_EXAMS_DATA_FILE, {"exams": []})
+
+    data = _load_json_data(ENTRANCE_EXAMS_DATA_FILE, {"exams": [], "reviews": []})
     exams = data.get("exams", [])
+    for e in exams:
+        url = e.get("official_website") or e.get("official_url") or e.get("portal_url") or e.get("website") or e.get("apply_url") or ""
+        e["official_website"] = url
+        e["official_url"] = url
+        e["portal_url"] = url
+        e["website"] = url
+        e["apply_url"] = url
     if q:
         exams = [e for e in exams if q in str(e.get("name", "")).lower() or q in str(e.get("purpose", "")).lower()]
-    return jsonify({"success": True, "total": len(exams), "exams": exams, "reviews": []})
+    return jsonify({"success": True, "total": len(exams), "exams": exams, "reviews": data.get("reviews", [])})
 
 @app.route("/api/entrance-exams", methods=["POST"])
 @app.route("/api/entrance-prep", methods=["POST"])
@@ -7807,15 +8392,16 @@ def api_create_entrance_exam():
     cbody = body.get("conducted_by") or body.get("conducting_body", "National Testing Body")
     cutoff = body.get("cutoff_range") or "85+ Percentile"
     purpose = body.get("purpose") or body.get("description", "Gateway for prestigious collegiate admissions.")
+    official_url = body.get("official_website") or body.get("official_url") or body.get("portal_url") or body.get("website") or body.get("apply_url") or ""
     status = body.get("status", "active")
     db_status = status.lower() if status and status.lower() in ('active', 'inactive', 'archived') else 'active'
 
     if db.is_pg_connected():
         new_row = db.execute_query("""
-            INSERT INTO exams (exam_name, exam_type, conducting_body, description, status)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO exams (exam_name, exam_type, conducting_body, description, official_website, status)
+            VALUES (%s, %s, %s, %s, %s, %s)
             RETURNING id
-        """, (name, field, cbody, purpose, db_status))
+        """, (name, field, cbody, purpose, official_url, db_status))
         new_id = new_row["id"] if new_row and "id" in new_row else 1
         body["id"] = new_id
         # Also create prep record
@@ -7825,6 +8411,12 @@ def api_create_entrance_exam():
             ON CONFLICT DO NOTHING
         """, (new_id, f"Cutoff: {cutoff}", "Phase 1: Foundations, Phase 2: Mock Tests"))
         _record_audit_log("Entrance Exam Created", "Entrance Prep", str(new_id), f"Created exam {name}")
+
+    body["official_website"] = official_url
+    body["official_url"] = official_url
+    body["portal_url"] = official_url
+    body["website"] = official_url
+    body["apply_url"] = official_url
 
     data = _load_json_data(ENTRANCE_EXAMS_DATA_FILE, {"exams": []})
     exams = data.get("exams", [])
@@ -7843,6 +8435,7 @@ def api_update_entrance_exam(exam_id):
     status = body.get("status")
     purpose = body.get("purpose") or body.get("description")
     field = body.get("field") or body.get("exam_type")
+    official_url = body.get("official_website") or body.get("official_url") or body.get("portal_url") or body.get("website") or body.get("apply_url")
 
     clean_id = re.sub(r'^[^\d]+', '', str(exam_id))
     if db.is_pg_connected() and clean_id.isdigit():
@@ -7853,10 +8446,11 @@ def api_update_entrance_exam(exam_id):
                 exam_type = COALESCE(%s, exam_type),
                 status = COALESCE(%s, status),
                 description = COALESCE(%s, description),
+                official_website = COALESCE(%s, official_website),
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = %s
-        """, (name, cbody, field, status, purpose, int(clean_id)))
-        
+        """, (name, cbody, field, status, purpose, official_url, int(clean_id)))
+
         # Update exam_preparation roadmap stages & cutoff if provided
         if body.get("roadmap") or body.get("stages") or body.get("marks_cutoff") or body.get("total_marks"):
             roadmap_val = body.get("roadmap")
@@ -7870,13 +8464,19 @@ def api_update_entrance_exam(exam_id):
                     updated_at = CURRENT_TIMESTAMP
                 WHERE exam_id = %s
             """, (roadmap_str if roadmap_str else None, tips_str, int(clean_id)))
-            
+
         _record_audit_log("Entrance Exam Updated", "Entrance Prep", str(exam_id), f"Updated exam {exam_id}")
 
     data = _load_json_data(ENTRANCE_EXAMS_DATA_FILE, {"exams": []})
     for idx, e in enumerate(data.get("exams", [])):
         if str(e.get("id")) == str(exam_id) or (clean_id.isdigit() and re.sub(r'^[^\d]+', '', str(e.get("id"))) == clean_id):
             data["exams"][idx].update(body)
+            if official_url:
+                data["exams"][idx]["official_website"] = official_url
+                data["exams"][idx]["official_url"] = official_url
+                data["exams"][idx]["portal_url"] = official_url
+                data["exams"][idx]["website"] = official_url
+                data["exams"][idx]["apply_url"] = official_url
             break
     _save_json_data(ENTRANCE_EXAMS_DATA_FILE, data)
     return jsonify({"success": True, "message": "Entrance exam updated successfully in PostgreSQL"})
@@ -7902,7 +8502,17 @@ def api_delete_entrance_exam(exam_id):
 @app.route("/api/comparisons", methods=["GET"])
 def api_get_comparisons():
     data = _load_json_data(COMPARISONS_DATA_FILE, {"reviews": [], "comparisons": []})
-    colleges = load_colleges_data()
+    global _cached_colleges_registry
+    if _cached_colleges_registry is not None:
+        total_colleges = len(_cached_colleges_registry)
+    elif db.is_pg_connected():
+        try:
+            cnt_row = db.query_one("SELECT count(*) as cnt FROM colleges WHERE status != 'archived'")
+            total_colleges = int(cnt_row.get("cnt") or cnt_row.get("count") or 0) if cnt_row else 0
+        except Exception:
+            total_colleges = len(load_colleges_data())
+    else:
+        total_colleges = len(load_colleges_data())
 
     if db.is_pg_connected():
         sql = "SELECT * FROM comparisons WHERE status != 'archived' AND status != 'deleted' ORDER BY id DESC"
@@ -7924,7 +8534,7 @@ def api_get_comparisons():
                 })
             return jsonify({
                 "success": True,
-                "total_colleges_available": len(colleges),
+                "total_colleges_available": total_colleges,
                 "comparison_criteria": [
                     "facilities", "placements", "job_opportunities", "courses",
                     "exams", "faculty", "student_guidance", "goal_support", "salary_package", "fee_structure"
@@ -7935,7 +8545,7 @@ def api_get_comparisons():
 
     return jsonify({
         "success": True,
-        "total_colleges_available": len(colleges),
+        "total_colleges_available": total_colleges,
         "comparison_criteria": [
             "facilities", "placements", "job_opportunities", "courses",
             "exams", "faculty", "student_guidance", "goal_support", "salary_package", "fee_structure"
@@ -8046,22 +8656,22 @@ def api_delete_comparison(cmp_id):
 def api_compare_colleges():
     college1_id = request.args.get("college1", "").strip()
     college2_id = request.args.get("college2", "").strip()
-    
+
     if not college1_id or not college2_id:
         return jsonify({"success": False, "message": "Two college IDs (college1 and college2) are required"}), 400
     if college1_id == college2_id:
         return jsonify({"success": False, "message": "Please select two different colleges to compare"}), 400
-        
+
     c1 = get_college_record(college1_id)
     c2 = get_college_record(college2_id)
-    
+
     if not c1 or not c2:
         return jsonify({"success": False, "message": "One or both selected colleges could not be found"}), 404
-        
+
     fac_data = _load_json_data(FACILITIES_DATA_FILE, {"facilities_by_college": {}}).get("facilities_by_college", {})
     f1 = fac_data.get(college1_id, {})
     f2 = fac_data.get(college2_id, {})
-    
+
     # Calculate factual comparison scores based on real records
     comparison_result = {
         "college1": {
@@ -8129,7 +8739,7 @@ def api_compare_colleges():
             "preferred_for_value": c2.get("name")
         }
     }
-    
+
     reviews = _load_json_data(COMPARISONS_DATA_FILE, {"reviews": []}).get("reviews", [])
     return jsonify({
         "success": True,
@@ -8161,14 +8771,14 @@ def api_create_suggestion():
     user_name = body.get("user_name", "").strip() or "Student User"
     message = body.get("message", "").strip()
     s_type = body.get("type", "general").strip()
-    
+
     if not message:
         return jsonify({"success": False, "message": "Message / Review text is required"}), 400
-        
+
     data = _load_json_data(SUGGESTIONS_DATA_FILE, {"suggestions": []})
     suggestions = data.get("suggestions", [])
     new_id = f"SUG-{len(suggestions) + 101}"
-    
+
     new_sug = {
         "id": new_id,
         "type": s_type,
@@ -8180,7 +8790,7 @@ def api_create_suggestion():
         "status": "pending_review",
         "created_at": time.strftime("%Y-%m-%d %H:%M:%S")
     }
-    
+
     suggestions.insert(0, new_sug)
     data["suggestions"] = suggestions
     _save_json_data(SUGGESTIONS_DATA_FILE, data)
@@ -8194,15 +8804,15 @@ def api_create_suggestion():
 def api_get_district_analytics():
     district_name = request.args.get("district", "Coimbatore").strip()
     colleges = load_colleges_data()
-    
+
     matching_colleges = [c for c in colleges if district_name.lower() in str(c.get("district", "")).lower() or district_name.lower() in str(c.get("city", "")).lower()]
     total_count = len(matching_colleges)
-    
+
     # Calculate actual statistics from active records
     autonomous_count = len([c for c in matching_colleges if "autonomous" in str(c.get("type", "")).lower() or "autonomous" in str(c.get("name", "")).lower()])
     govt_count = len([c for c in matching_colleges if "government" in str(c.get("type", "")).lower() or "govt" in str(c.get("name", "")).lower()])
     deemed_count = len([c for c in matching_colleges if "deemed" in str(c.get("type", "")).lower() or "university" in str(c.get("type", "")).lower()])
-    
+
     return jsonify({
         "success": True,
         "district": district_name,

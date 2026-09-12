@@ -6,7 +6,20 @@
       "location": "Bengaluru",
       "salary": "Rs. 35L - Rs. 55L",
       "job_type": "Full-Time",
-      "id": 48
+      "id": 48,
+      "company": "Global Tech",
+      "role": " Lead AI Compiler Engineer",
+      "domain": "AI & Machine Learning",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "education": "",
+      "skills": "",
+      "deadline": "",
+      "apply_url": "https://www.globaltechindia.com/",
+      "website": "https://www.globaltechindia.com/",
+      "application_url": "https://www.globaltechindia.com/",
+      "applyUrl": "https://www.globaltechindia.com/",
+      "portal_url": "https://www.globaltechindia.com/"
     },
     {
       "job_title": "Test Lead AI Compiler Engineer",

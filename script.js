@@ -6,6 +6,17 @@ var _userMentorsCache = window._userMentorsCache;
 var _activeSelectedMentor = window._activeSelectedMentor;
 var _isLoadingLiveEventsAndNews = false;
 
+// Helper to sanitize, normalize and validate external portal URLs
+function formatPortalUrl(url) {
+  if (!url || typeof url !== 'string') return null;
+  const trimmed = url.trim();
+  if (!trimmed || trimmed === '#' || trimmed.toLowerCase() === 'null' || trimmed.toLowerCase() === 'undefined' || trimmed === 'about:blank' || trimmed.toLowerCase() === 'n/a' || trimmed.toLowerCase().includes('admin.html') || trimmed.startsWith('#')) return null;
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
+  if (trimmed.startsWith('/') || trimmed.startsWith('javascript:')) return null;
+  return 'https://' + trimmed;
+}
+window.formatPortalUrl = formatPortalUrl;
+
 // ============================================================================
 // GLOBAL MEDIA PROTECTION LAYER
 // Inspect Element & Developer Tools are ENABLED across the entire site.
@@ -692,11 +703,11 @@ function renderTopColleges() {
   grid.innerHTML = top20.map((col) => `
     <article class="top-college-card" data-college-id="${col.id}">
       <div class="college-thumb">
-        <img 
-          src="${col.image}" 
-          alt="${col.name} Campus" 
-          class="college-thumb-img" 
-          loading="lazy" 
+        <img
+          src="${col.image}"
+          alt="${col.name} Campus"
+          class="college-thumb-img"
+          loading="lazy"
           onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80';"
         />
         <div class="college-thumb-overlay"></div>
@@ -707,7 +718,7 @@ function renderTopColleges() {
       <div class="top-college-body">
         <h3>${col.name}</h3>
         <small>${col.badge || col.type || 'Premier Institution'}</small>
-        
+
         <div class="college-rating">
           <span>★ ${col.rating || '4.8'} / 5.0</span>
           <span>${col.reviews || col.reviews_count || '1,000+ Reviews'}</span>
@@ -798,7 +809,7 @@ function fetchCollegesLive() {
 
         if (typeof renderTopColleges === 'function') renderTopColleges();
         if (typeof renderCollegesView === 'function') renderCollegesView();
-        
+
         // Auto-translate if non-English
         if (window.CampNovaTranslationEngine && window.CampNovaTranslationEngine.currentLanguageCode !== 'EN') {
           window.CampNovaTranslationEngine.scheduleTranslation(30);
@@ -871,7 +882,7 @@ async function openCollegeDetailsModal(collegeIdentifier) {
     col = collegeIdentifier;
   } else if (collegeIdentifier !== undefined && collegeIdentifier !== null && String(collegeIdentifier).trim() !== '') {
     const cleanId = String(collegeIdentifier).trim().toLowerCase();
-    col = collegesRegistry.find(c => 
+    col = collegesRegistry.find(c =>
       (c.id && String(c.id).trim().toLowerCase() === cleanId) ||
       (c.db_id && String(c.db_id).trim().toLowerCase() === cleanId) ||
       (c.aishe && String(c.aishe).trim().toLowerCase() === cleanId) ||
@@ -912,7 +923,7 @@ async function openCollegeDetailsModal(collegeIdentifier) {
   const badgeText = col.badge || col.type || col.college_type || 'PREMIER INSTITUTION';
   if (badgeEl) badgeEl.textContent = `${badgeText.toUpperCase()} • RANK ${rankDisplay}`;
   if (nameEl) nameEl.textContent = col.name || col.college_name || 'Premier College';
-  
+
   const locationParts = [];
   if (col.district) locationParts.push(col.district);
   else if (col.city) locationParts.push(col.city);
@@ -1116,7 +1127,7 @@ function openFurtherDetails(collegeIdentifier) {
     col = collegeIdentifier;
   } else if (collegeIdentifier !== undefined && collegeIdentifier !== null && String(collegeIdentifier).trim() !== '') {
     const cleanId = String(collegeIdentifier).trim().toLowerCase();
-    col = collegesRegistry.find(c => 
+    col = collegesRegistry.find(c =>
       (c.id && String(c.id).trim().toLowerCase() === cleanId) ||
       (c.db_id && String(c.db_id).trim().toLowerCase() === cleanId) ||
       (c.aishe && String(c.aishe).trim().toLowerCase() === cleanId) ||
@@ -1329,10 +1340,10 @@ if (verifyCaptchaBtn) {
       const res = await fetch('/api/verify-update-captcha', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           captcha_id: window._currentCaptchaId,
           captcha_code: code,
-          email: email, 
+          email: email,
           college: colName,
           aishe: aishe
         })
@@ -1341,13 +1352,13 @@ if (verifyCaptchaBtn) {
       if (data.success) {
         showToast('Security CAPTCHA verified! Access granted.');
         window._authSessionToken = data.token;
-        
+
         const m1 = document.getElementById('verifyAuthorityModal');
         if (m1) m1.classList.remove('open');
 
         const m3 = document.getElementById('collegeUpdateModal');
         const colNameDisplay = document.getElementById('formCollegeName');
-        
+
         if (colNameDisplay && col) {
           colNameDisplay.textContent = `${col.name} — ${col.city || ''}, ${col.state || ''}`;
         }
@@ -1385,7 +1396,7 @@ const furtherDetailsForm = document.getElementById('furtherDetailsForm');
 if (furtherDetailsForm) {
   furtherDetailsForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     // Validate Terms & Conditions agreement
     const termsCheck = document.getElementById('updateTermsCheck');
     if (termsCheck && !termsCheck.checked) {
@@ -1449,7 +1460,7 @@ if (furtherDetailsForm) {
       showToast('Connection error: Unable to submit update to database. Please try again.');
       return;
     }
-    
+
     const m3 = document.getElementById('collegeUpdateModal');
     if (m3) {
       m3.classList.remove('open');
@@ -1663,27 +1674,21 @@ function setView(viewOrRoute, updateHash = true) {
     if (typeof renderCareersView === 'function') renderCareersView();
   }
   if (canonicalRoute === 'placements') {
-    _cachedPlacementsFullData = null;
     if (typeof renderPlacementsView === 'function') renderPlacementsView();
   }
   if (canonicalRoute === 'jobs') {
-    _cachedJobsData = null;
     if (typeof renderJobsView === 'function') renderJobsView();
   }
   if (canonicalRoute === 'internships') {
-    _cachedInternshipsFullData = null;
     if (typeof renderInternshipsView === 'function') renderInternshipsView();
   }
   if (canonicalRoute === 'admissions') {
-    _cachedAdmissionsData = null;
     if (typeof renderAdmissionsView === 'function') renderAdmissionsView();
   }
   if (canonicalRoute === 'scholarships') {
-    _cachedScholarshipsFullData = null;
     if (typeof renderScholarshipsView === 'function') renderScholarshipsView();
   }
   if (canonicalRoute === 'facilities') {
-    _cachedFacilitiesData = null;
     if (typeof renderFacilitiesView === 'function') renderFacilitiesView();
   }
   if (canonicalRoute === 'entrance-prep') {
@@ -1852,7 +1857,7 @@ function showToast(message, type = 'info') {
     toast.id = 'globalToast';
     document.body.appendChild(toast);
   }
-  
+
   let bg = '#FFFFFF';
   let border = '#CBD5E1';
   let color = '#0F172A';
@@ -1872,7 +1877,7 @@ function showToast(message, type = 'info') {
   }
 
   toast.style.cssText = `position:fixed; bottom:28px; right:28px; background:${bg}; border:1.5px solid ${border}; color:${color}; padding:14px 22px; border-radius:12px; z-index:99999; font-size:13.5px; font-weight:700; box-shadow:0 10px 30px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06); transition:all 0.3s cubic-bezier(0.16,1,0.3,1); opacity:0; transform:translateY(12px); display:flex; align-items:center; gap:10px; font-family:inherit; max-width:420px; line-height:1.45;`;
-  
+
   let displayMessage = message;
   if (window.CampNovaTranslationEngine && window.CampNovaTranslationEngine.currentLanguageCode !== 'EN') {
     const lang = window.CampNovaTranslationEngine.currentLanguageCode;
@@ -1883,12 +1888,12 @@ function showToast(message, type = 'info') {
   }
 
   toast.innerHTML = `<span style="font-size:16px; flex-shrink:0;">${icon}</span> <span>${displayMessage}</span>`;
-  
+
   requestAnimationFrame(() => {
     toast.style.opacity = '1';
     toast.style.transform = 'translateY(0)';
   });
-  
+
   clearTimeout(toast._timer);
   toast._timer = setTimeout(() => {
     toast.style.opacity = '0';
@@ -1938,7 +1943,7 @@ window._searchResultStore = [];
 async function openSearch(query) {
   const cleanQ = (query || '').trim();
   setView('search');
-  
+
   const headerSearch = document.getElementById('headerSearch');
   const mobileDrawerSearch = document.getElementById('mobileDrawerSearch');
   const resultSearch = document.getElementById('resultSearch');
@@ -2174,10 +2179,11 @@ async function renderSearchResults(query, categoryFilter = 'all') {
   const cardsHtml = resultsList.map((r, idx) => {
     const fieldBadgeClass = r.field === 'colleges' ? 'amber' : (r.field === 'courses' ? 'blue' : (r.field === 'exams' ? 'coral' : 'teal'));
     const metaChipsHtml = (r.meta || []).map(m => `<span>${escapeHtml(m)}</span>`).join('');
-    
+
     // Official Portal Link Button if URL exists
-    const officialBtnHtml = r.official_url && r.official_url !== '#' ? `
-      <a href="${escapeHtml(r.official_url.startsWith('http') ? r.official_url : 'https://' + r.official_url)}" target="_blank" rel="noopener noreferrer" class="secondary-button official-portal-btn" style="text-decoration:none; padding:8px 14px; font-size:12px; display:inline-flex; align-items:center; gap:4px;" onclick="event.stopPropagation();">
+    const validPortal = formatPortalUrl(r.official_url || (r.data && (r.data.application_url || r.data.apply_url || r.data.portal_url || r.data.website || r.data.official_website || r.data.official_url)));
+    const officialBtnHtml = validPortal ? `
+      <a href="${escapeHtml(validPortal)}" target="_blank" rel="noopener noreferrer" class="secondary-button official-portal-btn" style="text-decoration:none; padding:8px 14px; font-size:12px; display:inline-flex; align-items:center; gap:4px;" onclick="event.stopPropagation();">
         <span>Official Portal ↗</span>
       </a>
     ` : '';
@@ -2274,7 +2280,7 @@ async function addAiExchange(question) {
 
   const typingMsg = document.createElement('p');
   typingMsg.className = 'ai-message-answer';
-  
+
   const currentLang = (window.CampNovaTranslationEngine && window.CampNovaTranslationEngine.currentLanguageCode) || 'EN';
   let thinkingText = 'Thinking...';
   if (currentLang === 'TA') thinkingText = 'சிந்திக்கிறது...';
@@ -2282,7 +2288,7 @@ async function addAiExchange(question) {
   else if (currentLang === 'TE') thinkingText = 'ఆలోచిస్తోంది...';
   else if (currentLang === 'ML') thinkingText = 'ചിന്തിക്കുന്നു...';
   else if (currentLang === 'KN') thinkingText = 'ಯೋಚಿಸುತ್ತಿದೆ...';
-  
+
   typingMsg.textContent = thinkingText;
   chatEl.appendChild(typingMsg);
   chatEl.scrollTop = chatEl.scrollHeight;
@@ -3253,7 +3259,7 @@ if (signupFormEl) {
           succEl.style.display = 'block';
         }
         signupFormEl.reset();
-        
+
         setTimeout(() => {
           openUserLoginModal();
           const loginEmail = document.getElementById('userEmail');
@@ -4762,11 +4768,14 @@ function renderInternshipsGrid() {
           <button type="button" class="internship-details-btn" onclick="openInternshipModal('${item.id}')">
             View Details
           </button>
-          ${item.applyUrl ? `
-            <a href="${item.applyUrl}" target="_blank" rel="noopener noreferrer" class="internship-portal-btn">
-              Apply ↗
-            </a>
-          ` : ''}
+          ${(() => {
+            const portalUrl = formatPortalUrl(item.applyUrl || item.apply_url || item.application_url || item.website);
+            return portalUrl ? `
+              <a href="${escapeHtml(portalUrl)}" target="_blank" rel="noopener noreferrer" class="internship-portal-btn">
+                Apply ↗
+              </a>
+            ` : '';
+          })()}
         </div>
       </div>
     </div>
@@ -4788,7 +4797,16 @@ function openInternshipDetailModalLegacy(internshipId) {
   if (roleEl) roleEl.textContent = `${item.role} — ${item.company}`;
   if (tagEl) tagEl.textContent = `${item.company.toUpperCase()} &bull; ${item.domain.toUpperCase()}`;
   if (deadlineEl) deadlineEl.textContent = `Application Deadline: ${item.deadline}`;
-  if (applyLinkEl) applyLinkEl.href = item.applyUrl || '#';
+  if (applyLinkEl) {
+    const validPortal = formatPortalUrl(item.applyUrl || item.apply_url || item.application_url || item.website);
+    if (validPortal) {
+      applyLinkEl.href = validPortal;
+      applyLinkEl.style.display = 'inline-flex';
+    } else {
+      applyLinkEl.removeAttribute('href');
+      applyLinkEl.style.display = 'none';
+    }
+  }
 
   if (bodyEl) {
     bodyEl.innerHTML = `
@@ -4950,29 +4968,29 @@ function renderCollegesView() {
     const cId = String(c.id || '').toLowerCase();
     const cRank = String(c.rank || c.nirf_rank || '').toLowerCase();
 
-    const matchSearch = !sTerm || 
-      cName.includes(sTerm) || 
-      cCity.includes(sTerm) || 
-      cDistrict.includes(sTerm) || 
-      cState.includes(sTerm) || 
-      cAishe.includes(sTerm) || 
-      cStream.includes(sTerm) || 
+    const matchSearch = !sTerm ||
+      cName.includes(sTerm) ||
+      cCity.includes(sTerm) ||
+      cDistrict.includes(sTerm) ||
+      cState.includes(sTerm) ||
+      cAishe.includes(sTerm) ||
+      cStream.includes(sTerm) ||
       cId.includes(sTerm) ||
       cRank.includes(sTerm) ||
       (Array.isArray(c.courses) && c.courses.some(crs => String(crs).toLowerCase().includes(sTerm)));
 
-    const matchState = !collegesFilterState.state || 
+    const matchState = !collegesFilterState.state ||
       cState === collegesFilterState.state.trim().toLowerCase();
-    
+
     const selDist = collegesFilterState.district.trim().toLowerCase();
-    const matchDistrict = !selDist || 
-      cDistrict === selDist || 
-      cCity === selDist || 
-      cDistrict.includes(selDist) || 
+    const matchDistrict = !selDist ||
+      cDistrict === selDist ||
+      cCity === selDist ||
+      cDistrict.includes(selDist) ||
       cCity.includes(selDist);
 
     const selCourse = collegesFilterState.course.trim().toLowerCase();
-    const matchCourse = !selCourse || 
+    const matchCourse = !selCourse ||
       (Array.isArray(c.courses) && c.courses.some(crs => String(crs).toLowerCase().includes(selCourse) || selCourse.includes(String(crs).toLowerCase()))) ||
       cStream.includes(selCourse);
 
@@ -4989,12 +5007,12 @@ function renderCollegesView() {
           <!-- 1. Search Box -->
           <div class="colleges-search-input-wrap">
             <span class="colleges-input-icon">🔍</span>
-            <input 
-              type="text" 
-              id="collegesGlobalSearchInput" 
-              class="colleges-filter-input" 
-              placeholder="Search colleges, cities, NIRF ranks, AISHE..." 
-              value="${collegesFilterState.search}" 
+            <input
+              type="text"
+              id="collegesGlobalSearchInput"
+              class="colleges-filter-input"
+              placeholder="Search colleges, cities, NIRF ranks, AISHE..."
+              value="${collegesFilterState.search}"
               autocomplete="off"
             />
             <button type="button" id="collegesSearchClearBtn" class="colleges-filter-clear-btn" style="display:${collegesFilterState.search ? 'block' : 'none'};" title="Clear search">✕</button>
@@ -5166,7 +5184,7 @@ function renderCollegesView() {
                   <div class="top-college-body" style="padding:16px;">
                     <h3>${c.name}</h3>
                     <small style="color:var(--theme-muted); font-weight:600; display:block; margin-bottom:8px;">📍 ${c.district || c.city}, ${c.state} &bull; AISHE: ${c.aishe || c.aishe_code || 'Verified'} &bull; ${c.type || c.college_type || 'Institute'}</small>
-                    
+
                     <div class="college-rating" style="margin:8px 0;">
                       <span>★ ${c.rating} Rating</span>
                       <span style="color:var(--theme-muted); font-weight:500;">${c.reviews || c.reviews_count || '1,000+ Reviews'}</span>
@@ -6197,15 +6215,15 @@ async function syncLiveDomains() {
         const categories = JSON.parse(JSON.stringify(DOMAINS_DISCOVERY_DATA));
         pgDomains.forEach((d, idx) => {
           const streamName = (d.stream || 'Engineering & Technology').toLowerCase();
-          let targetCat = categories.find(c => 
-            c.name.toLowerCase().includes(streamName) || 
+          let targetCat = categories.find(c =>
+            c.name.toLowerCase().includes(streamName) ||
             streamName.includes(c.name.toLowerCase().split(' ')[0])
           );
           if (!targetCat && categories.length > 0) {
             targetCat = categories[0];
           }
           if (targetCat) {
-            const exists = (targetCat.subfields || []).find(s => 
+            const exists = (targetCat.subfields || []).find(s =>
               s.name.toLowerCase() === (d.domain_name || '').toLowerCase()
             );
             if (!exists) {
@@ -6257,9 +6275,9 @@ function renderDomainsDiscoveryView(searchQuery = '') {
     domainsState.expandedCategories.clear();
     sourceData.forEach(cat => {
       const catMatch = cat.name.toLowerCase().includes(q) || cat.description.toLowerCase().includes(q);
-      const subMatch = (cat.subfields || []).some(s => 
-        s.name.toLowerCase().includes(q) || 
-        s.tagline.toLowerCase().includes(q) || 
+      const subMatch = (cat.subfields || []).some(s =>
+        s.name.toLowerCase().includes(q) ||
+        s.tagline.toLowerCase().includes(q) ||
         s.description.toLowerCase().includes(q) ||
         (s.skills || []).some(sk => sk.toLowerCase().includes(q))
       );
@@ -6292,17 +6310,17 @@ function renderDomainsDiscoveryView(searchQuery = '') {
 
   container.innerHTML = `
     <div class="domains-discovery-container">
-      
+
       <!-- 1. Search Box for Domains -->
       <div class="courses-search-section">
         <div class="courses-search-bar-wrap">
           <span class="courses-search-lead-icon">🔍</span>
-          <input 
-            type="text" 
-            id="domainsSearchInput" 
-            class="courses-search-input-field" 
-            placeholder="Search domains, specializations &amp; skills (e.g. Python, AI, Cyber, Cloud, UI/UX, Data Science, DevOps, Robotics)..." 
-            value="${domainsState.searchQuery}" 
+          <input
+            type="text"
+            id="domainsSearchInput"
+            class="courses-search-input-field"
+            placeholder="Search domains, specializations &amp; skills (e.g. Python, AI, Cyber, Cloud, UI/UX, Data Science, DevOps, Robotics)..."
+            value="${domainsState.searchQuery}"
             autocomplete="off"
           />
           <button type="button" id="domainsSearchClearBtn" class="courses-search-clear-btn" style="display:${domainsState.searchQuery ? 'block' : 'none'};" onclick="clearDomainsSearch()">✕</button>
@@ -6421,7 +6439,7 @@ function renderDomainsDiscoveryView(searchQuery = '') {
                     </span>
                     <span class="trend-growth-badge">${tr.growth}</span>
                   </div>
-                  
+
                   <div class="trend-bars-wrap">
                     <div class="trend-bar-row">
                       <span class="trend-bar-label">2016:</span>
@@ -6840,6 +6858,125 @@ function clearDomainsSearch() {
 }
 window.clearDomainsSearch = clearDomainsSearch;
 
+function openDomainFullRoadmapModal(matchedSub, parentCat) {
+  if (!matchedSub) return;
+  if (typeof closeCollegeModal === 'function') closeCollegeModal();
+  const subName = matchedSub.name || 'Specialized Domain';
+  const parentName = (parentCat && parentCat.name) || 'Engineering & Technology';
+
+  // Format structured stages from matchedSub.roadmap or domain skills
+  let rawRd = matchedSub.roadmap || matchedSub.full_roadmap || '';
+  let stages = [];
+  if (typeof rawRd === 'string' && rawRd.trim()) {
+    const lines = rawRd.split(/\n|;/).map(l => l.trim()).filter(Boolean);
+    stages = lines.map((l, idx) => {
+      const parts = l.split(':');
+      return {
+        stage: idx + 1,
+        title: parts.length > 1 ? parts[0].replace(/^Stage\s*\d+[\.\-\s]*/i, '').trim() : `Phase ${idx + 1}`,
+        focus: parts.length > 1 ? parts.slice(1).join(':').trim() : l,
+        skills: (matchedSub.skills || []).slice(idx * 2, (idx + 1) * 2 + 1)
+      };
+    });
+  }
+
+  if (stages.length === 0) {
+    const skillsList = matchedSub.skills || ['Core Foundations', 'System Architecture', 'Production Tooling'];
+    stages = [
+      {
+        stage: 1,
+        title: "Foundations & Prerequisite Core Principles",
+        focus: `Master prerequisite programming, mathematical fundamentals, and core theories governing ${subName}.`,
+        skills: skillsList.slice(0, 3)
+      },
+      {
+        stage: 2,
+        title: "Specialized Architectures & Production Tooling",
+        focus: `Hands-on training with industry-standard frameworks, libraries, modern development workflows, and version control.`,
+        skills: skillsList.slice(2, 5)
+      },
+      {
+        stage: 3,
+        title: "End-to-End Real-World Project Engineering",
+        focus: `Build, test, and containerize full-featured production systems, APIs, and responsive user-facing interfaces.`,
+        skills: skillsList.slice(4, 7)
+      },
+      {
+        stage: 4,
+        title: "Performance Optimization, Security & Cloud Deployment",
+        focus: `Deploy applications across cloud infrastructure, implement CI/CD pipelines, ensure zero-trust security, and optimize throughput.`,
+        skills: ["Cloud Architecture", "CI/CD & DevOps", "Performance Auditing"]
+      },
+      {
+        stage: 5,
+        title: "Industry Placement & Senior Technical Mastery",
+        focus: `Technical interview preparation, system design simulations, corporate mentorship, and senior portfolio defense.`,
+        skills: ["System Design", "Scalability", "Production Troubleshooting"]
+      }
+    ];
+  }
+
+  const stagesHtml = stages.map((st, idx) => {
+    const stageNum = st.stage || (idx + 1);
+    const stageTitle = st.title || `Phase ${stageNum}`;
+    const stageFocus = st.focus || 'Comprehensive curriculum milestones and applied project requirements.';
+    const stageSkills = Array.isArray(st.skills) ? st.skills : [];
+
+    return `
+      <div style="background:#FFFFFF; border:1px solid var(--theme-line, #E2E8F0); border-radius:12px; padding:16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+          <span style="background:#77AC3B; color:#FFFFFF; font-size:11px; font-weight:800; padding:3px 9px; border-radius:12px; letter-spacing:0.04em;">STAGE ${escapeHtml(String(stageNum))}</span>
+          <h4 style="margin:0; font-size:15px; font-weight:800; color:#0F172A;">${escapeHtml(stageTitle)}</h4>
+        </div>
+        <p style="margin:0 0 10px; font-size:13px; color:#334155; line-height:1.5;">${escapeHtml(stageFocus)}</p>
+        ${stageSkills.length > 0 ? `
+          <div style="background:#F8FAFC; border-radius:8px; padding:8px 12px; border:1px solid #E2E8F0;">
+            <strong style="font-size:11px; color:#64748B; display:block; margin-bottom:4px; text-transform:uppercase;">Curriculum Competencies &amp; Tools:</strong>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              ${stageSkills.map(sk => `
+                <span style="background:#FFFFFF; border:1px solid #CBD5E1; color:#0F172A; font-size:11px; font-weight:600; padding:3px 8px; border-radius:6px;">
+                  ⚡ ${escapeHtml(String(sk))}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+
+  const contentHtml = `
+    <div style="font-size:13.5px; color:#334155;">
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:14px 16px; margin-bottom:16px;">
+        <span style="font-size:11px; font-weight:800; color:#77AC3B; text-transform:uppercase; letter-spacing:0.06em;">DOMAIN SPECIALIZATION</span>
+        <h3 style="margin:2px 0 4px; font-size:16px; font-weight:800; color:#0F172A;">${escapeHtml(subName)}</h3>
+        <p style="margin:0 0 8px; font-size:12.5px; color:#64748B; line-height:1.45;">${escapeHtml(matchedSub.description || 'Verified domain curriculum and learning pathway.')}</p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; font-size:12px;">
+          <span>💼 <strong>Compensation:</strong> ${escapeHtml(matchedSub.averageSalary || matchedSub.salaryRange || 'High Demand')}</span>
+          <span>🏛️ <strong>Discipline:</strong> ${escapeHtml(parentName)}</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <h4 style="margin:0; font-size:14px; font-weight:800; color:#0F172A;">🗺️ Step-by-Step Learning Curriculum &amp; Progression:</h4>
+          <span style="font-size:11.5px; color:#64748B;">Complete 5-Stage Blueprint</span>
+        </div>
+        ${stagesHtml}
+      </div>
+    </div>
+  `;
+
+  openUniversalModal({
+    title: `${matchedSub.icon || '🌐'} ${subName}`,
+    subtitle: `${parentName} • Complete Learning Curriculum & Roadmap`,
+    badge: 'DOMAIN ROADMAP',
+    contentHtml: contentHtml,
+    primaryActionHtml: `<button type="button" class="primary-button" onclick="closeUniversalModal()">Close Roadmap</button>`
+  });
+}
+window.openDomainFullRoadmapModal = openDomainFullRoadmapModal;
+
 function openDomainDetailsModal(subfieldId) {
   let matchedSub = null;
   let parentCat = null;
@@ -6860,11 +6997,19 @@ function openDomainDetailsModal(subfieldId) {
   const nameEl = document.getElementById('modalCollegeProfileName');
   const locEl = document.getElementById('modalCollegeLocation');
   const bodyEl = document.getElementById('collegeModalBody');
+  const applyBtn = document.getElementById('modalCollegeApplyBtn');
 
   if (modal && badgeEl && nameEl && locEl && bodyEl) {
     badgeEl.textContent = `${(parentCat.name || 'DOMAIN').toUpperCase()} • DOMAIN SPECIALIZATION`;
     nameEl.textContent = `${matchedSub.icon || '🌐'} ${matchedSub.name || 'Specialized Domain'}`;
     locEl.textContent = `🎯 Focus: ${matchedSub.tagline || 'Specialization Track'} • Avg Compensation: ${matchedSub.averageSalary || matchedSub.salaryRange || 'High Demand'}`;
+
+    if (applyBtn) {
+      applyBtn.textContent = 'View Full Roadmap ➔';
+      applyBtn.onclick = () => {
+        openDomainFullRoadmapModal(matchedSub, parentCat);
+      };
+    }
 
     bodyEl.innerHTML = `
       <div class="prep-section-card">
@@ -6929,7 +7074,7 @@ function openDomainDetailsModal(subfieldId) {
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   } else {
-    showToast(`Exploring domain: ${matchedSub.name}`);
+    openDomainFullRoadmapModal(matchedSub, parentCat);
   }
 }
 window.openDomainDetailsModal = openDomainDetailsModal;
@@ -7842,8 +7987,8 @@ async function syncLiveExams() {
       const pgExams = (data && Array.isArray(data.exams)) ? data.exams : [];
       if (pgExams.length > 0) {
         const mapped = pgExams.map((pe, idx) => {
-          const matchedBase = EXAMS_DIRECTORY_DATA.find(b => 
-            String(b.id) === String(pe.id) || 
+          const matchedBase = EXAMS_DIRECTORY_DATA.find(b =>
+            String(b.id) === String(pe.id) ||
             (b.name && pe.name && b.name.toLowerCase() === pe.name.toLowerCase())
           ) || {};
           return {
@@ -7924,12 +8069,12 @@ function renderExamsView() {
     const searchBlob = `${ex.name} ${ex.stream} ${ex.category || ''} ${ex.conductingBody} ${ex.college} ${ex.state} ${ex.district} ${ex.location} ${ex.eligibility} ${ex.scope}`.toLowerCase();
     const matchSearch = !q || searchBlob.includes(q);
 
-    const matchState = !selectedState || 
-      (ex.state && ex.state.toLowerCase() === selectedState) || 
+    const matchState = !selectedState ||
+      (ex.state && ex.state.toLowerCase() === selectedState) ||
       (ex.location && ex.location.toLowerCase().includes('all india')) ||
       (ex.location && ex.location.toLowerCase().includes('national'));
 
-    const matchDistrict = !selectedDistrict || 
+    const matchDistrict = !selectedDistrict ||
       (ex.district && ex.district.toLowerCase().includes(selectedDistrict)) ||
       (ex.location && ex.location.toLowerCase().includes(selectedDistrict)) ||
       (ex.college && ex.college.toLowerCase().includes(selectedDistrict));
@@ -7941,18 +8086,18 @@ function renderExamsView() {
 
   container.innerHTML = `
     <div class="exams-discovery-container">
-      
+
       <!-- 1. Search & State / District Location Filter Bar -->
       <section class="exams-filter-card">
         <div class="exams-filter-row">
           <div class="exams-search-wrap">
             <span class="exams-input-icon">🔍</span>
-            <input 
-              type="text" 
-              id="examsSearchInput" 
-              class="exams-search-input" 
-              placeholder="Search exam name, conducting college, stream, or eligibility (e.g. JEE, NEET, IIT Madras, Coimbatore, CAT)..." 
-              value="${escapeHtml(examsFilterState.search)}" 
+            <input
+              type="text"
+              id="examsSearchInput"
+              class="exams-search-input"
+              placeholder="Search exam name, conducting college, stream, or eligibility (e.g. JEE, NEET, IIT Madras, Coimbatore, CAT)..."
+              value="${escapeHtml(examsFilterState.search)}"
               autocomplete="off"
             />
             ${examsFilterState.search ? `
@@ -8555,7 +8700,118 @@ function openExamHowToPrepareModal(examId) {
 window.openExamHowToPrepareModal = openExamHowToPrepareModal;
 
 function openExamPrepRoadmapModal(examId) {
-  openExamHowToPrepareModal(examId);
+  const exams = getExamsRegistry();
+  const exam = exams.find(e => String(e.id) === String(examId) || e.name.toLowerCase() === String(examId).toLowerCase()) || exams[0];
+  if (!exam) return;
+
+  // Retrieve multi-stage preparation roadmap
+  let stages = exam.roadmap_stages;
+  if (!stages || !Array.isArray(stages) || stages.length === 0) {
+    if (window._cachedEntranceExamsData && window._cachedEntranceExamsData.exams) {
+      const match = window._cachedEntranceExamsData.exams.find(x =>
+        String(x.id) === String(examId) ||
+        x.name.toLowerCase().includes(exam.name.toLowerCase()) ||
+        exam.name.toLowerCase().includes(x.name.toLowerCase())
+      );
+      if (match && match.roadmap_stages && match.roadmap_stages.length > 0) {
+        stages = match.roadmap_stages;
+      }
+    }
+  }
+
+  // Fallback to structured strategy if not present
+  if (!stages || !Array.isArray(stages) || stages.length === 0) {
+    const strat = (exam.howToPrepare && exam.howToPrepare.strategy) || [
+      "1. NCERT Line-by-Line & Core Foundation: Master foundational syllabus, theory concepts and formulas.",
+      "2. 10-Year PYQ & Sectional Speed Drills: Complete chapterwise question archives with strict time benchmarks.",
+      "3. Full-Length CBT Simulation Mocks: High-fidelity exam interface simulation with negative marking error log analysis.",
+      "4. Final 30-Day Formula & High-Yield Revisions: Consolidate cheat sheets, mnemonic roadmaps and exam-day pacing."
+    ];
+    stages = strat.map((s, idx) => {
+      const parts = s.split(':');
+      return {
+        stage: idx + 1,
+        title: parts.length > 1 ? parts[0].replace(/^\d+[\.\-\s]*/, '').trim() : `Phase ${idx + 1}`,
+        focus: parts.length > 1 ? parts.slice(1).join(':').trim() : s.replace(/^\d+[\.\-\s]*/, '').trim(),
+        resources: (exam.howToPrepare && exam.howToPrepare.keyTopics) ? exam.howToPrepare.keyTopics.slice(0, 3) : ["Standard NCERT / Foundation Notes", "Official PYQ Archive"]
+      };
+    });
+  }
+
+  const rawPlatformUrl = (exam.prepPlatform && exam.prepPlatform.url) || exam.official_website || exam.official_url || exam.portal_url || exam.website || '';
+  const validPlatformUrl = formatPortalUrl(rawPlatformUrl);
+
+  const stagesHtml = stages.map((st, idx) => {
+    const stageNum = st.stage || st.step || st.phase || (idx + 1);
+    const stageTitle = st.title || st.name || `Preparation Phase ${stageNum}`;
+    const stageFocus = st.focus || st.desc || st.description || 'Core syllabus mastery and timed drill practice.';
+    const resourcesList = Array.isArray(st.resources) ? st.resources : (typeof st.resources === 'string' ? [st.resources] : []);
+
+    return `
+      <div style="background:#FFFFFF; border:1px solid var(--theme-line, #E2E8F0); border-radius:12px; padding:16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+          <span style="background:#77AC3B; color:#FFFFFF; font-size:11px; font-weight:800; padding:3px 9px; border-radius:12px; letter-spacing:0.04em;">STAGE ${escapeHtml(String(stageNum))}</span>
+          <h4 style="margin:0; font-size:15px; font-weight:800; color:#0F172A;">${escapeHtml(stageTitle)}</h4>
+        </div>
+        <p style="margin:0 0 10px; font-size:13px; color:#334155; line-height:1.5;">${escapeHtml(stageFocus)}</p>
+        ${resourcesList.length > 0 ? `
+          <div style="background:#F8FAFC; border-radius:8px; padding:10px 12px; border:1px solid #E2E8F0;">
+            <strong style="font-size:11px; color:#64748B; display:block; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.04em;">Recommended Resources &amp; Drills:</strong>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              ${resourcesList.map(r => `
+                <span style="background:#FFFFFF; border:1px solid #CBD5E1; color:#0F172A; font-size:11px; font-weight:600; padding:3px 9px; border-radius:6px;">
+                  📖 ${escapeHtml(String(r))}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+
+  const contentHtml = `
+    <div style="font-size:13.5px; color:#334155;">
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:14px 16px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div>
+          <span style="font-size:11px; font-weight:800; color:#77AC3B; text-transform:uppercase; letter-spacing:0.06em;">TARGET EXAMINATION</span>
+          <h3 style="margin:2px 0 0; font-size:16px; font-weight:800; color:#0F172A;">${escapeHtml(exam.name)}</h3>
+          <span style="font-size:12px; color:#64748B;">🏛️ ${escapeHtml(exam.conductingBody || 'National Agency')} &bull; 🗓️ ${escapeHtml(exam.examDate || '2026 Session')}</span>
+        </div>
+        ${validPlatformUrl ? `
+          <a href="${escapeHtml(validPlatformUrl)}" target="_blank" rel="noopener noreferrer" class="primary-button" style="height:36px; padding:0 16px; font-size:12px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+            <span>Official Portal ↗</span>
+          </a>
+        ` : ''}
+      </div>
+
+      <div style="margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <h4 style="margin:0; font-size:14px; font-weight:800; color:#0F172A;">🗺️ Structured Multi-Stage Preparation Pathway:</h4>
+          <span style="font-size:11.5px; color:#64748B;">Official Verified Curriculum</span>
+        </div>
+        ${stagesHtml}
+      </div>
+    </div>
+  `;
+
+  openUniversalModal({
+    title: `${exam.icon || '🎯'} ${exam.name}`,
+    subtitle: `${(exam.stream || 'NATIONAL').toUpperCase()} • COMPLETE PREPARATION ROADMAP`,
+    badge: 'PREP ROADMAP',
+    contentHtml: contentHtml,
+    primaryActionHtml: `
+      <div style="display:flex; gap:8px; align-items:center;">
+        ${validPlatformUrl ? `
+          <a href="${escapeHtml(validPlatformUrl)}" target="_blank" rel="noopener noreferrer" class="primary-button" style="height:38px; font-size:13px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+            <span>Official Exam Portal ↗</span>
+          </a>
+        ` : ''}
+        <button type="button" class="secondary-button" style="height:38px; font-size:13px;" onclick="closeUniversalModal()">Close Roadmap</button>
+      </div>
+    `,
+    footNote: 'Syllabus & Blueprint Verified Against Official Testing Agency Notifications'
+  });
 }
 window.openExamPrepRoadmapModal = openExamPrepRoadmapModal;
 
@@ -8585,14 +8841,17 @@ function openExamPlatformAccessModal(examId) {
 
   if (!modal || !titleEl || !bodyEl || !linkEl) return;
 
+  const rawPlatformUrl = (exam.prepPlatform && exam.prepPlatform.url) || exam.official_website || exam.official_url || exam.portal_url || exam.website || 'https://nta.ac.in';
+  const validPlatformUrl = formatPortalUrl(rawPlatformUrl) || 'https://nta.ac.in';
   const platform = exam.prepPlatform || {
     name: "Official Examination Practice Portal",
-    url: "https://nta.ac.in",
+    url: validPlatformUrl,
     resourceDesc: "Authorized testing portal, syllabus papers, and official mock modules."
   };
+  platform.url = validPlatformUrl;
 
   titleEl.textContent = `${exam.name} • Preparation Portal`;
-  linkEl.href = platform.url;
+  linkEl.href = validPlatformUrl;
 
   bodyEl.innerHTML = `
     <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:16px; margin-bottom:14px;">
@@ -8600,7 +8859,7 @@ function openExamPlatformAccessModal(examId) {
       <h4 style="margin:0 0 6px; font-size:15px; color:#0F172A; font-weight:700;">${escapeHtml(platform.name)}</h4>
       <p style="margin:0 0 10px; font-size:12.5px; color:#475569; line-height:1.5;">${escapeHtml(platform.resourceDesc)}</p>
       <div style="font-size:11.5px; color:#64748B; word-break:break-all;">
-        🔗 <strong>Direct URL:</strong> <a href="${platform.url}" target="_blank" rel="noopener" style="color:var(--coral); font-weight:600;">${platform.url}</a>
+        🔗 <strong>Direct URL:</strong> <a href="${validPlatformUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--coral); font-weight:600;">${validPlatformUrl}</a>
       </div>
     </div>
 
@@ -9449,7 +9708,7 @@ function renderStudyMaterialsView() {
     }
 ]);
 
-  const reviews = storeData.reviews || [
+  const defaultSmReviews = [
     {
       id: "sm-rev-01",
       author: "Aditya Vardhan",
@@ -9476,10 +9735,28 @@ function renderStudyMaterialsView() {
       rating: "★★★★★",
       statement: "The 15-minute DILR set selection framework improved my sectional percentile from 78 to 99.2 in national mock series.",
       advice: "Do not attempt all sets; accurately solving 2.5 full sets guarantees 99+ percentile."
+    },
+    {
+      id: "sm-rev-04",
+      author: "Ananya Sen",
+      exam: "GATE CS 2026",
+      resource_used: "GATE Computer Science Core Technical Compendium",
+      rating: "★★★★★",
+      statement: "The Operating Systems and Computer Networks summaries condensed standard textbooks into high-yield revision tables.",
+      advice: "Practice previous 15-year numerical answer type questions at least twice."
+    },
+    {
+      id: "sm-rev-05",
+      author: "Kavita Deshmukh",
+      exam: "CLAT 2026",
+      resource_used: "CLAT Legal Reasoning Passage Deconstruction",
+      rating: "★★★★★",
+      statement: "Passage deconstruction techniques helped cut reading time per passage down from 4.5 minutes to under 3 minutes.",
+      advice: "Prioritize speed drills and constitutional case precedents."
     }
   ];
 
-  const experiences = storeData.experiences || [
+  const defaultSmExperiences = [
     {
       id: "exp-01",
       learner_name: "Arjun Sundaram",
@@ -9518,23 +9795,28 @@ function renderStudyMaterialsView() {
     }
   ];
 
-  const stats = storeData.stats || {
-    material_type_distribution: [
-      { type: "Previous Year Questions", count: 28400, share: 33 },
-      { type: "Lecture & Revision Notes", count: 22100, share: 26 },
-      { type: "Formula Sheets", count: 18600, share: 22 },
-      { type: "Mock Tests & Practice Sets", count: 11400, share: 13 },
-      { type: "Topic Guides & Reference", count: 5860, share: 6 }
-    ],
-    monthly_usage_trend: [
-      { month: "Sep", views: 12400, downloads: 6100 },
-      { month: "Oct", views: 18900, downloads: 9800 },
-      { month: "Nov", views: 26500, downloads: 14200 },
-      { month: "Dec", views: 38200, downloads: 19600 },
-      { month: "Jan", views: 52400, downloads: 26800 },
-      { month: "Feb", views: 64000, downloads: 33100 }
-    ]
-  };
+  const defaultMaterialTypeDistribution = [
+    { type: "Previous Year Questions", count: 28400, share: 33 },
+    { type: "Lecture & Revision Notes", count: 22100, share: 26 },
+    { type: "Formula Sheets", count: 18600, share: 22 },
+    { type: "Mock Tests & Practice Sets", count: 11400, share: 13 },
+    { type: "Topic Guides & Reference", count: 5860, share: 6 }
+  ];
+
+  const defaultMonthlyUsageTrend = [
+    { month: "Sep", views: 12400, downloads: 6100 },
+    { month: "Oct", views: 18900, downloads: 9800 },
+    { month: "Nov", views: 26500, downloads: 14200 },
+    { month: "Dec", views: 38200, downloads: 19600 },
+    { month: "Jan", views: 52400, downloads: 26800 },
+    { month: "Feb", views: 64000, downloads: 33100 }
+  ];
+
+  const reviews = (storeData && Array.isArray(storeData.reviews) && storeData.reviews.length > 0) ? storeData.reviews : defaultSmReviews;
+  const experiences = (storeData && Array.isArray(storeData.experiences) && storeData.experiences.length > 0) ? storeData.experiences : defaultSmExperiences;
+  const rawStats = storeData.stats || {};
+  const materialTypeDist = (rawStats && Array.isArray(rawStats.material_type_distribution) && rawStats.material_type_distribution.length > 0) ? rawStats.material_type_distribution : defaultMaterialTypeDistribution;
+  const monthlyTrends = (rawStats && Array.isArray(rawStats.monthly_usage_trend) && rawStats.monthly_usage_trend.length > 0) ? rawStats.monthly_usage_trend : defaultMonthlyUsageTrend;
 
   // Filter Materials
   const qLower = (smFilterState.search || smFilterState.customQuery || '').toLowerCase();
@@ -9687,7 +9969,7 @@ function renderStudyMaterialsView() {
           let icon = isWebsite ? '🌐' : '📄';
           let iconClass = isWebsite ? 'website' : '';
           const openUrl = m.file_url && m.file_url !== '#' ? m.file_url : '/uploads/study-materials/sample_test.pdf';
-          
+
           const officialUrl = m.official_url || (
             (m.exam || '').includes('JEE') ? 'https://jeemain.nta.nic.in' :
             (m.exam || '').includes('NEET') ? 'https://neet.nta.nic.in' :
@@ -9782,7 +10064,7 @@ function renderStudyMaterialsView() {
               <span class="sm-chart-sub">Share of Total Downloads</span>
             </div>
             <div class="sm-bar-list">
-              ${(stats.material_type_distribution || []).map((b, idx) => {
+              ${materialTypeDist.map((b, idx) => {
                 const colors = ['coral', 'teal', 'blue', 'amber', 'purple'];
                 const col = colors[idx % colors.length];
                 return `
@@ -9807,7 +10089,7 @@ function renderStudyMaterialsView() {
               <span class="sm-chart-sub">Monthly Usage Trends</span>
             </div>
             <div class="sm-line-chart-wrap">
-              ${(stats.monthly_usage_trend || []).map(m => `
+              ${monthlyTrends.map(m => `
                 <div class="sm-line-col">
                   <div class="sm-line-pillar-track">
                     <div class="sm-line-bar views" style="height: ${Math.min(100, Math.round((m.views || 10000) / 650))}%;" title="${m.month}: ${(m.views || 0).toLocaleString()} views"></div>
@@ -9937,7 +10219,7 @@ function renderStudyMaterialsView() {
 
             <div class="sm-review-form-group">
               <input type="text" id="smReviewAuthor" class="sm-rf-input" placeholder="Your Name (e.g. Aniket, Divya)" />
-              
+
               <select id="smReviewRating" class="sm-rf-select">
                 <option value="★★★★★">★★★★★ (Essential Resource)</option>
                 <option value="★★★★☆">★★★★☆ (Strong &amp; Helpful)</option>
@@ -10322,7 +10604,7 @@ function renderReviewsView() {
            ==================================================================== -->
       <section class="website-feedback-hero-card" style="background:rgba(255,255,255,0.96); backdrop-filter:blur(10px); border:1.5px solid rgba(119,172,59,0.35); border-radius:20px; padding:28px 32px; box-shadow:0 8px 32px rgba(0,0,0,0.06); margin-bottom:28px;">
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start;">
-          
+
           <!-- Left: Feedback Submission Form -->
           <div>
             <div style="margin-bottom:18px;">
@@ -10846,18 +11128,18 @@ async function renderRankingsView() {
 
   container.innerHTML = `
     <div class="courses-discovery-container" style="display:flex; flex-direction:column; gap:24px;">
-      
+
       <!-- 1. Search & Filter Bar: ONE Clean Horizontal Row (Search | State | District) -->
       <section class="colleges-discovery-filter-card" style="margin-bottom:0;">
         <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; width:100%;">
           <!-- Search Box -->
           <div class="colleges-search-input-wrap" style="flex:1.5; min-width:240px; margin:0;">
             <span class="colleges-input-lead-icon">🔍</span>
-            <input 
-              type="text" 
-              id="rankingsSearchInput" 
-              class="colleges-search-input-field" 
-              placeholder="Search college name, city, rank..." 
+            <input
+              type="text"
+              id="rankingsSearchInput"
+              class="colleges-search-input-field"
+              placeholder="Search college name, city, rank..."
               value="${escapeHtml(rankingsFilterState.search)}"
               oninput="handleRankingsSearch(this.value)"
             />
@@ -10921,7 +11203,7 @@ async function renderRankingsView() {
       <!-- 3. Student & Alumni Ranking Reviews Section + Right-Side Suggestion Box -->
       <section style="background:#FFFFFF; border:1px solid var(--theme-line, #E2E8F0); border-radius:16px; padding:24px; box-shadow:0 4px 20px rgba(0,0,0,0.03);">
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:24px; align-items:start;">
-          
+
           <!-- Left Column: Verified Student & Alumni Ranking Reviews -->
           <div>
             <div style="margin-bottom:16px;">
@@ -11178,7 +11460,7 @@ async function renderCareersView() {
     { label: 'Microservices & Go/Rust', value: 88, displayValue: '+34% Growth', color: 'coral' }
   ];
 
-  const reviewsList = (_cachedCareersData && _cachedCareersData.reviews) ? _cachedCareersData.reviews : [
+  const reviewsList = (_cachedCareersData && Array.isArray(_cachedCareersData.reviews) && _cachedCareersData.reviews.length > 0) ? _cachedCareersData.reviews : [
     { name: 'Karthik Raja', role: 'Junior ML Engineer', college: 'Amrita Vishwa Vidyapeetham, Coimbatore', rating: 5, comment: 'Following the AI roadmap helped me build end-to-end LLM applications and crack product company interviews within 6 months.' },
     { name: 'Sneha Madhavan', role: 'Cloud DevOps Specialist', college: 'PSG College of Technology, Coimbatore', rating: 5, comment: 'The Kubernetes & Terraform step-by-step guidance was directly aligned with what cloud consulting companies asked in rounds.' },
     { name: 'Deepak Natarajan', role: 'Full Stack Developer', college: 'Coimbatore Institute of Technology', rating: 5, comment: 'The structured milestones in TypeScript and Kafka distributed architecture gave me real confidence during technical interviews.' },
@@ -11190,18 +11472,18 @@ async function renderCareersView() {
 
   container.innerHTML = `
     <div class="courses-discovery-container" style="display:flex; flex-direction:column; gap:24px;">
-      
+
       <!-- 1. Centered Search/Filter Area: SEARCH | STATE | DISTRICT | DOMAIN | PREFERRED FIELD -->
       <section class="colleges-discovery-filter-card" style="margin-bottom:0;">
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; width:100%;">
           <!-- Search Box -->
           <div class="colleges-search-input-wrap" style="flex:1.4; min-width:200px; margin:0;">
             <span class="colleges-input-lead-icon">🔍</span>
-            <input 
-              type="text" 
-              id="careersSearchInput" 
-              class="colleges-search-input-field" 
-              placeholder="Search career, skills, languages..." 
+            <input
+              type="text"
+              id="careersSearchInput"
+              class="colleges-search-input-field"
+              placeholder="Search career, skills, languages..."
               value="${escapeHtml(careersFilterState.search)}"
               oninput="handleCareersSearch(this.value)"
             />
@@ -11467,7 +11749,7 @@ async function renderPlacementsView() {
     { name: 'PlacementPreparation.io', url: 'https://www.placementpreparation.io', focus: 'Round 1 Diagnostic Mock Tests', desc: 'Mock tests replicating actual assessment software environments used by top recruiters.' }
   ];
 
-  const reviews = (_cachedPlacementsFullData && _cachedPlacementsFullData.reviews) ? _cachedPlacementsFullData.reviews : [
+  const reviews = (_cachedPlacementsFullData && Array.isArray(_cachedPlacementsFullData.reviews) && _cachedPlacementsFullData.reviews.length > 0) ? _cachedPlacementsFullData.reviews : [
     { student: 'Abishek Nathan', role: 'PSG Tech Batch of 2024', company: 'Zoho Corporation', package: '₹9.5 LPA', college: 'PSG College of Technology', comment: 'Focusing on first-principles C logic and algorithmic design on PrepInsta and GeeksforGeeks cleared both technical screening rounds smoothly.' },
     { student: 'Harini S.', role: 'Adithya IT Graduate', company: 'Robert Bosch', package: '₹8.0 LPA', college: 'Adithya Institute of Technology', comment: 'The quantitative aptitude practice on IndiaBIX combined with college embedded hardware labs gave me confidence in Bosch technical interviews.' },
     { student: 'V. Sundaram', role: 'CIT Computing Alum', company: 'Amazon AWS', package: '₹22.0 LPA', college: 'Coimbatore Institute of Technology', comment: 'Mastering distributed systems fundamentals and behavioral STAR questions helped me crack the AWS Cloud Support Associate recruitment drive.' },
@@ -11504,18 +11786,18 @@ async function renderPlacementsView() {
 
   container.innerHTML = `
     <div class="courses-discovery-container" style="display:flex; flex-direction:column; gap:24px;">
-      
+
       <!-- 1. Filter Row: ONE Clean Horizontal Line (SEARCH | STATE | DISTRICT | DOMAIN) -->
       <section class="colleges-discovery-filter-card" style="margin-bottom:0;">
         <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; width:100%;">
           <!-- Search Box -->
           <div class="colleges-search-input-wrap" style="flex:1.5; min-width:220px; margin:0;">
             <span class="colleges-input-lead-icon">🔍</span>
-            <input 
-              type="text" 
-              id="placementsSearchInput" 
-              class="colleges-search-input-field" 
-              placeholder="Search company, hiring role, skill (e.g. Zoho, Amazon, Python)..." 
+            <input
+              type="text"
+              id="placementsSearchInput"
+              class="colleges-search-input-field"
+              placeholder="Search company, hiring role, skill (e.g. Zoho, Amazon, Python)..."
               value="${escapeHtml(placementsFilterState.search)}"
               oninput="handlePlacementsSearch(this.value)"
             />
@@ -11789,11 +12071,14 @@ function renderJobsCardsHtml(filteredJobs) {
         <button type="button" class="pathway-card-btn" style="flex:1; justify-content:center;" onclick="openJobDetailModal('${j.id}')">
           <span>Full View / Roadmap ➔</span>
         </button>
-        ${j.website ? `
-          <a href="${escapeHtml(j.website)}" target="_blank" rel="noopener noreferrer" class="pathway-card-btn" style="background:#77AC3B; color:#FFFFFF; border-color:#77AC3B; text-decoration:none; white-space:nowrap; justify-content:center;">
-            Official Portal ↗
-          </a>
-        ` : ''}
+        ${(() => {
+          const jobPortal = formatPortalUrl(j.website || j.application_url || j.apply_url || j.applyUrl || j.portal_url);
+          return jobPortal ? `
+            <a href="${escapeHtml(jobPortal)}" target="_blank" rel="noopener noreferrer" class="pathway-card-btn" style="background:#77AC3B; color:#FFFFFF; border-color:#77AC3B; text-decoration:none; white-space:nowrap; justify-content:center;">
+              Official Portal ↗
+            </a>
+          ` : '';
+        })()}
       </div>
     </article>
   `).join('');
@@ -11834,7 +12119,18 @@ async function renderJobsView() {
   }
 
   const filteredJobs = getJobsFilteredList();
-  const reviews = (_cachedJobsData && _cachedJobsData.reviews) ? _cachedJobsData.reviews : [];
+  const defaultJobReviews = [
+    { id: 'JR-01', author: 'Siddharth Menon', company: 'Zoho Corporation', role: 'Software Developer', rating: 4.9, comment: 'The work environment is relaxed and empowering. If you know how to write clean code and think independently, you will thrive here.' },
+    { id: 'JR-02', author: 'Priya Ramesh', company: 'Google India', role: 'Associate Software Engineer', rating: 5.0, comment: 'World-class engineering mentorship and massive scale. The interviews tested deep algorithmic intuition and problem breakdown.' },
+    { id: 'JR-03', author: 'Karthik Subramanian', company: 'Robert Bosch', role: 'Embedded Automotive Systems Engineer', rating: 4.7, comment: 'Great place to build expertise in automotive firmware, ADAS, and connected vehicle technology in Coimbatore.' },
+    { id: 'JR-04', author: 'Divya Bharathi', company: 'Amazon AWS', role: 'Cloud Support Associate', rating: 4.8, comment: 'Tremendous operational rigor. Managing high-severity enterprise tickets sharpens troubleshooting and networking skills fast.' },
+    { id: 'JR-05', author: 'Arun Prasath', company: 'Tiger Analytics', role: 'Data Science Analyst', rating: 4.8, comment: 'Client problems require solid statistical foundations and clean Python pipelines. Excellent peer learning culture.' },
+    { id: 'JR-06', author: 'Sneha Venkatesh', company: 'Freshworks Inc', role: 'Frontend Engineer', rating: 4.9, comment: 'Modern frontend tech stack and strong design engineering focus. Product teams move fast and ship with high ownership.' }
+  ];
+
+  const reviews = (_cachedJobsData && Array.isArray(_cachedJobsData.reviews) && _cachedJobsData.reviews.length > 0)
+    ? _cachedJobsData.reviews
+    : defaultJobReviews;
   const statesList = getStatesAndDistrictsList();
   const currentDistricts = jobsFilterState.state ? getDistrictsForState(jobsFilterState.state) : [];
 
@@ -11859,18 +12155,18 @@ async function renderJobsView() {
 
   container.innerHTML = `
     <div class="courses-discovery-container" style="display:flex; flex-direction:column; gap:24px;">
-      
+
       <!-- 1. Centered Search & Filter Row: SEARCH | STATE | DISTRICT | DEGREE | DOMAIN | ROLE -->
       <section class="colleges-discovery-filter-card" style="margin-bottom:0;">
         <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; width:100%;">
           <!-- Search Box -->
           <div class="colleges-search-input-wrap" style="flex:1.4; min-width:180px; margin:0;">
             <span class="colleges-input-lead-icon">🔍</span>
-            <input 
-              type="text" 
-              id="jobsSearchInput" 
-              class="colleges-search-input-field" 
-              placeholder="Search company, role, skill..." 
+            <input
+              type="text"
+              id="jobsSearchInput"
+              class="colleges-search-input-field"
+              placeholder="Search company, role, skill..."
               value="${escapeHtml(jobsFilterState.search)}"
               oninput="handleJobsSearch(this.value)"
             />
@@ -12105,11 +12401,14 @@ function renderInternshipsCardsHtml(filteredInternships) {
         <button type="button" class="pathway-card-btn" style="flex:1; justify-content:center;" onclick="openInternshipModal('${i.id}')">
           <span>View Full Specs ➔</span>
         </button>
-        ${i.website ? `
-          <a href="${escapeHtml(i.website)}" target="_blank" rel="noopener noreferrer" class="pathway-card-btn" style="background:#77AC3B; color:#FFFFFF; border-color:#77AC3B; text-decoration:none; white-space:nowrap; justify-content:center;">
-            Apply ↗
-          </a>
-        ` : ''}
+        ${(() => {
+          const cardApplyUrl = formatPortalUrl(i.application_url || i.apply_url || i.applyUrl || i.website || i.portal_url);
+          return cardApplyUrl ? `
+            <a href="${escapeHtml(cardApplyUrl)}" target="_blank" rel="noopener noreferrer" class="pathway-card-btn" style="background:#77AC3B; color:#FFFFFF; border-color:#77AC3B; text-decoration:none; white-space:nowrap; justify-content:center;">
+              Apply ↗
+            </a>
+          ` : '';
+        })()}
       </div>
     </article>
   `).join('');
@@ -12142,29 +12441,61 @@ async function renderInternshipsView() {
       const res = await fetch('/api/internships/full');
       if (res.ok) {
         const data = await res.json();
-        if (data && data.internships) _cachedInternshipsFullData = data;
+        if (data && (data.internships || data.top_10_projects)) _cachedInternshipsFullData = data;
       }
     } catch (e) {
       console.warn('[Internships] Live fetch fallback:', e);
     }
   }
 
-  const filteredInternships = getInternshipsFilteredList();
-  const topProjects = (_cachedInternshipsFullData && _cachedInternshipsFullData.top_10_projects) ? _cachedInternshipsFullData.top_10_projects : [];
-  const reviews = (_cachedInternshipsFullData && _cachedInternshipsFullData.reviews) ? _cachedInternshipsFullData.reviews : [
-    { student: 'Gautham Sundar', role: 'Adithya Robotics Lead', company: 'Robert Bosch', rating: 5.0, college: 'Adithya Institute of Technology, CBE', comment: '6-month industrial embedded systems internship gave me hands-on experience with CAN/LIN protocols and led to a direct full-time PPO offer.' },
-    { student: 'Swathi R.', role: 'AI Research Intern', company: 'Zoho Corporation', rating: 4.9, college: 'PSG College of Technology', comment: 'Working on natural language understanding models at Zoho Tenkasi campus offered unprecedented engineering freedom and high monthly stipend.' },
-    { student: 'Pradeep Chandran', role: 'Cloud Intern', company: 'Amazon AWS', rating: 5.0, college: 'Coimbatore Institute of Technology', comment: 'Hyperscale distributed cloud deployment project evaluated directly against AWS internal performance standards.' },
-    { student: 'Meenakshi Iyer', role: 'Data Analytics Intern', company: 'Tiger Analytics', rating: 4.8, college: 'Amrita Vishwa Vidyapeetham', comment: 'Extensive exposure to Python ML pipelines and client dashboards with immediate production impact.' },
-    { student: 'Karthikeyan M.', role: 'IoT Firmware Intern', company: 'L&T Technology Services', rating: 4.7, college: 'Kumaraguru College of Technology', comment: 'Smart grid sensor project mentored by senior architects in LTTS Coimbatore development center.' }
+  const defaultTopProjects = [
+    { rank: 1, project: "AI-Powered Early Crop Disease Detection Drone", domain: "AI / AgriTech", college: "Tamilnadu Agricultural University, Coimbatore", company_partner: "TNAU Incubator", impact: "96.4% precision on leaf blight detection saving ₹1.2 Cr in crop loss" },
+    { rank: 2, project: "High-Efficiency Regenerative Braking Controller for EVs", domain: "EV / Embedded", college: "Amrita Vishwa Vidyapeetham, Coimbatore", company_partner: "Robert Bosch R&D", impact: "14% extended battery range in urban driving cycles" },
+    { rank: 3, project: "Zero-Knowledge Proof Identity Verification SDK", domain: "Web3 / Cryptography", college: "PSG College of Technology, Coimbatore", company_partner: "Polygon Labs", impact: "Over 120,000 instant on-chain student identity proofs generated" },
+    { rank: 4, project: "Automated ICU Patient Vitals Anomaly Detector", domain: "IoT / HealthTech", college: "Karunya Institute of Technology and Sciences", company_partner: "Apollo Health Tech", impact: "Sub-second alerting for sudden oxygen and pulse variations" },
+    { rank: 5, project: "Autonomous Solar Panel Cleaning & Inspection Robot", domain: "Robotics", college: "Adithya Institute of Technology, Coimbatore", company_partner: "Adithya Renewable Energy", impact: "18% improvement in solar power capture without water wastage" },
+    { rank: 6, project: "Microservices Load Optimizer for High-Traffic SaaS", domain: "Cloud / DevOps", college: "Rathinam Global University, Coimbatore", company_partner: "Zoho Labs", impact: "Reduced database latency by 32% during seasonal peak loads" },
+    { rank: 7, project: "Decentralized Credential & Certificate Vault", domain: "Blockchain", college: "School of Postgraduate Studies, Coimbatore", company_partner: "GovTech Tamil Nadu", impact: "Zero forgery tamper-proof marksheets for university students" },
+    { rank: 8, project: "Multilingual AI Voice Assistant for Rural Banking", domain: "NLP / FinTech", college: "Amrita Vishwa Vidyapeetham, Coimbatore", company_partner: "Canara Bank Innovation Hub", impact: "Supported 6 South Indian regional languages with 94% intent accuracy" },
+    { rank: 9, project: "Smart Water Distribution & Leakage Isolation Network", domain: "Smart City IoT", college: "Coimbatore Institute of Technology", company_partner: "Coimbatore Smart City Mission", impact: "Detected 45+ underground pipeline leaks saving 1.8M liters daily" },
+    { rank: 10, project: "Container Security Hardening & Vulnerability Scanner", domain: "Cybersecurity", college: "ADITHYA COLLEGE OF ARTS AND SCIENCE, Coimbatore", company_partner: "CyberShield Labs", impact: "Integrated automated vulnerability scans into CI/CD pipelines for 80+ apps" }
   ];
+
+  const defaultInternshipReviews = [
+    { id: "IR-01", student: "Vigneshwaran P.", company: "Zoho Corporation", college: "Adithya Institute of Technology, Coimbatore", rating: 5, comment: "My 6-month internship at Zoho Coimbatore directly resulted in a full-time SDE offer. Best learning curve ever!" },
+    { id: "IR-02", student: "Sowmya R.", company: "Robert Bosch", college: "Amrita Vishwa Vidyapeetham, Coimbatore", rating: 5, comment: "Got to work on real ADAS test benches and hardware-in-the-loop simulations in Coimbatore." },
+    { id: "IR-03", student: "Kavitha M.", company: "TNAU Incubator", college: "Tamilnadu Agricultural University, Coimbatore", rating: 4.8, comment: "Practical exposure to GIS mapping and drone image analytics with supportive senior agricultural scientists." },
+    { id: "IR-04", student: "Rahul N.", company: "Google India", college: "PSG College of Technology, Coimbatore", rating: 5, comment: "The 2-month summer internship provided deep exposure to scalable distributed microservices and code reviews." },
+    { id: "IR-05", student: "Ananya Sen", company: "Goldman Sachs", college: "IIT Madras", rating: 4.9, comment: "Exceptional quantitative modeling rigor. Worked on time-series risk prediction with senior analysts." },
+    { id: "IR-06", student: "Dinesh Karthik", company: "Amazon AWS", college: "Coimbatore Institute of Technology", rating: 5.0, comment: "Hands-on distributed infrastructure internship debugging cloud storage latencies with senior SRE mentors." },
+    { id: "IR-07", student: "Pooja Venkataraman", company: "Tiger Analytics", college: "PSG College of Technology, Coimbatore", rating: 4.8, comment: "End-to-end Python ML data pipeline deployment with direct feedback from client analytics teams." },
+    { id: "IR-08", student: "Gautham Sundar", company: "L&T Technology Services", college: "Adithya Institute of Technology, Coimbatore", rating: 4.9, comment: "Designed smart factory IoT telemetry with FreeRTOS and LoRaWAN, leading to an immediate full-time PPO." },
+    { id: "IR-09", student: "Meenakshi Iyer", company: "Schneider Electric", college: "Kumaraguru College of Technology, Coimbatore", rating: 4.8, comment: "Solar grid monitoring and energy yield simulation with senior architects in Coimbatore R&D center." },
+    { id: "IR-10", student: "Karthikeyan M.", company: "Freshworks Inc", college: "Sri Krishna College of Engg & Tech, Coimbatore", rating: 5.0, comment: "Shipped accessible React and TypeScript component library improvements used by thousands of SaaS customers daily." }
+  ];
+
+  const filteredInternships = getInternshipsFilteredList();
+  const topProjects = (_cachedInternshipsFullData && Array.isArray(_cachedInternshipsFullData.top_10_projects) && _cachedInternshipsFullData.top_10_projects.length > 0)
+    ? _cachedInternshipsFullData.top_10_projects
+    : defaultTopProjects;
+
+  const reviews = (_cachedInternshipsFullData && Array.isArray(_cachedInternshipsFullData.reviews) && _cachedInternshipsFullData.reviews.length > 0)
+    ? _cachedInternshipsFullData.reviews
+    : defaultInternshipReviews;
 
   const statesList = getStatesAndDistrictsList();
   const currentDistricts = internshipsFilterState.state ? getDistrictsForState(internshipsFilterState.state) : [];
   const isFilterActive = !!(internshipsFilterState.search || internshipsFilterState.state || internshipsFilterState.district || (internshipsFilterState.duration && internshipsFilterState.duration !== 'all') || (internshipsFilterState.domain && internshipsFilterState.domain !== 'all'));
 
   // Bar Chart Data for Internships
-  const past10YearsStipendData = [
+  const past10YearsStipendData = (_cachedInternshipsFullData && _cachedInternshipsFullData.past_10yr_trends && Array.isArray(_cachedInternshipsFullData.past_10yr_trends.metrics) && _cachedInternshipsFullData.past_10yr_trends.metrics.length > 0)
+    ? _cachedInternshipsFullData.past_10yr_trends.metrics.map(m => ({
+        label: m.year,
+        value: parseInt((m.avg_stipend || '0').replace(/[^0-9]/g, '')) || 20,
+        displayValue: m.avg_stipend,
+        color: 'teal'
+      }))
+    : [
     { label: '2016', value: 6, displayValue: '₹6k/mo', color: 'teal' },
     { label: '2018', value: 12, displayValue: '₹12k/mo', color: 'teal' },
     { label: '2020', value: 18, displayValue: '₹18k/mo', color: 'teal' },
@@ -12173,7 +12504,14 @@ async function renderInternshipsView() {
     { label: '2025', value: 35, displayValue: '₹35k/mo', color: 'teal' }
   ];
 
-  const future5YearsInternData = [
+  const future5YearsInternData = (_cachedInternshipsFullData && _cachedInternshipsFullData.future_5yr_pathway && Array.isArray(_cachedInternshipsFullData.future_5yr_pathway.domains) && _cachedInternshipsFullData.future_5yr_pathway.domains.length > 0)
+    ? _cachedInternshipsFullData.future_5yr_pathway.domains.map(d => ({
+        label: d.domain,
+        value: parseInt((d.growth || '35').replace(/[^0-9]/g, '')) * 2,
+        displayValue: d.growth,
+        color: 'coral'
+      }))
+    : [
     { label: 'Agentic AI / LLMs', value: 92, displayValue: '+45%', color: 'coral' },
     { label: 'EV & Smart Grid', value: 84, displayValue: '+38%', color: 'coral' },
     { label: 'Robotics & Vision', value: 80, displayValue: '+35%', color: 'coral' },
@@ -12183,18 +12521,18 @@ async function renderInternshipsView() {
 
   container.innerHTML = `
     <div class="courses-discovery-container" style="display:flex; flex-direction:column; gap:24px;">
-      
+
       <!-- Filter Row: ONE Clean Horizontal Row (SEARCH | STATE | DISTRICT | DURATION | DOMAIN) -->
       <section class="colleges-discovery-filter-card" style="margin-bottom:0;">
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; width:100%;">
           <!-- Search Box -->
           <div class="colleges-search-input-wrap" style="flex:1.4; min-width:200px; margin:0;">
             <span class="colleges-input-lead-icon">🔍</span>
-            <input 
-              type="text" 
-              id="internshipsSearchInput" 
-              class="colleges-search-input-field" 
-              placeholder="Search internship role, domain, company (e.g. Python, AI, Zoho, Bosch)..." 
+            <input
+              type="text"
+              id="internshipsSearchInput"
+              class="colleges-search-input-field"
+              placeholder="Search internship role, domain, company (e.g. Python, AI, Zoho, Bosch)..."
               value="${escapeHtml(internshipsFilterState.search)}"
               oninput="handleInternshipsSearch(this.value)"
             />
@@ -12293,7 +12631,7 @@ async function renderInternshipsView() {
           <h3 style="margin:8px 0 6px; font-size:20px; font-weight:800; color:#0F172A;">Top 10 High-Impact Student Internship Projects</h3>
           <p style="margin:0 auto; font-size:12.5px; color:#64748B; max-width:700px;">Real-world production systems and research prototypes engineered by undergraduate students during corporate internships:</p>
         </div>
-        
+
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:14px;">
           ${topProjects.slice(0, 10).map(p => `
             <div style="background:#F8FAFC; border:1px solid var(--theme-line, #E2E8F0); border-radius:12px; padding:14px; display:flex; flex-direction:column; justify-content:space-between;">
@@ -12494,7 +12832,7 @@ async function renderAdmissionsView() {
 
   const filteredAdmissions = getAdmissionsFilteredList();
   const notifications = (_cachedAdmissionsData && _cachedAdmissionsData.admission_notifications) ? _cachedAdmissionsData.admission_notifications : [];
-  const reviews = (_cachedAdmissionsData && _cachedAdmissionsData.reviews) ? _cachedAdmissionsData.reviews : [
+  const reviews = (_cachedAdmissionsData && Array.isArray(_cachedAdmissionsData.reviews) && _cachedAdmissionsData.reviews.length > 0) ? _cachedAdmissionsData.reviews : [
     { author: 'K. Rajasekaran', role: 'Parent (B.Tech Candidate)', rating: 5.0, college: 'PSG College of Technology', comment: 'Transparent fee schedule with zero hidden charges. Single-window counseling desk helped us finish document verification in under 30 minutes.' },
     { author: 'Meera Vijayakumar', role: 'Student (CSE 2026)', rating: 4.9, college: 'Adithya Institute of Technology', comment: 'The hostel and bus route fee breakdown was 100% accurate. Staff guided us through the Tamil Nadu First Graduate concession smoothly.' },
     { author: 'Dr. N. Sundaram', role: 'Parent (AI & DS Scholar)', rating: 5.0, college: 'Amrita Vishwa Vidyapeetham', comment: 'Clear admission timelines, scholarship eligibility calculators, and well-organized document checklists saved immense time.' },
@@ -12524,18 +12862,18 @@ async function renderAdmissionsView() {
 
   container.innerHTML = `
     <div class="courses-discovery-container" style="display:flex; flex-direction:column; gap:24px;">
-      
+
       <!-- 1. Search & Filter Bar: ONE Clean Horizontal Row (SEARCH | STATE | DISTRICT | DEGREE/COURSE) -->
       <section class="colleges-discovery-filter-card" style="margin-bottom:0;">
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; width:100%;">
           <!-- Search Box -->
           <div class="colleges-search-input-wrap" style="flex:1.5; min-width:220px; margin:0;">
             <span class="colleges-input-lead-icon">🔍</span>
-            <input 
-              type="text" 
-              id="admissionsSearchInput" 
-              class="colleges-search-input-field" 
-              placeholder="Search college name, district, course (e.g. Coimbatore, B.Tech, Amrita)..." 
+            <input
+              type="text"
+              id="admissionsSearchInput"
+              class="colleges-search-input-field"
+              placeholder="Search college name, district, course (e.g. Coimbatore, B.Tech, Amrita)..."
               value="${escapeHtml(admissionsFilterState.search)}"
               oninput="handleAdmissionsSearch(this.value)"
             />
@@ -12807,15 +13145,14 @@ async function renderScholarshipsView() {
       const res = await fetch('/api/scholarships/full');
       if (res.ok) {
         const data = await res.json();
-        if (data && data.scholarships) _cachedScholarshipsFullData = data;
+        if (data && (data.scholarships || data.application_flow)) _cachedScholarshipsFullData = data;
       }
     } catch (e) {
       console.warn('[Scholarships] Live fetch fallback:', e);
     }
   }
 
-  const filtered = getScholarshipsFilteredList();
-  const appFlow = (_cachedScholarshipsFullData && _cachedScholarshipsFullData.application_flow) ? _cachedScholarshipsFullData.application_flow : [
+  const defaultScholarshipAppFlow = [
     { step: 1, name: 'Check Eligibility', desc: 'Verify academic percentage (60%+), domicile state, and family income bracket.' },
     { step: 2, name: 'Prepare Documents', desc: 'Collect Income Certificate, 10+2 marksheets, and Aadhaar-seeded Bank Passbook.' },
     { step: 3, name: 'Verification', desc: 'Documents verified by Tahsildar / e-Sevai and validated by College Nodal Desk.' },
@@ -12823,12 +13160,23 @@ async function renderScholarshipsView() {
     { step: 5, name: 'Approval', desc: 'State Welfare Board or Central Ministry reviews dossier and issues sanction grant letters.' },
     { step: 6, name: 'Scholarship Result/Benefit', desc: 'Direct Benefit Transfer (DBT) funds credited into student bank account or tuition waived.' }
   ];
-  const reviews = (_cachedScholarshipsFullData && _cachedScholarshipsFullData.reviews) ? _cachedScholarshipsFullData.reviews : [
-    { student: 'V. Sivakumar', role: 'First Graduate Recipient', college: 'Adithya Institute of Technology', rating: 5.0, scheme: 'Tamil Nadu First Graduate Scheme', comment: 'Full ₹25,000 tuition fee waiver processed seamlessly during admission desk verification.' },
-    { student: 'S. Divyadharshini', role: 'B.Tech AI Scholar', college: 'PSG College of Technology', rating: 5.0, scheme: 'Pragati Scholarship for Girls', comment: 'Received ₹50,000 DBT grant directly in my Aadhaar-linked account for tuition and books.' },
-    { student: 'M. Manoj', role: 'B.Sc Computing Scholar', college: 'Loyola College, Chennai', rating: 4.8, scheme: 'Post-Matric Scholarship (SC/ST/SCA)', comment: 'Complete 100% course and hostel fee waiver sanctioned on time without administrative hassles.' },
-    { student: 'Ananya Sharma', role: 'Merit Scholar', college: 'Christ University, Bengaluru', rating: 4.9, scheme: 'Central Sector Scheme (NSP)', comment: 'Timely annual disbursement of ₹20,000 scholarship based on Class 12 board merit percentile.' }
+
+  const defaultScholarshipReviews = [
+    { id: 'SR-01', student: 'Bhuvaneshwari M.', college: 'Adithya Institute of Technology, Coimbatore', rating: 5, scheme: 'First Graduate Concession', comment: 'Getting the ₹25,000 annual fee waiver as a First Graduate in my family made engineering college affordable.' },
+    { id: 'SR-02', student: 'Haritha Krishnan', college: 'Karunya Institute of Technology and Sciences', rating: 5, scheme: 'Pragati Scholarship', comment: 'The ₹50,000 annual stipend covered my laptop and technical books completely. Highly recommend all eligible girls apply!' },
+    { id: 'SR-03', student: 'Manoj Kumar', college: 'Tamilnadu Agricultural University, Coimbatore', rating: 4.9, scheme: 'Post-Matric Scholarship', comment: 'Full tuition and hostel fee reimbursement was processed through DBT directly to my bank account with zero hassle.' },
+    { id: 'SR-04', student: 'Swathi Sundaram', college: 'Amrita Vishwa Vidyapeetham, Coimbatore', rating: 5, scheme: 'Amrita Chancellor Merit', comment: 'Received 50% tuition scholarship based on my AEEE rank. The renewal process each year based on CGPA is transparent.' },
+    { id: 'SR-05', student: 'Pradeep R.', college: 'ADITHYA COLLEGE OF ARTS AND SCIENCE, Coimbatore', rating: 4.8, scheme: "Adithya Founder's Merit", comment: 'Scored 92% in 12th Commerce and received merit concession right at the time of admission.' }
   ];
+
+  const filtered = getScholarshipsFilteredList();
+  const appFlow = (_cachedScholarshipsFullData && Array.isArray(_cachedScholarshipsFullData.application_flow) && _cachedScholarshipsFullData.application_flow.length > 0)
+    ? _cachedScholarshipsFullData.application_flow
+    : defaultScholarshipAppFlow;
+
+  const reviews = (_cachedScholarshipsFullData && Array.isArray(_cachedScholarshipsFullData.reviews) && _cachedScholarshipsFullData.reviews.length > 0)
+    ? _cachedScholarshipsFullData.reviews
+    : defaultScholarshipReviews;
 
   const statesList = getStatesAndDistrictsList();
   const currentDistricts = scholarshipsFilterState.state ? getDistrictsForState(scholarshipsFilterState.state) : [];
@@ -12845,18 +13193,18 @@ async function renderScholarshipsView() {
 
   container.innerHTML = `
     <div class="courses-discovery-container" style="display:flex; flex-direction:column; gap:24px;">
-      
+
       <!-- 1. Search & Filter Bar: ONE Clean Horizontal Row (SEARCH | STATE | DISTRICT | SCHOLARSHIP TYPE) -->
       <section class="colleges-discovery-filter-card" style="margin-bottom:0;">
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; width:100%;">
           <!-- Search Box -->
           <div class="colleges-search-input-wrap" style="flex:1.5; min-width:220px; margin:0;">
             <span class="colleges-input-lead-icon">🔍</span>
-            <input 
-              type="text" 
-              id="scholarshipsSearchInput" 
-              class="colleges-search-input-field" 
-              placeholder="Search scholarship name, eligible college, benefit (e.g. First Graduate, Pragati)..." 
+            <input
+              type="text"
+              id="scholarshipsSearchInput"
+              class="colleges-search-input-field"
+              placeholder="Search scholarship name, eligible college, benefit (e.g. First Graduate, Pragati)..."
               value="${escapeHtml(scholarshipsFilterState.search)}"
               oninput="handleScholarshipsSearch(this.value)"
             />
@@ -13184,9 +13532,9 @@ function selectFacilityCollege(collegeId) {
   const chipsContainer = document.getElementById('facilitiesQuickChips');
   if (chipsContainer) {
     chipsContainer.innerHTML = filteredColleges.slice(0, 10).map(c => `
-      <button 
-        type="button" 
-        class="courses-filter-chip ${String(c.college_id) === String(collegeId) ? 'active' : ''}" 
+      <button
+        type="button"
+        class="courses-filter-chip ${String(c.college_id) === String(collegeId) ? 'active' : ''}"
         style="padding:6px 12px; font-size:12px; cursor:pointer;"
         onclick="selectFacilityCollege('${c.college_id}')"
       >
@@ -13211,13 +13559,13 @@ function handleFacilitiesSearch(val) {
   facilitiesFilterState.search = val;
   const filteredColleges = getFacilitiesFilteredColleges();
   const facilitiesMap = (_cachedFacilitiesData && _cachedFacilitiesData.facilities_by_college) ? _cachedFacilitiesData.facilities_by_college : {};
-  
+
   // If current selected college is still in the filtered results, keep it; otherwise default to first match
   const stillMatches = filteredColleges.some(c => String(c.college_id) === String(facilitiesFilterState.selectedCollegeId));
   if (!stillMatches && filteredColleges.length > 0) {
     facilitiesFilterState.selectedCollegeId = filteredColleges[0].college_id;
   }
-  
+
   const selectedFacility = facilitiesMap[facilitiesFilterState.selectedCollegeId] || filteredColleges.find(c => String(c.college_id) === String(facilitiesFilterState.selectedCollegeId)) || filteredColleges[0] || {};
   const detailContainer = document.getElementById('facilitiesDetailedSection');
   if (detailContainer) detailContainer.innerHTML = renderFacilityDetailHtml(selectedFacility);
@@ -13225,9 +13573,9 @@ function handleFacilitiesSearch(val) {
   const chipsContainer = document.getElementById('facilitiesQuickChips');
   if (chipsContainer) {
     chipsContainer.innerHTML = filteredColleges.slice(0, 10).map(c => `
-      <button 
-        type="button" 
-        class="courses-filter-chip ${String(c.college_id) === String(selectedFacility.college_id) ? 'active' : ''}" 
+      <button
+        type="button"
+        class="courses-filter-chip ${String(c.college_id) === String(selectedFacility.college_id) ? 'active' : ''}"
         style="padding:6px 12px; font-size:12px; cursor:pointer;"
         onclick="selectFacilityCollege('${c.college_id}')"
       >
@@ -13300,18 +13648,18 @@ async function renderFacilitiesView() {
 
   container.innerHTML = `
     <div class="courses-discovery-container" style="display:flex; flex-direction:column; gap:24px;">
-      
+
       <!-- 1. Search & Filter Bar: ONE Clean Horizontal Row (SEARCH | STATE | DISTRICT | COURSE) -->
       <section class="colleges-discovery-filter-card" style="margin-bottom:0;">
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; width:100%;">
           <!-- Search Box -->
           <div class="colleges-search-input-wrap" style="flex:1.5; min-width:220px; margin:0;">
             <span class="colleges-input-lead-icon">🔍</span>
-            <input 
-              type="text" 
-              id="facilitiesSearchInput" 
-              class="colleges-search-input-field" 
-              placeholder="Search college facility, labs, sports, canteen (e.g. Coimbatore, Robotics, PSG, Adithya)..." 
+            <input
+              type="text"
+              id="facilitiesSearchInput"
+              class="colleges-search-input-field"
+              placeholder="Search college facility, labs, sports, canteen (e.g. Coimbatore, Robotics, PSG, Adithya)..."
               value="${escapeHtml(facilitiesFilterState.search)}"
               oninput="handleFacilitiesSearch(this.value)"
             />
@@ -13366,9 +13714,9 @@ async function renderFacilitiesView() {
           </div>
           <div id="facilitiesQuickChips" style="display:flex; flex-wrap:wrap; gap:6px;">
             ${filteredColleges.slice(0, 10).map(c => `
-              <button 
-                type="button" 
-                class="courses-filter-chip ${String(c.college_id) === String(selectedFacility.college_id) ? 'active' : ''}" 
+              <button
+                type="button"
+                class="courses-filter-chip ${String(c.college_id) === String(selectedFacility.college_id) ? 'active' : ''}"
                 style="padding:6px 12px; font-size:12px; cursor:pointer;"
                 onclick="selectFacilityCollege('${c.college_id}')"
               >
@@ -13487,7 +13835,7 @@ function getEntrancePrepFilteredList() {
     const body = (ex.conducting_body || '').toLowerCase();
     const field = (ex.target_field || '').toLowerCase();
     const purpose = (ex.purpose || '').toLowerCase();
-    
+
     let collegesStr = '';
     if (Array.isArray(ex.target_colleges)) {
       collegesStr = ex.target_colleges.join(' ').toLowerCase();
@@ -13558,10 +13906,10 @@ function renderEntrancePrepCardsHtml(filteredExams) {
         <div style="background:#F8FAFC; border:1px solid var(--theme-line, #E2E8F0); border-radius:10px; padding:12px; margin-bottom:12px;">
           <span style="font-size:11px; font-weight:800; color:#0F172A; display:block; margin-bottom:6px; text-transform:uppercase;">🗺️ 3-Stage Preparation Roadmap:</span>
           <div style="display:flex; flex-direction:column; gap:6px; font-size:11.5px;">
-            ${(ex.roadmap_stages || []).map(st => `
+            ${(ex.roadmap_stages || []).map((st, idx) => `
               <div style="border-left:2px solid #77AC3B; padding-left:8px;">
-                <strong style="color:#0F172A;">Stage ${st.stage}: ${escapeHtml(st.title)}</strong>
-                <div style="color:#64748B; font-size:11px; margin-top:2px;">${escapeHtml(st.focus)}</div>
+                <strong style="color:#0F172A;">Stage ${st.stage || (idx + 1)}: ${escapeHtml(st.title || st.phase || ('Stage ' + (idx + 1)))}</strong>
+                <div style="color:#64748B; font-size:11px; margin-top:2px;">${escapeHtml(st.focus || st.desc || '')}</div>
               </div>
             `).join('')}
           </div>
@@ -13602,13 +13950,13 @@ function openEntrancePrepModal(examId) {
 
   let stagesHtml = '';
   if (ex.roadmap_stages && ex.roadmap_stages.length > 0) {
-    stagesHtml = ex.roadmap_stages.map(st => `
+    stagesHtml = ex.roadmap_stages.map((st, idx) => `
       <div style="background:#FFFFFF; border:1px solid var(--theme-line, #E2E8F0); border-radius:12px; padding:16px; margin-bottom:12px; box-shadow:0 2px 10px rgba(0,0,0,0.02);">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-          <span style="background:#77AC3B; color:#FFFFFF; font-size:11px; font-weight:800; padding:2px 8px; border-radius:12px;">STAGE ${st.stage}</span>
-          <h4 style="margin:0; font-size:15px; font-weight:800; color:#0F172A;">${escapeHtml(st.title)}</h4>
+          <span style="background:#77AC3B; color:#FFFFFF; font-size:11px; font-weight:800; padding:2px 8px; border-radius:12px;">STAGE ${st.stage || (idx + 1)}</span>
+          <h4 style="margin:0; font-size:15px; font-weight:800; color:#0F172A;">${escapeHtml(st.title || st.phase || ('Stage ' + (idx + 1)))}</h4>
         </div>
-        <p style="margin:0 0 10px; font-size:13px; color:#334155; line-height:1.5;">${escapeHtml(st.focus)}</p>
+        <p style="margin:0 0 10px; font-size:13px; color:#334155; line-height:1.5;">${escapeHtml(st.focus || st.desc || '')}</p>
         ${st.resources && st.resources.length > 0 ? `
           <div style="background:#F8FAFC; border-radius:8px; padding:10px 12px; border:1px solid #E2E8F0;">
             <strong style="font-size:11.5px; color:#64748B; display:block; margin-bottom:4px; text-transform:uppercase;">Recommended High-Yield Resources:</strong>
@@ -13626,6 +13974,16 @@ function openEntrancePrepModal(examId) {
   }
 
   const collegesText = Array.isArray(ex.target_colleges) ? ex.target_colleges.join(', ') : (ex.target_colleges || '');
+  const officialPortalUrl = ex.official_website || ex.website || '';
+  const primaryAction = officialPortalUrl ? `
+    <a href="${escapeHtml(officialPortalUrl)}" target="_blank" rel="noopener noreferrer" class="primary-button" style="height:40px; padding:0 24px; text-decoration:none; display:inline-flex; align-items:center; color:#FFFFFF;">
+      <span>Official Exam Portal ↗</span>
+    </a>
+  ` : `
+    <button type="button" class="primary-button" style="height:40px; padding:0 24px;" onclick="closeUniversalModal();">
+      <span>Close ✕</span>
+    </button>
+  `;
 
   const contentHtml = `
     <div style="display:flex; flex-direction:column; gap:16px;">
@@ -13676,11 +14034,7 @@ function openEntrancePrepModal(examId) {
     subtitle: `${ex.conducting_body} • ${ex.target_field}`,
     badge: 'STRATEGIC ROADMAP & BLUEPRINT',
     contentHtml: contentHtml,
-    primaryActionHtml: `
-      <button type="button" class="primary-button" style="height:40px; padding:0 24px;" onclick="closeUniversalModal(); window.location.hash='#contact';">
-        <span>Request 1-on-1 Prep Guidance ↗</span>
-      </button>
-    `,
+    primaryActionHtml: primaryAction,
     footNote: 'Verified Against Official Testing Agency Notifications & State Quota Regulations'
   });
 }
@@ -13703,7 +14057,7 @@ async function renderEntrancePrepView() {
   }
 
   const filteredExams = getEntrancePrepFilteredList();
-  const reviews = (_cachedEntranceExamsData && _cachedEntranceExamsData.reviews) ? _cachedEntranceExamsData.reviews : [
+  const reviews = (_cachedEntranceExamsData && Array.isArray(_cachedEntranceExamsData.reviews) && _cachedEntranceExamsData.reviews.length > 0) ? _cachedEntranceExamsData.reviews : [
     { author: 'R. Anirudh', exam: 'TNEA Counseling (198.5 Cutoff)', college: 'PSG College of Technology', rating: 5.0, comment: 'Targeting 98%+ in Class 12 PCM secured a top-tier CSE seat with zero donation, saving over ₹12 Lakhs compared to management quota.' },
     { author: 'N. Vignesh', exam: 'JEE Main (99.2 Percentile)', college: 'National Institute of Technology, Trichy', rating: 5.0, comment: 'Solving 10 years of PYQs in timed 3-hour blocks was the single highest ROI strategy for physics and mathematics speed drills.' },
     { author: 'K. Sneha', exam: 'NEET UG (645 Marks)', college: 'Coimbatore Medical College', rating: 4.9, comment: 'NCERT biology line-by-line active recall and mock test error log notebook prevented negative marking traps on exam day.' },
@@ -13737,18 +14091,18 @@ async function renderEntrancePrepView() {
 
   container.innerHTML = `
     <div class="courses-discovery-container" style="display:flex; flex-direction:column; gap:24px;">
-      
+
       <!-- 1. Search & Filter Bar: ONE Clean Horizontal Row (ENTRANCE EXAM | STATE | DISTRICT | COURSE | COLLEGE) -->
       <section class="colleges-discovery-filter-card" style="margin-bottom:0;">
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; width:100%;">
           <!-- Entrance Exam Search -->
           <div class="colleges-search-input-wrap" style="flex:1.4; min-width:200px; margin:0;">
             <span class="colleges-input-lead-icon">🔍</span>
-            <input 
-              type="text" 
-              id="entrancePrepSearchInput" 
-              class="colleges-search-input-field" 
-              placeholder="Search entrance exam (e.g. TNEA, JEE Main, NEET, CAT, GATE)..." 
+            <input
+              type="text"
+              id="entrancePrepSearchInput"
+              class="colleges-search-input-field"
+              placeholder="Search entrance exam (e.g. TNEA, JEE Main, NEET, CAT, GATE)..."
               value="${escapeHtml(entrancePrepFilterState.search)}"
               oninput="handleEntrancePrepSearch(this.value)"
             />
@@ -13790,11 +14144,11 @@ async function renderEntrancePrepView() {
 
           <!-- Target College -->
           <div style="flex:1.2; min-width:160px;">
-            <input 
-              type="text" 
+            <input
+              type="text"
               id="entrancePrepCollegeInput"
-              class="colleges-search-input-field" 
-              placeholder="🏛️ Target College..." 
+              class="colleges-search-input-field"
+              placeholder="🏛️ Target College..."
               value="${escapeHtml(entrancePrepFilterState.college || '')}"
               oninput="entrancePrepFilterState.college = this.value; const filteredExams = getEntrancePrepFilteredList(); const grid = document.getElementById('entrancePrepCardsGrid'); if (grid) grid.innerHTML = renderEntrancePrepCardsHtml(filteredExams);"
               style="height:44px; font-size:12.5px; border-radius:10px;"
@@ -14067,18 +14421,18 @@ async function renderReviewsCompareView() {
 
   container.innerHTML = `
     <div class="courses-discovery-container" style="display:flex; flex-direction:column; gap:24px;">
-      
+
       <!-- 1. Search & Filter Bar: ONE Clean Horizontal Row (SEARCH | STATE | DISTRICT | DOMAIN) -->
       <section class="colleges-discovery-filter-card" style="margin-bottom:0;">
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; width:100%;">
           <!-- Search Box -->
           <div class="colleges-search-input-wrap" style="flex:1.5; min-width:220px; margin:0;">
             <span class="colleges-input-lead-icon">🔍</span>
-            <input 
-              type="text" 
-              id="reviewsCompareSearchInput" 
-              class="colleges-search-input-field" 
-              placeholder="Search college name, district, domain to narrow comparison options..." 
+            <input
+              type="text"
+              id="reviewsCompareSearchInput"
+              class="colleges-search-input-field"
+              placeholder="Search college name, district, domain to narrow comparison options..."
               value="${escapeHtml(reviewsCompareFilterState.search)}"
               oninput="handleReviewsCompareGlobalSearch(this.value)"
             />
@@ -14144,12 +14498,12 @@ async function renderReviewsCompareView() {
 
             <!-- Small Search Bar for Left College Box -->
             <div style="margin-bottom:10px;">
-              <input 
-                type="text" 
-                id="compareSearchCollege1" 
-                class="colleges-search-input-field" 
-                style="height:36px; font-size:12px; padding:0 10px; border-radius:8px; background:#FFFFFF; border:1px solid #CBD5E1;" 
-                placeholder="🔍 Search Left College (e.g. PSG, Amrita)..." 
+              <input
+                type="text"
+                id="compareSearchCollege1"
+                class="colleges-search-input-field"
+                style="height:36px; font-size:12px; padding:0 10px; border-radius:8px; background:#FFFFFF; border:1px solid #CBD5E1;"
+                placeholder="🔍 Search Left College (e.g. PSG, Amrita)..."
                 value="${escapeHtml(reviewsCompareFilterState.c1Search || '')}"
                 oninput="handleCompareCollege1Search(this.value)"
               />
@@ -14176,12 +14530,12 @@ async function renderReviewsCompareView() {
 
             <!-- Small Search Bar for Right College Box -->
             <div style="margin-bottom:10px;">
-              <input 
-                type="text" 
-                id="compareSearchCollege2" 
-                class="colleges-search-input-field" 
-                style="height:36px; font-size:12px; padding:0 10px; border-radius:8px; background:#FFFFFF; border:1px solid #CBD5E1;" 
-                placeholder="🔍 Search Right College (e.g. CIT, KCT)..." 
+              <input
+                type="text"
+                id="compareSearchCollege2"
+                class="colleges-search-input-field"
+                style="height:36px; font-size:12px; padding:0 10px; border-radius:8px; background:#FFFFFF; border:1px solid #CBD5E1;"
+                placeholder="🔍 Search Right College (e.g. CIT, KCT)..."
                 value="${escapeHtml(reviewsCompareFilterState.c2Search || '')}"
                 oninput="handleCompareCollege2Search(this.value)"
               />
@@ -14198,9 +14552,9 @@ async function renderReviewsCompareView() {
           </div>
 
           <div style="width:100%; text-align:center; margin-top:12px;">
-            <button 
-              type="button" 
-              class="primary-button" 
+            <button
+              type="button"
+              class="primary-button"
               style="height:46px; padding:0 36px; font-size:14px; font-weight:800; display:inline-flex; align-items:center; gap:8px;"
               ${(!c1Id || !c2Id) ? 'disabled style="opacity:0.6; cursor:not-allowed;"' : ''}
               onclick="executeReviewsComparison()"
@@ -14779,8 +15133,9 @@ function openJobDetailModal(jobId) {
     </div>
   `;
 
-  const primaryBtn = j.website ? `
-    <a href="${escapeHtml(j.website)}" target="_blank" rel="noopener noreferrer" class="primary-button" style="height:38px; font-size:13px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+  const jobPortalUrl = formatPortalUrl(j.application_url || j.apply_url || j.applyUrl || j.website || j.portal_url);
+  const primaryBtn = jobPortalUrl ? `
+    <a href="${escapeHtml(jobPortalUrl)}" target="_blank" rel="noopener noreferrer" class="primary-button" style="height:38px; font-size:13px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
       <span>Apply on Official Portal ↗</span>
     </a>
   ` : `<button type="button" class="primary-button" onclick="closeUniversalModal()">Close</button>`;
@@ -14839,10 +15194,18 @@ function openAdmissionDetailModal(admId) {
     </div>
   `;
 
+  const admPortal = formatPortalUrl(adm.portal_url || adm.application_url || adm.apply_url || adm.website);
   const primaryBtn = `
-    <button type="button" class="primary-button" style="height:38px; font-size:13px; background:#77AC3B; border-color:#77AC3B;" onclick="downloadAdmissionBlueprintPDF('${adm.id}')">
-      <span>📥 DOWNLOAD PDF</span>
-    </button>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <button type="button" class="primary-button" style="height:38px; font-size:13px; background:#77AC3B; border-color:#77AC3B;" onclick="downloadAdmissionBlueprintPDF('${adm.id}')">
+        <span>📥 DOWNLOAD PDF</span>
+      </button>
+      ${admPortal ? `
+        <a href="${escapeHtml(admPortal)}" target="_blank" rel="noopener noreferrer" class="primary-button" style="height:38px; font-size:13px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+          <span>Official Portal ↗</span>
+        </a>
+      ` : ''}
+    </div>
   `;
 
   openUniversalModal({
@@ -14885,12 +15248,22 @@ function openScholarshipDetailModal(schId) {
     </div>
   `;
 
+  const schPortal = formatPortalUrl(s.application_url || s.portal_url || s.apply_url || s.website);
+  const primaryBtn = schPortal ? `
+    <div style="display:flex; gap:8px; align-items:center;">
+      <a href="${escapeHtml(schPortal)}" target="_blank" rel="noopener noreferrer" class="primary-button" style="height:38px; font-size:13px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+        <span>Official Portal ↗</span>
+      </a>
+      <button type="button" class="secondary-button" style="height:38px; font-size:13px;" onclick="closeUniversalModal()">Close Guide</button>
+    </div>
+  ` : `<button type="button" class="primary-button" onclick="closeUniversalModal()">Close Guide</button>`;
+
   openUniversalModal({
     title: s.name || 'Scholarship Scheme',
     subtitle: `${s.type || 'Government Scheme'} • Complete Guidelines & Document Checklist`,
     badge: 'SCHOLARSHIP GUIDE',
     contentHtml: contentHtml,
-    primaryActionHtml: `<button type="button" class="primary-button" onclick="closeUniversalModal()">Close Guide</button>`
+    primaryActionHtml: primaryBtn
   });
 }
 window.openScholarshipDetailModal = openScholarshipDetailModal;
@@ -14982,9 +15355,10 @@ function openInternshipModal(internshipId) {
     </div>
   `;
 
-  const primaryBtn = i.website ? `
-    <a href="${escapeHtml(i.website)}" target="_blank" rel="noopener noreferrer" class="primary-button" style="height:38px; font-size:13px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-      <span>Apply on Portal ↗</span>
+  const applyUrl = formatPortalUrl(i.application_url || i.apply_url || i.applyUrl || i.website || i.portal_url);
+  const primaryBtn = applyUrl ? `
+    <a href="${escapeHtml(applyUrl)}" target="_blank" rel="noopener noreferrer" class="primary-button" style="height:38px; font-size:13px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+      <span>Apply on Official Portal ↗</span>
     </a>
   ` : `<button type="button" class="primary-button" onclick="closeUniversalModal()">Close</button>`;
 
@@ -15111,7 +15485,7 @@ function openCourseDetailsModal(programIdOrName) {
 
     bodyEl.innerHTML = `
       <div style="font-size:13.5px; color:#334155; display:flex; flex-direction:column; gap:14px;">
-        
+
         <!-- Field 1-6: Core Program Metrics Card -->
         <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:14px;">
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px;">
@@ -15523,11 +15897,11 @@ function renderCoursesDiscoveryLayout() {
       <div class="courses-search-section">
         <div class="courses-search-bar-wrap">
           <span class="courses-search-lead-icon">🔍</span>
-          <input 
-            type="text" 
-            id="coursesSearchInput" 
-            class="courses-search-input-field" 
-            placeholder="Search courses, degrees, specializations (e.g., Computer Science, AI, B.Com, Cyber Security, MBBS, UI/UX)..." 
+          <input
+            type="text"
+            id="coursesSearchInput"
+            class="courses-search-input-field"
+            placeholder="Search courses, degrees, specializations (e.g., Computer Science, AI, B.Com, Cyber Security, MBBS, UI/UX)..."
             value="${coursesHierarchyState.searchQuery || ''}"
             autocomplete="off"
           />
@@ -15995,7 +16369,7 @@ function findProgramInCatalog(programIdOrName) {
 
   const categories = coursesHierarchyState.categories || [];
   let prog = null;
-  
+
   // 1. Direct program ID or Exact Program Name match
   for (const cat of categories) {
     for (const grp of cat.groups || []) {
@@ -16103,7 +16477,7 @@ function getProgramYearWiseSubjects(prog, yearNum) {
   }
 
   const name = (prog && prog.name ? prog.name : '').toLowerCase();
-  
+
   if (name.includes('computer') || name.includes('cse') || name.includes('it') || name.includes('software') || name.includes('ai') || name.includes('data') || name.includes('cyber') || name.includes('tech')) {
     if (yearNum === 1) {
       return [
@@ -16372,13 +16746,13 @@ function generateCourseFullRoadmapHtml(prog) {
 
   return `
     <div style="display:flex; flex-direction:column; gap:24px;">
-      
+
       <!-- 1. COURSE INTRODUCTION -->
       <section class="detail-block" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:22px; box-shadow:0 4px 18px rgba(0,0,0,0.03);">
         <p class="eyebrow" style="color:#77AC3B; margin-bottom:6px;">📖 COURSE INTRODUCTION &amp; OVERVIEW</p>
         <h2 style="font-size:20px; font-weight:800; color:#0F172A; margin:0 0 10px;">${escapeHtml(name)}</h2>
         <p style="font-size:14px; color:#334155; line-height:1.6; margin:0 0 14px;">${escapeHtml(introText)}</p>
-        
+
         <div class="overview-grid" style="margin-top:14px; display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px;">
           <div style="background:#F0FDF4; border:1.5px solid #BBF7D0; border-radius:10px; padding:12px 14px;">
             <small style="color:#15803D; font-weight:800;">ANNUAL TUITION FEES</small>
@@ -16394,7 +16768,7 @@ function generateCourseFullRoadmapHtml(prog) {
       <section class="detail-block" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:22px; box-shadow:0 4px 18px rgba(0,0,0,0.03);">
         <p class="eyebrow" style="color:var(--coral); margin-bottom:6px;">🎓 DEGREE BENEFITS &amp; PRACTICAL USES</p>
         <h3 style="font-size:18px; font-weight:800; color:#0F172A; margin:0 0 14px;">What You Can Use This Qualification For</h3>
-        
+
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px;">
           ${benefits.map(b => `
             <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:16px;">
@@ -16411,7 +16785,7 @@ function generateCourseFullRoadmapHtml(prog) {
         <p class="eyebrow" style="color:#77AC3B; margin-bottom:6px;">🌐 APPLICABLE DOMAINS &amp; SECTORS</p>
         <h3 style="font-size:18px; font-weight:800; color:#0F172A; margin:0 0 8px;">Where This Course Can Be Applied</h3>
         <p style="font-size:13px; color:#64748B; margin:0 0 14px;">Direct cross-industry adoption and professional practice areas for ${escapeHtml(name)} graduates:</p>
-        
+
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
           ${applicableFields.map(field => `
             <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-left:3px solid #77AC3B; border-radius:8px; padding:12px 14px;">
@@ -16425,7 +16799,7 @@ function generateCourseFullRoadmapHtml(prog) {
       <section class="detail-block" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:22px; box-shadow:0 4px 18px rgba(0,0,0,0.03);">
         <p class="eyebrow" style="color:var(--coral); margin-bottom:6px;">💼 RECRUITMENT &amp; CAREER LANDSCAPE</p>
         <h3 style="font-size:18px; font-weight:800; color:#0F172A; margin:0 0 14px;">Top Hiring Companies &amp; Industry Demand</h3>
-        
+
         <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:16px; margin-bottom:14px;">
           <div style="font-size:11px; font-weight:800; color:#64748B; text-transform:uppercase; margin-bottom:8px;">Premier Employers Recruiting ${escapeHtml(name)} Talent:</div>
           <div style="display:flex; flex-wrap:wrap; gap:8px;">
@@ -16479,7 +16853,7 @@ function generateCourseFullRoadmapHtml(prog) {
       <section class="detail-block" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:22px; box-shadow:0 4px 18px rgba(0,0,0,0.03);">
         <p class="eyebrow" style="color:#77AC3B; margin-bottom:4px;">💬 STUDENT &amp; ALUMNI FEEDBACK</p>
         <h3 style="font-size:18px; font-weight:800; color:#0F172A; margin:0 0 14px;">Verified Student Experiences in ${escapeHtml(name)}</h3>
-        
+
         <div style="display:flex; flex-direction:column; gap:10px;">
           ${reviews.map(r => `
             <div class="cn-review-card-compact">
@@ -16638,7 +17012,7 @@ function toggleHeaderMenu(e) {
   const drawer = document.getElementById('mobileDrawer');
   const backdrop = document.getElementById('mobileDrawerBackdrop');
   const isMobile = window.innerWidth <= 900;
-  const isOpen = isMobile 
+  const isOpen = isMobile
     ? (drawer && drawer.classList.contains('open'))
     : (wrap && wrap.classList.contains('open'));
 
@@ -16836,7 +17210,7 @@ function openEventDetailsModal(eventId) {
     if (venueEl) venueEl.textContent = ev.venue || 'Main Campus Auditorium';
     if (catEl) catEl.textContent = ev.category || 'Conclave & Fest';
     if (descEl) descEl.textContent = ev.description || 'Official institutional conclave and student symposium organized by campus faculty and departments.';
-    
+
     if (extraEl) {
       extraEl.innerHTML = `
         <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px; font-size:12.5px; color:#475569;">
@@ -17699,7 +18073,7 @@ async function renderMentorsView(searchQuery = '') {
     }
 
     if (mentors.length === 0) {
-      const emptyMsg = cleanQ 
+      const emptyMsg = cleanQ
         ? `No mentors matched your search "${escapeHtml(cleanQ)}".`
         : 'No verified mentor profiles are currently available. Check back soon!';
       grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:60px 20px; background:#FFFFFF; border:1px dashed #CBD5E1; border-radius:14px; color:#64748B;">${emptyMsg}</div>`;

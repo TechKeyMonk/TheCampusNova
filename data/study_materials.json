@@ -1441,6 +1441,150 @@
     "pdf_count": 8,
     "video_count": 6,
     "website_count": 6,
-    "practice_count": 6
-  }
+    "practice_count": 6,
+    "material_type_distribution": [
+      {
+        "type": "Previous Year Questions",
+        "count": 28400,
+        "share": 33
+      },
+      {
+        "type": "Lecture & Revision Notes",
+        "count": 22100,
+        "share": 26
+      },
+      {
+        "type": "Formula Sheets",
+        "count": 18600,
+        "share": 22
+      },
+      {
+        "type": "Mock Tests & Practice Sets",
+        "count": 11400,
+        "share": 13
+      },
+      {
+        "type": "Topic Guides & Reference",
+        "count": 5860,
+        "share": 6
+      }
+    ],
+    "monthly_usage_trend": [
+      {
+        "month": "Sep",
+        "views": 12400,
+        "downloads": 6100
+      },
+      {
+        "month": "Oct",
+        "views": 18900,
+        "downloads": 9800
+      },
+      {
+        "month": "Nov",
+        "views": 26500,
+        "downloads": 14200
+      },
+      {
+        "month": "Dec",
+        "views": 38200,
+        "downloads": 19600
+      },
+      {
+        "month": "Jan",
+        "views": 52400,
+        "downloads": 26800
+      },
+      {
+        "month": "Feb",
+        "views": 64000,
+        "downloads": 33100
+      }
+    ]
+  },
+  "reviews": [
+    {
+      "id": "sm-rev-01",
+      "author": "Aditya Vardhan",
+      "exam": "JEE Main & JEE Advanced 2026",
+      "resource_used": "JEE 15-Year Solved Physics Archive & Formula Sheet",
+      "rating": "★★★★★",
+      "statement": "The chapter-wise categorization helped me master Electrodynamics and Modern Physics without getting overwhelmed by uncurated question banks.",
+      "advice": "Review formula roadmaps daily during the last 30 days before exam session 1."
+    },
+    {
+      "id": "sm-rev-02",
+      "author": "Dr. Sneha Nair",
+      "exam": "NEET UG 2026",
+      "resource_used": "NEET High-Yield Biology Visual Compendium",
+      "rating": "★★★★★",
+      "statement": "Visual memory flashcards for Plant Physiology and Genetics saved at least 2 hours of daily revision time.",
+      "advice": "Pair the visual diagrams directly with line-by-line NCERT reading."
+    },
+    {
+      "id": "sm-rev-03",
+      "author": "Rohit Mathur",
+      "exam": "CAT 2026",
+      "resource_used": "CAT Speed-Math Shortcuts & DILR Caselet Guide",
+      "rating": "★★★★★",
+      "statement": "The 15-minute DILR set selection framework improved my sectional percentile from 78 to 99.2 in national mock series.",
+      "advice": "Do not attempt all sets; accurately solving 2.5 full sets guarantees 99+ percentile."
+    },
+    {
+      "id": "sm-rev-04",
+      "author": "Ananya Sen",
+      "exam": "GATE CS 2026",
+      "resource_used": "GATE Computer Science Core Technical Compendium",
+      "rating": "★★★★★",
+      "statement": "The Operating Systems and Computer Networks summaries condensed standard textbooks into high-yield revision tables.",
+      "advice": "Practice previous 15-year numerical answer type questions at least twice."
+    },
+    {
+      "id": "sm-rev-05",
+      "author": "Kavita Deshmukh",
+      "exam": "CLAT 2026",
+      "resource_used": "CLAT Legal Reasoning Passage Deconstruction",
+      "rating": "★★★★★",
+      "statement": "Passage deconstruction techniques helped cut reading time per passage down from 4.5 minutes to under 3 minutes.",
+      "advice": "Prioritize speed drills and constitutional case precedents."
+    }
+  ],
+  "experiences": [
+    {
+      "id": "exp-01",
+      "learner_name": "Arjun Sundaram",
+      "exam": "JEE Advanced 2025",
+      "result_shared": "AIR 412 (IIT Madras CSE)",
+      "materials_used": "JEE 15-Year Solved Physics Archive, Chemistry Reagent Sheets, NTA Mock Simulator",
+      "pdf_recommendation": "JEE Calculus & 3D Geometry Master Compendium",
+      "video_recommendation": "Physics Rotational Dynamics Masterclass",
+      "website_recommendation": "NTA Official Computer-Based Test Simulator",
+      "experience": "Having chapter-wise previous papers with verified step-by-step logic eliminated guesswork and built steady confidence across 3-hour tests.",
+      "advice": "Maintain a negative-marking error notebook and never skip analyzing mock test mistakes."
+    },
+    {
+      "id": "exp-02",
+      "learner_name": "Meera Krishnan",
+      "exam": "NEET UG 2025",
+      "result_shared": "Score 695 / 720 (AIIMS New Delhi)",
+      "materials_used": "NEET Biology High-Yield Visual Flashcards, NCERT Chemistry Exemplar",
+      "pdf_recommendation": "NEET Biology High-Yield Compendium",
+      "video_recommendation": "Genetics & Human Anatomy Mechanism Walks",
+      "website_recommendation": "National Medical Commission (NMC) Official Portal",
+      "experience": "Diagram flashcards simplified difficult genetics mechanisms and plant cycles, making rapid 15-minute morning revisions effortless.",
+      "advice": "Read NCERT line-by-line at least 6 times before attempting full-syllabus papers."
+    },
+    {
+      "id": "exp-03",
+      "learner_name": "Vikram Sethi",
+      "exam": "CAT 2025",
+      "result_shared": "99.78 Percentile (IIM Ahmedabad PGP)",
+      "materials_used": "CAT Speed-Math Shortcuts Handbook, DILR Caselet Strategy Guide",
+      "pdf_recommendation": "CAT Quantitative Aptitude Speed Handbook",
+      "video_recommendation": "DILR Matrix Games & Tournaments Series",
+      "website_recommendation": "IIM Official CAT Portal",
+      "experience": "The set selection framework transformed how I approached the DILR section, preventing wasted time on tricky trap sets.",
+      "advice": "Prioritize accuracy over speed in VARC and master arithmetic thoroughly in Quant."
+    }
+  ]
 }

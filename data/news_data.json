@@ -1,6 +1,34 @@
 {
   "news": [
     {
+      "id": "NWS-064",
+      "db_id": 64,
+      "title": "Assam CEE 2026: Spot Round Counselling Dates (OUT), Seat Allotment, Cutoff",
+      "college_name": "Directorate of Technical Education (DTE), Assam",
+      "category": "Counselling & Seat Allotment",
+      "published_date": "2026-09-12",
+      "summary": "The Directorate of Technical Education (DTE), Assam has announced the spot round counselling schedule for Assam CEE 2026. The spot round counselling is scheduled from 11 September 2026 to 14 September 2026 for admission to available B.Tech seats in participating engineering colleges of Assam. Candidates are required to follow the official counselling and reporting instructions issued by DTE Assam. Seat allotment will be carried out based on merit, available seats and applicable counselling guidelines",
+      "content": "The Directorate of Technical Education (DTE), Assam has announced the spot round counselling schedule for Assam CEE 2026. The spot round counselling is scheduled from 11 September 2026 to 14 September 2026 for admission to available B.Tech seats in participating engineering colleges of Assam. Candidates are required to follow the official counselling and reporting instructions issued by DTE Assam. Seat allotment will be carried out based on merit, available seats and applicable counselling guidelines",
+      "source_url": "https://dte.assam.gov.in/resource/detail/educational-notice-regarding-spot-counselling-of-cee-2026?utm_source=chatgpt.com",
+      "badge": "Assam CEE 2026",
+      "status": "Published",
+      "created_at": "2026-09-11T20:28:31Z"
+    },
+    {
+      "id": "NWS-063",
+      "db_id": 63,
+      "title": "CAT 2026 Registration Live Updates; IIM Indore to Close Registration Window on Sept 15, Check Fees & Apply Now",
+      "college_name": "Indian Institute of Management Indore (IIM Indore)",
+      "category": "Admissions & Cutoffs",
+      "published_date": "2026-09-10",
+      "summary": "CAT 2026 registration is currently open through the official CAT website. IIM Indore, the conducting institute for CAT 2026, has announced that candidates must complete their registration and submit the application fee by 15 September 2026 at 5:00 PM IST. The registration process includes entering personal and academic details, selecting IIM programmes and test-city preferences, uploading required documents, and completing online fee payment. The application fee is ₹2,700 for General, EWS and NC-OBC candidates and ₹1,350 for SC, ST and PwBD candidates.",
+      "content": "CAT 2026 registration is currently open through the official CAT website. IIM Indore, the conducting institute for CAT 2026, has announced that candidates must complete their registration and submit the application fee by 15 September 2026 at 5:00 PM IST. The registration process includes entering personal and academic details, selecting IIM programmes and test-city preferences, uploading required documents, and completing online fee payment. The application fee is ₹2,700 for General, EWS and NC-OBC candidates and ₹1,350 for SC, ST and PwBD candidates.",
+      "source_url": "https://iimcat.ac.in/?utm_source=chatgpt.com",
+      "badge": "Urgent Alert",
+      "status": "Published",
+      "created_at": "2026-09-10T11:03:33Z"
+    },
+    {
       "id": "NWS-061",
       "db_id": 61,
       "title": "Phase III Applications for MSAT Are Now Open",

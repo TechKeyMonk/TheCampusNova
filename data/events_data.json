@@ -1,6 +1,38 @@
 {
   "events": [
     {
+      "id": "EVT-051",
+      "db_id": 51,
+      "title": "WBJEE 2026 Decentralised Counselling Phase 2 - Registration and Choice Filling",
+      "college_id": "COL-001",
+      "college_name": "West Bengal Joint Entrance Examinations Board (WBJEEB)",
+      "category": "Techno-Management Conclave",
+      "event_date": "2026-09-17",
+      "time": "09:00 AM - 04:00 PM",
+      "venue": "will update through online",
+      "description": "WBJEE 2026 Decentralised Counselling Phase 2 will provide eligible candidates an opportunity to participate in online registration and choice filling for available seats. Candidates should complete registration and submit their preferred choices within the prescribed schedule. The West Bengal Joint Entrance Examinations Board has published the revised decentralised counselling schedule and related notification for WBJEE 2026.",
+      "registration_link": "https://wbjeeb.nic.in/current-events/?utm_source=chatgpt.com",
+      "status": "Upcoming",
+      "badge": "Official Event",
+      "created_at": "2026-09-11T20:33:34Z"
+    },
+    {
+      "id": "EVT-050",
+      "db_id": 50,
+      "title": "AI Film Fest 2026",
+      "college_id": "COL-001",
+      "college_name": "Sri Ramakrishna Institute of Technology (SRIT), Coimbatore",
+      "category": "Robotics & AI Symposium",
+      "event_date": "2026-09-24",
+      "time": "09:00 AM - 05:00 PM",
+      "venue": "Sri Ramakrishna Institute of Technology, Coimbatore, Tamil Nadu",
+      "description": "AI Film Fest 2026 is an AI-focused creative event bringing together students, creators and innovators to explore the use of Artificial Intelligence in filmmaking and digital storytelling. The event is part of the Regional AI Summit 2026 ecosystem and is scheduled to take place in Coimbatore from 24 to 26 September 2026. The programme focuses on AI innovation, creative challenges, filmmaking and opportunities for students and emerging creators. Available event information also indicates a ₹2 lakh prize pool, AI filmmaking and film-editing workshops, interactions with Tamil film industry professionals, internship opportunities and screening opportunities for selected entries.",
+      "registration_link": "https://www.knowafest.com/explore/events",
+      "status": "Upcoming",
+      "badge": "Official Event",
+      "created_at": "2026-09-10T10:17:56Z"
+    },
+    {
       "id": "EVT-049",
       "db_id": 49,
       "title": "Test National Hackathon & Summit 2026",
